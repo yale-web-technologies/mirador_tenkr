@@ -1,0 +1,37 @@
+{
+  "id" : "viewer",
+  "layout" : "1x1",
+  "//1" : "openManifestsPage: true",
+  "data" : [
+    { "manifestUri": "https://s3.amazonaws.com/tempmanifests/RPNT.json" }
+  ],
+  "buildPath" : "/",
+  "i18nPath" : "mirador/locales/",
+  "imagesPath" : "mirador/images/",
+  "logosPath" : "mirador/images/logos/",
+  "mainMenuSettings" : {
+    "show" : true,
+    "buttons" : {
+      "bookmark" : false
+    },
+    "userButtons" : [
+      {
+      }
+    ],
+    "userLogo" : {
+      "label" : "Ten Thousand Rooms",
+      "_label" : "Life of Buddha",
+      "attributes" : { "id" : "yale_logo", "href" : "http://yale.edu", "target" : "_blank" }
+    }
+  },
+  "annotationLayer" : true,
+  "annotationEndpoint" : {
+    "name" : "Ten Thousand Rooms",
+    "module" : "TenkrEndpoint",
+    "options" : {
+      "prefix" : "http://annotations.tenkr.yale.edu",
+      "storeId" : "",
+      "APIKey" : ""
+     }
+  }
+}

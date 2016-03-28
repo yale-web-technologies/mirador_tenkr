@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta charset="utf-8">
+
+  <title>TenThousandRooms</title>
+
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag    '/mirador/css/mirador-combined' %>
+  <%= javascript_include_tag 'https://cdn.firebase.com/js/client/2.2.1/firebase.js' %>
+  <%= javascript_include_tag '/mirador/mirador' %>
+  <script>
+    $.noConflict();
+  </script>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+<%= yield %>
+
+</body>
+</html>

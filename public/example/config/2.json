@@ -1,0 +1,40 @@
+{
+  "_note" : "Using annotation server mockup in FireBase",
+  "id" : "viewer",
+  "saveSession" : false,
+  "layout" : "1x1",
+  "//1" : "openManifestsPage: true",
+  "mainMenuSettings" : {
+    "show" : true
+  },
+  "data" : [
+    { "manifestUri": "https://s3.amazonaws.com/tempmanifests/RPNT.json" },
+    { "manifestUri": "https://s3.amazonaws.com/tempmanifests/BCZB.json" }
+  ],
+  "buildPath" : "/",
+  "i18nPath" : "mirador/locales/",
+  "imagesPath" : "mirador/images/",
+  "logosPath" : "mirador/images/logos/",
+  "mainMenuSettings" : {
+    "show" : true,
+    "buttons" : {
+      "bookmark" : false
+    },
+    "userButtons" : [
+      {
+      }
+    ],
+    "userLogo" : {
+      "label" : "Ten Thousand Rooms",
+      "attributes" : { "id" : "yale_logo", "href" : "http://yale.edu", "target" : "_blank" }
+    }
+  },
+  "annotationLayer" : true,
+  "annotationEndpoint" : {
+    "name" : "YDC Annotation Server mockup on FireBase",
+    "module" : "TenkrFbEndpoint",
+    "options" : {
+      "url" : ""
+    }
+  }
+}
