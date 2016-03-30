@@ -4,11 +4,11 @@
     jQuery.extend(this, {
       annotationLayers: [],
       annotationsList: [],
-      bearerToken: '',
       dfd: null,
       idMapper: {}, // internal list for module use to map ID to URI
-      parent: null,
-      prefix: null
+      imagesList: null,
+      prefix: null,
+      windowID: null
     }, options);
 
     console.log('TenkrEndpoint dfd: ' + this.dfd);

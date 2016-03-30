@@ -6359,7 +6359,6 @@ window.Mirador = window.Mirador || function(config) {
         var window = _this.getWindowById(windowId);
         if (window) {
           console.log('slot address: ' + window.slotAddress);
-          //var slot = window.parent;
           var slot = _this.getSlotFromAddress(window.slotAddress);
           if (!_this.getAvailableSlot()) {
             _this.split(slot, 'r', $.AnnotationWindow);
@@ -8200,8 +8199,8 @@ window.Mirador = window.Mirador || function(config) {
   $.AnnotationWindow = function(options) {
     jQuery.extend(this, {
       element: null,
-      parent: null, // slot
       canvasWindow: null, // window that contains the canvas for the annotations
+      slotAddress: null
     }, options);
 
     this.init();
@@ -8392,8 +8391,8 @@ window.Mirador = window.Mirador || function(config) {
       this.element.find('.annowin_remove_slot').click(function(event) {
         event.stopPropagation();
         event.preventDefault();
-        var slot = _this.parent;
-        var workspace = slot.parent;
+        var workspace = $.viewer.workspace;
+        var slot = workspace.getSlotFromAddress(_this.slotAddress);
         workspace.removeNode(slot);
       });
       
@@ -9596,12 +9595,18 @@ window.Mirador = window.Mirador || function(config) {
       _this.annotationsToShapesMap = {};
       var deferreds = jQuery.map(this.list, function(annotation) {
         var deferred = jQuery.Deferred();
+        
+        console.log('O1: ');
+        console.dir(annotation);
 
         // XXX seong
         if (annotation.on === 'object' && annotation.on['@type'] === 'oa:Annotation') {
           // Annotation on annotation
           return deferred;
         }
+        
+        console.log('O2: ');
+        console.dir(annotation);
         
         var shapeArray;
         if (typeof annotation.on === 'object') {
