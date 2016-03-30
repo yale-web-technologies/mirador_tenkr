@@ -30,7 +30,8 @@
     search: function (options, successCallback, errorCallback) {
       console.log('TenkrEndpoint#search options: ' + JSON.stringify(options));
       var _this = this;
-      var url = this.prefix + '/getAnnotations?includeTargetingAnnos=true&canvas_id=' + encodeURIComponent(this.parent.currentCanvasID);
+      var canvasID = options.uri;
+      var url = this.prefix + '/getAnnotations?includeTargetingAnnos=true&canvas_id=' + encodeURIComponent(canvasID);
       console.log('TenkrEndpoint#search url: ' + url);
       this.annotationsList = [];
 

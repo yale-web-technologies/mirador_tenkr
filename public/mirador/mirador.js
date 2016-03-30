@@ -1,5 +1,5 @@
 //! Mirador 2.0.0
-//! Built on 2016-03-27
+//! Built on 2016-03-30
 /*! jQuery v1.9.1 | (c) 2005, 2012 jQuery Foundation, Inc. | jquery.org/license
 */(function(e,t){var n,r,i=typeof t,o=e.document,a=e.location,s=e.jQuery,u=e.$,l={},c=[],p="1.9.1",f=c.concat,d=c.push,h=c.slice,g=c.indexOf,m=l.toString,y=l.hasOwnProperty,v=p.trim,b=function(e,t){return new b.fn.init(e,t,r)},x=/[+-]?(?:\d*\.|)\d+(?:[eE][+-]?\d+|)/.source,w=/\S+/g,T=/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g,N=/^(?:(<[\w\W]+>)[^>]*|#([\w-]*))$/,C=/^<(\w+)\s*\/?>(?:<\/\1>|)$/,k=/^[\],:{}\s]*$/,E=/(?:^|:|,)(?:\s*\[)+/g,S=/\\(?:["\\\/bfnrt]|u[\da-fA-F]{4})/g,A=/"[^"\\\r\n]*"|true|false|null|-?(?:\d+\.|)\d+(?:[eE][+-]?\d+|)/g,j=/^-ms-/,D=/-([\da-z])/gi,L=function(e,t){return t.toUpperCase()},H=function(e){(o.addEventListener||"load"===e.type||"complete"===o.readyState)&&(q(),b.ready())},q=function(){o.addEventListener?(o.removeEventListener("DOMContentLoaded",H,!1),e.removeEventListener("load",H,!1)):(o.detachEvent("onreadystatechange",H),e.detachEvent("onload",H))};b.fn=b.prototype={jquery:p,constructor:b,init:function(e,n,r){var i,a;if(!e)return this;if("string"==typeof e){if(i="<"===e.charAt(0)&&">"===e.charAt(e.length-1)&&e.length>=3?[null,e,null]:N.exec(e),!i||!i[1]&&n)return!n||n.jquery?(n||r).find(e):this.constructor(n).find(e);if(i[1]){if(n=n instanceof b?n[0]:n,b.merge(this,b.parseHTML(i[1],n&&n.nodeType?n.ownerDocument||n:o,!0)),C.test(i[1])&&b.isPlainObject(n))for(i in n)b.isFunction(this[i])?this[i](n[i]):this.attr(i,n[i]);return this}if(a=o.getElementById(i[2]),a&&a.parentNode){if(a.id!==i[2])return r.find(e);this.length=1,this[0]=a}return this.context=o,this.selector=e,this}return e.nodeType?(this.context=this[0]=e,this.length=1,this):b.isFunction(e)?r.ready(e):(e.selector!==t&&(this.selector=e.selector,this.context=e.context),b.makeArray(e,this))},selector:"",length:0,size:function(){return this.length},toArray:function(){return h.call(this)},get:function(e){return null==e?this.toArray():0>e?this[this.length+e]:this[e]},pushStack:function(e){var t=b.merge(this.constructor(),e);return t.prevObject=this,t.context=this.context,t},each:function(e,t){return b.each(this,e,t)},ready:function(e){return b.ready.promise().done(e),this},slice:function(){return this.pushStack(h.apply(this,arguments))},first:function(){return this.eq(0)},last:function(){return this.eq(-1)},eq:function(e){var t=this.length,n=+e+(0>e?t:0);return this.pushStack(n>=0&&t>n?[this[n]]:[])},map:function(e){return this.pushStack(b.map(this,function(t,n){return e.call(t,n,t)}))},end:function(){return this.prevObject||this.constructor(null)},push:d,sort:[].sort,splice:[].splice},b.fn.init.prototype=b.fn,b.extend=b.fn.extend=function(){var e,n,r,i,o,a,s=arguments[0]||{},u=1,l=arguments.length,c=!1;for("boolean"==typeof s&&(c=s,s=arguments[1]||{},u=2),"object"==typeof s||b.isFunction(s)||(s={}),l===u&&(s=this,--u);l>u;u++)if(null!=(o=arguments[u]))for(i in o)e=s[i],r=o[i],s!==r&&(c&&r&&(b.isPlainObject(r)||(n=b.isArray(r)))?(n?(n=!1,a=e&&b.isArray(e)?e:[]):a=e&&b.isPlainObject(e)?e:{},s[i]=b.extend(c,a,r)):r!==t&&(s[i]=r));return s},b.extend({noConflict:function(t){return e.$===b&&(e.$=u),t&&e.jQuery===b&&(e.jQuery=s),b},isReady:!1,readyWait:1,holdReady:function(e){e?b.readyWait++:b.ready(!0)},ready:function(e){if(e===!0?!--b.readyWait:!b.isReady){if(!o.body)return setTimeout(b.ready);b.isReady=!0,e!==!0&&--b.readyWait>0||(n.resolveWith(o,[b]),b.fn.trigger&&b(o).trigger("ready").off("ready"))}},isFunction:function(e){return"function"===b.type(e)},isArray:Array.isArray||function(e){return"array"===b.type(e)},isWindow:function(e){return null!=e&&e==e.window},isNumeric:function(e){return!isNaN(parseFloat(e))&&isFinite(e)},type:function(e){return null==e?e+"":"object"==typeof e||"function"==typeof e?l[m.call(e)]||"object":typeof e},isPlainObject:function(e){if(!e||"object"!==b.type(e)||e.nodeType||b.isWindow(e))return!1;try{if(e.constructor&&!y.call(e,"constructor")&&!y.call(e.constructor.prototype,"isPrototypeOf"))return!1}catch(n){return!1}var r;for(r in e);return r===t||y.call(e,r)},isEmptyObject:function(e){var t;for(t in e)return!1;return!0},error:function(e){throw Error(e)},parseHTML:function(e,t,n){if(!e||"string"!=typeof e)return null;"boolean"==typeof t&&(n=t,t=!1),t=t||o;var r=C.exec(e),i=!n&&[];return r?[t.createElement(r[1])]:(r=b.buildFragment([e],t,i),i&&b(i).remove(),b.merge([],r.childNodes))},parseJSON:function(n){return e.JSON&&e.JSON.parse?e.JSON.parse(n):null===n?n:"string"==typeof n&&(n=b.trim(n),n&&k.test(n.replace(S,"@").replace(A,"]").replace(E,"")))?Function("return "+n)():(b.error("Invalid JSON: "+n),t)},parseXML:function(n){var r,i;if(!n||"string"!=typeof n)return null;try{e.DOMParser?(i=new DOMParser,r=i.parseFromString(n,"text/xml")):(r=new ActiveXObject("Microsoft.XMLDOM"),r.async="false",r.loadXML(n))}catch(o){r=t}return r&&r.documentElement&&!r.getElementsByTagName("parsererror").length||b.error("Invalid XML: "+n),r},noop:function(){},globalEval:function(t){t&&b.trim(t)&&(e.execScript||function(t){e.eval.call(e,t)})(t)},camelCase:function(e){return e.replace(j,"ms-").replace(D,L)},nodeName:function(e,t){return e.nodeName&&e.nodeName.toLowerCase()===t.toLowerCase()},each:function(e,t,n){var r,i=0,o=e.length,a=M(e);if(n){if(a){for(;o>i;i++)if(r=t.apply(e[i],n),r===!1)break}else for(i in e)if(r=t.apply(e[i],n),r===!1)break}else if(a){for(;o>i;i++)if(r=t.call(e[i],i,e[i]),r===!1)break}else for(i in e)if(r=t.call(e[i],i,e[i]),r===!1)break;return e},trim:v&&!v.call("\ufeff\u00a0")?function(e){return null==e?"":v.call(e)}:function(e){return null==e?"":(e+"").replace(T,"")},makeArray:function(e,t){var n=t||[];return null!=e&&(M(Object(e))?b.merge(n,"string"==typeof e?[e]:e):d.call(n,e)),n},inArray:function(e,t,n){var r;if(t){if(g)return g.call(t,e,n);for(r=t.length,n=n?0>n?Math.max(0,r+n):n:0;r>n;n++)if(n in t&&t[n]===e)return n}return-1},merge:function(e,n){var r=n.length,i=e.length,o=0;if("number"==typeof r)for(;r>o;o++)e[i++]=n[o];else while(n[o]!==t)e[i++]=n[o++];return e.length=i,e},grep:function(e,t,n){var r,i=[],o=0,a=e.length;for(n=!!n;a>o;o++)r=!!t(e[o],o),n!==r&&i.push(e[o]);return i},map:function(e,t,n){var r,i=0,o=e.length,a=M(e),s=[];if(a)for(;o>i;i++)r=t(e[i],i,n),null!=r&&(s[s.length]=r);else for(i in e)r=t(e[i],i,n),null!=r&&(s[s.length]=r);return f.apply([],s)},guid:1,proxy:function(e,n){var r,i,o;return"string"==typeof n&&(o=e[n],n=e,e=o),b.isFunction(e)?(r=h.call(arguments,2),i=function(){return e.apply(n||this,r.concat(h.call(arguments)))},i.guid=e.guid=e.guid||b.guid++,i):t},access:function(e,n,r,i,o,a,s){var u=0,l=e.length,c=null==r;if("object"===b.type(r)){o=!0;for(u in r)b.access(e,n,u,r[u],!0,a,s)}else if(i!==t&&(o=!0,b.isFunction(i)||(s=!0),c&&(s?(n.call(e,i),n=null):(c=n,n=function(e,t,n){return c.call(b(e),n)})),n))for(;l>u;u++)n(e[u],r,s?i:i.call(e[u],u,n(e[u],r)));return o?e:c?n.call(e):l?n(e[0],r):a},now:function(){return(new Date).getTime()}}),b.ready.promise=function(t){if(!n)if(n=b.Deferred(),"complete"===o.readyState)setTimeout(b.ready);else if(o.addEventListener)o.addEventListener("DOMContentLoaded",H,!1),e.addEventListener("load",H,!1);else{o.attachEvent("onreadystatechange",H),e.attachEvent("onload",H);var r=!1;try{r=null==e.frameElement&&o.documentElement}catch(i){}r&&r.doScroll&&function a(){if(!b.isReady){try{r.doScroll("left")}catch(e){return setTimeout(a,50)}q(),b.ready()}}()}return n.promise(t)},b.each("Boolean Number String Function Array Date RegExp Object Error".split(" "),function(e,t){l["[object "+t+"]"]=t.toLowerCase()});function M(e){var t=e.length,n=b.type(e);return b.isWindow(e)?!1:1===e.nodeType&&t?!0:"array"===n||"function"!==n&&(0===t||"number"==typeof t&&t>0&&t-1 in e)}r=b(o);var _={};function F(e){var t=_[e]={};return b.each(e.match(w)||[],function(e,n){t[n]=!0}),t}b.Callbacks=function(e){e="string"==typeof e?_[e]||F(e):b.extend({},e);var n,r,i,o,a,s,u=[],l=!e.once&&[],c=function(t){for(r=e.memory&&t,i=!0,a=s||0,s=0,o=u.length,n=!0;u&&o>a;a++)if(u[a].apply(t[0],t[1])===!1&&e.stopOnFalse){r=!1;break}n=!1,u&&(l?l.length&&c(l.shift()):r?u=[]:p.disable())},p={add:function(){if(u){var t=u.length;(function i(t){b.each(t,function(t,n){var r=b.type(n);"function"===r?e.unique&&p.has(n)||u.push(n):n&&n.length&&"string"!==r&&i(n)})})(arguments),n?o=u.length:r&&(s=t,c(r))}return this},remove:function(){return u&&b.each(arguments,function(e,t){var r;while((r=b.inArray(t,u,r))>-1)u.splice(r,1),n&&(o>=r&&o--,a>=r&&a--)}),this},has:function(e){return e?b.inArray(e,u)>-1:!(!u||!u.length)},empty:function(){return u=[],this},disable:function(){return u=l=r=t,this},disabled:function(){return!u},lock:function(){return l=t,r||p.disable(),this},locked:function(){return!l},fireWith:function(e,t){return t=t||[],t=[e,t.slice?t.slice():t],!u||i&&!l||(n?l.push(t):c(t)),this},fire:function(){return p.fireWith(this,arguments),this},fired:function(){return!!i}};return p},b.extend({Deferred:function(e){var t=[["resolve","done",b.Callbacks("once memory"),"resolved"],["reject","fail",b.Callbacks("once memory"),"rejected"],["notify","progress",b.Callbacks("memory")]],n="pending",r={state:function(){return n},always:function(){return i.done(arguments).fail(arguments),this},then:function(){var e=arguments;return b.Deferred(function(n){b.each(t,function(t,o){var a=o[0],s=b.isFunction(e[t])&&e[t];i[o[1]](function(){var e=s&&s.apply(this,arguments);e&&b.isFunction(e.promise)?e.promise().done(n.resolve).fail(n.reject).progress(n.notify):n[a+"With"](this===r?n.promise():this,s?[e]:arguments)})}),e=null}).promise()},promise:function(e){return null!=e?b.extend(e,r):r}},i={};return r.pipe=r.then,b.each(t,function(e,o){var a=o[2],s=o[3];r[o[1]]=a.add,s&&a.add(function(){n=s},t[1^e][2].disable,t[2][2].lock),i[o[0]]=function(){return i[o[0]+"With"](this===i?r:this,arguments),this},i[o[0]+"With"]=a.fireWith}),r.promise(i),e&&e.call(i,i),i},when:function(e){var t=0,n=h.call(arguments),r=n.length,i=1!==r||e&&b.isFunction(e.promise)?r:0,o=1===i?e:b.Deferred(),a=function(e,t,n){return function(r){t[e]=this,n[e]=arguments.length>1?h.call(arguments):r,n===s?o.notifyWith(t,n):--i||o.resolveWith(t,n)}},s,u,l;if(r>1)for(s=Array(r),u=Array(r),l=Array(r);r>t;t++)n[t]&&b.isFunction(n[t].promise)?n[t].promise().done(a(t,l,n)).fail(o.reject).progress(a(t,u,s)):--i;return i||o.resolveWith(l,n),o.promise()}}),b.support=function(){var t,n,r,a,s,u,l,c,p,f,d=o.createElement("div");if(d.setAttribute("className","t"),d.innerHTML="  <link/><table></table><a href='/a'>a</a><input type='checkbox'/>",n=d.getElementsByTagName("*"),r=d.getElementsByTagName("a")[0],!n||!r||!n.length)return{};s=o.createElement("select"),l=s.appendChild(o.createElement("option")),a=d.getElementsByTagName("input")[0],r.style.cssText="top:1px;float:left;opacity:.5",t={getSetAttribute:"t"!==d.className,leadingWhitespace:3===d.firstChild.nodeType,tbody:!d.getElementsByTagName("tbody").length,htmlSerialize:!!d.getElementsByTagName("link").length,style:/top/.test(r.getAttribute("style")),hrefNormalized:"/a"===r.getAttribute("href"),opacity:/^0.5/.test(r.style.opacity),cssFloat:!!r.style.cssFloat,checkOn:!!a.value,optSelected:l.selected,enctype:!!o.createElement("form").enctype,html5Clone:"<:nav></:nav>"!==o.createElement("nav").cloneNode(!0).outerHTML,boxModel:"CSS1Compat"===o.compatMode,deleteExpando:!0,noCloneEvent:!0,inlineBlockNeedsLayout:!1,shrinkWrapBlocks:!1,reliableMarginRight:!0,boxSizingReliable:!0,pixelPosition:!1},a.checked=!0,t.noCloneChecked=a.cloneNode(!0).checked,s.disabled=!0,t.optDisabled=!l.disabled;try{delete d.test}catch(h){t.deleteExpando=!1}a=o.createElement("input"),a.setAttribute("value",""),t.input=""===a.getAttribute("value"),a.value="t",a.setAttribute("type","radio"),t.radioValue="t"===a.value,a.setAttribute("checked","t"),a.setAttribute("name","t"),u=o.createDocumentFragment(),u.appendChild(a),t.appendChecked=a.checked,t.checkClone=u.cloneNode(!0).cloneNode(!0).lastChild.checked,d.attachEvent&&(d.attachEvent("onclick",function(){t.noCloneEvent=!1}),d.cloneNode(!0).click());for(f in{submit:!0,change:!0,focusin:!0})d.setAttribute(c="on"+f,"t"),t[f+"Bubbles"]=c in e||d.attributes[c].expando===!1;return d.style.backgroundClip="content-box",d.cloneNode(!0).style.backgroundClip="",t.clearCloneStyle="content-box"===d.style.backgroundClip,b(function(){var n,r,a,s="padding:0;margin:0;border:0;display:block;box-sizing:content-box;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;",u=o.getElementsByTagName("body")[0];u&&(n=o.createElement("div"),n.style.cssText="border:0;width:0;height:0;position:absolute;top:0;left:-9999px;margin-top:1px",u.appendChild(n).appendChild(d),d.innerHTML="<table><tr><td></td><td>t</td></tr></table>",a=d.getElementsByTagName("td"),a[0].style.cssText="padding:0;margin:0;border:0;display:none",p=0===a[0].offsetHeight,a[0].style.display="",a[1].style.display="none",t.reliableHiddenOffsets=p&&0===a[0].offsetHeight,d.innerHTML="",d.style.cssText="box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;padding:1px;border:1px;display:block;width:4px;margin-top:1%;position:absolute;top:1%;",t.boxSizing=4===d.offsetWidth,t.doesNotIncludeMarginInBodyOffset=1!==u.offsetTop,e.getComputedStyle&&(t.pixelPosition="1%"!==(e.getComputedStyle(d,null)||{}).top,t.boxSizingReliable="4px"===(e.getComputedStyle(d,null)||{width:"4px"}).width,r=d.appendChild(o.createElement("div")),r.style.cssText=d.style.cssText=s,r.style.marginRight=r.style.width="0",d.style.width="1px",t.reliableMarginRight=!parseFloat((e.getComputedStyle(r,null)||{}).marginRight)),typeof d.style.zoom!==i&&(d.innerHTML="",d.style.cssText=s+"width:1px;padding:1px;display:inline;zoom:1",t.inlineBlockNeedsLayout=3===d.offsetWidth,d.style.display="block",d.innerHTML="<div></div>",d.firstChild.style.width="5px",t.shrinkWrapBlocks=3!==d.offsetWidth,t.inlineBlockNeedsLayout&&(u.style.zoom=1)),u.removeChild(n),n=d=a=r=null)}),n=s=u=l=r=a=null,t}();var O=/(?:\{[\s\S]*\}|\[[\s\S]*\])$/,B=/([A-Z])/g;function P(e,n,r,i){if(b.acceptData(e)){var o,a,s=b.expando,u="string"==typeof n,l=e.nodeType,p=l?b.cache:e,f=l?e[s]:e[s]&&s;if(f&&p[f]&&(i||p[f].data)||!u||r!==t)return f||(l?e[s]=f=c.pop()||b.guid++:f=s),p[f]||(p[f]={},l||(p[f].toJSON=b.noop)),("object"==typeof n||"function"==typeof n)&&(i?p[f]=b.extend(p[f],n):p[f].data=b.extend(p[f].data,n)),o=p[f],i||(o.data||(o.data={}),o=o.data),r!==t&&(o[b.camelCase(n)]=r),u?(a=o[n],null==a&&(a=o[b.camelCase(n)])):a=o,a}}function R(e,t,n){if(b.acceptData(e)){var r,i,o,a=e.nodeType,s=a?b.cache:e,u=a?e[b.expando]:b.expando;if(s[u]){if(t&&(o=n?s[u]:s[u].data)){b.isArray(t)?t=t.concat(b.map(t,b.camelCase)):t in o?t=[t]:(t=b.camelCase(t),t=t in o?[t]:t.split(" "));for(r=0,i=t.length;i>r;r++)delete o[t[r]];if(!(n?$:b.isEmptyObject)(o))return}(n||(delete s[u].data,$(s[u])))&&(a?b.cleanData([e],!0):b.support.deleteExpando||s!=s.window?delete s[u]:s[u]=null)}}}b.extend({cache:{},expando:"jQuery"+(p+Math.random()).replace(/\D/g,""),noData:{embed:!0,object:"clsid:D27CDB6E-AE6D-11cf-96B8-444553540000",applet:!0},hasData:function(e){return e=e.nodeType?b.cache[e[b.expando]]:e[b.expando],!!e&&!$(e)},data:function(e,t,n){return P(e,t,n)},removeData:function(e,t){return R(e,t)},_data:function(e,t,n){return P(e,t,n,!0)},_removeData:function(e,t){return R(e,t,!0)},acceptData:function(e){if(e.nodeType&&1!==e.nodeType&&9!==e.nodeType)return!1;var t=e.nodeName&&b.noData[e.nodeName.toLowerCase()];return!t||t!==!0&&e.getAttribute("classid")===t}}),b.fn.extend({data:function(e,n){var r,i,o=this[0],a=0,s=null;if(e===t){if(this.length&&(s=b.data(o),1===o.nodeType&&!b._data(o,"parsedAttrs"))){for(r=o.attributes;r.length>a;a++)i=r[a].name,i.indexOf("data-")||(i=b.camelCase(i.slice(5)),W(o,i,s[i]));b._data(o,"parsedAttrs",!0)}return s}return"object"==typeof e?this.each(function(){b.data(this,e)}):b.access(this,function(n){return n===t?o?W(o,e,b.data(o,e)):null:(this.each(function(){b.data(this,e,n)}),t)},null,n,arguments.length>1,null,!0)},removeData:function(e){return this.each(function(){b.removeData(this,e)})}});function W(e,n,r){if(r===t&&1===e.nodeType){var i="data-"+n.replace(B,"-$1").toLowerCase();if(r=e.getAttribute(i),"string"==typeof r){try{r="true"===r?!0:"false"===r?!1:"null"===r?null:+r+""===r?+r:O.test(r)?b.parseJSON(r):r}catch(o){}b.data(e,n,r)}else r=t}return r}function $(e){var t;for(t in e)if(("data"!==t||!b.isEmptyObject(e[t]))&&"toJSON"!==t)return!1;return!0}b.extend({queue:function(e,n,r){var i;return e?(n=(n||"fx")+"queue",i=b._data(e,n),r&&(!i||b.isArray(r)?i=b._data(e,n,b.makeArray(r)):i.push(r)),i||[]):t},dequeue:function(e,t){t=t||"fx";var n=b.queue(e,t),r=n.length,i=n.shift(),o=b._queueHooks(e,t),a=function(){b.dequeue(e,t)};"inprogress"===i&&(i=n.shift(),r--),o.cur=i,i&&("fx"===t&&n.unshift("inprogress"),delete o.stop,i.call(e,a,o)),!r&&o&&o.empty.fire()},_queueHooks:function(e,t){var n=t+"queueHooks";return b._data(e,n)||b._data(e,n,{empty:b.Callbacks("once memory").add(function(){b._removeData(e,t+"queue"),b._removeData(e,n)})})}}),b.fn.extend({queue:function(e,n){var r=2;return"string"!=typeof e&&(n=e,e="fx",r--),r>arguments.length?b.queue(this[0],e):n===t?this:this.each(function(){var t=b.queue(this,e,n);b._queueHooks(this,e),"fx"===e&&"inprogress"!==t[0]&&b.dequeue(this,e)})},dequeue:function(e){return this.each(function(){b.dequeue(this,e)})},delay:function(e,t){return e=b.fx?b.fx.speeds[e]||e:e,t=t||"fx",this.queue(t,function(t,n){var r=setTimeout(t,e);n.stop=function(){clearTimeout(r)}})},clearQueue:function(e){return this.queue(e||"fx",[])},promise:function(e,n){var r,i=1,o=b.Deferred(),a=this,s=this.length,u=function(){--i||o.resolveWith(a,[a])};"string"!=typeof e&&(n=e,e=t),e=e||"fx";while(s--)r=b._data(a[s],e+"queueHooks"),r&&r.empty&&(i++,r.empty.add(u));return u(),o.promise(n)}});var I,z,X=/[\t\r\n]/g,U=/\r/g,V=/^(?:input|select|textarea|button|object)$/i,Y=/^(?:a|area)$/i,J=/^(?:checked|selected|autofocus|autoplay|async|controls|defer|disabled|hidden|loop|multiple|open|readonly|required|scoped)$/i,G=/^(?:checked|selected)$/i,Q=b.support.getSetAttribute,K=b.support.input;b.fn.extend({attr:function(e,t){return b.access(this,b.attr,e,t,arguments.length>1)},removeAttr:function(e){return this.each(function(){b.removeAttr(this,e)})},prop:function(e,t){return b.access(this,b.prop,e,t,arguments.length>1)},removeProp:function(e){return e=b.propFix[e]||e,this.each(function(){try{this[e]=t,delete this[e]}catch(n){}})},addClass:function(e){var t,n,r,i,o,a=0,s=this.length,u="string"==typeof e&&e;if(b.isFunction(e))return this.each(function(t){b(this).addClass(e.call(this,t,this.className))});if(u)for(t=(e||"").match(w)||[];s>a;a++)if(n=this[a],r=1===n.nodeType&&(n.className?(" "+n.className+" ").replace(X," "):" ")){o=0;while(i=t[o++])0>r.indexOf(" "+i+" ")&&(r+=i+" ");n.className=b.trim(r)}return this},removeClass:function(e){var t,n,r,i,o,a=0,s=this.length,u=0===arguments.length||"string"==typeof e&&e;if(b.isFunction(e))return this.each(function(t){b(this).removeClass(e.call(this,t,this.className))});if(u)for(t=(e||"").match(w)||[];s>a;a++)if(n=this[a],r=1===n.nodeType&&(n.className?(" "+n.className+" ").replace(X," "):"")){o=0;while(i=t[o++])while(r.indexOf(" "+i+" ")>=0)r=r.replace(" "+i+" "," ");n.className=e?b.trim(r):""}return this},toggleClass:function(e,t){var n=typeof e,r="boolean"==typeof t;return b.isFunction(e)?this.each(function(n){b(this).toggleClass(e.call(this,n,this.className,t),t)}):this.each(function(){if("string"===n){var o,a=0,s=b(this),u=t,l=e.match(w)||[];while(o=l[a++])u=r?u:!s.hasClass(o),s[u?"addClass":"removeClass"](o)}else(n===i||"boolean"===n)&&(this.className&&b._data(this,"__className__",this.className),this.className=this.className||e===!1?"":b._data(this,"__className__")||"")})},hasClass:function(e){var t=" "+e+" ",n=0,r=this.length;for(;r>n;n++)if(1===this[n].nodeType&&(" "+this[n].className+" ").replace(X," ").indexOf(t)>=0)return!0;return!1},val:function(e){var n,r,i,o=this[0];{if(arguments.length)return i=b.isFunction(e),this.each(function(n){var o,a=b(this);1===this.nodeType&&(o=i?e.call(this,n,a.val()):e,null==o?o="":"number"==typeof o?o+="":b.isArray(o)&&(o=b.map(o,function(e){return null==e?"":e+""})),r=b.valHooks[this.type]||b.valHooks[this.nodeName.toLowerCase()],r&&"set"in r&&r.set(this,o,"value")!==t||(this.value=o))});if(o)return r=b.valHooks[o.type]||b.valHooks[o.nodeName.toLowerCase()],r&&"get"in r&&(n=r.get(o,"value"))!==t?n:(n=o.value,"string"==typeof n?n.replace(U,""):null==n?"":n)}}}),b.extend({valHooks:{option:{get:function(e){var t=e.attributes.value;return!t||t.specified?e.value:e.text}},select:{get:function(e){var t,n,r=e.options,i=e.selectedIndex,o="select-one"===e.type||0>i,a=o?null:[],s=o?i+1:r.length,u=0>i?s:o?i:0;for(;s>u;u++)if(n=r[u],!(!n.selected&&u!==i||(b.support.optDisabled?n.disabled:null!==n.getAttribute("disabled"))||n.parentNode.disabled&&b.nodeName(n.parentNode,"optgroup"))){if(t=b(n).val(),o)return t;a.push(t)}return a},set:function(e,t){var n=b.makeArray(t);return b(e).find("option").each(function(){this.selected=b.inArray(b(this).val(),n)>=0}),n.length||(e.selectedIndex=-1),n}}},attr:function(e,n,r){var o,a,s,u=e.nodeType;if(e&&3!==u&&8!==u&&2!==u)return typeof e.getAttribute===i?b.prop(e,n,r):(a=1!==u||!b.isXMLDoc(e),a&&(n=n.toLowerCase(),o=b.attrHooks[n]||(J.test(n)?z:I)),r===t?o&&a&&"get"in o&&null!==(s=o.get(e,n))?s:(typeof e.getAttribute!==i&&(s=e.getAttribute(n)),null==s?t:s):null!==r?o&&a&&"set"in o&&(s=o.set(e,r,n))!==t?s:(e.setAttribute(n,r+""),r):(b.removeAttr(e,n),t))},removeAttr:function(e,t){var n,r,i=0,o=t&&t.match(w);if(o&&1===e.nodeType)while(n=o[i++])r=b.propFix[n]||n,J.test(n)?!Q&&G.test(n)?e[b.camelCase("default-"+n)]=e[r]=!1:e[r]=!1:b.attr(e,n,""),e.removeAttribute(Q?n:r)},attrHooks:{type:{set:function(e,t){if(!b.support.radioValue&&"radio"===t&&b.nodeName(e,"input")){var n=e.value;return e.setAttribute("type",t),n&&(e.value=n),t}}}},propFix:{tabindex:"tabIndex",readonly:"readOnly","for":"htmlFor","class":"className",maxlength:"maxLength",cellspacing:"cellSpacing",cellpadding:"cellPadding",rowspan:"rowSpan",colspan:"colSpan",usemap:"useMap",frameborder:"frameBorder",contenteditable:"contentEditable"},prop:function(e,n,r){var i,o,a,s=e.nodeType;if(e&&3!==s&&8!==s&&2!==s)return a=1!==s||!b.isXMLDoc(e),a&&(n=b.propFix[n]||n,o=b.propHooks[n]),r!==t?o&&"set"in o&&(i=o.set(e,r,n))!==t?i:e[n]=r:o&&"get"in o&&null!==(i=o.get(e,n))?i:e[n]},propHooks:{tabIndex:{get:function(e){var n=e.getAttributeNode("tabindex");return n&&n.specified?parseInt(n.value,10):V.test(e.nodeName)||Y.test(e.nodeName)&&e.href?0:t}}}}),z={get:function(e,n){var r=b.prop(e,n),i="boolean"==typeof r&&e.getAttribute(n),o="boolean"==typeof r?K&&Q?null!=i:G.test(n)?e[b.camelCase("default-"+n)]:!!i:e.getAttributeNode(n);return o&&o.value!==!1?n.toLowerCase():t},set:function(e,t,n){return t===!1?b.removeAttr(e,n):K&&Q||!G.test(n)?e.setAttribute(!Q&&b.propFix[n]||n,n):e[b.camelCase("default-"+n)]=e[n]=!0,n}},K&&Q||(b.attrHooks.value={get:function(e,n){var r=e.getAttributeNode(n);return b.nodeName(e,"input")?e.defaultValue:r&&r.specified?r.value:t},set:function(e,n,r){return b.nodeName(e,"input")?(e.defaultValue=n,t):I&&I.set(e,n,r)}}),Q||(I=b.valHooks.button={get:function(e,n){var r=e.getAttributeNode(n);return r&&("id"===n||"name"===n||"coords"===n?""!==r.value:r.specified)?r.value:t},set:function(e,n,r){var i=e.getAttributeNode(r);return i||e.setAttributeNode(i=e.ownerDocument.createAttribute(r)),i.value=n+="","value"===r||n===e.getAttribute(r)?n:t}},b.attrHooks.contenteditable={get:I.get,set:function(e,t,n){I.set(e,""===t?!1:t,n)}},b.each(["width","height"],function(e,n){b.attrHooks[n]=b.extend(b.attrHooks[n],{set:function(e,r){return""===r?(e.setAttribute(n,"auto"),r):t}})})),b.support.hrefNormalized||(b.each(["href","src","width","height"],function(e,n){b.attrHooks[n]=b.extend(b.attrHooks[n],{get:function(e){var r=e.getAttribute(n,2);return null==r?t:r}})}),b.each(["href","src"],function(e,t){b.propHooks[t]={get:function(e){return e.getAttribute(t,4)}}})),b.support.style||(b.attrHooks.style={get:function(e){return e.style.cssText||t},set:function(e,t){return e.style.cssText=t+""}}),b.support.optSelected||(b.propHooks.selected=b.extend(b.propHooks.selected,{get:function(e){var t=e.parentNode;return t&&(t.selectedIndex,t.parentNode&&t.parentNode.selectedIndex),null}})),b.support.enctype||(b.propFix.enctype="encoding"),b.support.checkOn||b.each(["radio","checkbox"],function(){b.valHooks[this]={get:function(e){return null===e.getAttribute("value")?"on":e.value}}}),b.each(["radio","checkbox"],function(){b.valHooks[this]=b.extend(b.valHooks[this],{set:function(e,n){return b.isArray(n)?e.checked=b.inArray(b(e).val(),n)>=0:t}})});var Z=/^(?:input|select|textarea)$/i,et=/^key/,tt=/^(?:mouse|contextmenu)|click/,nt=/^(?:focusinfocus|focusoutblur)$/,rt=/^([^.]*)(?:\.(.+)|)$/;function it(){return!0}function ot(){return!1}b.event={global:{},add:function(e,n,r,o,a){var s,u,l,c,p,f,d,h,g,m,y,v=b._data(e);if(v){r.handler&&(c=r,r=c.handler,a=c.selector),r.guid||(r.guid=b.guid++),(u=v.events)||(u=v.events={}),(f=v.handle)||(f=v.handle=function(e){return typeof b===i||e&&b.event.triggered===e.type?t:b.event.dispatch.apply(f.elem,arguments)},f.elem=e),n=(n||"").match(w)||[""],l=n.length;while(l--)s=rt.exec(n[l])||[],g=y=s[1],m=(s[2]||"").split(".").sort(),p=b.event.special[g]||{},g=(a?p.delegateType:p.bindType)||g,p=b.event.special[g]||{},d=b.extend({type:g,origType:y,data:o,handler:r,guid:r.guid,selector:a,needsContext:a&&b.expr.match.needsContext.test(a),namespace:m.join(".")},c),(h=u[g])||(h=u[g]=[],h.delegateCount=0,p.setup&&p.setup.call(e,o,m,f)!==!1||(e.addEventListener?e.addEventListener(g,f,!1):e.attachEvent&&e.attachEvent("on"+g,f))),p.add&&(p.add.call(e,d),d.handler.guid||(d.handler.guid=r.guid)),a?h.splice(h.delegateCount++,0,d):h.push(d),b.event.global[g]=!0;e=null}},remove:function(e,t,n,r,i){var o,a,s,u,l,c,p,f,d,h,g,m=b.hasData(e)&&b._data(e);if(m&&(c=m.events)){t=(t||"").match(w)||[""],l=t.length;while(l--)if(s=rt.exec(t[l])||[],d=g=s[1],h=(s[2]||"").split(".").sort(),d){p=b.event.special[d]||{},d=(r?p.delegateType:p.bindType)||d,f=c[d]||[],s=s[2]&&RegExp("(^|\\.)"+h.join("\\.(?:.*\\.|)")+"(\\.|$)"),u=o=f.length;while(o--)a=f[o],!i&&g!==a.origType||n&&n.guid!==a.guid||s&&!s.test(a.namespace)||r&&r!==a.selector&&("**"!==r||!a.selector)||(f.splice(o,1),a.selector&&f.delegateCount--,p.remove&&p.remove.call(e,a));u&&!f.length&&(p.teardown&&p.teardown.call(e,h,m.handle)!==!1||b.removeEvent(e,d,m.handle),delete c[d])}else for(d in c)b.event.remove(e,d+t[l],n,r,!0);b.isEmptyObject(c)&&(delete m.handle,b._removeData(e,"events"))}},trigger:function(n,r,i,a){var s,u,l,c,p,f,d,h=[i||o],g=y.call(n,"type")?n.type:n,m=y.call(n,"namespace")?n.namespace.split("."):[];if(l=f=i=i||o,3!==i.nodeType&&8!==i.nodeType&&!nt.test(g+b.event.triggered)&&(g.indexOf(".")>=0&&(m=g.split("."),g=m.shift(),m.sort()),u=0>g.indexOf(":")&&"on"+g,n=n[b.expando]?n:new b.Event(g,"object"==typeof n&&n),n.isTrigger=!0,n.namespace=m.join("."),n.namespace_re=n.namespace?RegExp("(^|\\.)"+m.join("\\.(?:.*\\.|)")+"(\\.|$)"):null,n.result=t,n.target||(n.target=i),r=null==r?[n]:b.makeArray(r,[n]),p=b.event.special[g]||{},a||!p.trigger||p.trigger.apply(i,r)!==!1)){if(!a&&!p.noBubble&&!b.isWindow(i)){for(c=p.delegateType||g,nt.test(c+g)||(l=l.parentNode);l;l=l.parentNode)h.push(l),f=l;f===(i.ownerDocument||o)&&h.push(f.defaultView||f.parentWindow||e)}d=0;while((l=h[d++])&&!n.isPropagationStopped())n.type=d>1?c:p.bindType||g,s=(b._data(l,"events")||{})[n.type]&&b._data(l,"handle"),s&&s.apply(l,r),s=u&&l[u],s&&b.acceptData(l)&&s.apply&&s.apply(l,r)===!1&&n.preventDefault();if(n.type=g,!(a||n.isDefaultPrevented()||p._default&&p._default.apply(i.ownerDocument,r)!==!1||"click"===g&&b.nodeName(i,"a")||!b.acceptData(i)||!u||!i[g]||b.isWindow(i))){f=i[u],f&&(i[u]=null),b.event.triggered=g;try{i[g]()}catch(v){}b.event.triggered=t,f&&(i[u]=f)}return n.result}},dispatch:function(e){e=b.event.fix(e);var n,r,i,o,a,s=[],u=h.call(arguments),l=(b._data(this,"events")||{})[e.type]||[],c=b.event.special[e.type]||{};if(u[0]=e,e.delegateTarget=this,!c.preDispatch||c.preDispatch.call(this,e)!==!1){s=b.event.handlers.call(this,e,l),n=0;while((o=s[n++])&&!e.isPropagationStopped()){e.currentTarget=o.elem,a=0;while((i=o.handlers[a++])&&!e.isImmediatePropagationStopped())(!e.namespace_re||e.namespace_re.test(i.namespace))&&(e.handleObj=i,e.data=i.data,r=((b.event.special[i.origType]||{}).handle||i.handler).apply(o.elem,u),r!==t&&(e.result=r)===!1&&(e.preventDefault(),e.stopPropagation()))}return c.postDispatch&&c.postDispatch.call(this,e),e.result}},handlers:function(e,n){var r,i,o,a,s=[],u=n.delegateCount,l=e.target;if(u&&l.nodeType&&(!e.button||"click"!==e.type))for(;l!=this;l=l.parentNode||this)if(1===l.nodeType&&(l.disabled!==!0||"click"!==e.type)){for(o=[],a=0;u>a;a++)i=n[a],r=i.selector+" ",o[r]===t&&(o[r]=i.needsContext?b(r,this).index(l)>=0:b.find(r,this,null,[l]).length),o[r]&&o.push(i);o.length&&s.push({elem:l,handlers:o})}return n.length>u&&s.push({elem:this,handlers:n.slice(u)}),s},fix:function(e){if(e[b.expando])return e;var t,n,r,i=e.type,a=e,s=this.fixHooks[i];s||(this.fixHooks[i]=s=tt.test(i)?this.mouseHooks:et.test(i)?this.keyHooks:{}),r=s.props?this.props.concat(s.props):this.props,e=new b.Event(a),t=r.length;while(t--)n=r[t],e[n]=a[n];return e.target||(e.target=a.srcElement||o),3===e.target.nodeType&&(e.target=e.target.parentNode),e.metaKey=!!e.metaKey,s.filter?s.filter(e,a):e},props:"altKey bubbles cancelable ctrlKey currentTarget eventPhase metaKey relatedTarget shiftKey target timeStamp view which".split(" "),fixHooks:{},keyHooks:{props:"char charCode key keyCode".split(" "),filter:function(e,t){return null==e.which&&(e.which=null!=t.charCode?t.charCode:t.keyCode),e}},mouseHooks:{props:"button buttons clientX clientY fromElement offsetX offsetY pageX pageY screenX screenY toElement".split(" "),filter:function(e,n){var r,i,a,s=n.button,u=n.fromElement;return null==e.pageX&&null!=n.clientX&&(i=e.target.ownerDocument||o,a=i.documentElement,r=i.body,e.pageX=n.clientX+(a&&a.scrollLeft||r&&r.scrollLeft||0)-(a&&a.clientLeft||r&&r.clientLeft||0),e.pageY=n.clientY+(a&&a.scrollTop||r&&r.scrollTop||0)-(a&&a.clientTop||r&&r.clientTop||0)),!e.relatedTarget&&u&&(e.relatedTarget=u===e.target?n.toElement:u),e.which||s===t||(e.which=1&s?1:2&s?3:4&s?2:0),e}},special:{load:{noBubble:!0},click:{trigger:function(){return b.nodeName(this,"input")&&"checkbox"===this.type&&this.click?(this.click(),!1):t}},focus:{trigger:function(){if(this!==o.activeElement&&this.focus)try{return this.focus(),!1}catch(e){}},delegateType:"focusin"},blur:{trigger:function(){return this===o.activeElement&&this.blur?(this.blur(),!1):t},delegateType:"focusout"},beforeunload:{postDispatch:function(e){e.result!==t&&(e.originalEvent.returnValue=e.result)}}},simulate:function(e,t,n,r){var i=b.extend(new b.Event,n,{type:e,isSimulated:!0,originalEvent:{}});r?b.event.trigger(i,null,t):b.event.dispatch.call(t,i),i.isDefaultPrevented()&&n.preventDefault()}},b.removeEvent=o.removeEventListener?function(e,t,n){e.removeEventListener&&e.removeEventListener(t,n,!1)}:function(e,t,n){var r="on"+t;e.detachEvent&&(typeof e[r]===i&&(e[r]=null),e.detachEvent(r,n))},b.Event=function(e,n){return this instanceof b.Event?(e&&e.type?(this.originalEvent=e,this.type=e.type,this.isDefaultPrevented=e.defaultPrevented||e.returnValue===!1||e.getPreventDefault&&e.getPreventDefault()?it:ot):this.type=e,n&&b.extend(this,n),this.timeStamp=e&&e.timeStamp||b.now(),this[b.expando]=!0,t):new b.Event(e,n)},b.Event.prototype={isDefaultPrevented:ot,isPropagationStopped:ot,isImmediatePropagationStopped:ot,preventDefault:function(){var e=this.originalEvent;this.isDefaultPrevented=it,e&&(e.preventDefault?e.preventDefault():e.returnValue=!1)},stopPropagation:function(){var e=this.originalEvent;this.isPropagationStopped=it,e&&(e.stopPropagation&&e.stopPropagation(),e.cancelBubble=!0)},stopImmediatePropagation:function(){this.isImmediatePropagationStopped=it,this.stopPropagation()}},b.each({mouseenter:"mouseover",mouseleave:"mouseout"},function(e,t){b.event.special[e]={delegateType:t,bindType:t,handle:function(e){var n,r=this,i=e.relatedTarget,o=e.handleObj;
 return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,arguments),e.type=t),n}}}),b.support.submitBubbles||(b.event.special.submit={setup:function(){return b.nodeName(this,"form")?!1:(b.event.add(this,"click._submit keypress._submit",function(e){var n=e.target,r=b.nodeName(n,"input")||b.nodeName(n,"button")?n.form:t;r&&!b._data(r,"submitBubbles")&&(b.event.add(r,"submit._submit",function(e){e._submit_bubble=!0}),b._data(r,"submitBubbles",!0))}),t)},postDispatch:function(e){e._submit_bubble&&(delete e._submit_bubble,this.parentNode&&!e.isTrigger&&b.event.simulate("submit",this.parentNode,e,!0))},teardown:function(){return b.nodeName(this,"form")?!1:(b.event.remove(this,"._submit"),t)}}),b.support.changeBubbles||(b.event.special.change={setup:function(){return Z.test(this.nodeName)?(("checkbox"===this.type||"radio"===this.type)&&(b.event.add(this,"propertychange._change",function(e){"checked"===e.originalEvent.propertyName&&(this._just_changed=!0)}),b.event.add(this,"click._change",function(e){this._just_changed&&!e.isTrigger&&(this._just_changed=!1),b.event.simulate("change",this,e,!0)})),!1):(b.event.add(this,"beforeactivate._change",function(e){var t=e.target;Z.test(t.nodeName)&&!b._data(t,"changeBubbles")&&(b.event.add(t,"change._change",function(e){!this.parentNode||e.isSimulated||e.isTrigger||b.event.simulate("change",this.parentNode,e,!0)}),b._data(t,"changeBubbles",!0))}),t)},handle:function(e){var n=e.target;return this!==n||e.isSimulated||e.isTrigger||"radio"!==n.type&&"checkbox"!==n.type?e.handleObj.handler.apply(this,arguments):t},teardown:function(){return b.event.remove(this,"._change"),!Z.test(this.nodeName)}}),b.support.focusinBubbles||b.each({focus:"focusin",blur:"focusout"},function(e,t){var n=0,r=function(e){b.event.simulate(t,e.target,b.event.fix(e),!0)};b.event.special[t]={setup:function(){0===n++&&o.addEventListener(e,r,!0)},teardown:function(){0===--n&&o.removeEventListener(e,r,!0)}}}),b.fn.extend({on:function(e,n,r,i,o){var a,s;if("object"==typeof e){"string"!=typeof n&&(r=r||n,n=t);for(a in e)this.on(a,n,r,e[a],o);return this}if(null==r&&null==i?(i=n,r=n=t):null==i&&("string"==typeof n?(i=r,r=t):(i=r,r=n,n=t)),i===!1)i=ot;else if(!i)return this;return 1===o&&(s=i,i=function(e){return b().off(e),s.apply(this,arguments)},i.guid=s.guid||(s.guid=b.guid++)),this.each(function(){b.event.add(this,e,i,r,n)})},one:function(e,t,n,r){return this.on(e,t,n,r,1)},off:function(e,n,r){var i,o;if(e&&e.preventDefault&&e.handleObj)return i=e.handleObj,b(e.delegateTarget).off(i.namespace?i.origType+"."+i.namespace:i.origType,i.selector,i.handler),this;if("object"==typeof e){for(o in e)this.off(o,n,e[o]);return this}return(n===!1||"function"==typeof n)&&(r=n,n=t),r===!1&&(r=ot),this.each(function(){b.event.remove(this,e,r,n)})},bind:function(e,t,n){return this.on(e,null,t,n)},unbind:function(e,t){return this.off(e,null,t)},delegate:function(e,t,n,r){return this.on(t,e,n,r)},undelegate:function(e,t,n){return 1===arguments.length?this.off(e,"**"):this.off(t,e||"**",n)},trigger:function(e,t){return this.each(function(){b.event.trigger(e,t,this)})},triggerHandler:function(e,n){var r=this[0];return r?b.event.trigger(e,n,r,!0):t}}),function(e,t){var n,r,i,o,a,s,u,l,c,p,f,d,h,g,m,y,v,x="sizzle"+-new Date,w=e.document,T={},N=0,C=0,k=it(),E=it(),S=it(),A=typeof t,j=1<<31,D=[],L=D.pop,H=D.push,q=D.slice,M=D.indexOf||function(e){var t=0,n=this.length;for(;n>t;t++)if(this[t]===e)return t;return-1},_="[\\x20\\t\\r\\n\\f]",F="(?:\\\\.|[\\w-]|[^\\x00-\\xa0])+",O=F.replace("w","w#"),B="([*^$|!~]?=)",P="\\["+_+"*("+F+")"+_+"*(?:"+B+_+"*(?:(['\"])((?:\\\\.|[^\\\\])*?)\\3|("+O+")|)|)"+_+"*\\]",R=":("+F+")(?:\\(((['\"])((?:\\\\.|[^\\\\])*?)\\3|((?:\\\\.|[^\\\\()[\\]]|"+P.replace(3,8)+")*)|.*)\\)|)",W=RegExp("^"+_+"+|((?:^|[^\\\\])(?:\\\\.)*)"+_+"+$","g"),$=RegExp("^"+_+"*,"+_+"*"),I=RegExp("^"+_+"*([\\x20\\t\\r\\n\\f>+~])"+_+"*"),z=RegExp(R),X=RegExp("^"+O+"$"),U={ID:RegExp("^#("+F+")"),CLASS:RegExp("^\\.("+F+")"),NAME:RegExp("^\\[name=['\"]?("+F+")['\"]?\\]"),TAG:RegExp("^("+F.replace("w","w*")+")"),ATTR:RegExp("^"+P),PSEUDO:RegExp("^"+R),CHILD:RegExp("^:(only|first|last|nth|nth-last)-(child|of-type)(?:\\("+_+"*(even|odd|(([+-]|)(\\d*)n|)"+_+"*(?:([+-]|)"+_+"*(\\d+)|))"+_+"*\\)|)","i"),needsContext:RegExp("^"+_+"*[>+~]|:(even|odd|eq|gt|lt|nth|first|last)(?:\\("+_+"*((?:-\\d)?\\d*)"+_+"*\\)|)(?=[^-]|$)","i")},V=/[\x20\t\r\n\f]*[+~]/,Y=/^[^{]+\{\s*\[native code/,J=/^(?:#([\w-]+)|(\w+)|\.([\w-]+))$/,G=/^(?:input|select|textarea|button)$/i,Q=/^h\d$/i,K=/'|\\/g,Z=/\=[\x20\t\r\n\f]*([^'"\]]*)[\x20\t\r\n\f]*\]/g,et=/\\([\da-fA-F]{1,6}[\x20\t\r\n\f]?|.)/g,tt=function(e,t){var n="0x"+t-65536;return n!==n?t:0>n?String.fromCharCode(n+65536):String.fromCharCode(55296|n>>10,56320|1023&n)};try{q.call(w.documentElement.childNodes,0)[0].nodeType}catch(nt){q=function(e){var t,n=[];while(t=this[e++])n.push(t);return n}}function rt(e){return Y.test(e+"")}function it(){var e,t=[];return e=function(n,r){return t.push(n+=" ")>i.cacheLength&&delete e[t.shift()],e[n]=r}}function ot(e){return e[x]=!0,e}function at(e){var t=p.createElement("div");try{return e(t)}catch(n){return!1}finally{t=null}}function st(e,t,n,r){var i,o,a,s,u,l,f,g,m,v;if((t?t.ownerDocument||t:w)!==p&&c(t),t=t||p,n=n||[],!e||"string"!=typeof e)return n;if(1!==(s=t.nodeType)&&9!==s)return[];if(!d&&!r){if(i=J.exec(e))if(a=i[1]){if(9===s){if(o=t.getElementById(a),!o||!o.parentNode)return n;if(o.id===a)return n.push(o),n}else if(t.ownerDocument&&(o=t.ownerDocument.getElementById(a))&&y(t,o)&&o.id===a)return n.push(o),n}else{if(i[2])return H.apply(n,q.call(t.getElementsByTagName(e),0)),n;if((a=i[3])&&T.getByClassName&&t.getElementsByClassName)return H.apply(n,q.call(t.getElementsByClassName(a),0)),n}if(T.qsa&&!h.test(e)){if(f=!0,g=x,m=t,v=9===s&&e,1===s&&"object"!==t.nodeName.toLowerCase()){l=ft(e),(f=t.getAttribute("id"))?g=f.replace(K,"\\$&"):t.setAttribute("id",g),g="[id='"+g+"'] ",u=l.length;while(u--)l[u]=g+dt(l[u]);m=V.test(e)&&t.parentNode||t,v=l.join(",")}if(v)try{return H.apply(n,q.call(m.querySelectorAll(v),0)),n}catch(b){}finally{f||t.removeAttribute("id")}}}return wt(e.replace(W,"$1"),t,n,r)}a=st.isXML=function(e){var t=e&&(e.ownerDocument||e).documentElement;return t?"HTML"!==t.nodeName:!1},c=st.setDocument=function(e){var n=e?e.ownerDocument||e:w;return n!==p&&9===n.nodeType&&n.documentElement?(p=n,f=n.documentElement,d=a(n),T.tagNameNoComments=at(function(e){return e.appendChild(n.createComment("")),!e.getElementsByTagName("*").length}),T.attributes=at(function(e){e.innerHTML="<select></select>";var t=typeof e.lastChild.getAttribute("multiple");return"boolean"!==t&&"string"!==t}),T.getByClassName=at(function(e){return e.innerHTML="<div class='hidden e'></div><div class='hidden'></div>",e.getElementsByClassName&&e.getElementsByClassName("e").length?(e.lastChild.className="e",2===e.getElementsByClassName("e").length):!1}),T.getByName=at(function(e){e.id=x+0,e.innerHTML="<a name='"+x+"'></a><div name='"+x+"'></div>",f.insertBefore(e,f.firstChild);var t=n.getElementsByName&&n.getElementsByName(x).length===2+n.getElementsByName(x+0).length;return T.getIdNotName=!n.getElementById(x),f.removeChild(e),t}),i.attrHandle=at(function(e){return e.innerHTML="<a href='#'></a>",e.firstChild&&typeof e.firstChild.getAttribute!==A&&"#"===e.firstChild.getAttribute("href")})?{}:{href:function(e){return e.getAttribute("href",2)},type:function(e){return e.getAttribute("type")}},T.getIdNotName?(i.find.ID=function(e,t){if(typeof t.getElementById!==A&&!d){var n=t.getElementById(e);return n&&n.parentNode?[n]:[]}},i.filter.ID=function(e){var t=e.replace(et,tt);return function(e){return e.getAttribute("id")===t}}):(i.find.ID=function(e,n){if(typeof n.getElementById!==A&&!d){var r=n.getElementById(e);return r?r.id===e||typeof r.getAttributeNode!==A&&r.getAttributeNode("id").value===e?[r]:t:[]}},i.filter.ID=function(e){var t=e.replace(et,tt);return function(e){var n=typeof e.getAttributeNode!==A&&e.getAttributeNode("id");return n&&n.value===t}}),i.find.TAG=T.tagNameNoComments?function(e,n){return typeof n.getElementsByTagName!==A?n.getElementsByTagName(e):t}:function(e,t){var n,r=[],i=0,o=t.getElementsByTagName(e);if("*"===e){while(n=o[i++])1===n.nodeType&&r.push(n);return r}return o},i.find.NAME=T.getByName&&function(e,n){return typeof n.getElementsByName!==A?n.getElementsByName(name):t},i.find.CLASS=T.getByClassName&&function(e,n){return typeof n.getElementsByClassName===A||d?t:n.getElementsByClassName(e)},g=[],h=[":focus"],(T.qsa=rt(n.querySelectorAll))&&(at(function(e){e.innerHTML="<select><option selected=''></option></select>",e.querySelectorAll("[selected]").length||h.push("\\["+_+"*(?:checked|disabled|ismap|multiple|readonly|selected|value)"),e.querySelectorAll(":checked").length||h.push(":checked")}),at(function(e){e.innerHTML="<input type='hidden' i=''/>",e.querySelectorAll("[i^='']").length&&h.push("[*^$]="+_+"*(?:\"\"|'')"),e.querySelectorAll(":enabled").length||h.push(":enabled",":disabled"),e.querySelectorAll("*,:x"),h.push(",.*:")})),(T.matchesSelector=rt(m=f.matchesSelector||f.mozMatchesSelector||f.webkitMatchesSelector||f.oMatchesSelector||f.msMatchesSelector))&&at(function(e){T.disconnectedMatch=m.call(e,"div"),m.call(e,"[s!='']:x"),g.push("!=",R)}),h=RegExp(h.join("|")),g=RegExp(g.join("|")),y=rt(f.contains)||f.compareDocumentPosition?function(e,t){var n=9===e.nodeType?e.documentElement:e,r=t&&t.parentNode;return e===r||!(!r||1!==r.nodeType||!(n.contains?n.contains(r):e.compareDocumentPosition&&16&e.compareDocumentPosition(r)))}:function(e,t){if(t)while(t=t.parentNode)if(t===e)return!0;return!1},v=f.compareDocumentPosition?function(e,t){var r;return e===t?(u=!0,0):(r=t.compareDocumentPosition&&e.compareDocumentPosition&&e.compareDocumentPosition(t))?1&r||e.parentNode&&11===e.parentNode.nodeType?e===n||y(w,e)?-1:t===n||y(w,t)?1:0:4&r?-1:1:e.compareDocumentPosition?-1:1}:function(e,t){var r,i=0,o=e.parentNode,a=t.parentNode,s=[e],l=[t];if(e===t)return u=!0,0;if(!o||!a)return e===n?-1:t===n?1:o?-1:a?1:0;if(o===a)return ut(e,t);r=e;while(r=r.parentNode)s.unshift(r);r=t;while(r=r.parentNode)l.unshift(r);while(s[i]===l[i])i++;return i?ut(s[i],l[i]):s[i]===w?-1:l[i]===w?1:0},u=!1,[0,0].sort(v),T.detectDuplicates=u,p):p},st.matches=function(e,t){return st(e,null,null,t)},st.matchesSelector=function(e,t){if((e.ownerDocument||e)!==p&&c(e),t=t.replace(Z,"='$1']"),!(!T.matchesSelector||d||g&&g.test(t)||h.test(t)))try{var n=m.call(e,t);if(n||T.disconnectedMatch||e.document&&11!==e.document.nodeType)return n}catch(r){}return st(t,p,null,[e]).length>0},st.contains=function(e,t){return(e.ownerDocument||e)!==p&&c(e),y(e,t)},st.attr=function(e,t){var n;return(e.ownerDocument||e)!==p&&c(e),d||(t=t.toLowerCase()),(n=i.attrHandle[t])?n(e):d||T.attributes?e.getAttribute(t):((n=e.getAttributeNode(t))||e.getAttribute(t))&&e[t]===!0?t:n&&n.specified?n.value:null},st.error=function(e){throw Error("Syntax error, unrecognized expression: "+e)},st.uniqueSort=function(e){var t,n=[],r=1,i=0;if(u=!T.detectDuplicates,e.sort(v),u){for(;t=e[r];r++)t===e[r-1]&&(i=n.push(r));while(i--)e.splice(n[i],1)}return e};function ut(e,t){var n=t&&e,r=n&&(~t.sourceIndex||j)-(~e.sourceIndex||j);if(r)return r;if(n)while(n=n.nextSibling)if(n===t)return-1;return e?1:-1}function lt(e){return function(t){var n=t.nodeName.toLowerCase();return"input"===n&&t.type===e}}function ct(e){return function(t){var n=t.nodeName.toLowerCase();return("input"===n||"button"===n)&&t.type===e}}function pt(e){return ot(function(t){return t=+t,ot(function(n,r){var i,o=e([],n.length,t),a=o.length;while(a--)n[i=o[a]]&&(n[i]=!(r[i]=n[i]))})})}o=st.getText=function(e){var t,n="",r=0,i=e.nodeType;if(i){if(1===i||9===i||11===i){if("string"==typeof e.textContent)return e.textContent;for(e=e.firstChild;e;e=e.nextSibling)n+=o(e)}else if(3===i||4===i)return e.nodeValue}else for(;t=e[r];r++)n+=o(t);return n},i=st.selectors={cacheLength:50,createPseudo:ot,match:U,find:{},relative:{">":{dir:"parentNode",first:!0}," ":{dir:"parentNode"},"+":{dir:"previousSibling",first:!0},"~":{dir:"previousSibling"}},preFilter:{ATTR:function(e){return e[1]=e[1].replace(et,tt),e[3]=(e[4]||e[5]||"").replace(et,tt),"~="===e[2]&&(e[3]=" "+e[3]+" "),e.slice(0,4)},CHILD:function(e){return e[1]=e[1].toLowerCase(),"nth"===e[1].slice(0,3)?(e[3]||st.error(e[0]),e[4]=+(e[4]?e[5]+(e[6]||1):2*("even"===e[3]||"odd"===e[3])),e[5]=+(e[7]+e[8]||"odd"===e[3])):e[3]&&st.error(e[0]),e},PSEUDO:function(e){var t,n=!e[5]&&e[2];return U.CHILD.test(e[0])?null:(e[4]?e[2]=e[4]:n&&z.test(n)&&(t=ft(n,!0))&&(t=n.indexOf(")",n.length-t)-n.length)&&(e[0]=e[0].slice(0,t),e[2]=n.slice(0,t)),e.slice(0,3))}},filter:{TAG:function(e){return"*"===e?function(){return!0}:(e=e.replace(et,tt).toLowerCase(),function(t){return t.nodeName&&t.nodeName.toLowerCase()===e})},CLASS:function(e){var t=k[e+" "];return t||(t=RegExp("(^|"+_+")"+e+"("+_+"|$)"))&&k(e,function(e){return t.test(e.className||typeof e.getAttribute!==A&&e.getAttribute("class")||"")})},ATTR:function(e,t,n){return function(r){var i=st.attr(r,e);return null==i?"!="===t:t?(i+="","="===t?i===n:"!="===t?i!==n:"^="===t?n&&0===i.indexOf(n):"*="===t?n&&i.indexOf(n)>-1:"$="===t?n&&i.slice(-n.length)===n:"~="===t?(" "+i+" ").indexOf(n)>-1:"|="===t?i===n||i.slice(0,n.length+1)===n+"-":!1):!0}},CHILD:function(e,t,n,r,i){var o="nth"!==e.slice(0,3),a="last"!==e.slice(-4),s="of-type"===t;return 1===r&&0===i?function(e){return!!e.parentNode}:function(t,n,u){var l,c,p,f,d,h,g=o!==a?"nextSibling":"previousSibling",m=t.parentNode,y=s&&t.nodeName.toLowerCase(),v=!u&&!s;if(m){if(o){while(g){p=t;while(p=p[g])if(s?p.nodeName.toLowerCase()===y:1===p.nodeType)return!1;h=g="only"===e&&!h&&"nextSibling"}return!0}if(h=[a?m.firstChild:m.lastChild],a&&v){c=m[x]||(m[x]={}),l=c[e]||[],d=l[0]===N&&l[1],f=l[0]===N&&l[2],p=d&&m.childNodes[d];while(p=++d&&p&&p[g]||(f=d=0)||h.pop())if(1===p.nodeType&&++f&&p===t){c[e]=[N,d,f];break}}else if(v&&(l=(t[x]||(t[x]={}))[e])&&l[0]===N)f=l[1];else while(p=++d&&p&&p[g]||(f=d=0)||h.pop())if((s?p.nodeName.toLowerCase()===y:1===p.nodeType)&&++f&&(v&&((p[x]||(p[x]={}))[e]=[N,f]),p===t))break;return f-=i,f===r||0===f%r&&f/r>=0}}},PSEUDO:function(e,t){var n,r=i.pseudos[e]||i.setFilters[e.toLowerCase()]||st.error("unsupported pseudo: "+e);return r[x]?r(t):r.length>1?(n=[e,e,"",t],i.setFilters.hasOwnProperty(e.toLowerCase())?ot(function(e,n){var i,o=r(e,t),a=o.length;while(a--)i=M.call(e,o[a]),e[i]=!(n[i]=o[a])}):function(e){return r(e,0,n)}):r}},pseudos:{not:ot(function(e){var t=[],n=[],r=s(e.replace(W,"$1"));return r[x]?ot(function(e,t,n,i){var o,a=r(e,null,i,[]),s=e.length;while(s--)(o=a[s])&&(e[s]=!(t[s]=o))}):function(e,i,o){return t[0]=e,r(t,null,o,n),!n.pop()}}),has:ot(function(e){return function(t){return st(e,t).length>0}}),contains:ot(function(e){return function(t){return(t.textContent||t.innerText||o(t)).indexOf(e)>-1}}),lang:ot(function(e){return X.test(e||"")||st.error("unsupported lang: "+e),e=e.replace(et,tt).toLowerCase(),function(t){var n;do if(n=d?t.getAttribute("xml:lang")||t.getAttribute("lang"):t.lang)return n=n.toLowerCase(),n===e||0===n.indexOf(e+"-");while((t=t.parentNode)&&1===t.nodeType);return!1}}),target:function(t){var n=e.location&&e.location.hash;return n&&n.slice(1)===t.id},root:function(e){return e===f},focus:function(e){return e===p.activeElement&&(!p.hasFocus||p.hasFocus())&&!!(e.type||e.href||~e.tabIndex)},enabled:function(e){return e.disabled===!1},disabled:function(e){return e.disabled===!0},checked:function(e){var t=e.nodeName.toLowerCase();return"input"===t&&!!e.checked||"option"===t&&!!e.selected},selected:function(e){return e.parentNode&&e.parentNode.selectedIndex,e.selected===!0},empty:function(e){for(e=e.firstChild;e;e=e.nextSibling)if(e.nodeName>"@"||3===e.nodeType||4===e.nodeType)return!1;return!0},parent:function(e){return!i.pseudos.empty(e)},header:function(e){return Q.test(e.nodeName)},input:function(e){return G.test(e.nodeName)},button:function(e){var t=e.nodeName.toLowerCase();return"input"===t&&"button"===e.type||"button"===t},text:function(e){var t;return"input"===e.nodeName.toLowerCase()&&"text"===e.type&&(null==(t=e.getAttribute("type"))||t.toLowerCase()===e.type)},first:pt(function(){return[0]}),last:pt(function(e,t){return[t-1]}),eq:pt(function(e,t,n){return[0>n?n+t:n]}),even:pt(function(e,t){var n=0;for(;t>n;n+=2)e.push(n);return e}),odd:pt(function(e,t){var n=1;for(;t>n;n+=2)e.push(n);return e}),lt:pt(function(e,t,n){var r=0>n?n+t:n;for(;--r>=0;)e.push(r);return e}),gt:pt(function(e,t,n){var r=0>n?n+t:n;for(;t>++r;)e.push(r);return e})}};for(n in{radio:!0,checkbox:!0,file:!0,password:!0,image:!0})i.pseudos[n]=lt(n);for(n in{submit:!0,reset:!0})i.pseudos[n]=ct(n);function ft(e,t){var n,r,o,a,s,u,l,c=E[e+" "];if(c)return t?0:c.slice(0);s=e,u=[],l=i.preFilter;while(s){(!n||(r=$.exec(s)))&&(r&&(s=s.slice(r[0].length)||s),u.push(o=[])),n=!1,(r=I.exec(s))&&(n=r.shift(),o.push({value:n,type:r[0].replace(W," ")}),s=s.slice(n.length));for(a in i.filter)!(r=U[a].exec(s))||l[a]&&!(r=l[a](r))||(n=r.shift(),o.push({value:n,type:a,matches:r}),s=s.slice(n.length));if(!n)break}return t?s.length:s?st.error(e):E(e,u).slice(0)}function dt(e){var t=0,n=e.length,r="";for(;n>t;t++)r+=e[t].value;return r}function ht(e,t,n){var i=t.dir,o=n&&"parentNode"===i,a=C++;return t.first?function(t,n,r){while(t=t[i])if(1===t.nodeType||o)return e(t,n,r)}:function(t,n,s){var u,l,c,p=N+" "+a;if(s){while(t=t[i])if((1===t.nodeType||o)&&e(t,n,s))return!0}else while(t=t[i])if(1===t.nodeType||o)if(c=t[x]||(t[x]={}),(l=c[i])&&l[0]===p){if((u=l[1])===!0||u===r)return u===!0}else if(l=c[i]=[p],l[1]=e(t,n,s)||r,l[1]===!0)return!0}}function gt(e){return e.length>1?function(t,n,r){var i=e.length;while(i--)if(!e[i](t,n,r))return!1;return!0}:e[0]}function mt(e,t,n,r,i){var o,a=[],s=0,u=e.length,l=null!=t;for(;u>s;s++)(o=e[s])&&(!n||n(o,r,i))&&(a.push(o),l&&t.push(s));return a}function yt(e,t,n,r,i,o){return r&&!r[x]&&(r=yt(r)),i&&!i[x]&&(i=yt(i,o)),ot(function(o,a,s,u){var l,c,p,f=[],d=[],h=a.length,g=o||xt(t||"*",s.nodeType?[s]:s,[]),m=!e||!o&&t?g:mt(g,f,e,s,u),y=n?i||(o?e:h||r)?[]:a:m;if(n&&n(m,y,s,u),r){l=mt(y,d),r(l,[],s,u),c=l.length;while(c--)(p=l[c])&&(y[d[c]]=!(m[d[c]]=p))}if(o){if(i||e){if(i){l=[],c=y.length;while(c--)(p=y[c])&&l.push(m[c]=p);i(null,y=[],l,u)}c=y.length;while(c--)(p=y[c])&&(l=i?M.call(o,p):f[c])>-1&&(o[l]=!(a[l]=p))}}else y=mt(y===a?y.splice(h,y.length):y),i?i(null,a,y,u):H.apply(a,y)})}function vt(e){var t,n,r,o=e.length,a=i.relative[e[0].type],s=a||i.relative[" "],u=a?1:0,c=ht(function(e){return e===t},s,!0),p=ht(function(e){return M.call(t,e)>-1},s,!0),f=[function(e,n,r){return!a&&(r||n!==l)||((t=n).nodeType?c(e,n,r):p(e,n,r))}];for(;o>u;u++)if(n=i.relative[e[u].type])f=[ht(gt(f),n)];else{if(n=i.filter[e[u].type].apply(null,e[u].matches),n[x]){for(r=++u;o>r;r++)if(i.relative[e[r].type])break;return yt(u>1&&gt(f),u>1&&dt(e.slice(0,u-1)).replace(W,"$1"),n,r>u&&vt(e.slice(u,r)),o>r&&vt(e=e.slice(r)),o>r&&dt(e))}f.push(n)}return gt(f)}function bt(e,t){var n=0,o=t.length>0,a=e.length>0,s=function(s,u,c,f,d){var h,g,m,y=[],v=0,b="0",x=s&&[],w=null!=d,T=l,C=s||a&&i.find.TAG("*",d&&u.parentNode||u),k=N+=null==T?1:Math.random()||.1;for(w&&(l=u!==p&&u,r=n);null!=(h=C[b]);b++){if(a&&h){g=0;while(m=e[g++])if(m(h,u,c)){f.push(h);break}w&&(N=k,r=++n)}o&&((h=!m&&h)&&v--,s&&x.push(h))}if(v+=b,o&&b!==v){g=0;while(m=t[g++])m(x,y,u,c);if(s){if(v>0)while(b--)x[b]||y[b]||(y[b]=L.call(f));y=mt(y)}H.apply(f,y),w&&!s&&y.length>0&&v+t.length>1&&st.uniqueSort(f)}return w&&(N=k,l=T),x};return o?ot(s):s}s=st.compile=function(e,t){var n,r=[],i=[],o=S[e+" "];if(!o){t||(t=ft(e)),n=t.length;while(n--)o=vt(t[n]),o[x]?r.push(o):i.push(o);o=S(e,bt(i,r))}return o};function xt(e,t,n){var r=0,i=t.length;for(;i>r;r++)st(e,t[r],n);return n}function wt(e,t,n,r){var o,a,u,l,c,p=ft(e);if(!r&&1===p.length){if(a=p[0]=p[0].slice(0),a.length>2&&"ID"===(u=a[0]).type&&9===t.nodeType&&!d&&i.relative[a[1].type]){if(t=i.find.ID(u.matches[0].replace(et,tt),t)[0],!t)return n;e=e.slice(a.shift().value.length)}o=U.needsContext.test(e)?0:a.length;while(o--){if(u=a[o],i.relative[l=u.type])break;if((c=i.find[l])&&(r=c(u.matches[0].replace(et,tt),V.test(a[0].type)&&t.parentNode||t))){if(a.splice(o,1),e=r.length&&dt(a),!e)return H.apply(n,q.call(r,0)),n;break}}}return s(e,p)(r,t,d,n,V.test(e)),n}i.pseudos.nth=i.pseudos.eq;function Tt(){}i.filters=Tt.prototype=i.pseudos,i.setFilters=new Tt,c(),st.attr=b.attr,b.find=st,b.expr=st.selectors,b.expr[":"]=b.expr.pseudos,b.unique=st.uniqueSort,b.text=st.getText,b.isXMLDoc=st.isXML,b.contains=st.contains}(e);var at=/Until$/,st=/^(?:parents|prev(?:Until|All))/,ut=/^.[^:#\[\.,]*$/,lt=b.expr.match.needsContext,ct={children:!0,contents:!0,next:!0,prev:!0};b.fn.extend({find:function(e){var t,n,r,i=this.length;if("string"!=typeof e)return r=this,this.pushStack(b(e).filter(function(){for(t=0;i>t;t++)if(b.contains(r[t],this))return!0}));for(n=[],t=0;i>t;t++)b.find(e,this[t],n);return n=this.pushStack(i>1?b.unique(n):n),n.selector=(this.selector?this.selector+" ":"")+e,n},has:function(e){var t,n=b(e,this),r=n.length;return this.filter(function(){for(t=0;r>t;t++)if(b.contains(this,n[t]))return!0})},not:function(e){return this.pushStack(ft(this,e,!1))},filter:function(e){return this.pushStack(ft(this,e,!0))},is:function(e){return!!e&&("string"==typeof e?lt.test(e)?b(e,this.context).index(this[0])>=0:b.filter(e,this).length>0:this.filter(e).length>0)},closest:function(e,t){var n,r=0,i=this.length,o=[],a=lt.test(e)||"string"!=typeof e?b(e,t||this.context):0;for(;i>r;r++){n=this[r];while(n&&n.ownerDocument&&n!==t&&11!==n.nodeType){if(a?a.index(n)>-1:b.find.matchesSelector(n,e)){o.push(n);break}n=n.parentNode}}return this.pushStack(o.length>1?b.unique(o):o)},index:function(e){return e?"string"==typeof e?b.inArray(this[0],b(e)):b.inArray(e.jquery?e[0]:e,this):this[0]&&this[0].parentNode?this.first().prevAll().length:-1},add:function(e,t){var n="string"==typeof e?b(e,t):b.makeArray(e&&e.nodeType?[e]:e),r=b.merge(this.get(),n);return this.pushStack(b.unique(r))},addBack:function(e){return this.add(null==e?this.prevObject:this.prevObject.filter(e))}}),b.fn.andSelf=b.fn.addBack;function pt(e,t){do e=e[t];while(e&&1!==e.nodeType);return e}b.each({parent:function(e){var t=e.parentNode;return t&&11!==t.nodeType?t:null},parents:function(e){return b.dir(e,"parentNode")},parentsUntil:function(e,t,n){return b.dir(e,"parentNode",n)},next:function(e){return pt(e,"nextSibling")},prev:function(e){return pt(e,"previousSibling")},nextAll:function(e){return b.dir(e,"nextSibling")},prevAll:function(e){return b.dir(e,"previousSibling")},nextUntil:function(e,t,n){return b.dir(e,"nextSibling",n)},prevUntil:function(e,t,n){return b.dir(e,"previousSibling",n)},siblings:function(e){return b.sibling((e.parentNode||{}).firstChild,e)},children:function(e){return b.sibling(e.firstChild)},contents:function(e){return b.nodeName(e,"iframe")?e.contentDocument||e.contentWindow.document:b.merge([],e.childNodes)}},function(e,t){b.fn[e]=function(n,r){var i=b.map(this,t,n);return at.test(e)||(r=n),r&&"string"==typeof r&&(i=b.filter(r,i)),i=this.length>1&&!ct[e]?b.unique(i):i,this.length>1&&st.test(e)&&(i=i.reverse()),this.pushStack(i)}}),b.extend({filter:function(e,t,n){return n&&(e=":not("+e+")"),1===t.length?b.find.matchesSelector(t[0],e)?[t[0]]:[]:b.find.matches(e,t)},dir:function(e,n,r){var i=[],o=e[n];while(o&&9!==o.nodeType&&(r===t||1!==o.nodeType||!b(o).is(r)))1===o.nodeType&&i.push(o),o=o[n];return i},sibling:function(e,t){var n=[];for(;e;e=e.nextSibling)1===e.nodeType&&e!==t&&n.push(e);return n}});function ft(e,t,n){if(t=t||0,b.isFunction(t))return b.grep(e,function(e,r){var i=!!t.call(e,r,e);return i===n});if(t.nodeType)return b.grep(e,function(e){return e===t===n});if("string"==typeof t){var r=b.grep(e,function(e){return 1===e.nodeType});if(ut.test(t))return b.filter(t,r,!n);t=b.filter(t,r)}return b.grep(e,function(e){return b.inArray(e,t)>=0===n})}function dt(e){var t=ht.split("|"),n=e.createDocumentFragment();if(n.createElement)while(t.length)n.createElement(t.pop());return n}var ht="abbr|article|aside|audio|bdi|canvas|data|datalist|details|figcaption|figure|footer|header|hgroup|mark|meter|nav|output|progress|section|summary|time|video",gt=/ jQuery\d+="(?:null|\d+)"/g,mt=RegExp("<(?:"+ht+")[\\s/>]","i"),yt=/^\s+/,vt=/<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/gi,bt=/<([\w:]+)/,xt=/<tbody/i,wt=/<|&#?\w+;/,Tt=/<(?:script|style|link)/i,Nt=/^(?:checkbox|radio)$/i,Ct=/checked\s*(?:[^=]|=\s*.checked.)/i,kt=/^$|\/(?:java|ecma)script/i,Et=/^true\/(.*)/,St=/^\s*<!(?:\[CDATA\[|--)|(?:\]\]|--)>\s*$/g,At={option:[1,"<select multiple='multiple'>","</select>"],legend:[1,"<fieldset>","</fieldset>"],area:[1,"<map>","</map>"],param:[1,"<object>","</object>"],thead:[1,"<table>","</table>"],tr:[2,"<table><tbody>","</tbody></table>"],col:[2,"<table><tbody></tbody><colgroup>","</colgroup></table>"],td:[3,"<table><tbody><tr>","</tr></tbody></table>"],_default:b.support.htmlSerialize?[0,"",""]:[1,"X<div>","</div>"]},jt=dt(o),Dt=jt.appendChild(o.createElement("div"));At.optgroup=At.option,At.tbody=At.tfoot=At.colgroup=At.caption=At.thead,At.th=At.td,b.fn.extend({text:function(e){return b.access(this,function(e){return e===t?b.text(this):this.empty().append((this[0]&&this[0].ownerDocument||o).createTextNode(e))},null,e,arguments.length)},wrapAll:function(e){if(b.isFunction(e))return this.each(function(t){b(this).wrapAll(e.call(this,t))});if(this[0]){var t=b(e,this[0].ownerDocument).eq(0).clone(!0);this[0].parentNode&&t.insertBefore(this[0]),t.map(function(){var e=this;while(e.firstChild&&1===e.firstChild.nodeType)e=e.firstChild;return e}).append(this)}return this},wrapInner:function(e){return b.isFunction(e)?this.each(function(t){b(this).wrapInner(e.call(this,t))}):this.each(function(){var t=b(this),n=t.contents();n.length?n.wrapAll(e):t.append(e)})},wrap:function(e){var t=b.isFunction(e);return this.each(function(n){b(this).wrapAll(t?e.call(this,n):e)})},unwrap:function(){return this.parent().each(function(){b.nodeName(this,"body")||b(this).replaceWith(this.childNodes)}).end()},append:function(){return this.domManip(arguments,!0,function(e){(1===this.nodeType||11===this.nodeType||9===this.nodeType)&&this.appendChild(e)})},prepend:function(){return this.domManip(arguments,!0,function(e){(1===this.nodeType||11===this.nodeType||9===this.nodeType)&&this.insertBefore(e,this.firstChild)})},before:function(){return this.domManip(arguments,!1,function(e){this.parentNode&&this.parentNode.insertBefore(e,this)})},after:function(){return this.domManip(arguments,!1,function(e){this.parentNode&&this.parentNode.insertBefore(e,this.nextSibling)})},remove:function(e,t){var n,r=0;for(;null!=(n=this[r]);r++)(!e||b.filter(e,[n]).length>0)&&(t||1!==n.nodeType||b.cleanData(Ot(n)),n.parentNode&&(t&&b.contains(n.ownerDocument,n)&&Mt(Ot(n,"script")),n.parentNode.removeChild(n)));return this},empty:function(){var e,t=0;for(;null!=(e=this[t]);t++){1===e.nodeType&&b.cleanData(Ot(e,!1));while(e.firstChild)e.removeChild(e.firstChild);e.options&&b.nodeName(e,"select")&&(e.options.length=0)}return this},clone:function(e,t){return e=null==e?!1:e,t=null==t?e:t,this.map(function(){return b.clone(this,e,t)})},html:function(e){return b.access(this,function(e){var n=this[0]||{},r=0,i=this.length;if(e===t)return 1===n.nodeType?n.innerHTML.replace(gt,""):t;if(!("string"!=typeof e||Tt.test(e)||!b.support.htmlSerialize&&mt.test(e)||!b.support.leadingWhitespace&&yt.test(e)||At[(bt.exec(e)||["",""])[1].toLowerCase()])){e=e.replace(vt,"<$1></$2>");try{for(;i>r;r++)n=this[r]||{},1===n.nodeType&&(b.cleanData(Ot(n,!1)),n.innerHTML=e);n=0}catch(o){}}n&&this.empty().append(e)},null,e,arguments.length)},replaceWith:function(e){var t=b.isFunction(e);return t||"string"==typeof e||(e=b(e).not(this).detach()),this.domManip([e],!0,function(e){var t=this.nextSibling,n=this.parentNode;n&&(b(this).remove(),n.insertBefore(e,t))})},detach:function(e){return this.remove(e,!0)},domManip:function(e,n,r){e=f.apply([],e);var i,o,a,s,u,l,c=0,p=this.length,d=this,h=p-1,g=e[0],m=b.isFunction(g);if(m||!(1>=p||"string"!=typeof g||b.support.checkClone)&&Ct.test(g))return this.each(function(i){var o=d.eq(i);m&&(e[0]=g.call(this,i,n?o.html():t)),o.domManip(e,n,r)});if(p&&(l=b.buildFragment(e,this[0].ownerDocument,!1,this),i=l.firstChild,1===l.childNodes.length&&(l=i),i)){for(n=n&&b.nodeName(i,"tr"),s=b.map(Ot(l,"script"),Ht),a=s.length;p>c;c++)o=l,c!==h&&(o=b.clone(o,!0,!0),a&&b.merge(s,Ot(o,"script"))),r.call(n&&b.nodeName(this[c],"table")?Lt(this[c],"tbody"):this[c],o,c);if(a)for(u=s[s.length-1].ownerDocument,b.map(s,qt),c=0;a>c;c++)o=s[c],kt.test(o.type||"")&&!b._data(o,"globalEval")&&b.contains(u,o)&&(o.src?b.ajax({url:o.src,type:"GET",dataType:"script",async:!1,global:!1,"throws":!0}):b.globalEval((o.text||o.textContent||o.innerHTML||"").replace(St,"")));l=i=null}return this}});function Lt(e,t){return e.getElementsByTagName(t)[0]||e.appendChild(e.ownerDocument.createElement(t))}function Ht(e){var t=e.getAttributeNode("type");return e.type=(t&&t.specified)+"/"+e.type,e}function qt(e){var t=Et.exec(e.type);return t?e.type=t[1]:e.removeAttribute("type"),e}function Mt(e,t){var n,r=0;for(;null!=(n=e[r]);r++)b._data(n,"globalEval",!t||b._data(t[r],"globalEval"))}function _t(e,t){if(1===t.nodeType&&b.hasData(e)){var n,r,i,o=b._data(e),a=b._data(t,o),s=o.events;if(s){delete a.handle,a.events={};for(n in s)for(r=0,i=s[n].length;i>r;r++)b.event.add(t,n,s[n][r])}a.data&&(a.data=b.extend({},a.data))}}function Ft(e,t){var n,r,i;if(1===t.nodeType){if(n=t.nodeName.toLowerCase(),!b.support.noCloneEvent&&t[b.expando]){i=b._data(t);for(r in i.events)b.removeEvent(t,r,i.handle);t.removeAttribute(b.expando)}"script"===n&&t.text!==e.text?(Ht(t).text=e.text,qt(t)):"object"===n?(t.parentNode&&(t.outerHTML=e.outerHTML),b.support.html5Clone&&e.innerHTML&&!b.trim(t.innerHTML)&&(t.innerHTML=e.innerHTML)):"input"===n&&Nt.test(e.type)?(t.defaultChecked=t.checked=e.checked,t.value!==e.value&&(t.value=e.value)):"option"===n?t.defaultSelected=t.selected=e.defaultSelected:("input"===n||"textarea"===n)&&(t.defaultValue=e.defaultValue)}}b.each({appendTo:"append",prependTo:"prepend",insertBefore:"before",insertAfter:"after",replaceAll:"replaceWith"},function(e,t){b.fn[e]=function(e){var n,r=0,i=[],o=b(e),a=o.length-1;for(;a>=r;r++)n=r===a?this:this.clone(!0),b(o[r])[t](n),d.apply(i,n.get());return this.pushStack(i)}});function Ot(e,n){var r,o,a=0,s=typeof e.getElementsByTagName!==i?e.getElementsByTagName(n||"*"):typeof e.querySelectorAll!==i?e.querySelectorAll(n||"*"):t;if(!s)for(s=[],r=e.childNodes||e;null!=(o=r[a]);a++)!n||b.nodeName(o,n)?s.push(o):b.merge(s,Ot(o,n));return n===t||n&&b.nodeName(e,n)?b.merge([e],s):s}function Bt(e){Nt.test(e.type)&&(e.defaultChecked=e.checked)}b.extend({clone:function(e,t,n){var r,i,o,a,s,u=b.contains(e.ownerDocument,e);if(b.support.html5Clone||b.isXMLDoc(e)||!mt.test("<"+e.nodeName+">")?o=e.cloneNode(!0):(Dt.innerHTML=e.outerHTML,Dt.removeChild(o=Dt.firstChild)),!(b.support.noCloneEvent&&b.support.noCloneChecked||1!==e.nodeType&&11!==e.nodeType||b.isXMLDoc(e)))for(r=Ot(o),s=Ot(e),a=0;null!=(i=s[a]);++a)r[a]&&Ft(i,r[a]);if(t)if(n)for(s=s||Ot(e),r=r||Ot(o),a=0;null!=(i=s[a]);a++)_t(i,r[a]);else _t(e,o);return r=Ot(o,"script"),r.length>0&&Mt(r,!u&&Ot(e,"script")),r=s=i=null,o},buildFragment:function(e,t,n,r){var i,o,a,s,u,l,c,p=e.length,f=dt(t),d=[],h=0;for(;p>h;h++)if(o=e[h],o||0===o)if("object"===b.type(o))b.merge(d,o.nodeType?[o]:o);else if(wt.test(o)){s=s||f.appendChild(t.createElement("div")),u=(bt.exec(o)||["",""])[1].toLowerCase(),c=At[u]||At._default,s.innerHTML=c[1]+o.replace(vt,"<$1></$2>")+c[2],i=c[0];while(i--)s=s.lastChild;if(!b.support.leadingWhitespace&&yt.test(o)&&d.push(t.createTextNode(yt.exec(o)[0])),!b.support.tbody){o="table"!==u||xt.test(o)?"<table>"!==c[1]||xt.test(o)?0:s:s.firstChild,i=o&&o.childNodes.length;while(i--)b.nodeName(l=o.childNodes[i],"tbody")&&!l.childNodes.length&&o.removeChild(l)
@@ -5743,10 +5743,10 @@ window.Mirador = window.Mirador || function(config) {
   // application.
   Mirador.saveController = new Mirador.SaveController(config);
 
-  config = Mirador.saveController.currentConfig;
+  //config = Mirador.saveController.currentConfig;
 
   // initialise application 
-  Mirador.viewer = new Mirador.Viewer(config);
+  Mirador.viewer = new Mirador.Viewer({'state' : Mirador.saveController});
 };
 
 (function($) {
@@ -5780,6 +5780,8 @@ window.Mirador = window.Mirador || function(config) {
         'iconClass': 'book'
       }
     },
+
+    'manifests' : [],
 
     'layout': '1x1',
 
@@ -5931,16 +5933,8 @@ window.Mirador = window.Mirador || function(config) {
 (function($) {
 
   $.Viewer = function(options) {
-    // error check - removes invalid tools
-    if (options.availableAnnotationDrawingTools) {
-      options.availableAnnotationDrawingTools = jQuery.grep(options.availableAnnotationDrawingTools, function(element, index) {
-        return jQuery.inArray(element, $.DEFAULT_SETTINGS.availableAnnotationDrawingTools) >= 0;
-      });
-    }
-
     jQuery.extend(true, this, {
-      id:                     options.id,
-      hash:                   options.id,
+      id:                     null,
       data:                   null,
       element:                null,
       canvas:                 null,
@@ -5952,15 +5946,18 @@ window.Mirador = window.Mirador || function(config) {
       windowSize:             {},
       resizeRatio:            {},
       currentWorkspaceVisible: true,
+      state:                  null,
       overlayStates:          {
         'workspacePanelVisible': false,
         'manifestsPanelVisible': false,
         'optionsPanelVisible': false,
         'bookmarkPanelVisible': false
       },
-      manifests:             [] 
-    }, $.DEFAULT_SETTINGS, options);
+      manifests:             []
+    }, options);
 
+    this.id = this.state.getStateProperty('id');
+    this.data = this.state.getStateProperty('data');
     // get initial manifests
     this.element = this.element || jQuery('#' + this.id);
     if (options.availableAnnotationDrawingTools && options.availableAnnotationDrawingTools.length > 0) {
@@ -5976,14 +5973,13 @@ window.Mirador = window.Mirador || function(config) {
 
     init: function() {
       var _this = this;
-
       //add background and positioning information on the root element that is provided in config
-      var backgroundImage = _this.buildPath + _this.imagesPath + 'debut_dark.png';
+      var backgroundImage = _this.state.getStateProperty('buildPath') + _this.state.getStateProperty('imagesPath') + 'debut_dark.png';
       this.element.css('background-color', '#333').css('background-image','url('+backgroundImage+')').css('background-position','left top')
       .css('background-repeat','repeat').css('position','fixed');
 
-      //initialize i18next  
-      i18n.init({debug: false, getAsync: false, resGetPath: _this.buildPath + _this.i18nPath+'__lng__/__ns__.json'}); 
+      //initialize i18next
+      i18n.init({debug: false, getAsync: false, resGetPath: _this.state.getStateProperty('buildPath') + _this.state.getStateProperty('i18nPath')+'__lng__/__ns__.json'});
 
       //register Handlebars helper
       Handlebars.registerHelper('t', function(i18n_key) {
@@ -5993,17 +5989,17 @@ window.Mirador = window.Mirador || function(config) {
 
       //check all buttons in mainMenu.  If they are all set to false, then don't show mainMenu
       var showMainMenu = false;
-      jQuery.each(this.mainMenuSettings.buttons, function(key, value) {
+      jQuery.each(this.state.getStateProperty('mainMenuSettings').buttons, function(key, value) {
         if (value) { showMainMenu = true; }
       });
       //even if buttons are available, developer can override and set show to false
-      if (this.mainMenuSettings.show === false) {
+      if (this.state.getStateProperty('mainMenuSettings').show === false) {
         showMainMenu = false;
       }
 
       // add main menu
       if (showMainMenu) {
-        this.mainMenu = new $.MainMenu({ parent: this, appendTo: this.element });
+        this.mainMenu = new $.MainMenu({ appendTo: this.element, state: this.state });
       }
 
       // add viewer area
@@ -6016,43 +6012,41 @@ window.Mirador = window.Mirador || function(config) {
       }
 
       // add workspace configuration
-      this.layout = typeof this.layout !== 'string' ? JSON.stringify(this.layout) : this.layout;
+      this.layout = typeof this.state.getStateProperty('layout') !== 'string' ? JSON.stringify(this.state.getStateProperty('layout')) : this.state.getStateProperty('layout');
       this.workspace = new $.Workspace({
-        layoutDescription: this.layout.charAt(0) === '{' ? JSON.parse(this.layout) : $.layoutDescriptionFromGridString(this.layout), 
-        parent: this, 
-        appendTo: this.element.find('.mirador-viewer')
+        layoutDescription: this.layout.charAt(0) === '{' ? JSON.parse(this.layout) : $.layoutDescriptionFromGridString(this.layout),
+        appendTo: this.element.find('.mirador-viewer'),
+        state: this.state
       });
-      
+
       this.workspacePanel = new $.WorkspacePanel({
         appendTo: this.element.find('.mirador-viewer'),
-        parent: this,
-        maxRows: this.workspacePanelSettings.maxRows,
-        maxColumns: this.workspacePanelSettings.maxColumns,
-        preserveWindows: this.workspacePanelSettings.preserveWindows,
-        workspace: this.workspace
+        state: this.state
       });
-     
-      this.manifestsPanel = new $.ManifestsPanel({ parent: this, appendTo: this.element.find('.mirador-viewer') });
-      this.bookmarkPanel = new $.BookmarkPanel({ parent: this, appendTo: this.element.find('.mirador-viewer'), jsonStorageEndpoint: this.jsonStorageEndpoint });
+
+      this.manifestsPanel = new $.ManifestsPanel({ appendTo: this.element.find('.mirador-viewer'), state: this.state });
+      this.bookmarkPanel = new $.BookmarkPanel({ appendTo: this.element.find('.mirador-viewer'), state: this.state });
 
       // set this to be displayed
       this.set('currentWorkspaceVisible', true);
 
       this.bindEvents();
+      this.listenForActions();
       // retrieve manifests
       this.getManifestsData();
 
-      if (this.windowObjects.length === 0 && this.openManifestsPage) {
+      if (this.state.getStateProperty('windowObjects').length === 0 && this.state.getStateProperty('openManifestsPage')) {
         this.workspace.slots[0].addItem();
       }
     },
 
-    bindEvents: function() {
+    listenForActions: function() {
       var _this = this;
+
       // check that windows are loading first to set state of slot?
       jQuery.subscribe('manifestReceived', function(event, newManifest) {
-        if (_this.windowObjects) {
-          var check = jQuery.grep(_this.windowObjects, function(object, index) {
+        if (_this.state.getStateProperty('windowObjects')) {
+          var check = jQuery.grep(_this.state.getStateProperty('windowObjects'), function(object, index) {
             return object.loadedManifest === newManifest.uri;
           });
           jQuery.each(check, function(index, config) {
@@ -6061,6 +6055,39 @@ window.Mirador = window.Mirador || function(config) {
         }
       });
 
+      jQuery.subscribe('TOGGLE_WORKSPACE_PANEL', function(event) {
+        _this.toggleWorkspacePanel();
+      });
+
+      jQuery.subscribe('TOGGLE_BOOKMARK_PANEL', function(event) {
+        _this.toggleBookmarkPanel();
+      });
+
+      jQuery.subscribe('TOGGLE_FULLSCREEN', function(event) {
+        _this.fullscreenElement() ? _this.exitFullscreen() : _this.enterFullscreen();
+      });
+
+      jQuery.subscribe('TOGGLE_LOAD_WINDOW', function(event) {
+        _this.toggleLoadWindow();
+      });
+
+      jQuery.subscribe('ADD_MANIFEST_FROM_URL', function(event, url, location) {
+        _this.addManifestFromUrl(url, location);
+      });
+
+      jQuery.subscribe('TOGGLE_OVERLAYS_FALSE', function(event) {
+        jQuery.each(_this.overlayStates, function(oState, value) {
+          // toggles the other top-level panels closed and focuses the
+          // workspace. For instance, after selecting an object from the
+          // manifestPanel.
+          _this.set(oState, false, {parent: 'overlayStates'});
+        });
+      });
+
+    },
+
+    bindEvents: function() {
+      var _this = this;
     },
 
     get: function(prop, parent) {
@@ -6104,7 +6131,7 @@ window.Mirador = window.Mirador || function(config) {
     toggleBookmarkPanel: function() {
       this.toggleOverlay('bookmarkPanelVisible');
     },
-    
+
     enterFullscreen: function() {
       var el = this.element[0];
       if (el.requestFullscreen) {
@@ -6129,8 +6156,8 @@ window.Mirador = window.Mirador || function(config) {
     },
 
     isFullscreen: function() {
-      var $fullscreen = $(fullscreenElement());
-      return ($fullscreen.length > 0);
+      var fullscreen = this.fullscreenElement();
+      return (fullscreen.length > 0);
     },
 
     fullscreenElement: function() {
@@ -6141,14 +6168,17 @@ window.Mirador = window.Mirador || function(config) {
       var _this = this;
 
       _this.data.forEach(function(manifest) {
-        if (manifest.hasOwnProperty('manifestUri')) {
+        if (manifest.hasOwnProperty('manifestContent')) {
+          var content = manifest.manifestContent;
+          _this.addManifestFromUrl(content['@id'], manifest.location ? manifest.location : '', content);
+        } else if (manifest.hasOwnProperty('manifestUri')) {
           var url = manifest.manifestUri;
-          _this.addManifestFromUrl(url, manifest.location ? manifest.location : '');
+          _this.addManifestFromUrl(url, manifest.location ? manifest.location : '', null);
         } else if (manifest.hasOwnProperty('collectionUri')) {
           jQuery.getJSON(manifest.collectionUri).done(function (data, status, jqXHR) {
             if (data.hasOwnProperty('manifests')){
               jQuery.each(data.manifests, function (ci, mfst) {
-                _this.addManifestFromUrl(mfst['@id'], '');
+                _this.addManifestFromUrl(mfst['@id'], '', null);
               });
             }
           }).fail(function(jqXHR, status, error) {
@@ -6167,14 +6197,12 @@ window.Mirador = window.Mirador || function(config) {
       );
     },
 
-    addManifestFromUrl: function(url, location) {
+    addManifestFromUrl: function(url, location, content) {
       var _this = this,
-      manifest;
+        manifest;
 
-      if (!_this.manifests[url]) {
-        manifest = new $.Manifest(url, location);
-        _this.manifests[url] = manifest;
-        _this.manifests.push(manifest);
+      if (!_this.state.getStateProperty('manifests')[url]) {
+        manifest = new $.Manifest(url, location, content);
         jQuery.publish('manifestQueued', manifest, location);
         manifest.request.done(function() {
           jQuery.publish('manifestReceived', manifest);
@@ -6189,8 +6217,9 @@ window.Mirador = window.Mirador || function(config) {
       if (!slotAddress) {
         return;
       }
+
       var windowConfig = {
-        manifest: this.manifests[options.loadedManifest],
+        manifest: this.state.getStateProperty('manifests')[options.loadedManifest],
         currentFocus : options.viewType,
         focusesOriginal : options.availableViews,
         currentCanvasID : options.canvasID,
@@ -6211,7 +6240,7 @@ window.Mirador = window.Mirador || function(config) {
         layoutOptions: options.layoutOptions
       };
 
-      this.workspace.addWindow(windowConfig);
+      jQuery.publish('ADD_WINDOW', windowConfig);
     }
   };
 
@@ -6227,7 +6256,6 @@ window.Mirador = window.Mirador || function(config) {
       slots:            [],
       windows:          [],
       appendTo:         null,
-      parent:           null,
       layoutDescription:    null
     }, options);
 
@@ -6239,14 +6267,111 @@ window.Mirador = window.Mirador || function(config) {
   $.Workspace.prototype = {
     init: function () {
       this.element.appendTo(this.appendTo);
-      if (this.type === "none") {
-        this.parent.toggleSwitchWorkspace();
-        return;
-      }
+      // this if statement does not appear to be doing anything because toggleSwitchWorkspace is not a function anywhere
+      // if (this.type === "none") {
+      //   this.parent.toggleSwitchWorkspace();
+      //   return;
+      // }
 
       this.calculateLayout();
 
       this.bindEvents();
+      this.listenForActions();
+    },
+
+    listenForActions: function() {
+      var _this = this;
+
+      jQuery.subscribe('resizeMirador', function(event) {
+        _this.calculateLayout();
+      });
+
+      jQuery.subscribe('manifestQueued', function(event, manifestPromise) {
+        // Trawl windowObjects preemptively for slotAddresses and
+        // notify those slots to display a "loading" state.
+        // Similar to the operation of the manifestLoadStatusIndicator
+        // and its associated manifestList controller.
+        var targetSlot;
+
+        if (_this.state.getStateProperty('windowObjects')) {
+          var check = _this.state.getStateProperty('windowObjects').forEach(function(windowConfig, index) {
+            // windowConfig.slotAddress will give the slot;
+            // change the state on that slot to be "loading"
+            if (windowConfig.slotAddress) {
+              targetSlot = _this.getSlotFromAddress(windowConfig.slotAddress);
+            } else {
+              targetSlot = _this.focusedSlot || _this.slots.filter(function(slot) {
+                return slot.hasOwnProperty('window') ? true : false;
+              })[0];
+            }
+          });
+        }
+      });
+
+      jQuery.subscribe('windowRemoved', function(event, windowId) {
+        _this.windows = jQuery.grep(_this.windows, function(window) {
+          return window.id !== windowId;
+        });
+      });
+
+      jQuery.subscribe('REMOVE_NODE', function(event, node){
+        _this.removeNode(node);
+      });
+
+      jQuery.subscribe('ADD_SLOT_ITEM', function(event, slot){
+        _this.addItem(slot);
+      });
+
+      jQuery.subscribe('ADD_WINDOW', function(event, windowConfig) {
+        _this.addWindow(windowConfig);
+      });
+
+      jQuery.subscribe('SPLIT_RIGHT', function(event, slot) {
+        _this.splitRight(slot);
+      });
+
+      jQuery.subscribe('SPLIT_LEFT', function(event, slot) {
+        _this.splitLeft(slot);
+      });
+
+      jQuery.subscribe('SPLIT_DOWN', function(event, slot) {
+        _this.splitDown(slot);
+      });
+
+      jQuery.subscribe('SPLIT_UP', function(event, slot) {
+        _this.splitUp(slot);
+      });
+
+      jQuery.subscribe('RESET_WORKSPACE_LAYOUT', function(event, options) {
+        _this.resetLayout(options.layoutDescription);
+      });
+    },
+
+    bindEvents: function() {
+      var _this = this;
+
+      d3.select(window).on('resize', function(event) {
+        _this.calculateLayout();
+      });
+      
+      // XXX seong
+      jQuery.subscribe('clicked.addAnnotationWindow', function (event, windowId) {
+        var window = _this.getWindowById(windowId);
+        if (window) {
+          console.log('slot address: ' + window.slotAddress);
+          //var slot = window.parent;
+          var slot = _this.getSlotFromAddress(window.slotAddress);
+          if (!_this.getAvailableSlot()) {
+            _this.split(slot, 'r', $.AnnotationWindow);
+          }
+          _this.addWindow({
+            windowType: 'annotations',
+            canvasWindow: window
+          });
+        } else {
+          console.log('sub[cliced.addAnnotationWindow]: Window could not be found for id = ' + windowId);
+        }
+      });
     },
 
     get: function(prop, parent) {
@@ -6306,8 +6431,8 @@ window.Mirador = window.Mirador || function(config) {
           slotID: d.id,
           layoutAddress: d.address,
           focused: true,
-          parent: _this,
-          appendTo: appendTo
+          appendTo: appendTo,
+          state: _this.state
         }));
       });
 
@@ -6326,7 +6451,9 @@ window.Mirador = window.Mirador || function(config) {
         if (slot && slot.window && !resetting) {
           jQuery.publish("windowRemoved", slot.window.id);
         }
-
+        
+        // nullify the window parameter of old slots
+        slot.window = null;
         _this.slots.splice(_this.slots.indexOf(slot), 1);
       });
 
@@ -6339,7 +6466,15 @@ window.Mirador = window.Mirador || function(config) {
       }
 
       var root = jQuery.grep(_this.layout, function(node) { return !node.parent;})[0];
+
       jQuery.publish("layoutChanged", root);
+      jQuery.publish('slotsUpdated', {slots: _this.slots});
+
+      if (_this.slots.length <= 1) {
+          jQuery.publish('HIDE_REMOVE_SLOT');
+        } else {
+          jQuery.publish('SHOW_REMOVE_SLOT');
+        }
     },
 
     split: function(targetSlot, direction) {
@@ -6489,6 +6624,7 @@ window.Mirador = window.Mirador || function(config) {
         node.parent.children.splice(nodeIndex, 1);
       }
 
+      //delete targetSlot;
       _this.layoutDescription = root;
       _this.calculateLayout();
     },
@@ -6549,9 +6685,9 @@ window.Mirador = window.Mirador || function(config) {
         slot.window = window;
 
         window.update({
-          id: window.id,
-          slotAddress: slot.layoutAddress,
-          parent: slot,
+          id: window.id, 
+          slotAddress: slot.layoutAddress, 
+          state: _this.state,
           appendTo: slot.element,
           currentCanvasID: window.currentCanvasID,
           currentFOcus: window.currentFocus
@@ -6565,68 +6701,8 @@ window.Mirador = window.Mirador || function(config) {
       })[0];
     },
 
-    bindEvents: function() {
-      var _this = this;
-
-      d3.select(window).on('resize', function(event) {
-        _this.calculateLayout();
-      });
-
-      /* XXX seong
-       redundant? window.js now publishes resizeMirador on resize
-      jQuery.subscribe('resizeMirador', function(event) {
-        _this.calculateLayout();
-      });
-      */
-
-      jQuery.subscribe('manifestQueued', function(event, manifestPromise) {
-        // Trawl windowObjects preemptively for slotAddresses and
-        // notify those slots to display a "loading" state.
-        // Similar to the operation of the manifestLoadStatusIndicator
-        // and its associated manifestList controller.
-        var targetSlot;
-
-        if (_this.parent.windowObjects) {
-          var check = _this.parent.windowObjects.forEach(function(windowConfig, index) {
-            // windowConfig.slotAddress will give the slot;
-            // change the state on that slot to be "loading"
-            if (windowConfig.slotAddress) {
-              targetSlot = _this.getSlotFromAddress(windowConfig.slotAddress);
-            } else {
-              targetSlot = _this.focusedSlot || _this.slots.filter(function(slot) {
-                return slot.hasOwnProperty('window') ? true : false;
-              })[0];
-            }
-          });
-        }
-      });
-
-      jQuery.subscribe('windowRemoved', function(event, windowId) {
-        _this.windows = jQuery.grep(_this.windows, function(window) {
-          return window.id !== windowId;
-        });
-      });
-
-      jQuery.subscribe('clicked.addAnnotationWindow', function (event, windowId) {
-        var window = _this.getWindowById(windowId);
-        if (window) {
-          console.log('slot address: ' + window.slotAddress);
-          var slot = window.parent;
-          if (!_this.getAvailableSlot()) {
-            _this.split(slot, 'r', $.AnnotationWindow);
-          }
-          _this.addWindow({
-            windowType: 'annotations',
-            canvasWindow: window
-          });
-        } else {
-          console.log('sub[cliced.addAnnotationWindow]: Window could not be found for id = ' + windowId);
-        }
-      });
-    },
-
     clearSlot: function(slotId) {
-      if (this.slots[slodId].windowElement) {
+      if (this.slots[slotId].windowElement) { 
         this.slots[slotId].windowElement.remove();
       }
       this.slots[slotId].window = null;
@@ -6634,7 +6710,7 @@ window.Mirador = window.Mirador || function(config) {
 
     addItem: function(slot) {
       this.focusedSlot = slot;
-      this.parent.toggleLoadWindow();
+      jQuery.publish('TOGGLE_LOAD_WINDOW');
     },
 
     addWindow: function(windowConfig) {
@@ -6652,12 +6728,10 @@ window.Mirador = window.Mirador || function(config) {
           newWindow,
           targetSlot;
 
-      jQuery.each(_this.parent.overlayStates, function(oState, value) {
-        // toggles the other top-level panels closed and focuses the
-        // workspace. For instance, after selecting an object from the
-        // manifestPanel.
-        _this.parent.set(oState, false, {parent: 'overlayStates'});
-      });
+      // toggles the other top-level panels closed and focuses the
+      // workspace. For instance, after selecting an object from the
+      // manifestPanel.
+      jQuery.publish('TOGGLE_OVERLAYS_FALSE');
 
       if (isAnno) {
         targetSlot = _this.getAvailableSlot();
@@ -6668,7 +6742,7 @@ window.Mirador = window.Mirador || function(config) {
       }
 
       windowConfig.appendTo = targetSlot.element;
-      windowConfig.parent = targetSlot;
+      windowConfig.state = _this.state;
 
       if (!targetSlot.window) {
         windowConfig.slotAddress = targetSlot.layoutAddress;
@@ -6681,6 +6755,7 @@ window.Mirador = window.Mirador || function(config) {
         } else {
           newWindow = new $.Window(windowConfig);
         }
+
         _this.windows.push(newWindow);
 
         targetSlot.window = newWindow;
@@ -6719,7 +6794,6 @@ window.Mirador = window.Mirador || function(config) {
     jQuery.extend(true, this, {
       element: null,
       appendTo: null,
-      parent: null
     }, options);
 
     this.init();
@@ -6729,13 +6803,16 @@ window.Mirador = window.Mirador || function(config) {
   $.BookmarkPanel.prototype = {
     init: function () {
       this.element = jQuery(this.template()).appendTo(this.appendTo);
-      saveModule = this.jsonStorageEndpoint.module,
-      saveOptions = this.jsonStorageEndpoint.options;
+      var jsonStorageEndpoint = this.state.getStateProperty('jsonStorageEndpoint'),
+      saveModule = jsonStorageEndpoint.module,
+      saveOptions = jsonStorageEndpoint.options;
       this.storageModule = new $[saveModule](saveOptions);
+      
       this.bindEvents();
+      this.listenForActions();
     },
 
-    bindEvents: function() {
+    listenForActions: function() {
       var _this = this;
       // handle subscribed events
       jQuery.subscribe('bookmarkPanelVisible.set', function(_, stateValue) {
@@ -6750,6 +6827,10 @@ window.Mirador = window.Mirador || function(config) {
             _this.element.find('#share-url').val(bookmarkURL).focus().select();
 	         });
       });
+    },
+
+    bindEvents: function() {
+      var _this = this;
     },
 
     hide: function() {
@@ -6828,7 +6909,6 @@ window.Mirador = window.Mirador || function(config) {
     $.MainMenu = function(options) {
 
         jQuery.extend(true, this, {
-            parent:                     null, //viewer
             element:                    null,
             mainMenuHeight:             null,
             mainMenuWidth:              null,
@@ -6864,12 +6944,12 @@ window.Mirador = window.Mirador || function(config) {
 
             this.element.append(this.template({
                 mainMenuCls: this.mainMenuCls,
-                showBookmark : this.parent.mainMenuSettings.buttons.bookmark,
-                showLayout : this.parent.mainMenuSettings.buttons.layout,
-                showOptions: this.parent.mainMenuSettings.buttons.options,
-                showFullScreenViewer : this.parent.mainMenuSettings.buttons.fullScreenViewer,
-                userButtons: this.parent.mainMenuSettings.userButtons,
-                userLogo:    this.parent.mainMenuSettings.userLogo
+                showBookmark : this.state.getStateProperty('mainMenuSettings').buttons.bookmark,
+                showLayout : this.state.getStateProperty('mainMenuSettings').buttons.layout,
+                showOptions: this.state.getStateProperty('mainMenuSettings').buttons.options,
+                showFullScreenViewer : this.state.getStateProperty('mainMenuSettings').buttons.fullScreenViewer,
+                userButtons: this.state.getStateProperty('mainMenuSettings').userButtons,
+                userLogo:    this.state.getStateProperty('mainMenuSettings').userLogo
             }));
 
             this.bindEvents();
@@ -6879,14 +6959,17 @@ window.Mirador = window.Mirador || function(config) {
             var _this = this;
             //change 'change-layout' to mouseover events rather than click?
             this.element.find('.change-layout').on('click', function() { 
-              _this.parent.toggleWorkspacePanel(); 
+              jQuery.publish('TOGGLE_WORKSPACE_PANEL');
             });
-            this.element.find('.bookmark-workspace').on('click', function() { _this.parent.toggleBookmarkPanel(); 
+
+            this.element.find('.bookmark-workspace').on('click', function() { 
+              jQuery.publish('TOGGLE_BOOKMARK_PANEL');
             });
+
             // when options are implemented, this will need to do something
             this.element.find('.window-options').on('click', function() { });
             this.element.find('.fullscreen-viewer').on('click', function() {
-              _this.parent.fullscreenElement() ? _this.parent.exitFullscreen() : _this.parent.enterFullscreen();
+              jQuery.publish('TOGGLE_FULLSCREEN');
             });
         },
 
@@ -7122,7 +7205,7 @@ window.Mirador = window.Mirador || function(config) {
 
     jQuery.extend(true, this, {
       element:                    null,
-      parent:                     null,
+      appendTo:                   null,
       manifest:                   null,
       loadStatus:                 null,
       thumbHeight:                80,
@@ -7161,9 +7244,10 @@ window.Mirador = window.Mirador || function(config) {
       });
 
       this.fetchTplData(this.manifestId);
-      this.element = jQuery(this.template(this.tplData)).prependTo(this.parent.manifestListElement).hide().fadeIn('slow');
+      this.element = jQuery(this.template(this.tplData)).prependTo(this.appendTo).hide().fadeIn('slow');
 
       this.bindEvents();
+      this.listenForActions();
     },
 
     fetchTplData: function() {
@@ -7189,9 +7273,9 @@ window.Mirador = window.Mirador || function(config) {
         if (_this.tplData.repository === '(Added from URL)') {
           repo = '';
         }
-        var imageName = $.viewer.repoImages[repo || 'other'] || $.viewer.repoImages.other;
+        var imageName = _this.state.getStateProperty('repoImages')[repo || 'other'] || _this.state.getStateProperty('repoImages').other;
 
-        return $.viewer.buildPath + $.viewer.logosPath + imageName;
+        return _this.state.getStateProperty('buildPath') + _this.state.getStateProperty('logosPath') + imageName;
       })();
 
       for ( var i=0; i < manifest.sequences[0].canvases.length; i++) {
@@ -7237,6 +7321,14 @@ window.Mirador = window.Mirador || function(config) {
 
     },
 
+    listenForActions: function() {
+      var _this = this;
+
+      jQuery.subscribe('manifestPanelWidthChanged', function(event, newWidth){
+        _this.updateDisplay(newWidth);
+      });
+    },
+
     bindEvents: function() {
       var _this = this;
 
@@ -7251,7 +7343,7 @@ window.Mirador = window.Mirador || function(config) {
           currentCanvasID: null,
           currentFocus: 'ThumbnailsView'
         };
-        $.viewer.workspace.addWindow(windowConfig);
+        jQuery.publish('ADD_WINDOW', windowConfig);
       });
 
       this.element.find('.preview-image').on('click', function(e) {
@@ -7261,11 +7353,13 @@ window.Mirador = window.Mirador || function(config) {
           currentCanvasID: jQuery(this).attr('data-image-id'),
           currentFocus: 'ImageView'
         };
-        $.viewer.workspace.addWindow(windowConfig);
+        jQuery.publish('ADD_WINDOW', windowConfig);
       });
+    },
 
-      jQuery.subscribe('manifestPanelWidthChanged', function(event, newWidth){
-        var newMaxPreviewWidth = newWidth - (_this.repoWidth + _this.margin + _this.metadataWidth + _this.margin + _this.remainingWidth);
+    updateDisplay: function(newWidth) {
+        var _this = this,
+        newMaxPreviewWidth = newWidth - (_this.repoWidth + _this.margin + _this.metadataWidth + _this.margin + _this.remainingWidth);
         newMaxPreviewWidth = newMaxPreviewWidth * 0.95;
         var image = null;
 
@@ -7314,7 +7408,6 @@ window.Mirador = window.Mirador || function(config) {
           }
         }
         _this.maxPreviewImagesWidth = newMaxPreviewWidth;
-      });
     },
 
     hide: function() {
@@ -7452,7 +7545,6 @@ window.Mirador = window.Mirador || function(config) {
             element:                    null,
             listItems:                  null,
             appendTo:                   null,
-            parent:                     null,
             manifestListItems:          [],
             manifestListElement:        null,
             manifestLoadStatusIndicator: null,
@@ -7468,7 +7560,7 @@ window.Mirador = window.Mirador || function(config) {
 
         init: function() {
             this.element = jQuery(this.template({
-                showURLBox : this.parent.showAddFromURLBox
+                showURLBox : this.state.getStateProperty('showAddFromURLBox')
             })).appendTo(this.appendTo);
             this.manifestListElement = this.element.find('ul');
             
@@ -7486,6 +7578,26 @@ window.Mirador = window.Mirador || function(config) {
             //   appendTo: this.element.find('.select-results')
             // });
             this.bindEvents();
+            this.listenForActions();
+        },
+
+        listenForActions: function() {
+          var _this = this;
+
+          // handle subscribed events
+          jQuery.subscribe('manifestsPanelVisible.set', function(_, stateValue) {
+             if (stateValue) { _this.show(); return; }
+              _this.hide();
+          });
+
+          jQuery.subscribe('manifestReceived', function(event, newManifest) {
+            _this.manifestListItems.push(new $.ManifestListItem({ 
+              manifest: newManifest, 
+              resultsWidth: _this.resultsWidth, 
+              state: _this.state,
+              appendTo: _this.manifestListElement }));
+            _this.element.find('#manifest-search').keyup();
+          });
         },
 
         bindEvents: function() {
@@ -7494,23 +7606,11 @@ window.Mirador = window.Mirador || function(config) {
             this.element.find('form#url-load-form').on('submit', function(event) {
                 event.preventDefault();
                 var url = jQuery(this).find('input').val();
-                _this.parent.addManifestFromUrl(url, "(Added from URL)");
-                //console.log('trying to add from URL');
+                jQuery.publish('ADD_MANIFEST_FROM_URL', url, "(Added from URL)");
             });
 
             this.element.find('.remove-object-option').on('click', function() {
-              _this.parent.toggleLoadWindow();
-            });
-
-            // handle subscribed events
-            jQuery.subscribe('manifestsPanelVisible.set', function(_, stateValue) {
-               if (stateValue) { _this.show(); return; }
-                _this.hide();
-            });
-
-            jQuery.subscribe('manifestReceived', function(event, newManifest) {
-              _this.manifestListItems.push(new $.ManifestListItem({ parent: _this, manifest: newManifest, resultsWidth: _this.resultsWidth }));
-              _this.element.find('#manifest-search').keyup();
+              jQuery.publish('TOGGLE_LOAD_WINDOW');
             });
 
             // Filter manifests based on user input
@@ -7585,10 +7685,7 @@ window.Mirador = window.Mirador || function(config) {
     jQuery.extend(true, this, {
       element: null,
       appendTo: null,
-      parent: null,
-      workspace: null,
-      maxRows: null,
-      maxColumns: null
+      workspace: null
     }, options);
 
     this.init();
@@ -7599,7 +7696,7 @@ window.Mirador = window.Mirador || function(config) {
     init: function () {
       var _this = this,
       templateData = {
-        rows: $.layoutDescriptionFromGridString(_this.maxColumns + 'x' + _this.maxRows).children.map(function(column, rowIndex) {
+        rows: $.layoutDescriptionFromGridString(_this.state.getStateProperty('workspacePanelSettings').maxColumns + 'x' + _this.state.getStateProperty('workspacePanelSettings').maxRows).children.map(function(column, rowIndex) {
           column.columns = column.children.map(function(row, columnIndex) {
             row.gridString = (rowIndex+1) + 'x' + (columnIndex+1);
             return row;
@@ -7609,17 +7706,23 @@ window.Mirador = window.Mirador || function(config) {
       };
 
       this.element = jQuery(this.template(templateData)).appendTo(this.appendTo);
-      var backgroundImage = _this.parent.buildPath + _this.parent.imagesPath + 'debut_dark.png';
+      var backgroundImage = _this.state.getStateProperty('buildPath') + _this.state.getStateProperty('imagesPath') + 'debut_dark.png';
       this.element.css('background-image','url('+backgroundImage+')').css('background-repeat','repeat');
+      
       this.bindEvents();
+      this.listenForActions();
     },
 
-    bindEvents: function() {
+    listenForActions: function() {
       var _this = this;
       jQuery.subscribe('workspacePanelVisible.set', function(_, stateValue) {
         if (stateValue) { _this.show(); return; }
         _this.hide();
       });
+    },
+
+    bindEvents: function() {
+      var _this = this;
 
       _this.element.find('.grid-item').on('click', function() {
         var gridString = jQuery(this).data('gridstring');
@@ -7641,8 +7744,8 @@ window.Mirador = window.Mirador || function(config) {
     onSelect: function(gridString) {
       var _this = this;
       var layoutDescription = $.layoutDescriptionFromGridString(gridString);
-      _this.workspace.resetLayout(layoutDescription);
-      _this.parent.toggleWorkspacePanel();
+      jQuery.publish('RESET_WORKSPACE_LAYOUT', {layoutDescription: layoutDescription});
+      jQuery.publish('TOGGLE_WORKSPACE_PANEL');
     },
 
     onHover: function(gridString) {
@@ -7695,8 +7798,16 @@ window.Mirador = window.Mirador || function(config) {
 
 (function($){
 
-  $.Manifest = function(manifestUri, location) {
-    if (manifestUri.indexOf('info.json') !== -1) {
+  $.Manifest = function(manifestUri, location, manifestContent) {
+    if (manifestContent) {
+      jQuery.extend(true, this, {
+          jsonLd: null,
+          location: location,
+          uri: manifestUri,
+          request: null
+      });
+      this.initFromManifestContent(manifestContent);
+    } else if (manifestUri.indexOf('info.json') !== -1) {
       // The following is an ugly hack. We need to finish the
       // Manifesto utility library.
       // See: https://github.com/IIIF/manifesto
@@ -7758,6 +7869,14 @@ window.Mirador = window.Mirador || function(config) {
       this.request.done(function(jsonLd) {
         _this.jsonLd = _this.generateInfoWrapper(jsonLd);
       });
+    },
+    initFromManifestContent: function (manifestContent) {
+      var _this = this;
+      this.request = jQuery.Deferred();
+      this.request.done(function(jsonLd) {
+        _this.jsonLd = jsonLd;
+      });
+      setTimeout(function () { _this.request.resolve(manifestContent); }, 0);
     },
     getThumbnailForCanvas : function(canvas, width) {
       var version = "1.1",
@@ -8345,7 +8464,6 @@ window.Mirador = window.Mirador || function(config) {
 
     jQuery.extend(this, {
       element:   null,
-      parent:    null,
       annotations: [],
       windowId:  ""
     }, options);
@@ -8890,8 +9008,7 @@ window.Mirador = window.Mirador || function(config) {
     jQuery.extend(this, {
       dfd:             null,
       annotationsList: [],        //OA list for Mirador use
-      windowID:        null,
-      parent:          null
+      windowID:        null
     }, options);
 
     this.init();
@@ -9372,7 +9489,7 @@ window.Mirador = window.Mirador || function(config) {
   $.OsdRegionDrawTool.prototype = {
 
     init: function() {
-      this.svgOverlay = this.osdViewer.svgOverlay(this.parent);
+      this.svgOverlay = this.osdViewer.svgOverlay(this.osdViewer.id, this.windowId, this.state);
       this.svgOverlay.show();
       this.svgOverlay.disable();
     },
@@ -9407,7 +9524,7 @@ window.Mirador = window.Mirador || function(config) {
                   if (!window.confirm("Do you want to delete this shape and annotation?")) {
                     return false;
                   }
-                  jQuery.publish('annotationDeleted.' + _this.parent.windowId, [oaAnno['@id']]);
+                  jQuery.publish('annotationDeleted.' + _this.windowId, [oaAnno['@id']]);
                   this.svgOverlay.removeFocus();
                   return true;
                 } else {
@@ -9424,7 +9541,7 @@ window.Mirador = window.Mirador || function(config) {
                     };
                   }
                   oaAnno.on.selector.value = _this.svgOverlay.getSVGString(shapeArray);
-                  jQuery.publish('annotationUpdated.' + _this.parent.windowId, [oaAnno]);
+                  jQuery.publish('annotationUpdated.' + _this.windowId, [oaAnno]);
                   this.svgOverlay.removeFocus();
                   return true;
                 }
@@ -9466,7 +9583,7 @@ window.Mirador = window.Mirador || function(config) {
         }
       }
       for (var j = 0; j < oaAnnos.length; j++) {
-        jQuery.publish('annotationUpdated.' + _this.parent.windowId, [oaAnnos[j]]);
+        jQuery.publish('annotationUpdated.' + _this.windowId, [oaAnnos[j]]);
       }
       this.svgOverlay.restoreEditedShapes();
     },
@@ -9505,8 +9622,10 @@ window.Mirador = window.Mirador || function(config) {
         return deferred;
       });
       jQuery.when.apply(jQuery, deferreds).done(function() {
-        jQuery.publish('overlaysRendered.' + _this.parent.windowId);
+        jQuery.publish('overlaysRendered.' + _this.windowId);
       });
+
+      var windowElement = _this.state.getWindowElement(_this.windowId);
 
       this.tooltips = jQuery(this.osdViewer.element).qtip({
         overwrite: false,
@@ -9521,8 +9640,8 @@ window.Mirador = window.Mirador || function(config) {
             mouse: false,
             method: 'shift'
           },
-          container: _this.parent.parent.parent.element,
-          viewport: _this.parent.parent.parent.element
+          container: windowElement,
+          viewport: windowElement
         },
         style: {
           classes: 'qtip-bootstrap qtip-viewer',
@@ -9556,9 +9675,9 @@ window.Mirador = window.Mirador || function(config) {
 
     setTooltipContent: function(api, annotations) {
       var _this = this;
-      var annoTooltip = new $.AnnotationTooltip({"windowId": _this.parent.windowId});
+      var annoTooltip = new $.AnnotationTooltip({"windowId": _this.windowId});
       api.set({'content.text': annoTooltip.getViewer(annotations)});
-      jQuery.publish('tooltipViewerSet.' + _this.parent.windowId);
+      jQuery.publish('tooltipViewerSet.' + _this.windowId);
     },
 
     showTooltipsFromMousePosition: function(event, location, absoluteLocation) {
@@ -9635,34 +9754,34 @@ window.Mirador = window.Mirador || function(config) {
     bindEvents: function() {
       var _this = this;
 
-      jQuery.subscribe('refreshOverlay.' + _this.parent.windowId, function(event) {
+      jQuery.subscribe('refreshOverlay.' + _this.windowId, function(event) {
         _this.svgOverlay.restoreEditedShapes();
         _this.svgOverlay.deselectAll();
         _this.svgOverlay.mode = '';
         _this.render();
       });
-      jQuery.subscribe('deleteShape.' + _this.parent.windowId, function(event) {
+      jQuery.subscribe('deleteShape.' + _this.windowId, function(event) {
         _this.deleteShape();
       });
-      jQuery.subscribe('updateEditedShape.' + _this.parent.windowId, function(event) {
+      jQuery.subscribe('updateEditedShape.' + _this.windowId, function(event) {
         _this.saveEditedShape();
       });
 
-      jQuery.subscribe('updateTooltips.' + _this.parent.windowId, function(event, location, absoluteLocation) {
+      jQuery.subscribe('updateTooltips.' + _this.windowId, function(event, location, absoluteLocation) {
         if (!_this.inEditOrCreateMode) {
           _this.showTooltipsFromMousePosition(event, location, absoluteLocation);
         }
       });
 
-      jQuery.subscribe('removeTooltips.' + _this.parent.windowId, function() {
+      jQuery.subscribe('removeTooltips.' + _this.windowId, function() {
         jQuery(_this.osdViewer.element).qtip('destroy', true);
       });
 
-      jQuery.subscribe('disableTooltips.' + _this.parent.windowId, function() {
+      jQuery.subscribe('disableTooltips.' + _this.windowId, function() {
         _this.inEditOrCreateMode = true;
       });
 
-      jQuery.subscribe('enableTooltips.' + _this.parent.windowId, function() {
+      jQuery.subscribe('enableTooltips.' + _this.windowId, function() {
         _this.inEditOrCreateMode = false;
         _this.svgOverlay.restoreDraftShapes();
       });
@@ -9685,7 +9804,7 @@ window.Mirador = window.Mirador || function(config) {
         'content.text': annoTooltip.getEditor(oaAnno),
         'hide.event': false
       });
-      jQuery.publish('annotationEditorAvailable.' + this.parent.windowId);
+      jQuery.publish('annotationEditorAvailable.' + this.windowId);
       //add rich text editor
       tinymce.init({
         selector: 'form.annotation-tooltip textarea',
@@ -9714,8 +9833,8 @@ window.Mirador = window.Mirador || function(config) {
 
     removeAnnotationEvents: function(tooltipevent, api) {
       var _this = this;
-      var editorSelector = '#annotation-editor-' + _this.parent.windowId;
-      var viewerSelector = '#annotation-viewer-' + _this.parent.windowId;
+      var editorSelector = '#annotation-editor-' + _this.windowId;
+      var viewerSelector = '#annotation-viewer-' + _this.windowId;
       jQuery(viewerSelector + ' a.delete').off("click");
       jQuery(viewerSelector + ' a.edit').off("click");
       jQuery(editorSelector + ' a.save').off("click");
@@ -9724,8 +9843,8 @@ window.Mirador = window.Mirador || function(config) {
 
     annotationEvents: function(tooltipevent, api) {
       var _this = this;
-      var annoTooltip = new $.AnnotationTooltip({"windowId": _this.parent.windowId});
-      var selector = '#annotation-viewer-' + _this.parent.windowId;
+      var annoTooltip = new $.AnnotationTooltip({"windowId": _this.windowId});
+      var selector = '#annotation-viewer-' + _this.windowId;
       jQuery(selector + ' a.delete').on("click", function(event) {
         event.preventDefault();
         if (!window.confirm("Do you want to delete this annotation?")) {
@@ -9733,7 +9852,7 @@ window.Mirador = window.Mirador || function(config) {
         }
         var display = jQuery(this).parents('.annotation-display');
         var id = display.attr('data-anno-id');
-        jQuery.publish('annotationDeleted.' + _this.parent.windowId, [id]);
+        jQuery.publish('annotationDeleted.' + _this.windowId, [id]);
         api.hide();
         display.remove();
       });
@@ -9750,8 +9869,8 @@ window.Mirador = window.Mirador || function(config) {
 
     annotationSaveEvent: function(event, api) {
       var _this = this;
-      var annoTooltip = new $.AnnotationTooltip({"windowId": _this.parent.windowId});
-      var selector = '#annotation-editor-' + _this.parent.windowId;
+      var annoTooltip = new $.AnnotationTooltip({"windowId": _this.windowId});
+      var selector = '#annotation-editor-' + _this.windowId;
 
       jQuery(selector).on("submit", function(event) {
         event.preventDefault();
@@ -9810,7 +9929,7 @@ window.Mirador = window.Mirador || function(config) {
           }
         });
         //save to endpoint
-        jQuery.publish('annotationUpdated.' + _this.parent.windowId, [oaAnno]);
+        jQuery.publish('annotationUpdated.' + _this.windowId, [oaAnno]);
       });
 
       jQuery(selector + ' a.cancel').on("click", function(event) {
@@ -10146,15 +10265,17 @@ window.Mirador = window.Mirador || function(config) {
     return this.svgOverlayTools;
   };
 
-  OpenSeadragon.Viewer.prototype.svgOverlay = function(windowObj) {
-    return new $.Overlay(this, windowObj, $.viewer.drawingToolsSettings, $.viewer.availableAnnotationDrawingTools);
+  OpenSeadragon.Viewer.prototype.svgOverlay = function(osdViewerId, windowId, state) {
+    return new $.Overlay(this, osdViewerId, windowId, state);
   };
 
-  $.Overlay = function(viewer, windowObj, drawingToolsSettings, availableAnnotationDrawingTools) {
+  $.Overlay = function(viewer, osdViewerId, windowId, state) {
+    var drawingToolsSettings = state.getStateProperty('drawingToolsSettings'), 
+    availableAnnotationDrawingTools = state.getStateProperty('availableAnnotationDrawingTools');
     jQuery.extend(this, {
       disabled: true,
-      window: windowObj,
-      windowId: windowObj.windowId,
+      osdViewerId: osdViewerId,
+      windowId: windowId,
       commentPanel: null,
       mode: '', // Possible modes: 'create', 'translate', 'deform', 'edit' and '' as default.
       draftPaths: [],
@@ -10189,6 +10310,7 @@ window.Mirador = window.Mirador || function(config) {
     this.viewer.canvas.appendChild(this.canvas);
 
     var _this = this;
+    this.state = state;
     this.viewer.addHandler('animation', function() {
       _this.resize();
     });
@@ -10202,33 +10324,33 @@ window.Mirador = window.Mirador || function(config) {
       _this.resize();
     });
     jQuery.subscribe('toggleDrawingTool.' + _this.windowId, function(event, tool) {
-      jQuery('#' + _this.window.viewer.id).parent().find('.hud-container').find('.draw-tool').css('opacity', '');
+      jQuery('#' + osdViewerId).parent().find('.hud-container').find('.draw-tool').css('opacity', '');
       if (_this.disabled) {
         jQuery('.qtip' + _this.windowId).qtip('hide');
         return;
       }
-      jQuery('#' + _this.window.viewer.id).parents(".window").find(".qtip-viewer").hide();
+      jQuery('#' + osdViewerId).parents(".window").find(".qtip-viewer").hide();
       _this.currentTool = null;
       for (var i = 0; i < _this.tools.length; i++) {
         if (_this.tools[i].logoClass == tool) {
           _this.currentTool = _this.tools[i];
-          jQuery('#' + _this.window.viewer.id).parent().find('.hud-container').find('.material-icons:contains(\'' + tool + '\')').parent('.draw-tool').css('opacity', '1');
+          jQuery('#' + osdViewerId).parent().find('.hud-container').find('.material-icons:contains(\'' + tool + '\')').parent('.draw-tool').css('opacity', '1');
         }
       }
     });
     jQuery.subscribe('toggleDefaultDrawingTool.' + _this.windowId, function(event) {
-      jQuery('#' + _this.window.viewer.id).parent().find('.hud-container').find('.draw-tool').css('opacity', '');
+      jQuery('#' + osdViewerId).parent().find('.hud-container').find('.draw-tool').css('opacity', '');
       if (_this.disabled) {
         jQuery('.qtip' + _this.windowId).qtip('hide');
         return;
       }
-      jQuery('#' + _this.window.viewer.id).parents(".window").find(".qtip-viewer").hide();
+      jQuery('#' + osdViewerId).parents(".window").find(".qtip-viewer").hide();
       _this.currentTool = null;
       for (var i = 0; i < _this.availableAnnotationDrawingTools.length; i++) {
         for (var j = 0; j < _this.tools.length; j++) {
           if (_this.availableAnnotationDrawingTools[i] == _this.tools[j].name) {
             _this.currentTool = _this.tools[j];
-            jQuery('#' + _this.window.viewer.id).parent().find('.hud-container').find('.material-icons:contains(\'' + _this.tools[j].logoClass + '\')').parent('.draw-tool').css('opacity', '1');
+            jQuery('#' + osdViewerId).parent().find('.hud-container').find('.material-icons:contains(\'' + _this.tools[j].logoClass + '\')').parent('.draw-tool').css('opacity', '1');
             break;
           }
         }
@@ -10556,9 +10678,9 @@ window.Mirador = window.Mirador || function(config) {
       var strokeColor = this.strokeColor;
       var fillColor = this.fillColor;
       var fillColorAlpha = this.fillColorAlpha;
-      this.strokeColor = $.viewer.drawingToolsSettings.fillColor;
-      this.fillColor = $.viewer.drawingToolsSettings.fillColor;
-      this.fillColorAlpha = $.viewer.drawingToolsSettings.fillColorAlpha;
+      this.strokeColor = this.state.getStateProperty('drawingToolsSettings').strokeColor;
+      this.fillColor = this.state.getStateProperty('drawingToolsSettings').fillColor;
+      this.fillColorAlpha = this.state.getStateProperty('drawingToolsSettings').fillColorAlpha;
       this.mode = 'create';
       this.path = rect.createShape(initialPoint, this);
       var eventData = {
@@ -10850,7 +10972,7 @@ window.Mirador = window.Mirador || function(config) {
                 motivation.push("oa:commenting");
                 on = {
                   "@type": "oa:SpecificResource",
-                  "full": _this.window.parent.canvasID,
+                  "full": _this.state.getWindowObjectById(_this.windowId).canvasID,
                   "selector": {
                     "@type": "oa:SvgSelector",
                     "value": svg
@@ -11487,7 +11609,6 @@ window.Mirador = window.Mirador || function(config) {
       layoutAddress:    null,
       focused:          null,
       appendTo:         null,
-      parent:           null,
       window:           null,
       windowElement:    null
     }, options);
@@ -11505,6 +11626,81 @@ window.Mirador = window.Mirador || function(config) {
       this.element.appendTo(this.appendTo);
 
       this.bindEvents();
+      this.listenForActions();
+    },
+
+    listenForActions: function() {
+      var _this = this;
+
+      jQuery.subscribe('windowRemoved', function(event, id) {
+        if (_this.window && _this.window.id === id) {
+          // This prevents the save controller
+          // from attempting to re-save the window
+          // after having already removed it.
+          _this.clearSlot();
+        }
+      });
+
+      jQuery.subscribe('layoutChanged', function(event, layoutRoot) {
+        // Must reset the slotAddress of the window.
+        if (_this.window) {
+          _this.window.slotAddress = _this.layoutAddress;
+          jQuery.publish('windowSlotAddressUpdated', {
+            id: _this.window.id,
+            slotAddress: _this.window.slotAddress
+          });
+        }
+      });
+
+      jQuery.subscribe('HIDE_REMOVE_SLOT', function(event) {
+        _this.element.find('.remove-slot-option').hide();
+        if (_this.window) {
+          jQuery.publish('HIDE_REMOVE_OBJECT.' + _this.window.id);
+        }
+      });
+      
+      jQuery.subscribe('SHOW_REMOVE_SLOT', function(event) {
+        _this.element.find('.remove-slot-option').show();
+        if (_this.window) {
+          jQuery.publish('SHOW_REMOVE_OBJECT.' + _this.window.id);
+        }
+      });
+
+      jQuery.subscribe('ADD_ITEM_FROM_WINDOW', function(event, id) {
+        if (_this.window && _this.window.id === id) {
+          _this.addItem();
+        }
+      });
+
+      jQuery.subscribe('REMOVE_SLOT_FROM_WINDOW', function(event, id) {
+        if (_this.window && _this.window.id === id) {
+          jQuery.publish('REMOVE_NODE', _this);
+        }
+      });
+
+      jQuery.subscribe('SPLIT_RIGHT_FROM_WINDOW', function(event, id) {
+        if (_this.window && _this.window.id === id) {
+          jQuery.publish('SPLIT_RIGHT', _this);
+        }
+      });
+
+      jQuery.subscribe('SPLIT_LEFT_FROM_WINDOW', function(event, id) {
+        if (_this.window && _this.window.id === id) {
+          jQuery.publish('SPLIT_LEFT', _this);
+        }
+      });
+
+      jQuery.subscribe('SPLIT_DOWN_FROM_WINDOW', function(event, id) {
+        if (_this.window && _this.window.id === id) {
+          jQuery.publish('SPLIT_DOWN', _this);
+        }
+      });
+
+      jQuery.subscribe('SPLIT_UP_FROM_WINDOW', function(event, id) {
+        if (_this.window && _this.window.id === id) {
+          jQuery.publish('SPLIT_UP', _this);
+        }
+      });
     },
 
     bindEvents: function() {
@@ -11513,15 +11709,7 @@ window.Mirador = window.Mirador || function(config) {
 
       this.element.find('.addItemLink').on('click', function(){ _this.addItem(); });
       this.element.find('.remove-slot-option').on('click', function(){
-        _this.parent.removeNode(_this);
-      });
-      jQuery.subscribe('windowRemoved', function(event, id) {
-        if (_this.window && _this.window.id === id) {
-          // This prevents the save controller
-          // from attempting to re-save the window
-          // after having already removed it.
-          _this.clearSlot();
-        }
+        jQuery.publish('REMOVE_NODE', _this);
       });
       this.element.on('dragover', function(e) {
         e.preventDefault();
@@ -11539,23 +11727,6 @@ window.Mirador = window.Mirador || function(config) {
       this.element.on('drop', function(e) {
         _this.dropItem(e);
       });
-
-      jQuery.subscribe('layoutChanged', function(event, layoutRoot) {
-        if (_this.parent.slots.length <= 1) {
-          _this.element.find('.remove-slot-option').hide();
-        } else {
-          _this.element.find('.remove-slot-option').show();
-        }
-
-        // Must reset the slotAddress of the window.
-        if (_this.window) {
-          _this.window.slotAddress = _this.layoutAddress;
-          jQuery.publish('windowSlotAddressUpdated', {
-            id: _this.window.id,
-            slotAddress: _this.window.slotAddress
-          });
-        }
-      });
     },
 
     dropItem: function(e) {
@@ -11568,9 +11739,9 @@ window.Mirador = window.Mirador || function(config) {
             imageInfoUrl = $.getQueryParams(url).image,
             windowConfig;
 
-        if (typeof $.viewer.manifests[manifestUrl] !== 'undefined') {
+        if (typeof _this.state.getStateProperty('manifests')[manifestUrl] !== 'undefined') {
           windowConfig = {
-            manifest: $.viewer.manifests[manifestUrl],
+            manifest: _this.state.getStateProperty('manifests')[manifestUrl],
             slotAddress: _this.getAddress()
           };
 
@@ -11584,15 +11755,15 @@ window.Mirador = window.Mirador || function(config) {
             windowConfig.currentFocus = 'ImageView';
           }
 
-          $.viewer.workspace.addWindow(windowConfig);
+          jQuery.publish('ADD_WINDOW', windowConfig);
 
         } else if (typeof imageInfoUrl !== 'undefined') {
-          if (!$.viewer.manifests[imageInfoUrl]) {
-            $.viewer.addManifestFromUrl(imageInfoUrl, "(Added from URL)");
+          if (!_this.state.getStateProperty('manifests')[imageInfoUrl]) {
+            jQuery.publish('ADD_MANIFEST_FROM_URL', imageInfoUrl, "(Added from URL)");
           }
         } else {
-          if (!$.viewer.manifests[imageInfoUrl]) {
-            $.viewer.addManifestFromUrl(manifestUrl, "(Added from URL)");
+          if (!_this.state.getStateProperty('manifests')[imageInfoUrl]) {
+            jQuery.publish('ADD_MANIFEST_FROM_URL', manifestUrl, "(Added from URL)");
           }
         }
 
@@ -11625,7 +11796,7 @@ window.Mirador = window.Mirador || function(config) {
               windowConfig.currentFocus = 'ImageView';
             }
 
-            $.viewer.workspace.addWindow(windowConfig);
+            jQuery.publish('ADD_WINDOW', windowConfig);
           }
         });
       });
@@ -11646,7 +11817,7 @@ window.Mirador = window.Mirador || function(config) {
       var _this = this;
       _this.focused = true;
 
-      _this.parent.addItem(_this);
+      jQuery.publish('ADD_SLOT_ITEM', _this);
     },
 
     // template should be based on workspace type
@@ -11789,13 +11960,19 @@ window.Mirador = window.Mirador || function(config) {
         _this.currentCanvasID = _this.imagesList[0]['@id'];
       }
 
-      this.annoEndpointAvailable = !jQuery.isEmptyObject($.viewer.annotationEndpoint);
+      this.annoEndpointAvailable = !jQuery.isEmptyObject(_this.state.getStateProperty('annotationEndpoint'));
       if (!this.annotationLayerAvailable) {
         this.annotationCreationAvailable = false;
         this.annoEndpointAvailable = false;
         this.annotationState = 'annoOff';
       }
       _this.getAnnotations();
+
+      //for use by SidePanel, which needs to know if the current view can have the annotations tab
+      jQuery.publish(('windowUpdated'), {
+        id: _this.id,
+        annotationsAvailable: this.annotationsAvailable
+      });
 
       //check config
       if (typeof this.bottomPanelAvailable !== 'undefined' && !this.bottomPanelAvailable) {
@@ -11832,12 +12009,14 @@ window.Mirador = window.Mirador || function(config) {
         });
       }
       _this.element = jQuery(this.template(templateData)).appendTo(_this.appendTo);
+      jQuery.publish('WINDOW_ELEMENT_UPDATED', {windowId: _this.id, element: _this.element});
 
       //clear any existing objects
       _this.clearViews();
       _this.clearPanelsAndOverlay();
 
-      this.bindEvents();
+      //window needs to listen for any events before it finishes building out the widgets, in case they publish anything
+      this.listenForActions();
 
       //attach view and toggle view, which triggers the attachment of panels or overlays
       _this.bindNavigation();
@@ -11858,9 +12037,11 @@ window.Mirador = window.Mirador || function(config) {
           break;
       }
 
-      if ($.viewer.workspace.slots.length <= 1) {
+      if (_this.state.getSlots().length <= 1) {
         _this.element.find('.remove-object-option').hide();
       }
+
+      this.bindEvents();
 
       if (this.imagesList.length === 1) {
         this.bottomPanelVisibility(false);
@@ -11898,9 +12079,10 @@ window.Mirador = window.Mirador || function(config) {
       }
     },
 
-    bindEvents: function() {
+    listenForActions: function() {
       var _this = this;
 
+      // XXX seong - Rashimi removed this resize callback - and put it in bindEvents().
       //this event should trigger from layout
       jQuery(window).resize($.debounce(function(event){
         if (_this.focusModules.ScrollView) {
@@ -11923,12 +12105,12 @@ window.Mirador = window.Mirador || function(config) {
         }
       });
 
-      jQuery.subscribe('layoutChanged', function(event, layoutRoot) {
-        if ($.viewer.workspace.slots.length <= 1) {
-          _this.element.find('.remove-object-option').hide();
-        } else {
-          _this.element.find('.remove-object-option').show();
-        }
+      jQuery.subscribe('HIDE_REMOVE_OBJECT.' + _this.id, function(event) {
+        _this.element.find('.remove-object-option').hide();
+      });
+
+      jQuery.subscribe('SHOW_REMOVE_OBJECT.' + _this.id, function(event) {
+        _this.element.find('.remove-object-option').show();
       });
 
       jQuery.subscribe('sidePanelStateUpdated.' + this.id, function(event, state) {
@@ -11941,7 +12123,7 @@ window.Mirador = window.Mirador || function(config) {
             _this.element.find('.fa-caret-down').switchClass('fa-caret-down', 'fa-list');
             _this.element.find('.view-container').addClass('maximised');
         }
-    });
+      });
 
       // TODO: temporary logic to minimize side panel if only tab is toc and toc is empty
       jQuery.subscribe('sidePanelVisibilityByTab.' + this.id, function(event, visible) {
@@ -11958,6 +12140,64 @@ window.Mirador = window.Mirador || function(config) {
           imageView.panToAnnotation(annotation);
         }
       });
+
+      jQuery.subscribe('SET_CURRENT_CANVAS_ID.' + this.id, function(event, canvasID) {
+        _this.setCurrentCanvasID(canvasID);
+      });
+
+      jQuery.subscribe('REMOVE_CLASS.' + this.id, function(event, className) {
+        _this.element.find('.view-container').removeClass(className);
+      });
+
+      jQuery.subscribe('ADD_CLASS.' + this.id, function(event, className) {
+        _this.element.find('.view-container').addClass(className);
+      });
+
+      jQuery.subscribe('UPDATE_FOCUS_IMAGES.' + this.id, function(event, images) {
+        _this.updateFocusImages(images.array); 
+      });
+
+      jQuery.subscribe('HIDE_ICON_TOC.' + this.id, function(event) {
+        _this.element.find('.mirador-icon-toc').hide();
+      });
+
+      jQuery.subscribe('SHOW_ICON_TOC.' + this.id, function(event) {
+        _this.element.find('.mirador-icon-toc').show();
+      });
+
+      jQuery.subscribe('SET_BOTTOM_PANEL_VISIBILITY.' + this.id, function(event, visibility) {
+        if (typeof visibility !== 'undefined' && visibility !== null) {
+          _this.bottomPanelVisibility(visibility);
+        } else {
+          _this.bottomPanelVisibility(_this.bottomPanelVisible);
+        }
+      });
+
+      jQuery.subscribe('TOGGLE_BOTTOM_PANEL_VISIBILITY.' + this.id, function(event) {
+        var visible = !_this.bottomPanelVisible;
+        _this.bottomPanelVisibility(visible);
+      });
+
+      jQuery.subscribe('REQUEST_OSD_FULL_SCREEN.' + this.id, function(event) {
+        OpenSeadragon.requestFullScreen(_this.element[0]);
+      });
+    },
+
+    bindEvents: function() {
+      var _this = this;
+
+      //this event should trigger from layout
+      jQuery(window).resize($.debounce(function(){
+        if (_this.focusModules.ScrollView) {
+          var containerHeight = _this.element.find('.view-container').height();
+          var triggerShow = false;
+          if (_this.currentFocus === "ScrollView") {
+            triggerShow = true;
+          }
+          _this.focusModules.ScrollView.reloadImages(Math.floor(containerHeight * _this.scrollImageRatio), triggerShow);
+        }
+      }, 300));
+
     },
 
     bindAnnotationEvents: function() {
@@ -11971,12 +12211,14 @@ window.Mirador = window.Mirador || function(config) {
           _this.annotationsList.push(data);
           //update overlay so it can be a part of the annotationList rendering
           jQuery(osdOverlay).removeClass('osd-select-rectangle').addClass('annotation').attr('id', annoID);
-          jQuery.publish(('annotationListLoaded.' + _this.id));
 
+          // XXX seong
           // To notify annotation windows of the canvas update.
           // Cannot reuse the "annotationListLoaded" event because it gets
           // unsubscribed.
           jQuery.publish('endpointAnnoListLoaded', [_this.id]);
+
+          jQuery.publish('ANNOTATIONS_LIST_UPDATED', {windowId: _this.id, annotationsList: _this.annotationsList});
         },
         function() {
           //provide useful feedback to user
@@ -11995,12 +12237,14 @@ window.Mirador = window.Mirador || function(config) {
               return false;
             }
           });
-          jQuery.publish(('annotationListLoaded.' + _this.id));
-          
+
+          // XXX seong
           // To notify annotation windows of the canvas update.
           // Cannot reuse the "annotationListLoaded" event because it gets
           // unsubscribed.
           jQuery.publish('endpointAnnoListLoaded', [_this.id]);
+
+          jQuery.publish('ANNOTATIONS_LIST_UPDATED', {windowId: _this.id, annotationsList: _this.annotationsList});
         },
         function() {
           console.log("There was an error updating this annotation");
@@ -12012,13 +12256,14 @@ window.Mirador = window.Mirador || function(config) {
         //first function is success callback, second is error callback
         _this.endpoint.deleteAnnotation(annoId, function() {
           _this.annotationsList = jQuery.grep(_this.annotationsList, function(e){ return e['@id'] !== annoId; });
-          jQuery.publish(('annotationListLoaded.' + _this.id));
           jQuery.publish(('removeOverlay.' + _this.id), annoId);
           
           // To notify annotation windows of the canvas update.
           // Cannot reuse the "annotationListLoaded" event because it gets
           // unsubscribed.
           jQuery.publish('endpointAnnoListLoaded', [_this.id]);
+
+          jQuery.publish('ANNOTATIONS_LIST_UPDATED', {windowId: _this.id, annotationsList: _this.annotationsList});
         },
         function() {
           // console.log("There was an error deleting this annotation");
@@ -12057,7 +12302,8 @@ window.Mirador = window.Mirador || function(config) {
             _this[panelType] = new $[view]({
               manifest: _this.manifest,
               appendTo: _this.element.find('.'+panelType),
-              parent: _this,
+              state:  _this.state,
+              windowId: _this.id,
               panel: true,
               canvasID: _this.currentCanvasID,
               imagesList: _this.imagesList,
@@ -12088,7 +12334,8 @@ window.Mirador = window.Mirador || function(config) {
       });
 
       //update panels with current image
-      if (this.bottomPanel) { this.bottomPanel.updateFocusImages(this.focusImages); }
+      //console.log(this.focusImages);
+      //if (this.bottomPanel) { this.bottomPanel.updateFocusImages(this.focusImages); }
     },
 
     updateSidePanel: function() {
@@ -12107,7 +12354,8 @@ window.Mirador = window.Mirador || function(config) {
 
       if (this.sidePanel === null) {
         this.sidePanel = new $.SidePanel({
-              parent: _this,
+              windowId: _this.id,
+              state: _this.state,
               appendTo: _this.element.find('.sidePanel'),
               manifest: _this.manifest,
               canvasID: _this.currentCanvasID,
@@ -12249,7 +12497,8 @@ window.Mirador = window.Mirador || function(config) {
         this.focusModules.ThumbnailsView = new $.ThumbnailsView({
           manifest: this.manifest,
           appendTo: this.element.find('.view-container'),
-          parent: this,
+          state:  this.state,
+          windowId: this.id,
           canvasID: this.currentCanvasID,
           imagesList: this.imagesList
         });
@@ -12266,8 +12515,8 @@ window.Mirador = window.Mirador || function(config) {
         this.focusModules.ImageView = new $.ImageView({
           manifest: this.manifest,
           appendTo: this.element.find('.view-container'),
-          parent: this,
           windowId: this.id,
+          state:  this.state,
           canvasID: canvasID,
           imagesList: this.imagesList,
           osdOptions: this.focusOptions,
@@ -12291,8 +12540,8 @@ window.Mirador = window.Mirador || function(config) {
         this.focusModules.BookView = new $.BookView({
           manifest: this.manifest,
           appendTo: this.element.find('.view-container'),
-          parent: this,
           windowId: this.id,
+          state:  this.state,
           canvasID: canvasID,
           imagesList: this.imagesList,
           osdOptions: this.focusOptions,
@@ -12313,7 +12562,8 @@ window.Mirador = window.Mirador || function(config) {
         this.focusModules.ScrollView = new $.ScrollView({
           manifest: this.manifest,
           appendTo: this.element.find('.view-container'),
-          parent: this,
+          state:  this.state,
+          windowId: this.id,
           canvasID: this.currentCanvasID,
           imagesList: this.imagesList,
           thumbInfo: {thumbsHeight: Math.floor(containerHeight * this.scrollImageRatio), listingCssCls: 'scroll-listing-thumbs', thumbnailCls: 'scroll-view'}
@@ -12327,6 +12577,7 @@ window.Mirador = window.Mirador || function(config) {
 
     updateFocusImages: function(imageList) {
       this.focusImages = imageList;
+      if (this.bottomPanel) { this.bottomPanel.updateFocusImages(this.focusImages); }
     },
 
     setCurrentCanvasID: function(canvasID) {
@@ -12409,16 +12660,16 @@ window.Mirador = window.Mirador || function(config) {
             //indicate this is a manifest annotation - which affects the UI
             value.endpoint = "manifest";
           });
-          jQuery.publish('annotationListLoaded.' + _this.id);
+          jQuery.publish('ANNOTATIONS_LIST_UPDATED', {windowId: _this.id, annotationsList: _this.annotationsList});
         });
       }
 
       // next check endpoint
       if (this.annoEndpointAvailable) {
         var dfd = jQuery.Deferred(),
-        module = $.viewer.annotationEndpoint.module,
-        options = $.viewer.annotationEndpoint.options || {}; //grab anything from the config that should be passed directly to the endpoint
-        options.name = $.viewer.annotationEndpoint.name;
+        module = _this.state.getStateProperty('annotationEndpoint').module,
+        options = _this.state.getStateProperty('annotationEndpoint').options || {}; //grab anything from the config that should be passed directly to the endpoint
+        options.name = _this.state.getStateProperty('annotationEndpoint').name;
         // One annotation endpoint per window, the endpoint
         // is a property of the instance.
         if ( _this.endpoint && _this.endpoint !== null ) {
@@ -12426,7 +12677,7 @@ window.Mirador = window.Mirador || function(config) {
         } else {
           options.dfd = dfd;
           options.windowID = _this.id;
-          options.parent = _this;
+          options.imagesList = _this.imagesList;
           _this.endpoint = new $[module](options);
         }
         _this.endpoint.search({ "uri" : _this.currentCanvasID});
@@ -12440,12 +12691,13 @@ window.Mirador = window.Mirador || function(config) {
             }
             return true;
           });
-          jQuery.publish('annotationListLoaded.' + _this.id);
           
           // To notify annotation windows of the canvas update.
           // Cannot reuse the "annotationListLoaded" event because it gets
           // unsubscribed.
           jQuery.publish('endpointAnnoListLoaded', [_this.id]);
+
+          jQuery.publish('ANNOTATIONS_LIST_UPDATED', {windowId: _this.id, annotationsList: _this.annotationsList});
         });
       }
     },
@@ -12454,75 +12706,75 @@ window.Mirador = window.Mirador || function(config) {
     bindNavigation: function() {
       var _this = this;
 
-    this.element.find('.mirador-icon-image-view').on('mouseenter',
+      this.element.find('.mirador-icon-image-view').on('mouseenter',
+        function() {
+        _this.element.find('.image-list').stop().slideFadeToggle(300);
+      }).on('mouseleave',
       function() {
-      _this.element.find('.image-list').stop().slideFadeToggle(300);
-    }).on('mouseleave',
-    function() {
-      _this.element.find('.image-list').stop().slideFadeToggle(300);
-    });
+        _this.element.find('.image-list').stop().slideFadeToggle(300);
+      });
 
-    this.element.find('.mirador-icon-window-menu').on('mouseenter',
+      this.element.find('.mirador-icon-window-menu').on('mouseenter',
+        function() {
+        _this.element.find('.slot-controls').stop().slideFadeToggle(300);
+      }).on('mouseleave',
       function() {
-      _this.element.find('.slot-controls').stop().slideFadeToggle(300);
-    }).on('mouseleave',
-    function() {
-      _this.element.find('.slot-controls').stop().slideFadeToggle(300);
-    });
+        _this.element.find('.slot-controls').stop().slideFadeToggle(300);
+      });
 
-    this.element.find('.single-image-option').on('click', function() {
-      _this.toggleImageView(_this.currentCanvasID);
-    });
+      this.element.find('.single-image-option').on('click', function() {
+        _this.toggleImageView(_this.currentCanvasID);
+      });
 
-    this.element.find('.book-option').on('click', function() {
-      _this.toggleBookView(_this.currentCanvasID);
-    });
+      this.element.find('.book-option').on('click', function() {
+        _this.toggleBookView(_this.currentCanvasID);
+      });
 
-    this.element.find('.scroll-option').on('click', function() {
-      _this.toggleScrollView(_this.currentCanvasID);
-    });
+      this.element.find('.scroll-option').on('click', function() {
+        _this.toggleScrollView(_this.currentCanvasID);
+      });
 
-    this.element.find('.thumbnails-option').on('click', function() {
-      _this.toggleThumbnails(_this.currentCanvasID);
-    });
+      this.element.find('.thumbnails-option').on('click', function() {
+        _this.toggleThumbnails(_this.currentCanvasID);
+      });
 
-    this.element.find('.mirador-icon-metadata-view').on('click', function() {
-      _this.toggleMetadataOverlay(_this.currentFocus);
-    });
+      this.element.find('.mirador-icon-metadata-view').on('click', function() {
+        _this.toggleMetadataOverlay(_this.currentFocus);
+      });
 
-    this.element.find('.mirador-icon-toc').on('click', function() {
-      _this.sidePanelVisibility(!_this.sidePanelVisible, '0.3s');
-    });
+      this.element.find('.mirador-icon-toc').on('click', function() {
+        _this.sidePanelVisibility(!_this.sidePanelVisible, '0.3s');
+      });
 
-    this.element.find('.new-object-option').on('click', function() {
-      _this.parent.addItem();
-    });
+      this.element.find('.new-object-option').on('click', function() {
+        jQuery.publish('ADD_ITEM_FROM_WINDOW', _this.id);
+      });
 
-    this.element.find('.remove-object-option').on('click', function() {
-      $.viewer.workspace.removeNode(_this.parent);
-    });
+      this.element.find('.remove-object-option').on('click', function() {
+        jQuery.publish('REMOVE_SLOT_FROM_WINDOW', _this.id);
+      });
 
-    this.element.find('.add-slot-right').on('click', function() {
-      $.viewer.workspace.splitRight(_this.parent);
-    });
+      this.element.find('.add-slot-right').on('click', function() {
+        jQuery.publish('SPLIT_RIGHT_FROM_WINDOW', _this.id);
+      });
 
-    this.element.find('.add-slot-left').on('click', function() {
-      $.viewer.workspace.splitLeft(_this.parent);
-    });
+      this.element.find('.add-slot-left').on('click', function() {
+        jQuery.publish('SPLIT_LEFT_FROM_WINDOW', _this.id);
+      });
 
-    this.element.find('.add-slot-below').on('click', function() {
-      $.viewer.workspace.splitDown(_this.parent);
-    });
+      this.element.find('.add-slot-below').on('click', function() {
+        jQuery.publish('SPLIT_DOWN_FROM_WINDOW', _this.id);
+      });
 
-    this.element.find('.add-slot-above').on('click', function() {
-      $.viewer.workspace.splitUp(_this.parent);
-    });
-    
-    this.element.find('.add-annotation-window').on('click', function() {
-      console.log('ADD ANNOTATION WINDOW');
-      jQuery.publish('clicked.addAnnotationWindow', _this.id);
-    });
-    
+      this.element.find('.add-slot-above').on('click', function() {
+        jQuery.publish('SPLIT_UP_FROM_WINDOW', _this.id);
+      });
+
+      // XXX seong
+      this.element.find('.add-annotation-window').on('click', function() {
+        console.log('ADD ANNOTATION WINDOW');
+        jQuery.publish('clicked.addAnnotationWindow', _this.id);
+      });
     },
 
     // template should be based on workspace type
@@ -12605,7 +12857,6 @@ window.Mirador = window.Mirador || function(config) {
   $.AnnotationsLayer = function(options) {
 
     jQuery.extend(true, this, {
-      parent:            null,
       annotationsList:   null,
       viewer:            null,
       drawTool:          null,
@@ -12627,9 +12878,10 @@ window.Mirador = window.Mirador || function(config) {
 
       this.createRenderer();
       this.bindEvents();
+      this.listenForActions();
     },
 
-    bindEvents: function() {
+    listenForActions: function() {
       var _this = this;
 
       jQuery.subscribe('modeChange.' + _this.windowId, function(event, modeName) {
@@ -12638,9 +12890,13 @@ window.Mirador = window.Mirador || function(config) {
       });
 
       jQuery.subscribe('annotationListLoaded.' + _this.windowId, function(event) {
-        _this.annotationsList = _this.parent.parent.annotationsList;
+        _this.annotationsList = _this.state.getWindowAnnotationsList(_this.windowId);
         _this.updateRenderer();
       });
+    },
+
+    bindEvents: function() {
+      var _this = this;
     },
 
     createRenderer: function() {
@@ -12648,9 +12904,10 @@ window.Mirador = window.Mirador || function(config) {
       this.drawTool = new $.OsdRegionDrawTool({
         osdViewer: _this.viewer,
         parent: _this,
-        osd: $.OpenSeadragon,
-        list: _this.annotationsList,
-        visible: false
+        list: _this.annotationsList, // must be passed by reference.
+        visible: false,
+        windowId: _this.windowId,
+        state: _this.state
       });
       this.modeSwitch();
     },
@@ -12690,7 +12947,6 @@ window.Mirador = window.Mirador || function(config) {
         jQuery.extend(true, this, {
             element:           null,
             appendTo:          null,
-            parent:            null,
             manifest:          null,
             visible:           null
         }, options);
@@ -12701,7 +12957,7 @@ window.Mirador = window.Mirador || function(config) {
     $.AnnotationsTab.prototype = {
         init: function() {
             var _this = this;
-            this.windowId = this.parent.id;
+            this.windowId = this.windowId;
 
             this.state({
                 id: 'annotationsTab',
@@ -12741,20 +12997,13 @@ window.Mirador = window.Mirador || function(config) {
             var _this = this,
                 annotationSources = [],
                 state = this.state();
-            for(var i = 0; i < _this.parent.annotationsList.length; i++)
-            {
-
-                if(typeof _this.parent.annotationsList[i].endpoint === 'string'){
-
-                  annotationSources.push('manifest');
-
-                }else{
-
-                  annotationSources.push(_this.parent.annotationsList[i].endpoint.name);
-
+            jQuery.each(_this.state.getWindowAnnotationsList(_this.windowId), function(index, value) {
+                if(typeof value.endpoint === 'string') {
+                    annotationSources.push('manifest');
+                } else {
+                    annotationSources.push(value.endpoint.name);
                 }
-
-            }
+            });
 
             // make unique
             annotationSources = annotationSources.filter(function(itm,i,annotationSources){
@@ -12908,7 +13157,6 @@ window.Mirador = window.Mirador || function(config) {
         osdBounds:        null,
         zoomLevel:        null
       },
-      parent:           null,
       stitchTileMargin: 10
     }, options);
 
@@ -12933,13 +13181,15 @@ window.Mirador = window.Mirador || function(config) {
       this.currentImg = this.imagesList[this.currentImgIndex];
 
       this.element = jQuery(this.template()).appendTo(this.appendTo);
+
       this.hud = new $.Hud({
-        parent: this,
-        element: this.element,
+        appendTo: this.element,
         bottomPanelAvailable: this.bottomPanelAvailable,
         windowId: this.windowId,
         annotationLayerAvailable: false,
-        fullScreenAvailable : this.fullScreenAvailable
+        fullScreenAvailable : this.fullScreenAvailable,
+        showNextPrev : this.imagesList.length !== 1,
+        state: this.state
       });
 
       if (this.manifest.jsonLd.sequences[0].viewingDirection) {
@@ -12951,6 +13201,15 @@ window.Mirador = window.Mirador || function(config) {
 
       this.stitchList = this.getStitchList();
       this.createOpenSeadragonInstance();
+
+      this.bindEvents();
+      this.listenForActions();
+
+      if (typeof this.bottomPanelAvailable !== 'undefined' && !this.bottomPanelAvailable) {
+        jQuery.publish('SET_BOTTOM_PANEL_VISIBILITY.' + this.windowId, false);
+      } else {
+        jQuery.publish('SET_BOTTOM_PANEL_VISIBILITY.' + this.windowId, null);
+      }
     },
 
     template: Handlebars.compile([
@@ -12958,11 +13217,147 @@ window.Mirador = window.Mirador || function(config) {
                                  '</div>'
     ].join('')),
 
+    listenForActions: function() {
+      var _this = this,
+      firstCanvasId = _this.imagesList[0]['@id'],
+      lastCanvasId = _this.imagesList[_this.imagesList.length-1]['@id'];
+
+      jQuery.subscribe('bottomPanelSet.' + _this.windowId, function(event, visible) {
+        var dodgers = _this.element.find('.mirador-osd-toggle-bottom-panel, .mirador-pan-zoom-controls');
+        var arrows = _this.element.find('.mirador-osd-next, .mirador-osd-previous');
+        if (visible === true) {
+          dodgers.css({transform: 'translateY(-130px)'});
+          arrows.css({transform: 'translateY(-65px)'});
+        } else {
+          dodgers.css({transform: 'translateY(0)'});
+          arrows.css({transform: 'translateY(0)'});
+        }
+      });
+
+      jQuery.subscribe('fitBounds.' + _this.windowId, function(event, bounds) {
+        var rect = _this.osd.viewport.imageToViewportRectangle(Number(bounds.x), Number(bounds.y), Number(bounds.width), Number(bounds.height));
+        _this.osd.viewport.fitBoundsWithConstraints(rect, false);
+      });
+
+      jQuery.subscribe('currentCanvasIDUpdated.' + _this.windowId, function(event, canvasId) {
+        // If it is the first canvas, hide the "go to previous" button, otherwise show it.
+        if (canvasId === firstCanvasId) {
+          _this.element.find('.mirador-osd-previous').hide();
+          _this.element.find('.mirador-osd-next').show();
+        } else if (canvasId === lastCanvasId) {
+          _this.element.find('.mirador-osd-next').hide();
+          _this.element.find('.mirador-osd-previous').show();
+        } else {
+          _this.element.find('.mirador-osd-next').show();
+          _this.element.find('.mirador-osd-previous').show();
+        }
+        // If it is the last canvas, hide the "go to previous" button, otherwise show it.
+      });
+    },
+
+bindEvents: function() {
+      var _this = this;
+
+      this.element.find('.mirador-osd-next').on('click', function() {
+        _this.next();
+      });
+
+      this.element.find('.mirador-osd-previous').on('click', function() {
+        _this.previous();
+      });
+
+      this.element.find('.mirador-osd-go-home').on('click', function() {
+        _this.osd.viewport.goHome();
+      });
+
+      this.element.find('.mirador-osd-up').on('click', function() {
+        var panBy = _this.getPanByValue();
+        _this.osd.viewport.panBy(new OpenSeadragon.Point(0, -panBy.y));
+        _this.osd.viewport.applyConstraints();
+      });
+      this.element.find('.mirador-osd-right').on('click', function() {
+        var panBy = _this.getPanByValue();
+        _this.osd.viewport.panBy(new OpenSeadragon.Point(panBy.x, 0));
+        _this.osd.viewport.applyConstraints();
+      });
+      this.element.find('.mirador-osd-down').on('click', function() {
+        var panBy = _this.getPanByValue();
+        _this.osd.viewport.panBy(new OpenSeadragon.Point(0, panBy.y));
+        _this.osd.viewport.applyConstraints();
+      });
+      this.element.find('.mirador-osd-left').on('click', function() {
+        var panBy = _this.getPanByValue();
+        _this.osd.viewport.panBy(new OpenSeadragon.Point(-panBy.x, 0));
+        _this.osd.viewport.applyConstraints();
+      });
+
+      this.element.find('.mirador-osd-zoom-in').on('click', function() {
+        var osd = _this.osd;
+        if ( osd.viewport ) {
+          osd.viewport.zoomBy(
+            osd.zoomPerClick / 1.0
+          );
+          osd.viewport.applyConstraints();
+        }
+      });
+      this.element.find('.mirador-osd-zoom-out').on('click', function() {
+        var osd = _this.osd;
+        if ( osd.viewport ) {
+          osd.viewport.zoomBy(
+            1.0 / osd.zoomPerClick
+          );
+          osd.viewport.applyConstraints();
+        }
+      });
+
+      this.element.find('.mirador-osd-fullscreen').on('click', function() {
+        if (OpenSeadragon.isFullScreen()) {
+          OpenSeadragon.exitFullScreen();
+        } else {
+          jQuery.publish('REQUEST_OSD_FULL_SCREEN.' + _this.windowId);
+        }
+      });
+
+      jQuery(document).on("webkitfullscreenchange mozfullscreenchange fullscreenchange", function() {
+        _this.fullScreen();
+      });
+
+      this.element.find('.mirador-osd-toggle-bottom-panel').on('click', function() {
+        jQuery.publish('TOGGLE_BOTTOM_PANEL_VISIBILITY.' + _this.windowId);
+      });
+    },
+
+    getPanByValue: function() {
+      var bounds = this.osd.viewport.getBounds(true);
+      //for now, let's keep 50% of the image on the screen
+      var panBy = {
+        "x" : bounds.width * 0.5,
+        "y" : bounds.height * 0.5
+      };
+      return panBy;
+    },
+
+    fullScreen: function() {
+      var replacementButton;
+
+      if (!OpenSeadragon.isFullScreen()) {
+        replacementButton = jQuery('<i class="fa fa-expand"></i>');
+        this.element.find('.mirador-osd-fullscreen').empty().append(replacementButton);
+        this.element.find('.mirador-osd-toggle-bottom-panel').show();
+        jQuery.publish('SET_BOTTOM_PANEL_VISIBILITY.' + this.windowId, true);
+      } else {
+        replacementButton = jQuery('<i class="fa fa-compress"></i>');
+        this.element.find('.mirador-osd-fullscreen').empty().append(replacementButton);
+        this.element.find('.mirador-osd-toggle-bottom-panel').hide();
+        jQuery.publish('SET_BOTTOM_PANEL_VISIBILITY.' + this.windowId, false);
+      }
+    },
+
     setBounds: function() {
       var _this = this;
       this.osdOptions.osdBounds = this.osd.viewport.getBounds(true);
       jQuery.publish("imageBoundsUpdated", {
-        id: _this.parent.id, 
+        id: _this.windowId, 
           osdBounds: {
             x: _this.osdOptions.osdBounds.x, 
             y: _this.osdOptions.osdBounds.y, 
@@ -12990,9 +13385,9 @@ window.Mirador = window.Mirador || function(config) {
 
     adjustWidth: function(className, hasClass) {
       if (hasClass) {
-        this.parent.element.find('.view-container').removeClass(className);
+        jQuery.publish('REMOVE_CLASS.'+this.windowId, className);
       } else {
-        this.parent.element.find('.view-container').addClass(className);
+        jQuery.publish('ADD_CLASS.'+this.windowId, className);
       }
     },
 
@@ -13113,7 +13508,7 @@ window.Mirador = window.Mirador || function(config) {
         next = this.currentImgIndex + 2;
       }
       if (next < this.imagesList.length) {
-        this.parent.setCurrentCanvasID(this.imagesList[next]['@id']);
+        jQuery.publish('SET_CURRENT_CANVAS_ID.' + this.windowId, this.imagesList[next]['@id']);
       }
     },
 
@@ -13128,7 +13523,7 @@ window.Mirador = window.Mirador || function(config) {
         prev = this.currentImgIndex - 1;
       }
       if (prev >= 0) {
-        this.parent.setCurrentCanvasID(this.imagesList[prev]['@id']);
+        jQuery.publish('SET_CURRENT_CANVAS_ID.' + this.windowId, this.imagesList[prev]['@id']);
       }
     },
 
@@ -13208,7 +13603,7 @@ window.Mirador = window.Mirador || function(config) {
       jQuery.each(stitchList, function(index, image) {
         _this.focusImages.push(image['@id']);
       });
-      this.parent.updateFocusImages(this.focusImages);
+      jQuery.publish('UPDATE_FOCUS_IMAGES.' + this.windowId, {array: this.focusImages});
       return stitchList;
     }
   };
@@ -13220,7 +13615,6 @@ window.Mirador = window.Mirador || function(config) {
   $.ContextControls = function(options) {
 
     jQuery.extend(this, {
-      parent: null,  //hud
       element: null,
       container: null,
       mode: null,
@@ -13235,15 +13629,6 @@ window.Mirador = window.Mirador || function(config) {
   $.ContextControls.prototype = {
 
     init: function() {    
-      var allTools = $.getTools();
-      this.availableTools = [];
-      for ( var i = 0; i < $.viewer.availableAnnotationDrawingTools.length; i++) {
-        for ( var j = 0; j < allTools.length; j++) {
-          if ($.viewer.availableAnnotationDrawingTools[i] == allTools[j].name) {
-            this.availableTools.push(allTools[j].logoClass);
-          }
-        }
-      }
       var _this = this;
       this.element = jQuery(this.template({
         tools : _this.availableTools,
@@ -13345,85 +13730,12 @@ window.Mirador = window.Mirador || function(config) {
     },
 
     bindEvents: function() {
-      var _this = this;
-
-      this.container.find('.fa-refresh').on('click', function() {
-        jQuery.publish('updateAnnotationList.'+_this.windowId);
-        jQuery.publish('refreshOverlay.'+_this.windowId, '');
-      });
-      this.container.find('.fa-trash-o').on('click', function() {
-        jQuery.publish('deleteShape.'+_this.windowId, '');
-      });
-      this.container.find('.fa-save').on('click', function() {
-        jQuery.publish('updateEditedShape.'+_this.windowId, '');
-      });
-      this.container.find('.fa-times').on('click', function() {
-        jQuery.publish('toggleDefaultDrawingTool.'+_this.windowId);
-      });
-      this.container.find('.fa-edit').on('click', function() {
-        jQuery.publish('toggleDefaultDrawingTool.'+_this.windowId);
-      });
-
-      function make_handler(shapeMode) {
-        return function () {
-          jQuery.publish('toggleDrawingTool.'+_this.windowId, shapeMode);
-        };
-      }
-      for (var value in _this.availableTools) {
-        this.container.find('.material-icons:contains(\'' + _this.availableTools[value] + '\')').on('click', make_handler(_this.availableTools[value]));
-      }
-
-      jQuery.subscribe('initBorderColor.' + _this.windowId, function(event, color) {
-        _this.container.find('.borderColorPicker').spectrum('set', color);
-      });
-      jQuery.subscribe('initFillColor.' + _this.windowId, function(event, color, alpha) {
-        var colorObj = tinycolor(color);
-        colorObj.setAlpha(alpha);
-        _this.container.find('.fillColorPicker').spectrum('set', colorObj);
-      });
-      jQuery.subscribe('disableBorderColorPicker.'+_this.windowId, function(event, disablePicker) {
-        if(disablePicker) {
-          _this.container.find('.borderColorPicker').spectrum("disable");
-        }else{
-          _this.container.find('.borderColorPicker').spectrum("enable");
-        }
-      });
-      jQuery.subscribe('disableFillColorPicker.'+_this.windowId, function(event, disablePicker) {
-        if(disablePicker) {
-          _this.container.find('.fillColorPicker').spectrum("disable");
-        }else{
-          _this.container.find('.fillColorPicker').spectrum("enable");
-        }
-      });
-      jQuery.subscribe('showDrawTools.'+_this.windowId, function(event) {
-        _this.container.find('.draw-tool').show();
-      });
-      jQuery.subscribe('hideDrawTools.'+_this.windowId, function(event) {
-        _this.container.find('.draw-tool').hide();
-      });
-
-      this.container.find('.mirador-osd-close').on('click', $.debounce(function() {
-        _this.parent.annoState.displayOff();
-      },300));
-      
+      var _this = this;      
       this.container.find('.mirador-osd-back').on('click', function() {
         _this.element.remove();
         _this.element = jQuery(_this.template()).appendTo(_this.container);
         _this.bindEvents();
       });
-
-      this.container.find('.mirador-osd-edit-mode').on('click', function() {
-        if (_this.parent.annoState.current === 'annoOnCreateOff') {
-          _this.parent.annoState.createOn();
-        } else if (_this.parent.annoState.current === 'annoOnCreateOn') {
-          _this.parent.annoState.createOff();
-        }
-      });
-      this.container.find('.mirador-osd-refresh-mode').on('click', function() {
-        //update annotation list from endpoint
-        jQuery.publish('updateAnnotationList.'+_this.windowId);
-      });
-
     },
 
     template: Handlebars.compile([
@@ -13455,13 +13767,13 @@ window.Mirador = window.Mirador || function(config) {
                                    '<a class="hud-control draw-tool" style="color:#abcdef;">',
                                    '|',
                                    '</a>',
-                                   '<a class="hud-control draw-tool">',
+                                   '<a class="hud-control draw-tool mirador-osd-delete-mode">',
                                    '<i class="fa fa-lg fa-trash-o"></i>',
                                    '</a>',
-                                   '<a class="hud-control draw-tool">',
+                                   '<a class="hud-control draw-tool mirador-osd-save-mode">',
                                    '<i class="fa fa-lg fa-save"></i>',
                                    '</a>',
-                                   '<a class="hud-control draw-tool">',
+                                   '<a class="hud-control draw-tool mirador-osd-refresh-mode">',
                                    '<i class="fa fa-lg fa-refresh"></i>',
                                    '</a>',
                                    '{{/if}}',
@@ -13503,7 +13815,6 @@ window.Mirador = window.Mirador || function(config) {
 
     jQuery.extend(this, {
       element:   null,
-      parent:    null,
       windowId:  null,
       annoState: null,
       showAnnotations: true,
@@ -13520,146 +13831,28 @@ window.Mirador = window.Mirador || function(config) {
       this.createStateMachine();
 
       this.element = jQuery(this.template({
-        showNextPrev : this.parent.imagesList.length !== 1, 
+        showNextPrev : this.showNextPrev, 
         showBottomPanel : typeof this.bottomPanelAvailable === 'undefined' ? true : this.bottomPanelAvailable,
         showAnno : this.annotationLayerAvailable,
         showFullScreen : this.fullScreenAvailable
-      })).appendTo(this.element);
+      })).appendTo(this.appendTo);
 
       if (this.annotationLayerAvailable && this.annoEndpointAvailable) {
         this.contextControls = new $.ContextControls({
           element: null,
-          container: this.parent.element,
+          container: this.appendTo,
           mode: 'displayAnnotations',
-          parent: this,
           windowId: this.windowId,
-          annotationCreationAvailable: this.annotationCreationAvailable
+          annotationCreationAvailable: this.annotationCreationAvailable,
+          availableTools: this.availableTools
         });
       }
 
       this.bindEvents();
-
-      if (typeof this.bottomPanelAvailable !== 'undefined' && !this.bottomPanelAvailable) {
-        this.parent.parent.bottomPanelVisibility(false);
-      } else {
-        this.parent.parent.bottomPanelVisibility(this.parent.parent.bottomPanelVisible);
-      }
     },
 
     bindEvents: function() {
-      var _this = this,
-      firstCanvasId = _this.parent.imagesList[0]['@id'],
-      lastCanvasId = _this.parent.imagesList[_this.parent.imagesList.length-1]['@id'];
-
-      this.parent.element.find('.mirador-osd-next').on('click', function() {
-        _this.parent.next();
-      });
-
-      this.parent.element.find('.mirador-osd-previous').on('click', function() {
-        _this.parent.previous();
-      });
-
-      this.parent.element.find('.mirador-osd-annotations-layer').on('click', $.debounce(function() {
-        if (_this.annoState.current === 'none') {
-          _this.annoState.startup(this);
-        }
-        if (_this.annoState.current === 'annoOff') {
-          _this.annoState.displayOn(this);
-        } else {
-          _this.annoState.displayOff(this);
-        }
-      },300));
-
-      this.parent.element.find('.mirador-osd-go-home').on('click', function() {
-        _this.parent.osd.viewport.goHome();
-      });
-
-      this.parent.element.find('.mirador-osd-up').on('click', function() {
-        var panBy = _this.getPanByValue();
-        var osd = _this.parent.osd;
-        osd.viewport.panBy(new OpenSeadragon.Point(0, -panBy.y));
-        osd.viewport.applyConstraints();
-      });
-      this.parent.element.find('.mirador-osd-right').on('click', function() {
-        var panBy = _this.getPanByValue();
-        var osd = _this.parent.osd;
-        osd.viewport.panBy(new OpenSeadragon.Point(panBy.x, 0));
-        osd.viewport.applyConstraints();
-      });
-      this.parent.element.find('.mirador-osd-down').on('click', function() {
-        var panBy = _this.getPanByValue();
-        var osd = _this.parent.osd;
-        osd.viewport.panBy(new OpenSeadragon.Point(0, panBy.y));
-        osd.viewport.applyConstraints();
-      });
-      this.parent.element.find('.mirador-osd-left').on('click', function() {
-        var panBy = _this.getPanByValue();
-        var osd = _this.parent.osd;
-        osd.viewport.panBy(new OpenSeadragon.Point(-panBy.x, 0));
-        osd.viewport.applyConstraints();
-      });
-      this.parent.element.find('.mirador-osd-zoom-in').on('click', function() {
-        var osd = _this.parent.osd;
-        if ( osd.viewport ) {
-          osd.viewport.zoomBy(
-            osd.zoomPerClick / 1.0
-          );
-          osd.viewport.applyConstraints();
-        }
-      });
-      this.parent.element.find('.mirador-osd-zoom-out').on('click', function() {
-        var osd = _this.parent.osd;
-        if ( osd.viewport ) {
-          osd.viewport.zoomBy(
-            1.0 / osd.zoomPerClick
-          );
-          osd.viewport.applyConstraints();
-        }
-      });
-
-      this.parent.element.find('.mirador-osd-fullscreen').on('click', function() {
-        if (OpenSeadragon.isFullScreen()) {
-          OpenSeadragon.exitFullScreen();
-        } else {
-          OpenSeadragon.requestFullScreen(_this.parent.parent.element[0]);
-        }
-      });
-
-      jQuery(document).on("webkitfullscreenchange mozfullscreenchange fullscreenchange", function() {
-        _this.fullScreen();
-      });
-
-      this.parent.element.find('.mirador-osd-toggle-bottom-panel').on('click', function() {
-        var visible = !_this.parent.parent.bottomPanelVisible;
-        _this.parent.parent.bottomPanelVisibility(visible);
-      });
-
-      jQuery.subscribe('bottomPanelSet.' + _this.windowId, function(event, visible) {
-        var dodgers = _this.parent.element.find('.mirador-osd-toggle-bottom-panel, .mirador-pan-zoom-controls');
-        var arrows = _this.parent.element.find('.mirador-osd-next, .mirador-osd-previous');
-        if (visible === true) {
-          dodgers.css({transform: 'translateY(-130px)'});
-          arrows.css({transform: 'translateY(-65px)'});
-        } else {
-          dodgers.css({transform: 'translateY(0)'});
-          arrows.css({transform: 'translateY(0)'});
-        }
-      });
-
-      jQuery.subscribe('currentCanvasIDUpdated.' + _this.windowId, function(event, canvasId) {
-        // If it is the first canvas, hide the "go to previous" button, otherwise show it.
-        if (canvasId === firstCanvasId) {
-          _this.parent.element.find('.mirador-osd-previous').hide();
-          _this.parent.element.find('.mirador-osd-next').show();
-        } else if (canvasId === lastCanvasId) {
-          _this.parent.element.find('.mirador-osd-next').hide();
-          _this.parent.element.find('.mirador-osd-previous').show();
-        } else {
-          _this.parent.element.find('.mirador-osd-next').show();
-          _this.parent.element.find('.mirador-osd-previous').show();
-        }
-        // If it is the last canvas, hide the "go to previous" button, otherwise show it.
-      });
+      var _this = this;
     },
 
     createStateMachine: function() {
@@ -13686,11 +13879,11 @@ window.Mirador = window.Mirador || function(config) {
           },
           ondisplayOn: function(event, from, to) { 
             if (_this.annoEndpointAvailable) {
-              _this.parent.element.find('.mirador-osd-annotations-layer').fadeOut(duration, function() {      
-                _this.contextControls.show();
-              });              
+                jQuery.publish('HUD_FADE_OUT.' + _this.windowId, ['.mirador-osd-annotations-layer', duration, function() {      
+                  _this.contextControls.show();
+                }]);
             } else {
-              _this.parent.element.find('.mirador-osd-annotations-layer').addClass("selected");
+              jQuery.publish('HUD_ADD_CLASS.'+_this.windowId, ['.mirador-osd-annotations-layer', 'selected']);
             }
             jQuery.publish('modeChange.' + _this.windowId, 'displayAnnotations');
             jQuery.publish(('windowUpdated'), {
@@ -13707,15 +13900,15 @@ window.Mirador = window.Mirador || function(config) {
           },
           oncreateOn: function(event, from, to) {
             function enableEditingAnnotations() {
-              _this.parent.element.find('.mirador-osd-edit-mode').addClass("selected");
+              jQuery.publish('HUD_ADD_CLASS.'+_this.windowId, ['.mirador-osd-edit-mode', 'selected']);
               jQuery.publish('modeChange.' + _this.windowId, 'editingAnnotations');
             }
             if (_this.annoEndpointAvailable) {
               if (from === "annoOff") {
-                _this.parent.element.find('.mirador-osd-annotations-layer').fadeOut(duration, function() {      
+                jQuery.publish('HUD_FADE_OUT.' + _this.windowId, ['.mirador-osd-annotations-layer', duration, function() {      
                   _this.contextControls.show();
                   enableEditingAnnotations();
-                });
+                }]);
               } else {
                 enableEditingAnnotations();
               }
@@ -13733,7 +13926,7 @@ window.Mirador = window.Mirador || function(config) {
             });
           },
           oncreateOff: function(event, from, to) { 
-            _this.parent.element.find('.mirador-osd-edit-mode').removeClass("selected");
+            jQuery.publish('HUD_REMOVE_CLASS.'+_this.windowId, ['.mirador-osd-edit-mode', 'selected']);
             jQuery.publish('modeChange.' + _this.windowId, 'displayAnnotations');
             jQuery.publish(('windowUpdated'), {
               id: _this.windowId,
@@ -13742,13 +13935,12 @@ window.Mirador = window.Mirador || function(config) {
           },
           ondisplayOff: function(event, from, to) { 
             if (_this.annoEndpointAvailable) {
-              _this.parent.element.find('.mirador-osd-edit-mode').removeClass("selected");
+              jQuery.publish('HUD_REMOVE_CLASS.'+_this.windowId, ['.mirador-osd-edit-mode', 'selected']);
               _this.contextControls.hide(function() {
-                _this.parent.element.find('.mirador-osd-annotations-layer').fadeIn(duration);
-              }
-              );
+                jQuery.publish('HUD_FADE_IN.' + _this.windowId, ['.mirador-osd-annotations-layer', duration]);
+              });
             } else {
-              _this.parent.element.find('.mirador-osd-annotations-layer').removeClass("selected");
+              jQuery.publish('HUD_REMOVE_CLASS.'+_this.windowId, ['.mirador-osd-annotations-layer', 'selected']);
             }
             jQuery.publish('modeChange.' + _this.windowId, 'default');
             jQuery.publish(('windowUpdated'), {
@@ -13758,34 +13950,6 @@ window.Mirador = window.Mirador || function(config) {
           }
         }
       });
-    },
-
-    getPanByValue: function() {
-      var bounds = this.parent.osd.viewport.getBounds(true);
-      //for now, let's keep 50% of the image on the screen
-      var panBy = {
-        "x" : bounds.width * 0.5,
-        "y" : bounds.height * 0.5
-      };
-      return panBy;
-    },
-
-    fullScreen: function() {
-      var replacementButton,
-      bottomPanelHeight = this.parent.parent.element.find('.bottomPanel').innerHeight();
-
-      if (!OpenSeadragon.isFullScreen()) {
-        replacementButton = jQuery('<i class="fa fa-expand"></i>');
-        this.parent.element.find('.mirador-osd-fullscreen').empty().append(replacementButton);
-        this.parent.element.find('.mirador-osd-toggle-bottom-panel').show();
-        this.parent.parent.bottomPanelVisibility(true);
-      } else {
-
-        replacementButton = jQuery('<i class="fa fa-compress"></i>');
-        this.parent.element.find('.mirador-osd-fullscreen').empty().append(replacementButton);
-        this.parent.element.find('.mirador-osd-toggle-bottom-panel').hide();
-        this.parent.parent.bottomPanelVisibility(false);
-      }
     },
 
     template: Handlebars.compile([
@@ -13800,7 +13964,7 @@ window.Mirador = window.Mirador || function(config) {
                                  '</a>',
                                  '{{/if}}',
                                  '{{#if showAnno}}',
-                                 '<a class="mirador-osd-annotations-layer hud-control " role="button" aria-label="Toggle annotations">',
+                                 '<a class="mirador-osd-annotations-layer hud-control" role="button" aria-label="Toggle annotations">',
                                  '<i class="fa fa-lg fa-comments"></i>',
                                  '</a>',
                                  '{{/if}}',
@@ -13810,11 +13974,11 @@ window.Mirador = window.Mirador || function(config) {
                                  '</a>',
                                  '{{/if}}',
                                  '{{#if showBottomPanel}}',
-                                 '<a class="mirador-osd-toggle-bottom-panel hud-control " role="button" aria-label="Toggle Bottom Panel">',
+                                 '<a class="mirador-osd-toggle-bottom-panel hud-control" role="button" aria-label="Toggle Bottom Panel">',
                                  '<i class="fa fa-2x fa-ellipsis-h"></i>',
                                  '</a>',
                                  '{{/if}}',
-                                 '<div class="mirador-pan-zoom-controls hud-control ">',
+                                 '<div class="mirador-pan-zoom-controls hud-control">',
                                  '<a class="mirador-osd-up hud-control" role="button" aria-label="Move image up">',
                                  '<i class="fa fa-chevron-circle-up"></i>',
                                  '</a>',
@@ -13855,7 +14019,6 @@ window.Mirador = window.Mirador || function(config) {
       imagesList:       [],
       element:          null,
       elemOsd:          null,
-      parent:           null,
       manifest:         null,
       osd:              null,
       fullscreen:       null,
@@ -13893,22 +14056,41 @@ window.Mirador = window.Mirador || function(config) {
       this.elemAnno = jQuery('<div/>')
       .addClass(this.annoCls)
       .appendTo(this.element);
+
       this.createOpenSeadragonInstance($.Iiif.getImageUrl(this.currentImg));
-      this.parent.updateFocusImages([this.canvasID]); 
+      jQuery.publish('UPDATE_FOCUS_IMAGES.' + this.windowId, {array: [this.canvasID]});
+
+      var allTools = $.getTools();
+      this.availableTools = [];
+      for ( var i = 0; i < this.state.getStateProperty('availableAnnotationDrawingTools').length; i++) {
+        for ( var j = 0; j < allTools.length; j++) {
+          if (this.state.getStateProperty('availableAnnotationDrawingTools')[i] == allTools[j].name) {
+            this.availableTools.push(allTools[j].logoClass);
+          }
+        }
+      }
       // The hud controls are consistent 
       // throughout any updates to the osd canvas.
       this.hud = new $.Hud({
-        parent: this,
-        element: this.element,
+        appendTo: this.element,
         bottomPanelAvailable: this.bottomPanelAvailable,
         windowId: this.windowId,
         annotationLayerAvailable: this.annotationLayerAvailable,
         annotationCreationAvailable: this.annotationCreationAvailable,
         annoEndpointAvailable: this.annoEndpointAvailable,
-        fullScreenAvailable : this.fullScreenAvailable
+        fullScreenAvailable : this.fullScreenAvailable,
+        showNextPrev : this.imagesList.length !== 1,
+        availableTools: this.availableTools
       });
 
       this.bindEvents();
+      this.listenForActions();
+
+      if (typeof this.bottomPanelAvailable !== 'undefined' && !this.bottomPanelAvailable) {
+        jQuery.publish('SET_BOTTOM_PANEL_VISIBILITY.' + this.windowId, false);
+      } else {
+        jQuery.publish('SET_BOTTOM_PANEL_VISIBILITY.' + this.windowId, null);
+      }
     },
 
     template: Handlebars.compile([
@@ -13916,20 +14098,246 @@ window.Mirador = window.Mirador || function(config) {
                                  '</div>'
     ].join('')),
 
-    bindEvents: function() {
-      var _this = this;
-      jQuery.subscribe('fitBounds.' + _this.parent.id, function(event, bounds) {
+    listenForActions: function() {
+      var _this = this,
+      firstCanvasId = _this.imagesList[0]['@id'],
+      lastCanvasId = _this.imagesList[_this.imagesList.length-1]['@id'];
+
+      jQuery.subscribe('bottomPanelSet.' + _this.windowId, function(event, visible) {
+        var dodgers = _this.element.find('.mirador-osd-toggle-bottom-panel, .mirador-pan-zoom-controls');
+        var arrows = _this.element.find('.mirador-osd-next, .mirador-osd-previous');
+        if (visible === true) {
+          dodgers.css({transform: 'translateY(-130px)'});
+          arrows.css({transform: 'translateY(-65px)'});
+        } else {
+          dodgers.css({transform: 'translateY(0)'});
+          arrows.css({transform: 'translateY(0)'});
+        }
+      });
+
+      jQuery.subscribe('fitBounds.' + _this.windowId, function(event, bounds) {
         var rect = _this.osd.viewport.imageToViewportRectangle(Number(bounds.x), Number(bounds.y), Number(bounds.width), Number(bounds.height));
         _this.osd.viewport.fitBoundsWithConstraints(rect, false);
       });
 
+      jQuery.subscribe('currentCanvasIDUpdated.' + _this.windowId, function(event, canvasId) {
+        // If it is the first canvas, hide the "go to previous" button, otherwise show it.
+        if (canvasId === firstCanvasId) {
+          _this.element.find('.mirador-osd-previous').hide();
+          _this.element.find('.mirador-osd-next').show();
+        } else if (canvasId === lastCanvasId) {
+          _this.element.find('.mirador-osd-next').hide();
+          _this.element.find('.mirador-osd-previous').show();
+        } else {
+          _this.element.find('.mirador-osd-next').show();
+          _this.element.find('.mirador-osd-previous').show();
+        }
+        // If it is the last canvas, hide the "go to previous" button, otherwise show it.
+      });
+
+      //Related to Annotations HUD
+      jQuery.subscribe('HUD_REMOVE_CLASS.' + _this.windowId, function(event, elementSelector, className) {
+        _this.element.find(elementSelector).removeClass(className);
+      });
+
+      jQuery.subscribe('HUD_ADD_CLASS.' + _this.windowId, function(event, elementSelector, className) {
+        _this.element.find(elementSelector).addClass(className);
+      });
+
+      jQuery.subscribe('HUD_FADE_IN.' + _this.windowId, function(event, elementSelector, duration) {
+        _this.element.find(elementSelector).fadeIn(duration);
+      });
+
+      jQuery.subscribe('HUD_FADE_OUT.' + _this.windowId, function(event, elementSelector, duration, complete) {
+        _this.element.find(elementSelector).fadeOut(duration, complete);
+      });
+
+      jQuery.subscribe('initBorderColor.' + _this.windowId, function(event, color) {
+        _this.element.find('.borderColorPicker').spectrum('set', color);
+      });
+      jQuery.subscribe('initFillColor.' + _this.windowId, function(event, color, alpha) {
+        var colorObj = tinycolor(color);
+        colorObj.setAlpha(alpha);
+        _this.element.find('.fillColorPicker').spectrum('set', colorObj);
+      });
+      jQuery.subscribe('disableBorderColorPicker.'+_this.windowId, function(event, disablePicker) {
+        if(disablePicker) {
+          _this.element.find('.borderColorPicker').spectrum("disable");
+        }else{
+          _this.element.find('.borderColorPicker').spectrum("enable");
+        }
+      });
+      jQuery.subscribe('disableFillColorPicker.'+_this.windowId, function(event, disablePicker) {
+        if(disablePicker) {
+          _this.element.find('.fillColorPicker').spectrum("disable");
+        }else{
+          _this.element.find('.fillColorPicker').spectrum("enable");
+        }
+      });
+      jQuery.subscribe('showDrawTools.'+_this.windowId, function(event) {
+        _this.element.find('.draw-tool').show();
+      });
+      jQuery.subscribe('hideDrawTools.'+_this.windowId, function(event) {
+        _this.element.find('.draw-tool').hide();
+      });
+      //Related to Annotations HUD
+    },
+
+    bindEvents: function() {
+      var _this = this;
+
+      this.element.find('.mirador-osd-next').on('click', function() {
+        _this.next();
+      });
+
+      this.element.find('.mirador-osd-previous').on('click', function() {
+        _this.previous();
+      });
+
+      this.element.find('.mirador-osd-annotations-layer').on('click', $.debounce(function() {
+        if (_this.hud.annoState.current === 'none') {
+          _this.hud.annoState.startup(this);
+        }
+        if (_this.hud.annoState.current === 'annoOff') {
+          _this.hud.annoState.displayOn(this);
+        } else {
+          _this.hud.annoState.displayOff(this);
+        }
+      },300));
+
+      this.element.find('.mirador-osd-go-home').on('click', function() {
+        _this.osd.viewport.goHome();
+      });
+
+      this.element.find('.mirador-osd-up').on('click', function() {
+        var panBy = _this.getPanByValue();
+        _this.osd.viewport.panBy(new OpenSeadragon.Point(0, -panBy.y));
+        _this.osd.viewport.applyConstraints();
+      });
+      this.element.find('.mirador-osd-right').on('click', function() {
+        var panBy = _this.getPanByValue();
+        _this.osd.viewport.panBy(new OpenSeadragon.Point(panBy.x, 0));
+        _this.osd.viewport.applyConstraints();
+      });
+      this.element.find('.mirador-osd-down').on('click', function() {
+        var panBy = _this.getPanByValue();
+        _this.osd.viewport.panBy(new OpenSeadragon.Point(0, panBy.y));
+        _this.osd.viewport.applyConstraints();
+      });
+      this.element.find('.mirador-osd-left').on('click', function() {
+        var panBy = _this.getPanByValue();
+        _this.osd.viewport.panBy(new OpenSeadragon.Point(-panBy.x, 0));
+        _this.osd.viewport.applyConstraints();
+      });
+
+      this.element.find('.mirador-osd-zoom-in').on('click', function() {
+        var osd = _this.osd;
+        if ( osd.viewport ) {
+          osd.viewport.zoomBy(
+            osd.zoomPerClick / 1.0
+          );
+          osd.viewport.applyConstraints();
+        }
+      });
+      this.element.find('.mirador-osd-zoom-out').on('click', function() {
+        var osd = _this.osd;
+        if ( osd.viewport ) {
+          osd.viewport.zoomBy(
+            1.0 / osd.zoomPerClick
+          );
+          osd.viewport.applyConstraints();
+        }
+      });
+
+      this.element.find('.mirador-osd-fullscreen').on('click', function() {
+        if (OpenSeadragon.isFullScreen()) {
+          OpenSeadragon.exitFullScreen();
+        } else {
+          jQuery.publish('REQUEST_OSD_FULL_SCREEN.' + _this.windowId);
+        }
+      });
+
+      jQuery(document).on("webkitfullscreenchange mozfullscreenchange fullscreenchange", function() {
+        _this.fullScreen();
+      });
+
+      this.element.find('.mirador-osd-toggle-bottom-panel').on('click', function() {
+        jQuery.publish('TOGGLE_BOTTOM_PANEL_VISIBILITY.' + _this.windowId);
+      });
+
+      //related the ContextControls
+      this.element.find('.mirador-osd-close').on('click', $.debounce(function() {
+        _this.hud.annoState.displayOff();
+      },300));
+
+      this.element.find('.mirador-osd-edit-mode').on('click', function() {
+        if (_this.hud.annoState.current === 'annoOnCreateOff') {
+          _this.hud.annoState.createOn();
+        } else if (_this.hud.annoState.current === 'annoOnCreateOn') {
+          _this.hud.annoState.createOff();
+        }
+      });
+
+      this.element.find('.mirador-osd-refresh-mode').on('click', function() {
+        //update annotation list from endpoint
+        jQuery.publish('updateAnnotationList.'+_this.windowId);
+        jQuery.publish('refreshOverlay.'+_this.windowId, '');
+      });
+      this.element.find('.mirador-osd-delete-mode').on('click', function() {
+        jQuery.publish('deleteShape.'+_this.windowId, '');
+      });
+      this.element.find('.mirador-osd-save-mode').on('click', function() {
+        jQuery.publish('updateEditedShape.'+_this.windowId, '');
+      });
+      this.element.find('.mirador-osd-close').on('click', function() {
+        jQuery.publish('toggleDefaultDrawingTool.'+_this.windowId);
+      });
+      this.element.find('.mirador-osd-edit-mode').on('click', function() {
+        jQuery.publish('toggleDefaultDrawingTool.'+_this.windowId);
+      });
+
+      function make_handler(shapeMode) {
+        return function () {
+          jQuery.publish('toggleDrawingTool.'+_this.windowId, shapeMode);
+        };
+      }
+      for (var value in _this.availableTools) {
+        this.element.find('.material-icons:contains(\'' + _this.availableTools[value] + '\')').on('click', make_handler(_this.availableTools[value]));
+      }
+      //related the ContextControls
+    },
+
+    getPanByValue: function() {
+      var bounds = this.osd.viewport.getBounds(true);
+      //for now, let's keep 50% of the image on the screen
+      var panBy = {
+        "x" : bounds.width * 0.5,
+        "y" : bounds.height * 0.5
+      };
+      return panBy;
+    },
+
+    fullScreen: function() {
+      var replacementButton;
+
+      if (!OpenSeadragon.isFullScreen()) {
+        replacementButton = jQuery('<i class="fa fa-expand"></i>');
+        this.element.find('.mirador-osd-fullscreen').empty().append(replacementButton);
+        this.element.find('.mirador-osd-toggle-bottom-panel').show();
+        jQuery.publish('SET_BOTTOM_PANEL_VISIBILITY.' + this.windowId, true);
+      } else {
+        replacementButton = jQuery('<i class="fa fa-compress"></i>');
+        this.element.find('.mirador-osd-fullscreen').empty().append(replacementButton);
+        this.element.find('.mirador-osd-toggle-bottom-panel').hide();
+        jQuery.publish('SET_BOTTOM_PANEL_VISIBILITY.' + this.windowId, false);
+      }
     },
 
     setBounds: function() {
       var _this = this;
       this.osdOptions.osdBounds = this.osd.viewport.getBounds(true);
       jQuery.publish("imageBoundsUpdated", {
-        id: _this.parent.id, 
+        id: _this.windowId, 
           osdBounds: {
             x: _this.osdOptions.osdBounds.x, 
             y: _this.osdOptions.osdBounds.y, 
@@ -13939,7 +14347,7 @@ window.Mirador = window.Mirador || function(config) {
       });
       var rectangle = this.osd.viewport.viewportToImageRectangle(this.osdOptions.osdBounds);
       jQuery.publish("imageRectangleUpdated", {
-        id: _this.parent.id,
+        id: _this.windowId,
         osdBounds: {
           x: Math.round(rectangle.x),
           y: Math.round(rectangle.y),
@@ -13967,9 +14375,9 @@ window.Mirador = window.Mirador || function(config) {
 
     adjustWidth: function(className, hasClass) {
       if (hasClass) {
-        this.parent.element.find('.view-container').removeClass(className);
+        jQuery.publish('REMOVE_CLASS.'+this.windowId, className);
       } else {
-        this.parent.element.find('.view-container').addClass(className);
+        jQuery.publish('ADD_CLASS.'+this.windowId, className);
       }
     },
 
@@ -14068,8 +14476,8 @@ window.Mirador = window.Mirador || function(config) {
     addAnnotationsLayer: function(element) {
       var _this = this;
       _this.annotationsLayer = new $.AnnotationsLayer({
-        parent: _this,
-        annotationsList: _this.parent.annotationsList || [],
+        state: _this.state,
+        annotationsList: _this.state.getWindowAnnotationsList(_this.windowId) || [],
         viewer: _this.osd,
         windowId: _this.windowId,
         element: element
@@ -14087,9 +14495,9 @@ window.Mirador = window.Mirador || function(config) {
         };
         this.osd.close();
         this.createOpenSeadragonInstance($.Iiif.getImageUrl(this.currentImg));
-        this.parent.updateFocusImages([canvasID]);
+        jQuery.publish('UPDATE_FOCUS_IMAGES.' + this.windowId, {array: [canvasID]});
       } else {
-        this.parent.updateFocusImages([canvasID]);
+        jQuery.publish('UPDATE_FOCUS_IMAGES.' + this.windowId, {array: [canvasID]});
       }
     },
 
@@ -14097,7 +14505,7 @@ window.Mirador = window.Mirador || function(config) {
       var next = this.currentImgIndex + 1;
 
       if (next < this.imagesList.length) {
-        this.parent.setCurrentCanvasID(this.imagesList[next]['@id']);
+        jQuery.publish('SET_CURRENT_CANVAS_ID.' + this.windowId, this.imagesList[next]['@id']);
       }
     },
 
@@ -14105,7 +14513,7 @@ window.Mirador = window.Mirador || function(config) {
       var prev = this.currentImgIndex - 1;
 
       if (prev >= 0) {
-        this.parent.setCurrentCanvasID(this.imagesList[prev]['@id']);
+        jQuery.publish('SET_CURRENT_CANVAS_ID.' + this.windowId, this.imagesList[prev]['@id']);
       }
     },
     
@@ -14139,7 +14547,6 @@ window.Mirador = window.Mirador || function(config) {
     jQuery.extend(this, {
       manifest:             null,
       element:              null,
-      parent:               null,
       metadataTypes:        null,
       metadataListingCls:   'metadata-listing'
     }, options);
@@ -14458,7 +14865,7 @@ window.Mirador = window.Mirador || function(config) {
       imagesList:           [],
       appendTo:             null,
       thumbInfo:            {thumbsHeight: 150, listingCssCls: 'listing-thumbs', thumbnailCls: 'thumbnail-view'},
-      parent:               null,
+      windowId:             null,
       panel:                false,
       lazyLoadingFactor:    1.5  //should be >= 1
     }, options);
@@ -14475,7 +14882,6 @@ window.Mirador = window.Mirador || function(config) {
         jQuery.extend(true, this, {
             element:           null,
             appendTo:          null,
-            parent:            null,
             manifest:          null,
             panelState:        {},
             tocTabAvailable:   false,
@@ -14491,9 +14897,8 @@ window.Mirador = window.Mirador || function(config) {
     $.SidePanel.prototype = {
         init: function() {
             var _this = this;
-            this.windowId = this.parent.id;
 
-            this.state({
+            this.updateState({
                 tabs : [
                 {
                     name : 'toc',
@@ -14533,7 +14938,7 @@ window.Mirador = window.Mirador || function(config) {
             }, true);
 
             this.listenForActions();
-            this.render(this.state());
+            this.render(this.updateState());
 
             this.loadSidePanelComponents();
         },  
@@ -14542,45 +14947,45 @@ window.Mirador = window.Mirador || function(config) {
             var _this = this;
 
             new $.Tabs({
-                windowId: this.parent.id,
+                windowId: this.windowId,
                 appendTo: this.appendTo,
                 tabs : this.panelState.tabs,
-                parent : this
+                hasStructures : this.hasStructures
             });
 
             if (this.tocTabAvailable) {
                 new $.TableOfContents({
                     manifest: this.manifest,
                     appendTo: this.element.find('.tabContentArea'),
-                    parent: this.parent,
+                    windowId: this.windowId,
                     panel: true,
-                    canvasID: this.parent.currentCanvasID
+                    canvasID: this.canvasID
                 });
             }
             if (_this.annotationsTabAvailable) {
                 new $.AnnotationsTab({
                     manifest: _this.manifest,
-                    parent: this.parent,
+                    windowId: this.windowId,
                     appendTo: _this.element.find('.tabContentArea'),
-                    tabs: _this.state.tabs
+                    tabs: _this.sidePanelState.tabs
                 });
             }
 
         },
 
         update: function(name, availability) {
-            var state = this.panelState;
-            jQuery.each(state.tabs, function(index, value) {
+            var updatedState = this.panelState;
+            jQuery.each(updatedState.tabs, function(index, value) {
                 if (value.name === name) {
                     value.options.available = availability;
                 }
             });
-            this.state(state);
+            this.updateState(updatedState);
         },
 
-        state: function(state, initial) {
+        updateState: function(newState, initial) {
             if (!arguments.length) return this.panelState;
-            jQuery.extend(true, this.panelState, state);
+            jQuery.extend(true, this.panelState, newState);
 
             if (!initial) {
                 jQuery.publish('sidePanelStateUpdated.' + this.windowId, this.panelState);
@@ -14599,11 +15004,11 @@ window.Mirador = window.Mirador || function(config) {
         },
 
         panelToggled: function() {
-            var state = this.state(),
-                open = !state.open;
+            var currentState = this.updateState(),
+                open = !currentState.open;
 
-            state.open = open;
-            this.state(state);
+            currentState.open = open;
+            this.updateState(currentState);
         },
 
         // doesn't do anything right now
@@ -14628,11 +15033,16 @@ window.Mirador = window.Mirador || function(config) {
             });
 
             jQuery.subscribe('annotationListLoaded.' + _this.windowId, function(event) {
-                if (_this.parent.annotationsAvailable[_this.parent.currentFocus]) {
-                    if (_this.parent.annotationsList.length > 0) {
+                var windowObject = _this.state.getWindowObjectById(_this.windowId);
+                if (windowObject.annotationsAvailable[windowObject.viewType]) {
+                    if (_this.state.getWindowAnnotationsList(_this.windowId).length > 0) {
                         _this.update('annotations', true);
                     }
                 }
+            });
+
+            jQuery.subscribe('currentCanvasIDUpdated.' + _this.windowId, function(event, newCanvasId) {
+                _this.canvasID = newCanvasId;
             });
 
         },
@@ -14663,12 +15073,12 @@ window.Mirador = window.Mirador || function(config) {
         toggle: function (enableSidePanel) {
             if (!enableSidePanel) {
                 jQuery(this.appendTo).hide();
-                this.parent.element.find('.view-container').addClass('focus-max-width');
-                this.parent.element.find('.mirador-icon-toc').hide();
+                jQuery.publish('ADD_CLASS.'+this.windowId, 'focus-max-width');
+                jQuery.publish('HIDE_ICON_TOC.'+this.windowId);                
             } else {
                 jQuery(this.appendTo).show({effect: "fade", duration: 300, easing: "easeInCubic"});
-                this.parent.element.find('.view-container').removeClass('focus-max-width');
-                this.parent.element.find('.mirador-icon-toc').show();                
+                jQuery.publish('REMOVE_CLASS.'+this.windowId, 'focus-max-width');
+                jQuery.publish('SHOW_ICON_TOC.'+this.windowId);                
             }
         }
     };
@@ -14773,7 +15183,7 @@ window.Mirador = window.Mirador || function(config) {
                 renderingData.tabs = tabs;
                 if(renderingData.tabs.length === 1){                    
                     // TODO: temporary logic to minimize side panel if only tab is toc and toc is empty
-                    if (renderingData.tabs[0].name === 'toc' && !_this.parent.hasStructures) {
+                    if (renderingData.tabs[0].name === 'toc' && !_this.hasStructures) {
                         jQuery.publish("sidePanelVisibilityByTab." + _this.windowId, false);
                     }
 
@@ -14818,7 +15228,7 @@ window.Mirador = window.Mirador || function(config) {
       appendTo:             null,
       thumbInfo:            {thumbsHeight: 150, listingCssCls: 'listing-thumbs', thumbnailCls: 'thumbnail-view'},
       defaultThumbHeight:   150,
-      parent:               null,
+      windowId:             null,
       panel:                false,
       lazyLoadingFactor:    1.5  //should be >= 1
     }, options);
@@ -14836,6 +15246,7 @@ window.Mirador = window.Mirador || function(config) {
 
       this.loadContent();
       this.bindEvents();
+      this.listenForActions();
     },
 
     loadContent: function() {
@@ -14886,15 +15297,27 @@ window.Mirador = window.Mirador || function(config) {
     currentImageChanged: function() {
       var _this = this,
       target = _this.element.find('.highlight'),
-      scrollPosition;
+      scrollPosition,
+      windowObject = this.state.getWindowObjectById(this.windowId);
 
-      if (this.parent.currentFocus === 'BookView') {
+      if (windowObject && windowObject.viewType === 'BookView') {
         scrollPosition = _this.element.scrollLeft() + (target.position().left + (target.next().width() + target.outerWidth())/2) - _this.element.width()/2;
       } else {
 
         scrollPosition = _this.element.scrollLeft() + (target.position().left + target.width()/2) - _this.element.width()/2;
       }
       _this.element.scrollTo(scrollPosition, 900);
+    },
+
+    listenForActions: function() {
+      var _this = this;
+      jQuery.subscribe(('currentCanvasIDUpdated.' + _this.windowId), function(event) {
+        _this.currentImageChanged();
+      });
+
+      jQuery.subscribe('windowResize', $.debounce(function(){
+        _this.loadImages();
+      }, 100));
     },
 
     bindEvents: function() {
@@ -14907,19 +15330,11 @@ window.Mirador = window.Mirador || function(config) {
         _this.loadImages();
       });
 
-      jQuery.subscribe('windowResize', $.debounce(function(){
-        _this.loadImages();
-      }, 100));
-
       //add any other events that would trigger thumbnail display (resize, etc)
 
       _this.element.find('.thumbnail-image').on('click', function() {
         var canvasID = jQuery(this).attr('data-image-id');
-        _this.parent.setCurrentCanvasID(canvasID);
-      });
-
-      jQuery.subscribe(('currentCanvasIDUpdated.' + _this.parent.id), function(event) {
-        _this.currentImageChanged();
+        jQuery.publish('SET_CURRENT_CANVAS_ID.' + _this.windowId, canvasID);
       });
     },
 
@@ -15006,9 +15421,9 @@ window.Mirador = window.Mirador || function(config) {
 
     adjustWidth: function(className, hasClass) {
       if (hasClass) {
-        this.parent.element.find('.view-container').removeClass(className);
+        jQuery.publish('REMOVE_CLASS.'+this.windowId, className);
       } else {
-        this.parent.element.find('.view-container').addClass(className);
+        jQuery.publish('ADD_CLASS.'+this.windowId, className);
       }
     },
 
@@ -15033,7 +15448,7 @@ window.Mirador = window.Mirador || function(config) {
     jQuery.extend(true, this, {
       element:           null,
       appendTo:          null,
-      parent:            null,
+      windowId:          null,
       manifest:          null,
       structures:        null,
       previousSelectedElements: [],
@@ -15060,7 +15475,7 @@ window.Mirador = window.Mirador || function(config) {
         this.ranges = this.setRanges();
         this.element = jQuery(this.template({ ranges: this.getTplData() })).appendTo(this.appendTo);
         this.tocData = this.initTocData();
-        this.selectedElements = $.getRangeIDByCanvasID(_this.structures, _this.parent.currentCanvasID);
+        this.selectedElements = $.getRangeIDByCanvasID(_this.structures, _this.canvasID);
         this.element.find('.has-child ul').hide();
         this.render();
       }
@@ -15222,7 +15637,6 @@ window.Mirador = window.Mirador || function(config) {
 
     bindEvents: function() {
       var _this = this;
-      // var eventString = _this.parent.id
 
       jQuery.subscribe('focusChanged', function(_, manifest, focusFrame) {
       });
@@ -15230,11 +15644,11 @@ window.Mirador = window.Mirador || function(config) {
       jQuery.subscribe('cursorFrameUpdated', function(_, manifest, cursorBounds) {
       });
 
-      jQuery.subscribe('tabStateUpdated.' + _this.parent.id, function(_, data) {
+      jQuery.subscribe('tabStateUpdated.' + _this.windowId, function(_, data) {
         _this.tabStateUpdated(data);
       });
 
-      jQuery.subscribe(('currentCanvasIDUpdated.' + _this.parent.id), function(event, canvasID) {
+      jQuery.subscribe(('currentCanvasIDUpdated.' + _this.windowId), function(event, canvasID) {
         if (!_this.structures) { return; }
         _this.setSelectedElements($.getRangeIDByCanvasID(_this.structures, canvasID));
         _this.render();
@@ -15256,7 +15670,7 @@ window.Mirador = window.Mirador || function(config) {
         // if ( _this.parent.currentFocus === 'ThumbnailsView' & !isLeaf) {
         //   _this.parent.setCursorFrameStart(canvasID);
         // } else {
-          _this.parent.setCurrentCanvasID(canvasID);
+          jQuery.publish('SET_CURRENT_CANVAS_ID.' + _this.windowId, canvasID);
         // }
       });
 
@@ -15371,12 +15785,12 @@ window.Mirador = window.Mirador || function(config) {
 
     hide: function() {
       jQuery(this.appendTo).hide();
-      this.parent.element.find('.view-container').addClass('focus-max-width');
+      jQuery.publish('ADD_CLASS.'+this.windowId, 'focus-max-width');
     },
 
     show: function() {
       jQuery(this.appendTo).show({effect: "fade", duration: 300, easing: "easeInCubic"});
-      this.parent.element.find('.view-container').removeClass('focus-max-width');
+      jQuery.publish('REMOVE_CLASS.'+this.windowId, 'focus-max-width');
     }
 
   };
@@ -15715,6 +16129,13 @@ jQuery.fn.scrollStop = function(callback) {
       sessionID: null
     });
 
+    // error check - removes invalid annotation tools
+    if (config.availableAnnotationDrawingTools) {
+      config.availableAnnotationDrawingTools = jQuery.grep(config.availableAnnotationDrawingTools, function(element, index) {
+        return jQuery.inArray(element, $.DEFAULT_SETTINGS.availableAnnotationDrawingTools) >= 0;
+      });
+    }
+
     this.init(jQuery.extend(false, $.DEFAULT_SETTINGS, config));
 
   };
@@ -15727,6 +16148,7 @@ jQuery.fn.scrollStop = function(callback) {
       // Don't want to save session, therefore don't set up save controller
       if (config.saveSession === false) {
         this.currentConfig = config;
+        this.bindEvents();
         return false;
       }
       
@@ -15785,6 +16207,48 @@ jQuery.fn.scrollStop = function(callback) {
 
     },
 
+    getWindowObjectById: function(windowId) {
+      var returnObject = null;
+      jQuery.each(this.currentConfig.windowObjects, function(index, window) {
+        if (window.id === windowId) {
+          returnObject = window;
+          return false;
+        }
+      });
+      return returnObject;
+    },
+
+    getWindowAnnotationsList: function(windowId) {
+      if (this.windowsAnnotationsLists) {
+        return this.windowsAnnotationsLists[windowId];
+      } else {
+        return null;
+      }
+    },
+
+    getSlots: function() {
+      return this.slots;
+    },
+
+    getWindowElement: function(windowId) {
+      if (this.windowsElements) {
+        return this.windowsElements[windowId];
+      } else {
+        return null;
+      }
+    },
+
+    getStateProperty: function(prop) {
+      return this.get(prop, 'currentConfig');
+    },
+
+    get: function(prop, parent) {
+      if (parent) {
+        return this[parent][prop];
+      }
+      return this[prop];
+    },
+
     set: function(prop, value, options) {
       // when a property of the config is updated,
       // save it to localStore.
@@ -15793,7 +16257,9 @@ jQuery.fn.scrollStop = function(callback) {
       } else {
         this[prop] = value;
       }
-      this.save();
+      if (this.currentConfig.saveSession) {
+        this.save();
+      }
       jQuery.publish("saveControllerConfigUpdated");
     },
 
@@ -15832,6 +16298,21 @@ jQuery.fn.scrollStop = function(callback) {
         _this.set("windowObjects", windowObjects, {parent: "currentConfig"} );   
       });
 
+      jQuery.subscribe('ANNOTATIONS_LIST_UPDATED', function(event, options) {
+        if (!_this.windowsAnnotationsLists) {
+          _this.windowsAnnotationsLists = {};
+        }
+        _this.windowsAnnotationsLists[options.windowId] = options.annotationsList;
+        jQuery.publish('annotationListLoaded.' + options.windowId);
+      });
+
+      jQuery.subscribe('WINDOW_ELEMENT_UPDATED', function(event, options) {
+        if (!_this.windowsElements) {
+          _this.windowsElements = {};
+        }
+        _this.windowsElements[options.windowId] = options.element;
+      });
+
       jQuery.subscribe('windowSlotAddressUpdated', function(event, options) {
         var windowObjects = _this.currentConfig.windowObjects;
         if (windowObjects && windowObjects.length > 0) {
@@ -15860,6 +16341,13 @@ jQuery.fn.scrollStop = function(callback) {
           data.push({"manifestUri":url, "location":repository});
           _this.set("data", data, {parent: "currentConfig"});
         }
+        var manifests = _this.currentConfig.manifests;
+        manifests[url] = manifestObject;
+        _this.set('manifests', manifests, {parent: 'currentConfig'});
+      });
+
+      jQuery.subscribe("slotsUpdated", function(event, options) {
+        _this.slots = options.slots;
       });
 
       jQuery.subscribe("layoutChanged", function(event, layoutDescription) {
