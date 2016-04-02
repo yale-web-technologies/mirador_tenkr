@@ -8230,6 +8230,7 @@ window.Mirador = window.Mirador || function(config) {
     jQuery.extend(this, {
       element: null,
       canvasWindow: null, // window that contains the canvas for the annotations
+      id: null,
       slotAddress: null
     }, options);
 
@@ -8240,6 +8241,9 @@ window.Mirador = window.Mirador || function(config) {
     
     init: function () {
       console.log('AnnotationWindow#init this.appendTo: ' + this.appendTo);
+      if (!this.id) {
+        this.id = $.genUUID();
+      }
       this.endpoint = this.canvasWindow.endpoint;
       this.element = jQuery(this.template({})).appendTo(this.appendTo);
       this.layerSelect = this.element.find('.annowin_select_layer');
@@ -8340,14 +8344,28 @@ window.Mirador = window.Mirador || function(config) {
     },
     
     highlightTargetedAnnotation: function(targetAnnotationID) {
+      var _this = this;
+      
       this.listElem.find('.annowin_anno').each(function(index, value) {
         var annoElem = jQuery(value);
         var annoID = annoElem.data('annotationID');
         if (annoID === targetAnnotationID) {
+          console.log('top: ' + annoElem.position().top);
           annoElem.addClass('annowin_targeted');
+          
+          _this.listElem.animate({
+            scrollTop: annoElem.position().top
+          }, 250);
         } else {
           annoElem.removeClass('annowin_targeted');
         }
+      });
+    },
+    
+    clearHighlights: function() {
+      this.listElem.find('.annowin_anno').each(function(index, value) {
+        jQuery(value).removeClass('annowin_targeted')
+          .removeClass('annowin_focused');
       });
     },
     
@@ -8416,14 +8434,15 @@ window.Mirador = window.Mirador || function(config) {
         _this.updateList(_this.currentLayerID);
       });
       
-      jQuery.subscribe('endpointAnnoListLoaded', function(event, windowID) {
+      jQuery.subscribe('ANNOTATIONS_LIST_UPDATED', function(event, windowId, annotationsList) {
         _this.reload();
       });
       
-      jQuery.subscribe('annotation_focused.' + this.canvasWindow.id, function(event, annotation) {
+      jQuery.subscribe('ANNOTATION_FOCUSED', function(event, annoWinId, annotation) {
         console.log('Annotation window received annotation_focused event');
-        if (annotation.on['@type'] == 'oa:Annotation') {
+        if (annoWinId !== _this.id && annotation.on['@type'] == 'oa:Annotation') {
           var targetID = annotation.on.full;
+          _this.clearHighlights();
           _this.highlightTargetedAnnotation(targetID);
         }
       });
@@ -8434,13 +8453,12 @@ window.Mirador = window.Mirador || function(config) {
       var infoElem = annoElem.find('.annowin_info');
 
       annoElem.click(function(event) {
-        var windowId = _this.canvasWindow.id;
-        
         if ($.getLinesOverlay().isActive()) {
           jQuery.publish('target_annotation_selected', annotation);
         } else {
+          _this.clearHighlights();
           _this.highlightFocusedAnnotation(annotation);
-          jQuery.publish('annotation_focused.' + windowId, annotation);
+          jQuery.publish('ANNOTATION_FOCUSED', [_this.id, annotation]);
         }
       });
       
@@ -9671,18 +9689,12 @@ window.Mirador = window.Mirador || function(config) {
       var deferreds = jQuery.map(this.list, function(annotation) {
         var deferred = jQuery.Deferred();
         
-        console.log('O1: ');
-        console.dir(annotation);
-
         // XXX seong
-        if (annotation.on === 'object' && annotation.on['@type'] === 'oa:Annotation') {
+        if (typeof annotation.on === 'object' && annotation.on['@type'] === 'oa:Annotation') {
           // Annotation on annotation
           return deferred;
         }
-        
-        console.log('O2: ');
-        console.dir(annotation);
-        
+
         var shapeArray;
         if (typeof annotation.on === 'object') {
           if (annotation.on.selector.value.indexOf('<svg') != -1) {
@@ -9867,7 +9879,7 @@ window.Mirador = window.Mirador || function(config) {
       });
 
       // XXX seong
-      jQuery.subscribe('annotation_focused.' + this.parent.windowId, function(event, annotation) {
+      jQuery.subscribe('ANNOTATION_FOCUSED', function(event, annoWinId, annotation) {
         _this.updateHighlights(annotation);
       });
     },
@@ -12211,8 +12223,7 @@ window.Mirador = window.Mirador || function(config) {
       });
 
       // XXX seong
-      jQuery.subscribe('annotation_focused.' + this.id, function(event, annotation) {
-        console.log('Window#bindEvents annotation_focused annotation: ' + annotation);
+      jQuery.subscribe('ANNOTATION_FOCUSED', function(event, annoWinId, annotation) {
         var imageView = _this.focusModules.ImageView;
         var annoState = imageView.hud.annoState.current;
         
@@ -12292,13 +12303,6 @@ window.Mirador = window.Mirador || function(config) {
           _this.annotationsList.push(data);
           //update overlay so it can be a part of the annotationList rendering
           jQuery(osdOverlay).removeClass('osd-select-rectangle').addClass('annotation').attr('id', annoID);
-
-          // XXX seong
-          // To notify annotation windows of the canvas update.
-          // Cannot reuse the "annotationListLoaded" event because it gets
-          // unsubscribed.
-          jQuery.publish('endpointAnnoListLoaded', [_this.id]);
-
           jQuery.publish('ANNOTATIONS_LIST_UPDATED', {windowId: _this.id, annotationsList: _this.annotationsList});
         },
         function() {
@@ -12319,12 +12323,6 @@ window.Mirador = window.Mirador || function(config) {
             }
           });
 
-          // XXX seong
-          // To notify annotation windows of the canvas update.
-          // Cannot reuse the "annotationListLoaded" event because it gets
-          // unsubscribed.
-          jQuery.publish('endpointAnnoListLoaded', [_this.id]);
-
           jQuery.publish('ANNOTATIONS_LIST_UPDATED', {windowId: _this.id, annotationsList: _this.annotationsList});
         },
         function() {
@@ -12338,12 +12336,6 @@ window.Mirador = window.Mirador || function(config) {
         _this.endpoint.deleteAnnotation(annoId, function() {
           _this.annotationsList = jQuery.grep(_this.annotationsList, function(e){ return e['@id'] !== annoId; });
           jQuery.publish(('removeOverlay.' + _this.id), annoId);
-          
-          // To notify annotation windows of the canvas update.
-          // Cannot reuse the "annotationListLoaded" event because it gets
-          // unsubscribed.
-          jQuery.publish('endpointAnnoListLoaded', [_this.id]);
-
           jQuery.publish('ANNOTATIONS_LIST_UPDATED', {windowId: _this.id, annotationsList: _this.annotationsList});
         },
         function() {
@@ -12773,11 +12765,6 @@ window.Mirador = window.Mirador || function(config) {
             return true;
           });
           
-          // To notify annotation windows of the canvas update.
-          // Cannot reuse the "annotationListLoaded" event because it gets
-          // unsubscribed.
-          jQuery.publish('endpointAnnoListLoaded', [_this.id]);
-
           jQuery.publish('ANNOTATIONS_LIST_UPDATED', {windowId: _this.id, annotationsList: _this.annotationsList});
         });
       }
@@ -12863,7 +12850,7 @@ window.Mirador = window.Mirador || function(config) {
                                  '<div class="window">',
                                  '<div class="manifest-info">',
                                  '<div class="window-manifest-navigation">',
-                                 '<a class="mirador-btn add-annotation-window" role="button" aria-label="Add an annotation window" title="Add an annotation window">',
+                                 '<a class="mirador-btn add-annotation-window" role="button" aria-label="Add an annotation window to the right" title="Add an annotation window">',
                                  '<i class="fa fa-lg fa-comments-o"></i>',
                                  '</a>',
                                  '<a href="javascript:;" class="mirador-btn mirador-icon-image-view" role="button" aria-label="Change Image Mode"><i class="fa fa-photo fa-lg fa-fw"></i>',
