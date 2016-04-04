@@ -4723,6 +4723,10 @@ canvas#lines_overlay {
   min-height: 25px;
 }
 
+.placeholder {
+  padding: 5px;
+}
+
 @font-face {
   font-family: 'Material Icons';
   font-style: normal;
