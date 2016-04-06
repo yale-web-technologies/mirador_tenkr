@@ -4,7 +4,7 @@
   "layout" : "1x1",
   "//1" : "openManifestsPage: true",
   "data" : [
-    { "manifestUri": "https://s3.amazonaws.com/tempmanifests/RPNT.json" }
+    { "manifestUri": "https://s3.amazonaws.com/tempmanifests/ten_thousand_rooms/RPNT.json" }
   ],
   "buildPath" : "/",
   "i18nPath" : "mirador/locales/",
