@@ -4,8 +4,9 @@
   "layout" : "1x1",
   "//1" : "openManifestsPage: true",
   "data" : [
-    { "manifestUri": "https://s3.amazonaws.com/tempmanifests/ten_thousand_rooms/RPNT.json" },
-    { "manifestUri": "https://s3.amazonaws.com/tempmanifests/ten_thousand_rooms/DORC.json" }
+    { "manifestUri": "https://s3.amazonaws.com/tempmanifests/ten_thousand_rooms/DORC.json" },
+    { "manifestUri": "https://s3.amazonaws.com/tempmanifests/KZJY.json" },
+    { "manifestUri": "https://s3.amazonaws.com/tempmanifests/ten_thousand_rooms/RPNT.json" }
   ],
   "buildPath" : "/",
   "i18nPath" : "mirador/locales/",
