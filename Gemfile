@@ -9,6 +9,8 @@ gem 'mysql2', '>= 0.3.13', '< 0.5'
 
 gem 'pg'
 
+gem 'devise'
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets

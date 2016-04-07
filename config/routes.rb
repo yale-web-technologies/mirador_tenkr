@@ -54,7 +54,8 @@ Rails.application.routes.draw do
   #     resources :products
   #   end
 
+  devise_for :users
   root 'home#viewer', id: 1
-
+  
   get '/:id', to: 'home#viewer', constraints: { id: /\d/ }
 end
