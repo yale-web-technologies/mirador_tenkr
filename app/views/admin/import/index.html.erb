@@ -1,0 +1,24 @@
+<div class="ui container">
+  <div class="ui grid">
+    <div class="column">
+      <h1>Import</h1>
+      
+      <h2>Manifests</h2>
+      <form action="/import/import_manifests" method="post">
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        <label for="manifests_url">Source URL</label>
+        <input id="manifests_url" name="url" type="text" size="58" />
+        <input type="submit" value="Import" />
+      </form>
+      
+      <h2>Rooms</h2>
+      <form action="/import/import_rooms" method="post">
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        <label for="rooms_url">Source URL</label>
+        <input id="rooms_url" name="url" type="text" size="58" />
+        <input type="submit" value="Import" />
+      </form>
+
+    </div>
+  </div>
+</div>

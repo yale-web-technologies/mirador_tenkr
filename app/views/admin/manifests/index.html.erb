@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Admin Manifests</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Url</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @admin_manifests.each do |admin_manifest| %>
+      <tr>
+        <td><%= admin_manifest.url %></td>
+        <td><%= link_to 'Show', admin_manifest %></td>
+        <td><%= link_to 'Edit', edit_admin_manifest_path(admin_manifest) %></td>
+        <td><%= link_to 'Destroy', admin_manifest, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Manifest', new_admin_manifest_path %>

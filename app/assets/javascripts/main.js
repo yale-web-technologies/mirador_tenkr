@@ -1,15 +1,15 @@
-window.YaleITS = {};
+window.Miradorails = {};
 
 (function ($) {
 
   jQuery(document).ready(function () {
     var configId = jQuery('#config_id').text();
+    configId = 1;
     var url = '/example/config/' + configId + '.json';
     
-    jQuery.getJSON(url, function (config) {
-      //console.log('config: ' + JSON.stringify(config, null, 2));
-      Mirador(config);
-    });
+    $.rooms.init();
+    $.mirador.init();
+
   });
 
-})(YaleITS);
+})(Miradorails);
