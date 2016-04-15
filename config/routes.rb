@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -54,7 +55,22 @@ Rails.application.routes.draw do
   #     resources :products
   #   end
 
-  root 'home#viewer', id: 1
+  #root 'home#viewer', id: 1
+  root 'home#index'
 
   get '/:id', to: 'home#viewer', constraints: { id: /\d/ }
+  
+  get '/rooms/:name', to: 'rooms#show'
+  
+  get '/mirador', to: 'mirador#index'
+  
+  namespace :admin do
+    resources :manifests
+    resources :rooms
+    resources :settings
+  end
+
+  get '/import', to: 'admin/import#index'
+  post '/import/import_rooms', to: 'admin/import#import_rooms'
+  post '/import/import_manifests', to: 'admin/import#import_manifests'
 end

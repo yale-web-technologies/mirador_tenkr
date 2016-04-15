@@ -1,2 +1,15 @@
-<span id="config_id" style="display: none"><%= @config_id %></span>
-<div id="viewer"></div>
+<div class="ui container">
+  <div class="ui grid">
+    <div class="column">
+      <h1>Ten Thousand Rooms</h1>
+      
+      <ul>
+        <% @rooms.each do |room| %>
+          <li><%= room_link(room) %></li>
+        <% end %>
+      </ul>
+
+      
+    <div>
+  </div>
+</div>

@@ -1,4 +1,8 @@
 class HomeController < ApplicationController
+  def index
+    @rooms = Admin::Room.all
+  end
+  
   def viewer
     puts "params: #{params}"
     @config_id = params[:id]

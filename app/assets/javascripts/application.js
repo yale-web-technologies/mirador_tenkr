@@ -13,7 +13,10 @@
 // require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require semantic_ui/semantic_ui
 //
 //= require tenkr-endpoint
 //= require tenkr-fb-endpoint
 //= require main
+//= require rooms
+//= require mirador
