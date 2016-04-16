@@ -4,10 +4,14 @@
     init: function () {
       var viewer = jQuery('#viewer');
       var manifestUri = viewer.attr('manifest_url');
+      var siteName = viewer.attr('site_name');
+      var endpointUrl = viewer.attr('endpoint_url');
       var config = this.config;
       
       config.data = [{ manifestUri: manifestUri }];
+      config.mainMenuSettings.userLogo.label = siteName;
       config.windowObjects[0].loadedManifest = manifestUri;
+      config.annotationEndpoint.options.prefix = endpointUrl;
       
       console.log('config: ' + JSON.stringify(config, null, 2));
       Mirador(config);
@@ -25,14 +29,14 @@
       "mainMenuSettings" : {
         "show" : true,
         "buttons" : {
-          "bookmark" : false
+          "bookmark" : false,
+          "fullScreenViewer": true,
+          "options": false
         },
         "userButtons" : [
-          {
-          }
         ],
         "userLogo" : {
-          "label" : "Ten Thousand Rooms",
+          "label" : "",
           "_label" : "Life of Buddha",
           "attributes" : { "id" : "yale_logo", "href" : "http://tenthousandrooms.yale.edu", "target" : "_blank" }
         }
@@ -52,7 +56,7 @@
         "name" : "Ten Thousand Rooms",
         "module" : "TenkrEndpoint",
         "options" : {
-          "prefix" : "http://annotations.tenkr.yale.edu",
+          "prefix" : "http://example.com",
           "storeId" : "",
           "APIKey" : ""
          }

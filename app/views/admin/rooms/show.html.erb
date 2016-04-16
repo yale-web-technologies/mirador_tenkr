@@ -1,4 +1,34 @@
+<div class="ui container">
+  <div class="ui grid">
+    <div class="column">
+
 <p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Machine name:</strong>
+  <%= @admin_room.machine_name %>
+</p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @admin_room.title %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @admin_room.description %>
+</p>
+
+<p>
+  <strong>Weight:</strong>
+  <%= @admin_room.weight %>
+</p>
+
+<br/>
 
 <%= link_to 'Edit', edit_admin_room_path(@admin_room) %> |
 <%= link_to 'Back', admin_rooms_path %>
+
+    </div>
+  </div>
+</div>
