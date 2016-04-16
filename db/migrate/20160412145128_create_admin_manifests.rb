@@ -1,7 +1,7 @@
 class CreateAdminManifests < ActiveRecord::Migration
   def change
     create_table :admin_manifests do |t|
-      t.integer :room_id
+      t.belongs_to :room, index: true
       t.string :title
       t.string :url
       t.integer :weight

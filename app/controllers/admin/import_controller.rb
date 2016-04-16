@@ -10,7 +10,7 @@ class Admin::ImportController < ApplicationController
     puts "response: #{response}"
     items = JSON.parse(response)
     
-    items.each do |item|
+    items.each do |item| 
       room = Admin::Room.new(machine_name: item['machine_name'], 
         title: item['title'],
         description: item['description'],

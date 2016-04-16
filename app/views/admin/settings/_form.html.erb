@@ -1,4 +1,4 @@
-<%= form_for(@admin_setting) do |f| %>
+<%= form_for(@admin_setting, html: { class: 'ui form' }) do |f| %>
   <% if @admin_setting.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@admin_setting.errors.count, "error") %> prohibited this admin_setting from being saved:</h2>
@@ -28,7 +28,7 @@
 
   <div class="field">
     <%= f.label :maintenance_mode %><br>
-    <%= f.checkbox :maintenance_mode %>
+    <%= f.check_box :maintenance_mode %>
   </div>
   
   <div class="field">
@@ -40,3 +40,6 @@
     <%= f.submit %>
   </div>
 <% end %>
+
+<br/>
+

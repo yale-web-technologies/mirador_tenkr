@@ -69,6 +69,7 @@ class Admin::SettingsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def admin_setting_params
-      params.require(:admin_setting).permit(:endpoint_url)
+      params.require(:admin_setting).permit(:site_name, :landing_path,
+        :endpoint_url, :maintenance_mode, :maintenance_message)
     end
 end

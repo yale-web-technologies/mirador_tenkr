@@ -22,6 +22,8 @@ ActiveRecord::Schema.define(version: 20160413193707) do
     t.datetime "updated_at",             null: false
   end
 
+  add_index "admin_manifests", ["room_id"], name: "index_admin_manifests_on_room_id", using: :btree
+
   create_table "admin_rooms", force: :cascade do |t|
     t.string   "machine_name", limit: 255
     t.string   "title",        limit: 255

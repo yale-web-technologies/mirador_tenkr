@@ -1,9 +1,9 @@
-<div class="ui container">
+<div class="main ui container">
   <div class="ui grid">
     <div class="column">
       <h1><%= @room.title %></h1>
       
-      <div id="books">
+      <div>
         <ul>
           <% @manifests.each do |manifest| %>
             <li>
@@ -12,6 +12,7 @@
           <% end %>
         </ul>
       </div>
+
     </div>
   </div>
 </div>
