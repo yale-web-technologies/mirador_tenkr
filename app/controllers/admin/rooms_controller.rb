@@ -70,6 +70,6 @@ class Admin::RoomsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def admin_room_params
       #params[:admin_room]
-      params.require(:admin_room).permit(:machine_name, :title, :description)
+      params.require(:admin_room).permit(:machine_name, :title, :description, :weight)
     end
 end

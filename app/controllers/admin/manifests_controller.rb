@@ -69,6 +69,6 @@ class Admin::ManifestsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def admin_manifest_params
-      params.require(:admin_manifest).permit(:url)
+      params.require(:admin_manifest).permit(:room_id, :title, :url, :weight)
     end
 end
