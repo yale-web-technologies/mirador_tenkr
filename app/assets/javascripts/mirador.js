@@ -8,13 +8,20 @@
       var endpointUrl = viewer.attr('endpoint_url');
       var config = this.config;
       
+      viewer.resizable();
+      
       config.data = [{ manifestUri: manifestUri }];
       config.mainMenuSettings.userLogo.label = siteName;
       config.windowObjects[0].loadedManifest = manifestUri;
       config.annotationEndpoint.options.prefix = endpointUrl;
+
+      console.log('WIDTH0: ' + jQuery('#viewer').css('width'));
+      console.log('HEIGHT0: ' + jQuery('#viewer').css('height'));
       
       console.log('config: ' + JSON.stringify(config, null, 2));
       Mirador(config);
+      console.log('WIDTH2: ' + jQuery('#viewer').css('width'));
+      console.log('HEIGHT2: ' + jQuery('#viewer').css('height'));
     },
     
     config: {
