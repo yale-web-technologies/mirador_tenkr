@@ -16,9 +16,25 @@
   <% end %>
 
   <div class="field">
+    <%= f.label :room_id %><br>
+    <%= f.text_field :room_id, size: 8 %>
+  </div>
+
+  <div class="field">
+    <%= f.label :title %><br>
+    <%= f.text_field :title, size: 80 %>
+  </div>
+
+  <div class="field">
     <%= f.label :url %><br>
     <%= f.text_field :url, size: 80 %>
   </div>
+  
+  <div class="field">
+    <%= f.label :weight %><br>
+    <%= f.text_field :weight, size: 8 %>
+  </div>
+  
   <div class="actions">
     <%= f.submit %>
   </div>

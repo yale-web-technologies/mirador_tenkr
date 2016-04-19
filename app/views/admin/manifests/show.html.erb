@@ -1,9 +1,34 @@
+<div class="ui container">
+  <div class="ui grid">
+    <div class="column">
+      
 <p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Room ID:</strong>
+  <%= @admin_manifest.room_id %>
+</p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @admin_manifest.title %>
+</p>
 
 <p>
   <strong>Url:</strong>
   <%= @admin_manifest.url %>
 </p>
 
+<p>
+  <strong>Weight:</strong>
+  <%= @admin_manifest.weight %>
+</p>
+
+<br/>
+
 <%= link_to 'Edit', edit_admin_manifest_path(@admin_manifest) %> |
 <%= link_to 'Back', admin_manifests_path %>
+
+    </div>
+  </div>
+</div>
