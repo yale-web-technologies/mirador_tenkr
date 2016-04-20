@@ -2904,8 +2904,6 @@ var Isfahan = function(configObject) {
   var _this = this,
 
   containerSize = function(containerId) {
-    console.log('WIDTH: ' + document.getElementById(containerId).offsetWidth); //xxx
-    console.log('HEIGHT: ' + document.getElementById(containerId).offsetHeight);
     return [document.getElementById(containerId).offsetWidth,
       document.getElementById(containerId).offsetHeight]
   },
@@ -8518,19 +8516,11 @@ window.Mirador = window.Mirador || function(config) {
           dropdown.stop().slideFadeToggle(300, function () {
             var scrollTop = _this.listElem.scrollTop();
             var scrollHeight = _this.listElem.height();
-            console.log('scrollTop: ' + scrollTop);
             var scrollBottom = scrollTop + scrollHeight;
-            console.log('scrollHeight: ' + scrollHeight);
-            console.log('scrollBottom: ' + scrollBottom);
             var top = dropdown.position().top;
             var dropdownHeight = dropdown.outerHeight(true);
             var bottom = dropdown.position().top + dropdownHeight;
-            console.log('dd top: ' + top);
-            console.log('dd height: ' + dropdownHeight);
-            console.log('dd bottom: ' + bottom);
-            //var diff = bottom - scrollBottom;
-            diff = bottom - scrollHeight;
-            console.log('diff: ' + diff);
+            var diff = bottom - scrollHeight;
             
             if (diff > 0) {
               dropdown.css('top', scrollTop + scrollHeight - dropdownHeight + 'px');
@@ -8625,8 +8615,8 @@ window.Mirador = window.Mirador || function(config) {
       '      <a class="annowin_info"><i class="fa fa-info-circle"></i></a>',
       '      <a class="mirador-btn annowin_item_menu" title="Actions"><i class="fa fa-chevron-circle-right"></i>',
       '        <ul class="dropdown item_menu_dropdown">',
-      '          <li class="move_up"><i class="fa fa-caret-square-o-up fa-fw"></i> {{t "moveUp"}}</li>',
-      '          <li class="move_down"><i class="fa fa-caret-square-o-down fa-fw"></i> {{t "moveDown"}}</li>',
+//      '          <li class="move_up"><i class="fa fa-caret-square-o-up fa-fw"></i> {{t "moveUp"}}</li>',
+//      '          <li class="move_down"><i class="fa fa-caret-square-o-down fa-fw"></i> {{t "moveDown"}}</li>',
       '          <li class="edit"><i class="fa fa-edit fa-fw"></i> {{t "edit"}}</li>',
       '          <li class="delete"><i class="fa fa-times fa-fw"></i> {{t "delete"}}</li>',
       '        </ul>',
