@@ -1,4 +1,17 @@
-<div id="mirador_header"></div>
-<div id="viewer" manifest_url="<%= @manifest_url %>"
-  endpoint_url="<%= @endpoint_url %>" site_name="<%= @site_name %>">
+<div id="mirador_header">
+  <div class="ui text menu">
+    <div class="ui dropdown item">
+      Menu
+      <div class="menu">
+        <div class="item">Add window</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="mr_grid"></div>
+
+<div id="viewer_template">
+  <div id="{{id}}" manifest_url="<%= @manifest_url %>"
+    endpoint_url="<%= @endpoint_url %>" site_name="<%= @site_name %>">
+  </div>
 </div>
