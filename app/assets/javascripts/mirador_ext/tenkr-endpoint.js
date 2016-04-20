@@ -264,5 +264,14 @@
     }
 
   };
+  
+  var instance = null;
+  
+  $.getEndpoint = function () {
+    if (!instance) {
+      instance = new $.TenkrEndpoint();
+    }
+    return instance;
+  };
 
 })(Mirador);

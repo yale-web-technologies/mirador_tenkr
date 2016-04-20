@@ -22,7 +22,6 @@
     "imageView": "Amharc Íomhánna",
     "bookView": "Amharc Leabhair",
     "scrollView": "Amharc Scrollaithe",
-    "thumbnailsView": "Amharc Gailearaí",
     "comments": "Tráchtanna",
     "addTagsHere": "Cuir clibeanna anseo",
     "save": "Sábháil",
@@ -33,7 +32,5 @@
     "newObject": "Ábhar Nua",
     "objectMetadata": "Meiteashonraí Ábhair",
     "fullScreen": "Lánscáileán",
-    "logo": "Lógó",
-    "load": "Uaslódáil",
-    "dropToLoad": "Titim anseo a luchtú léiriú"
+    "logo": "Lógó"
 }
