@@ -70,6 +70,7 @@ Rails.application.routes.draw do
     resources :settings
   end
 
+  get '/admin', to: 'admin/home#index'
   get '/admin/import', to: 'admin/import#index'
   post '/admin/import/import_rooms', to: 'admin/import#import_rooms'
   post '/admin/import/import_manifests', to: 'admin/import#import_manifests'
