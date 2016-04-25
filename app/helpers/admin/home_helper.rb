@@ -9,7 +9,6 @@ module Admin::HomeHelper
     mirador_head.gsub!('//!', '')
     [
       "<p><b>Version:</b> #{Miradorails::VERSION}</p>",
-      "<p><b>Build info:</b><br/> #{Miradorails::BUILD_INFO.split(';').join('<br/>')}</p>",
       "<p><b>Mirador:</b> #{mirador_head}</p>"
     ].join("\n")
   end
