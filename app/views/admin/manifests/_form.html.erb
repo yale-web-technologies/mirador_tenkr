@@ -1,0 +1,45 @@
+<div class="ui container">
+  <div class="ui grid">
+    <div class="column">
+
+<%= form_for(@admin_manifest) do |f| %>
+  <% if @admin_manifest.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@admin_manifest.errors.count, "error") %> prohibited this admin_manifest from being saved:</h2>
+
+      <ul>
+      <% @admin_manifest.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :room_id %><br>
+    <%= f.text_field :room_id, size: 8 %>
+  </div>
+
+  <div class="field">
+    <%= f.label :title %><br>
+    <%= f.text_field :title, size: 80 %>
+  </div>
+
+  <div class="field">
+    <%= f.label :url %><br>
+    <%= f.text_field :url, size: 80 %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :weight %><br>
+    <%= f.text_field :weight, size: 8 %>
+  </div>
+  
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+    </div>
+  </div>
+</div>

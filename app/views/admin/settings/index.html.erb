@@ -1,0 +1,43 @@
+<div class="ui container">
+  <div class="ui grid">
+    <div class="column">
+      
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Admin Settings</h1>
+
+<table class="ui celled table">
+  <thead>
+    <tr>
+      <th>Site name</th>
+      <th>Landing path</th>
+      <th>Endpoint url</th>
+      <th>Maintenance mode</th>
+      <th>Maintenance message</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @admin_settings.each do |admin_setting| %>
+      <tr>
+        <td><%= admin_setting.site_name %></td>
+        <td><%= admin_setting.landing_path %></td>
+        <td><%= admin_setting.endpoint_url %></td>
+        <td><%= admin_setting.maintenance_mode %></td>
+        <td><%= admin_setting.maintenance_message %></td>
+        <td><%= link_to 'Show', admin_setting %></td>
+        <td><%= link_to 'Edit', edit_admin_setting_path(admin_setting) %></td>
+        <td><%= link_to 'Destroy', admin_setting, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Setting', new_admin_setting_path %>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,45 @@
+<%= form_for(@admin_setting, html: { class: 'ui form' }) do |f| %>
+  <% if @admin_setting.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@admin_setting.errors.count, "error") %> prohibited this admin_setting from being saved:</h2>
+
+      <ul>
+      <% @admin_setting.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :site_name %><br>
+    <%= f.text_field :site_name %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :landing_path %><br>
+    <%= f.text_field :landing_path %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :endpoint_url %><br>
+    <%= f.text_field :endpoint_url %>
+  </div>
+
+  <div class="field">
+    <%= f.label :maintenance_mode %><br>
+    <%= f.check_box :maintenance_mode %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :maintenance_message %><br>
+    <%= f.text_field :maintenance_message %>
+  </div>
+  
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+<br/>
+

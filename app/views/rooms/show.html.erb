@@ -1,0 +1,29 @@
+<div class="ui masthead vertical segment">
+  <div class="ui container">
+    <h1 class="ui header"><%= @room.title %></h1>
+  </div>
+</div>
+  
+<div class="main ui container">
+  <div class="ui grid">
+    <div class="column">
+      
+      <div class="ui breadcrumb">
+        <a href="/">Home</a>
+        <div class="divider"> / </div>
+        <div class="active section"><%= @room.title %></div>
+      </div>
+
+      <div>
+        <ul>
+          <% @manifests.each do |manifest| %>
+            <li>
+              <a target="_blank" href="<%= mirador_url(manifest.url) %>"><%= manifest.title %></a>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>

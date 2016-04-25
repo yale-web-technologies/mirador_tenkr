@@ -7,7 +7,9 @@
   <title>TenThousandRooms</title>
 
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= stylesheet_link_tag    '/mirador/css/mirador-combined' %>
+  <% if defined? @is_mirador_window %>
+    <%= stylesheet_link_tag    '/mirador/css/mirador-combined' %>
+  <% end %>
   <%= javascript_include_tag 'https://cdn.firebase.com/js/client/2.2.1/firebase.js' %>
   <%= javascript_include_tag '/mirador/mirador' %>
   <script>

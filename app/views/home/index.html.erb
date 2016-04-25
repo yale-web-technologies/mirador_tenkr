@@ -1,2 +1,16 @@
-<span id="config_id" style="display: none"><%= @config_id %></span>
-<div id="viewer"></div>
+<div class="ui masthead vertical segment">
+  <div class="ui container">
+    <h1 class="ui header"><%= @site_name %></h1>
+  </div>
+</div>
+<div class="ui main container">
+  <div class="ui grid">
+    <div class="column">
+      <ul>
+        <% @rooms.each do |room| %>
+          <li><%= room_link(room) %></li>
+        <% end %>
+      </ul>
+    <div>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+<div class="ui container">
+  <div class="ui grid">
+    <div class="column">
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Site name:</strong>
+  <%= @admin_setting.site_name %>
+</p>
+
+<p>
+  <strong>Landing path:</strong>
+  <%= @admin_setting.landing_path %>
+</p>
+
+<p>
+  <strong>Endpoint url:</strong>
+  <%= @admin_setting.endpoint_url %>
+</p>
+
+<p>
+  <strong>Maintenance mode:</strong>
+  <%= @admin_setting.maintenance_mode %>
+</p>
+
+<p>
+  <strong>Maintenance message:</strong>
+  <%= @admin_setting.maintenance_message %>
+</p>
+
+<%= link_to 'Edit', edit_admin_setting_path(@admin_setting) %> |
+<%= link_to 'Back', admin_settings_path %>
+
+    </div>
+  </div>
+</div>

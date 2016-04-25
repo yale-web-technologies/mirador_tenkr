@@ -1,0 +1,41 @@
+<div class="ui container">
+  <div class="ui grid">
+    <div class="column">
+
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Admin Rooms</h1>
+
+<table class="ui celled table">
+  <thead>
+    <tr>
+      <th>Machine name</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Weight</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @admin_rooms.each do |admin_room| %>
+      <tr>
+        <td><%= admin_room.machine_name %></td>
+        <td><%= admin_room.title %></td>
+        <td><%= admin_room.description %></td>
+        <td><%= admin_room.weight %></td>
+        <td><%= link_to 'Show', admin_room %></td>
+        <td><%= link_to 'Edit', edit_admin_room_path(admin_room) %></td>
+        <td><%= link_to 'Destroy', admin_room, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Room', new_admin_room_path %>
+
+    </div>
+  </div>
+</div>
