@@ -8,9 +8,9 @@ module Admin::HomeHelper
     end
     mirador_head.gsub!('//!', '')
     [
-      "Version: #{Miradorails::VERSION}",
-      "Git tag/hash: #{Miradorails::LAST_GIT_COMMIT}",
-      "Mirador: #{mirador_head}"
-    ].join('<br/>')
+      "<p><b>Version:</b> #{Miradorails::VERSION}</p>",
+      "<p><b>Build info:</b><br/> #{Miradorails::BUILD_INFO.split(';').join('<br/>')}</p>",
+      "<p><b>Mirador:</b> #{mirador_head}</p>"
+    ].join("\n")
   end
 end

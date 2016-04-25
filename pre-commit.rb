@@ -7,17 +7,17 @@ def replace_version_info
   content = nil
 
   info = ''
-  info << "Commit time: #{DateTime.now}\n"
-  info << "Git previous commit: #{`git describe --always`}"
-  info << "Git user name: #{`git config user.name`}"
-  info << "Git user email: #{`git config user.email`}"
+  info << "Commit time: #{DateTime.now};"
+  info << "Git previous commit: #{`git describe --always`.strip};"
+  info << "Git user name: #{`git config user.name`.strip};"
+  info << "Git user email: #{`git config user.email`.strip}"
   puts info
 
   File.open(target_file) do |f|
     content = f.read
   end
 
-  content = content.sub(/(BUILD_INFO\s*=\s*)(\S+)/, "\\1'#{info}'")
+  content = content.sub(/(BUILD_INFO\s*=\s*)('.*')/, "\\1'#{info}'")
   puts content
 
   File.open(target_file, 'w') do |f|
