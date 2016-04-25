@@ -3,7 +3,7 @@
 require 'date'
 
 def replace_version_info
-  target_file = "#{File.dirname(__FILE__)}/config/initializers/version.rb"
+  target_file = "config/initializers/version.rb"
   content = nil
 
   info = ''
@@ -25,4 +25,5 @@ def replace_version_info
   end
 end
 
+puts "Running pre-commit"
 replace_version_info
