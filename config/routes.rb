@@ -82,6 +82,7 @@ Rails.application.routes.draw do
     
     get '/', to: 'home#index'
     get '/import', to: 'import#index'
+    post '/import/import_user_roles', to: 'import#import_user_roles'
     post '/import/import_rooms', to: 'import#import_rooms'
     post '/import/import_manifests', to: 'import#import_manifests'
   end

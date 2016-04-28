@@ -4,6 +4,24 @@ class Admin::ImportController < ApplicationController
   def index
   end
   
+  def import_user_roles
+    url = params['url']
+    response = RestClient.get url
+    puts "response: #{response}"
+    items = JSON.parse(response)
+    
+    items.each do |item| 
+      user_role = Admin::UserRole.new(netid: item['netid'], 
+        email: item['email'],
+        first_name: item['first_name'],
+        last_name: item['last_name'],
+        role: item['role'])
+      user_role.save
+    end
+    
+    redirect_to action: 'index'
+  end
+  
   def import_rooms
     url = params['url']
     response = RestClient.get url
