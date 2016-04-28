@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
 
+  namespace :admin do
+    resources :user_roles
+  end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -66,14 +69,20 @@ Rails.application.routes.draw do
   
   get '/mirador', to: 'mirador#index'
   
+  constraints format: 'json' do
+    get '/api/session_info', to: 'api#session_info'
+  end
+  
+  get '/logout', to: 'application#logout'
+
   namespace :admin do
     resources :manifests
     resources :rooms
     resources :settings
+    
+    get '/', to: 'home#index'
+    get '/import', to: 'import#index'
+    post '/import/import_rooms', to: 'import#import_rooms'
+    post '/import/import_manifests', to: 'import#import_manifests'
   end
-
-  get '/admin', to: 'admin/home#index'
-  get '/admin/import', to: 'admin/import#index'
-  post '/admin/import/import_rooms', to: 'admin/import#import_rooms'
-  post '/admin/import/import_manifests', to: 'admin/import#import_manifests'
 end

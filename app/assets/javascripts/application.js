@@ -12,11 +12,15 @@
 //
 // require jquery
 //= require jquery_ujs
-//= require turbolinks
+//= require js.cookie
+// require turbolinks
 //= require semantic_ui/semantic_ui
 //
 //= require tenkr-endpoint
 //= require tenkr-fb-endpoint
 //= require main
-//= require rooms
-//= require mirador
+//= require app
+//= require session
+//= require views/header-view
+//= require views/rooms-view
+//= require views/mirador-view

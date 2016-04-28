@@ -1,4 +1,4 @@
-window.Miradorails = {};
+window.MR = {};
 
 (function ($) {
 
@@ -7,9 +7,19 @@ window.Miradorails = {};
     configId = 1;
     var url = '/example/config/' + configId + '.json';
     
-    $.rooms.init();
-    $.mirador.init();
+    $.app.init();
+    $.roomsView.init();
+    
+    var miradorViewer = jQuery('#viewer');
+    if (miradorViewer.size() > 0) {
+      $.miradorView.init(miradorViewer);
+    }
+    
+    var header = jQuery('.mr_header');
+    if (header.size() > 0) {
+      $.headerView.init();
+    }
 
   });
-
-})(Miradorails);
+  
+})(MR);

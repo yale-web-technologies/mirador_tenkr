@@ -1,0 +1,43 @@
+<div class="ui container">
+  <div class="ui grid">
+    <div class="column">
+
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Admin User Roles</h1>
+
+<table class="ui celled table">
+  <thead>
+    <tr>
+      <th>Netid</th>
+      <th>Email</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Role</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @admin_user_roles.each do |admin_user_role| %>
+      <tr>
+        <td><%= admin_user_role.netid %></td>
+        <td><%= admin_user_role.email %></td>
+        <td><%= admin_user_role.first_name %></td>
+        <td><%= admin_user_role.last_name %></td>
+        <td><%= admin_user_role.role %></td>
+        <td><%= link_to 'Show', admin_user_role %></td>
+        <td><%= link_to 'Edit', edit_admin_user_role_path(admin_user_role) %></td>
+        <td><%= link_to 'Destroy', admin_user_role, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New User role', new_admin_user_role_path %>
+
+    </div>
+  </div>
+</div>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160413193707) do
+ActiveRecord::Schema.define(version: 20160426220053) do
 
   create_table "admin_manifests", force: :cascade do |t|
     t.integer  "room_id",    limit: 4
@@ -43,6 +43,16 @@ ActiveRecord::Schema.define(version: 20160413193707) do
     t.string   "maintenance_message", limit: 255
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
+  end
+
+  create_table "admin_user_roles", force: :cascade do |t|
+    t.string   "netid",      limit: 255
+    t.string   "email",      limit: 255
+    t.string   "first_name", limit: 255
+    t.string   "last_name",  limit: 255
+    t.string   "role",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "users", force: :cascade do |t|

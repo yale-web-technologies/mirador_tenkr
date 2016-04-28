@@ -68,21 +68,22 @@
       });
     },
 
-    create: function (oaAnnotation, layerID, successCallback, errorCallback) {
+    create: function (oaAnnotation, successCallback, errorCallback) {
       console.log('TenkrEndpoint#create oaAnnotation:');
       console.dir(oaAnnotation);
-
+      
       var _this = this;
+      var layerId = oaAnnotation.layerId;
       var annotation = this.getAnnotationInEndpoint(oaAnnotation);
       var url = this.prefix + '/annotations';
 
       var request = {
-        layer_id: layerID,
+        layer_id: layerId,
         annotation: annotation
       };
       
       console.dir(request);
-
+      
       jQuery.ajax({
         url: url,
         type: 'POST',
@@ -94,7 +95,7 @@
           var annotation = data;
 
           var oaAnnotation = _this.getAnnotationInOA(annotation);
-          oaAnnotation.layerID = layerID;
+          oaAnnotation.layerId = layerId;
 
           if (typeof successCallback === 'function') {
             successCallback(oaAnnotation);
@@ -102,6 +103,9 @@
         },
         error: function (jqXHR, textStatus, errorThrown) {
           alert('Failed to create annotation: ' + textStatus);
+          if (typeof errorCallback === 'function') {
+            errorCallback();
+          }
         }
       });
     },
@@ -109,7 +113,7 @@
     update: function (oaAnnotation, successCallback, errorCallback) {
       console.log('TenkrEndpoint#update oaAnnotation:');
       console.dir(oaAnnotation);
-
+      
       var _this = this;
       //var fullId = oaAnnotation.fullId;
       var fullId = oaAnnotation['@id'];
@@ -138,6 +142,7 @@
 
     deleteAnnotation: function (annotationID, successCallback, errorCallback) {
       console.log('TenkrEndpoint#delete oa annotationID: ' + annotationID);
+      
       var _this = this;
       var fullId = this.idMapper[annotationID];
       //var url = this.prefix + '/annotations/' + encodeURIComponent(fullId);
@@ -209,7 +214,7 @@
     },
 
     userAuthorize: function (action, annotation) {
-      return true;
+      return MR.session.isEditor();
     },
 
     // Convert Endpoint annotation to OA

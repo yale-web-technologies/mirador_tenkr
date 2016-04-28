@@ -1,0 +1,37 @@
+<div class="ui container">
+  <div class="ui grid">
+    <div class="column">
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Netid:</strong>
+  <%= @admin_user_role.netid %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @admin_user_role.email %>
+</p>
+
+<p>
+  <strong>First Name:</strong>
+  <%= @admin_user_role.first_name %>
+</p>
+
+<p>
+  <strong>Last Name:</strong>
+  <%= @admin_user_role.last_name %>
+</p>
+
+<p>
+  <strong>Role:</strong>
+  <%= @admin_user_role.role %>
+</p>
+
+<%= link_to 'Edit', edit_admin_user_role_path(@admin_user_role) %> |
+<%= link_to 'Back', admin_user_roles_path %>
+
+    </div>
+  </div>
+</div>

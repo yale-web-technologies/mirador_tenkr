@@ -9,7 +9,15 @@ gem 'mysql2', '>= 0.3.13', '< 0.5'
 
 gem 'pg'
 
+#gem 'rubycas-client'
+gem 'rubycas-client', :git => 'git://github.com/rubycas/rubycas-client.git'
+
 gem 'devise'
+#gem 'devise_cas_authenticatable'
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-twitter'
 
 # Use SCSS for stylesheets
 # gem 'sass-rails', '~> 5.0'
@@ -27,8 +35,11 @@ gem 'uglifier', '~> 3.0.0'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
+
+gem 'js_cookie_rails', '~> 1.0.1'
+
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
+# gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
