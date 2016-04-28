@@ -14,6 +14,7 @@
       <th>Endpoint url</th>
       <th>Maintenance mode</th>
       <th>Maintenance message</th>
+      <th>Disable authentication</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -26,6 +27,7 @@
         <td><%= admin_setting.endpoint_url %></td>
         <td><%= admin_setting.maintenance_mode %></td>
         <td><%= admin_setting.maintenance_message %></td>
+        <td><%= admin_setting.disable_authentication %></td>
         <td><%= link_to 'Show', admin_setting %></td>
         <td><%= link_to 'Edit', edit_admin_setting_path(admin_setting) %></td>
         <td><%= link_to 'Destroy', admin_setting, method: :delete, data: { confirm: 'Are you sure?' } %></td>

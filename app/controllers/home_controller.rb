@@ -2,7 +2,6 @@ class HomeController < ApplicationController
   def index
     puts "User: #{session[:cas_user]}"
     setting = Admin::Setting.first
-    @title = setting.site_name
     @rooms = Admin::Room.all
     landing_path = setting.landing_path.strip
     unless landing_path.empty?

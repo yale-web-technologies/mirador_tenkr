@@ -11,7 +11,7 @@
       viewer.resizable();
       
       config.data = [{ manifestUri: manifestUri }];
-      config.mainMenuSettings.userLogo.label = siteName;
+      config.mainMenuSettings.userlogo.label = siteName;
       config.windowObjects[0].loadedManifest = manifestUri;
       config.annotationEndpoint.options.prefix = endpointUrl;
       
@@ -41,9 +41,7 @@
           "fullScreenViewer": true,
           "options": false
         },
-        "userButtons" : [
-        ],
-        "userLogo" : {
+        "userlogo" : {
           "label" : "",
           "_label" : "Life of Buddha",
           "attributes" : { "id" : "yale_logo", "href" : "http://tenthousandrooms.yale.edu", "target" : "_blank" }

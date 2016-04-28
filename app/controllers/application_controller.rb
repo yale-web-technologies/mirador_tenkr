@@ -15,11 +15,13 @@ class ApplicationController < ActionController::Base
   
   def setup
     #puts "ApplicationController#set_netid_cookie cas_user: #{session[:cas_user]}"
+    @title = Admin::Setting.first.site_name # default title
+    no_auth = Admin::Setting.first.disable_authentication
     netid = session[:cas_user]
-    cookies[:loggedIn] = { value: (netid ? true : false) }
+    cookies[:loggedIn] = { value: ((netid || no_auth) ? true : false) }
     
     user_role = Admin::UserRole.find_by_netid(netid)
-    if user_role && user_role.role == 'editor'
+    if (user_role && user_role.role == 'editor') || no_auth
       cookies[:isEditor] = { value: true }
     else
       cookies[:isEditor] = { value: false }
