@@ -51,7 +51,7 @@
             var annotations = data;
             jQuery.each(annotations, function (index, value) {
               var oaAnnotation = _this.getAnnotationInOA(value.annotation);
-              oaAnnotation.layerID = value.layer_id;
+              oaAnnotation.layerId = value.layer_id;
               oaAnnotation.endpoint = _this;
               _this.annotationsList.push(oaAnnotation);
             });

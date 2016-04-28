@@ -8336,7 +8336,7 @@ window.Mirador = window.Mirador || function(config) {
     updateList: function(layerId) {
       var _this = this;
       var annotationsList = this.canvasWindow.annotationsList;
-      console.log('annotationsList:');
+      console.log('AnnotationWindow#updateList annotationsList:');
       console.dir(annotationsList);
       
       this.listElem = this.element.find('.annowin_list');
