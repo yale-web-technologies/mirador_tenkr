@@ -5,7 +5,6 @@
       annotationLayers: [],
       annotationsList: [],
       dfd: null,
-      idMapper: {}, // internal list for module use to map ID to URI
       imagesList: null,
       prefix: null,
       windowID: null
@@ -219,15 +218,10 @@
 
     // Convert Endpoint annotation to OA
     getAnnotationInOA: function(annotation) {
-      var fullId = annotation['@id'];
-      //var shortId = $.genUUID();
-      //this.idMapper[shortId] = fullId;
-      var shortId = fullId;
-
       var oaAnnotation = {
         '@context': 'http://iiif.io/api/presentation/2/context.json',
         '@type': 'oa:Annotation',
-        '@id': shortId,
+        '@id': annotation['@id'],
         motivation: annotation.motivation,
         resource : annotation.resource,
         on: annotation.on,
@@ -235,8 +229,7 @@
         //annotatedAt: annotation.created,
         //serializedAt: annotation.updated,
         //permissions: annotation.permissions,
-        endpoint: this,
-        fullId: fullId
+        endpoint: this
       };
       //console.log('TenkrEndpoint#getAnnotationInOA oaAnnotation:');
       //console.dir(oaAnnotation);
@@ -245,26 +238,22 @@
 
     // Converts OA Annotation to endpoint format
     getAnnotationInEndpoint: function(oaAnnotation) {
-      var shortId = oaAnnotation['@id'];
-      //var fullId = this.idMapper[shortId];
-      var fullId = oaAnnotation['@id'];
-
       var annotation = {
-        '@id': fullId,
+        '@id': oaAnnotation['@id'],
         '@type': oaAnnotation['@type'],
         '@context': oaAnnotation['@context'],
         motivation: oaAnnotation.motivation,
         resource: oaAnnotation.resource,
-        on: oaAnnotation.on
+        on: oaAnnotation.on,
       };
       
       if (oaAnnotation.within) {
         annotation.within = oaAnnotation.within;
       }
-      /*
-      if (oaAnnotation.on['@type'] === 'oa:Annotation') {
-        annotation.on.full = this.idMapper[oaAnnotation.on.full];
-      }*/
+      
+      if (oaAnnotation.orderWeight) {
+        annotation.orderWeight = oaAnnotation.orderWeight;
+      }
       return annotation;
     }
 
