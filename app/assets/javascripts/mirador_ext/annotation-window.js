@@ -2,10 +2,11 @@
 
   $.AnnotationWindow = function(options) {
     jQuery.extend(this, {
+      id: null,
+      appnedTo: null,
       element: null,
       canvasWindow: null, // window that contains the canvas for the annotations
-      id: null,
-      slotAddress: null
+      endpoint: null
     }, options);
 
     this.init();
@@ -14,27 +15,29 @@
   $.AnnotationWindow.prototype = {
     
     init: function () {
-      console.log('AnnotationWindow#init this.appendTo: ' + this.appendTo);
       if (!this.id) {
         this.id = Mirador.genUUID();
       }
-      this.endpoint = Mirador.getEndpoint();
+      this.canvasWindow = Mirador.viewer.workspace.windows[0];
+      this.endpoint = this.canvasWindow.endpoint;
       this.element = jQuery(this.template({}));
+      this.appendTo.append(this.element);
+      console.log('append to ' + this.appendTo.attr('id'));
       this.layerSelect = this.element.find('.annowin_select_layer');
       this.currentLayerID = 'any';
       this.editorRow = this.element.find('.annowin_creator'); // placeholder for annotation editor for creation
       this.placeholder = this.element.find('.placeholder');
       this.placeholder.text('Loading...').show();
-      //this.reload();
-      //this.bindEvents();
+      this.reload();
+      this.bindEvents();
     },
     
     reload: function () {
       this.placeholder.hide();
-      //var canvas = this.getCurrentCanvas();
-      //this.element.find('.title').text(canvas.label);
-      //this.updateLayers();
-      //this.updateList(this.layerSelect.val());
+      var canvas = this.getCurrentCanvas();
+      this.element.find('.title').text(canvas.label);
+      this.updateLayers();
+      this.updateList(this.layerSelect.val());
     },
     
     updateLayers: function () {
@@ -91,6 +94,20 @@
       var infoDiv = annoElem.find('.info_view');
       
       annoElem.data('annotationID', annotation['@id']);
+      annoElem.find('.ui.dropdown').dropdown({
+        onChange: function (value, text, $selectedItem) {
+          console.log('CHANGE');
+          setTimeout(function () {
+            annoElem.find('ui.dropdown').dropdown('restore defaults');
+            console.log('do');
+          }, 1000);
+        }
+      });
+      if (annotation.on['@type'] == 'oa:Annotation') { // target: annotation
+        annoElem.find('.menu_bar').addClass('targeting_anno');
+      } else {
+        annoElem.find('.menu_bar').removeClass('targeting_anno');
+      }
       this.setAnnotationItemInfo(annoElem, annotation);
       this.bindAnnotationItemEvents(annoElem, annotation);
       infoDiv.hide();
@@ -162,31 +179,7 @@
     bindEvents: function() {
       var _this = this;
       
-      this.element.find('.mirador-icon-window-menu').on('mouseenter',
-        function() {
-          _this.element.find('.slot-controls').stop().slideFadeToggle(300);
-      }).on('mouseleave',
-        function() {
-          _this.element.find('.slot-controls').stop().slideFadeToggle(300);
-      });
-      
-      this.element.find('.add-slot-right').on('click', function() {
-        $.viewer.workspace.splitRight(_this.parent);
-      });
-
-      this.element.find('.add-slot-left').on('click', function() {
-        $.viewer.workspace.splitLeft(_this.parent);
-      });
-
-      this.element.find('.add-slot-below').on('click', function() {
-        $.viewer.workspace.splitDown(_this.parent);
-      });
-
-      this.element.find('.add-slot-above').on('click', function() {
-        $.viewer.workspace.splitUp(_this.parent);
-      });
-      
-      this.element.find('.annowin_create_anno').click(function(event) {
+      this.element.find('.annowin_create_anno').click(function (event) {
         event.stopPropagation();
         event.preventDefault();
 
@@ -202,15 +195,7 @@
         });
         editor.show();
       });
-      
-      this.element.find('.annowin_remove_slot').click(function(event) {
-        event.stopPropagation();
-        event.preventDefault();
-        var workspace = $.viewer.workspace;
-        var slot = workspace.getSlotFromAddress(_this.slotAddress);
-        workspace.removeNode(slot);
-      });
-      
+
       // When a new layer is selected
       this.layerSelect.change(function(event) {
         console.log('AnnotationWindow layer selected: ' + _this.layerSelect.val());
@@ -250,29 +235,25 @@
         }
       });
       
-      annoElem.find('.annowin_item_menu').on('mouseenter',
-        function() {
-          var dropdown = annoElem.find('.item_menu_dropdown');
-          dropdown.stop().slideFadeToggle(300);
-      }).on('mouseleave',
-        function() {
-          annoElem.find('.item_menu_dropdown').stop().slideFadeToggle(300);
+      annoElem.find('.annotate').click(function (event) {
+        var dialogElement = jQuery('#mr_annotation_dialog');
+        var dfdOnSave = jQuery.Deferred();
+        var dfdOnCancel = jQuery.Deferred();
+        var editor = new $.AnnotationEditor({
+          parent: dialogElement,
+          canvasWindow: _this.canvasWindow,
+          mode: 'create',
+          targetAnnotation: annotation,
+          endpoint: _this.endpoint
+        });
+        new $.AnnotationDialog({ 
+          element: dialogElement, 
+          editor: editor
+        });
+        dfdOnSave
       });
       
-      annoElem.find('.move_up').click(function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-      });
-
-      annoElem.find('.move_down').click(function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-      });
-
-      annoElem.find('.edit').click(function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        
+      annoElem.find('.edit').click(function (event) {
         var editor = new $.AnnotationEditor({
           parent: annoElem,
           canvasWindow: _this.canvasWindow,
@@ -288,10 +269,7 @@
         editor.show();
       });
       
-      annoElem.find('.delete').click(function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        
+      annoElem.find('.delete').click(function (event) {
         if (window.confirm('Do you really want to delete the annotation?')) {
           jQuery.publish('annotationDeleted.' + _this.canvasWindow.id, [annotation['@id']]);
         }
@@ -310,22 +288,9 @@
     
     // template should be based on workspace type
     template: Handlebars.compile([
-      '<div class="window annowin">',
-      '  <div class="annowin_header">',
-      '    <a href="javascript:;" class="mirador-btn mirador-icon-window-menu annowin_window_menu" title="{{t "changeLayout"}}"><i class="fa fa-table fa-lg fa-fw"></i>',
-      '      <ul class="dropdown slot-controls">',
-      '        <li class="add-slot-right"><i class="fa fa-caret-square-o-right fa-lg fa-fw"></i> {{t "addSlotRight"}}</li>',
-      '        <li class="add-slot-left"><i class="fa fa-caret-square-o-left fa-lg fa-fw"></i> {{t "addSlotLeft"}}</li>',
-      '        <li class="add-slot-above"><i class="fa fa-caret-square-o-up fa-lg fa-fw"></i> {{t "addSlotAbove"}}</li>',
-      '        <li class="add-slot-below"><i class="fa fa-caret-square-o-down fa-lg fa-fw"></i> {{t "addSlotBelow"}}</li>',
-      '      </ul>',
-      '    </a>',
-      '    <span class="title"></span>',
-      '    <a class="annowin_remove_slot"><i class="fa fa-times fa-lg fa-fw"></i></a>',
-      '  </div>',
+      '<div class="mr_annotation_window">',
       '  <div class="annowin_layer_row">', 
-      '    Layer: <select class="annowin_select_layer"></select>',
-      '    <a class="annowin_create_anno"><i class="fa fa-edit fa-lg fa-fw"></i></a>',
+      '    <select class="annowin_select_layer"></select>',
       '  </div>',
       '  <div class="annowin_creator"></div>',
       '  <div class="placeholder"></div>',
@@ -338,16 +303,17 @@
       '<div class="annowin_anno">',
       '  <div class="info_view"></div>',
       '  <div class="normal_view">',
-      '    <div class="to_right">',
-      '      <a class="annowin_info"><i class="fa fa-info-circle"></i></a>',
-      '      <a class="mirador-btn annowin_item_menu" title="Actions"><i class="fa fa-chevron-circle-right"></i>',
-      '        <ul class="dropdown item_menu_dropdown">',
-      '          <li class="move_up"><i class="fa fa-caret-square-o-up fa-fw"></i> {{t "moveUp"}}</li>',
-      '          <li class="move_down"><i class="fa fa-caret-square-o-down fa-fw"></i> {{t "moveDown"}}</li>',
-      '          <li class="edit"><i class="fa fa-edit fa-fw"></i> {{t "edit"}}</li>',
-      '          <li class="delete"><i class="fa fa-times fa-fw"></i> {{t "delete"}}</li>',
-      '        </ul>',
-      '      </a>',
+      '    <div class="menu_bar">',
+      '      <div class="ui text menu">',
+      '        <div class="ui dropdown item">',
+      '          Action<i class="dropdown icon"></i>',
+      '          <div class="menu">',
+      '            <div class="annotate item"><i class="fa fa-hand-o-left fa-fw"></i> Annotate</div>',
+      '            <div class="edit item"><i class="fa fa-edit fa-fw"></i> {{t "edit"}}</div>',
+      '            <div class="delete item"><i class="fa fa-times fa-fw"></i> {{t "delete"}}</div>',
+      '          </div>',
+      '        </div>',
+      '      </div>',
       '    </div>',
       '    <div class="content">{{{content}}}</div>',
       '  </div>',
@@ -362,4 +328,4 @@
     ].join(''))
   };
 
-})(Mirador);
+})(Miradorails);
