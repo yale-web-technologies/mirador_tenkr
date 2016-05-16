@@ -1,7 +1,7 @@
 (function ($) {
 
   // Endpoint for FireBase containing dummy data for development/testing
-  $.TenkrFbEndpoint = function (options) {
+  $.YaleTestEndpoint = function (options) {
     jQuery.extend(this, {
       annotationLayers: [],
       annotationsList: [],
@@ -16,7 +16,7 @@
     this.init();
   };
 
-  jQuery.extend($.TenkrFbEndpoint.prototype, $.TenkrEndpoint.prototype, {
+  jQuery.extend($.YaleTestEndpoint.prototype, $.YaleEndpoint.prototype, {
 
     init: function () {
       console.log('TenkrFbEndpoint#init');

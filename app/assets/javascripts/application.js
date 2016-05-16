@@ -10,17 +10,22 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-// require jquery
+// require jquery // collision with jquery packaged in mirador?
 //= require jquery_ujs
-//= require js.cookie
-// require turbolinks
+//= require jquery-ui
+//= require turbolinks
 //= require semantic_ui/semantic_ui
 //
-//= require tenkr-endpoint
-//= require tenkr-fb-endpoint
 //= require main
-//= require app
-//= require session
-//= require views/header-view
-//= require views/rooms-view
-//= require views/mirador-view
+//= require rooms
+//= require mirador
+//= require mirador_ext/layout/grid
+//= require mirador_ext/main-menu
+//= require mirador_ext/mirador-window
+//= require mirador_ext/annotation-window
+//= require mirador_ext/annotation-editor
+//= require mirador_ext/annotation-dialog
+//= require mirador_ext/layer-select
+//= require mirador_ext/lines-overlay
+//= require mirador_ext/yale-endpoint
+//= require mirador_ext/yale-test-endpoint

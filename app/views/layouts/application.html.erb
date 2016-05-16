@@ -6,12 +6,21 @@
 
   <title><%= @title %></title>
 
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => false %>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+
   <% if defined? @is_mirador_window %>
-    <%= stylesheet_link_tag    '/mirador/css/mirador-combined' %>
+    <%= stylesheet_link_tag '/mirador/css/mirador-combined' %>
   <% end %>
+
   <%= javascript_include_tag 'https://cdn.firebase.com/js/client/2.2.1/firebase.js' %>
-  <%= javascript_include_tag '/mirador/mirador' %>
+  
+  <% if defined? @is_mirador_window %>
+    <%= javascript_include_tag '/mirador/mirador' %>
+    <%= javascript_include_tag 'goldenlayout.min' %>
+  <% else %>
+    <%= javascript_include_tag 'jquery' %>
+  <% end %>
+  
   <script>
     $.noConflict();
   </script>
