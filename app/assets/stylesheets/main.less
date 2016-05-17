@@ -1,13 +1,25 @@
-.lm_item_container {
-  position: relative;
-}
-
 @import 'mirador';
-@import 'color';
-@import 'mirador_ext/global';
+@import 'variables';
 @import 'mirador_ext/mirador';
 @import 'mirador_ext/grid';
 @import 'mirador_ext/annotation_dialog';
 @import 'mirador_ext/annotation_window/annotation_window';
 @import 'mirador_ext/annotation_window/annotation_cell';
 
+/* 
+ * Overriding Semantic UI
+ */
+ 
+.ui.selection.dropdown {
+  padding: @annowin-v-padding @annowin-h-padding;
+  min-height: 1em;
+  white-space: nowrap;
+}
+
+/* 
+ * Overriding GoldenLayout
+ */
+ 
+ .lm_item_container {
+   position: relative;
+ }

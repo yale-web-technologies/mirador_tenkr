@@ -8,6 +8,8 @@
       canvasWindow: null, // window that contains the canvas for the annotations
       endpoint: null
     }, options);
+    
+    console.log('AnnotationWindow this.appendTo id: ' + this.appendTo.attr('id'));
 
     this.init();
   };
@@ -22,9 +24,12 @@
       this.endpoint = this.canvasWindow.endpoint;
       this.element = jQuery(this.template({}));
       this.appendTo.append(this.element);
-      console.log('append to ' + this.appendTo.attr('id'));
-      this.layerSelect = this.element.find('.annowin_select_layer');
-      this.currentLayerID = 'any';
+      //this.layerSelect = this.element.find('.annowin_select_layer');
+      
+      this.layerSelector = new $.Selector({
+        appendTo: this.element.find('.layer_selector_container')
+      });
+      
       this.editorRow = this.element.find('.annowin_creator'); // placeholder for annotation editor for creation
       this.placeholder = this.element.find('.placeholder');
       this.placeholder.text('Loading...').show();
@@ -32,35 +37,40 @@
       this.bindEvents();
     },
     
-    reload: function () {
+    reload: function() {
+      var _this = this;
       this.placeholder.hide();
       var canvas = this.getCurrentCanvas();
       this.element.find('.title').text(canvas.label);
-      this.updateLayers();
-      this.updateList(this.layerSelect.val());
-    },
-    
-    updateLayers: function () {
-      var _this = this;
-      var layers = this.endpoint.annotationLayers;
-      var layerSelect = this.layerSelect;
-      
-      layerSelect.empty();
-      layers = [{ '@id': 'any', label: 'Any' }].concat(layers);
-      
-      jQuery.each(layers, function (index, value) {
-        var layerID = value['@id'];
-        option = jQuery('<option/>').val(layerID).text(value.label);
-        if (layerID === _this.currentLayerID) {
-          option.attr('selected', true);
-        }
-        layerSelect.append(option);
+      var dfd = this.updateLayers();
+      //this.updateList(this.layerSelect.val());
+      dfd.done(function() {
+        _this.updateList(_this.layerSelector.val());
       });
     },
     
-    updateList: function(layerID) {
+    updateLayers: function() {
+      var _this = this;
+      var dfd = jQuery.Deferred();
+      var layers = this.endpoint.annotationLayers;
+      //var layerSelect = this.layerSelect;
+      var selector = this.layerSelector
+      
+      selector.empty();
+      jQuery.each(layers, function(index, value) {
+        selector.addItem(value.label, value['@id']);
+      })
+      setTimeout(function() {
+        selector.val(layers[0]['@id']);
+        dfd.resolve();
+      }, 0);
+      return dfd;
+    },
+    
+    updateList: function(layerId) {
       var _this = this;
       var annotationsList = this.canvasWindow.annotationsList;
+      console.log('AnnotationWindow#updateList layerId: ' + layerId);
       console.log('annotationsList:');
       console.dir(annotationsList);
       
@@ -71,7 +81,7 @@
       
       jQuery.each(annotationsList, function(index, value) {
         try {
-          if (layerID === 'any' || layerID === value.layerID) {
+          if (layerId === 'any' || layerId === value.layerId) {
             ++count;
             _this.addAnnotation(value);
           }
@@ -179,6 +189,11 @@
     bindEvents: function() {
       var _this = this;
       
+      // When a new layer is selected
+      this.layerSelector.changeCallback = function (label, value) {
+        _this.updateList(_this.layerSelector.val());
+      };
+      
       this.element.find('.annowin_create_anno').click(function (event) {
         event.stopPropagation();
         event.preventDefault();
@@ -196,13 +211,6 @@
         editor.show();
       });
 
-      // When a new layer is selected
-      this.layerSelect.change(function(event) {
-        console.log('AnnotationWindow layer selected: ' + _this.layerSelect.val());
-        _this.currentLayerID = _this.layerSelect.val();
-        _this.updateList(_this.currentLayerID);
-      });
-      
       jQuery.subscribe('ANNOTATIONS_LIST_UPDATED', function(event, windowId, annotationsList) {
         _this.reload();
       });
@@ -290,7 +298,7 @@
     template: Handlebars.compile([
       '<div class="mr_annotation_window">',
       '  <div class="annowin_layer_row">', 
-      '    <select class="annowin_select_layer"></select>',
+      '    <span class="layer_selector_container"></span>',
       '  </div>',
       '  <div class="annowin_creator"></div>',
       '  <div class="placeholder"></div>',

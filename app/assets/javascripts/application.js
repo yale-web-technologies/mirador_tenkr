@@ -18,6 +18,7 @@
 //
 //= require main
 //= require session
+//= require util/selector
 //= require views/header-view
 //= require views/rooms-view
 //= require views/mirador-view
