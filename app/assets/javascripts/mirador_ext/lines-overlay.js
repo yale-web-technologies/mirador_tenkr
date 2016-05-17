@@ -85,4 +85,4 @@
     return _instance;
   };
 
-})(Miradorails);
+})(MR);

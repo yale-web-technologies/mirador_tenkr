@@ -13,12 +13,14 @@
 // require jquery // collision with jquery packaged in mirador?
 //= require jquery_ujs
 //= require jquery-ui
-//= require turbolinks
+//= require js.cookie
 //= require semantic_ui/semantic_ui
 //
 //= require main
-//= require rooms
-//= require mirador
+//= require session
+//= require views/header-view
+//= require views/rooms-view
+//= require views/mirador-view
 //= require mirador_ext/layout/grid
 //= require mirador_ext/main-menu
 //= require mirador_ext/mirador-window

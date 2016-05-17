@@ -8,7 +8,8 @@ window.MR = {};
     configId = 1;
     var url = '/example/config/' + configId + '.json';
     
-    $.rooms.init();
+    $.headerView.init();
+    $.roomsView.init();
     
     if (jQuery('#viewer_template').size() > 0) {
       $.mirador.init();

@@ -47,4 +47,4 @@
     }
   };
   
-})(Miradorails);
+})(MR);

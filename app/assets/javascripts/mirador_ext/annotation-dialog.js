@@ -25,4 +25,4 @@
     }
   };
   
-})(Miradorails);
+})(MR);

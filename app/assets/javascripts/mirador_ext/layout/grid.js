@@ -83,4 +83,4 @@
     
   };
 
-})(Miradorails);
+})(MR);

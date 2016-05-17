@@ -24,7 +24,6 @@
       var config = this.config;
       
       config.data = [{ manifestUri: manifestUri }];
-      config.mainMenuSettings.userLogo.label = siteName;
       config.windowObjects[0].loadedManifest = manifestUri;
       config.annotationEndpoint.options.prefix = endpointUrl;
 
@@ -53,19 +52,7 @@
       "imagesPath": "mirador/images/",
       "logosPath": "mirador/images/logos/",
       "mainMenuSettings": {
-        "show": true,
-        "buttons": {
-          "bookmark": false,
-          "fullScreenViewer": true,
-          "options": false
-        },
-        "userButtons": [
-        ],
-        "userLogo": {
-          "label": "",
-          "_label": "Life of Buddha",
-          "attributes": { "id": "yale_logo", "href": "http://tenthousandrooms.yale.edu", "target": "_blank" }
-        }
+        "show": false,
       },
       "windowObjects": [
         {
@@ -90,4 +77,4 @@
     }
   };
   
-})(Miradorails);
+})(MR);

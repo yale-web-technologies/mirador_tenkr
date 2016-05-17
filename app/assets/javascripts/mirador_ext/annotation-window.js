@@ -328,4 +328,4 @@
     ].join(''))
   };
 
-})(Miradorails);
+})(MR);
