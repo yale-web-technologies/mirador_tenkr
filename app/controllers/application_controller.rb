@@ -3,14 +3,23 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   
-  before_filter CASClient::Frameworks::Rails::GatewayFilter
+  before_action CASClient::Frameworks::Rails::GatewayFilter
   #before_filter CASClient::Frameworks::Rails::Filter
+  
+  before_action :check_auth
   #before_action :authenticate_user!
   
   before_action :setup
   
   def logout
     CASClient::Frameworks::Rails::Filter.logout(self)
+  end
+  
+  def check_auth
+    netid = session[:cas_user]
+    unless netid
+      authenticate_user!
+    end
   end
   
   def setup
