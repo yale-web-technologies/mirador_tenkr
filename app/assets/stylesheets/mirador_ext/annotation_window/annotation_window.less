@@ -1,29 +1,23 @@
 .mr_annotation_window {
   position: absolute;
-  //display: block;
-  width: 100%;
-  height: 100%;
-  //background-color: #ffeecc;
-  
-  background-color: #efefef;
   display: flex;
   flex-direction: column;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #efefef;
 }
 
+// TODO: Remove this after the icon is removed in Mirador.
 .add-annotation-window {
   margin-right: 10px;
 }
 
 .annowin_header {
   margin: 0;
-  padding: 5px;
-  height: 4%;
-}
-
-.annowin_header::after {
-  content: '';
-  display: block;
-  clear: both;
+  padding: 0;
+  min-height: 35px;
 }
 
 .mirador-viewer .mirador-icon-window-menu.annowin_window_menu {
@@ -47,15 +41,15 @@
   padding: 5px;
 }
 
-.annowin_create_anno {
-  float: right;
-}
-
 .annowin_list {
-  position: relative; /* required to make the div "positioned" so the child elements' positions to be obtained and scroll levels adjusted accordingly. */
+  //position: relative; /* required to make the div "positioned" so the child elements' positions to be obtained and scroll levels adjusted accordingly. */
+  position: absolute;
+  top: 35px;
+  bottom: 17px; // XXX a kludge until someone can figure out why the whole div is not showing unless this bottom value is set.
+  left: 0;
+  right: 0;
+  margin: 0;
   overflow-y: scroll;
-  border: solid 2px #71bcd1;
-  height: 100%;
 }
 
 .annotation_editor {

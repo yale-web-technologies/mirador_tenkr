@@ -10,25 +10,37 @@
 .annowin_anno {
   border: solid 1px #808080;
   background-color: #fafafa;
+  padding: 3px;
 }
 
+/*
 .annowin_anno:hover {
-  border-color: #71bcd1;
+  border-color: @anno-hover-border-color;
+  border-width: @anno-highlight-border-width;
 }
+*/
 
 .annowin_anno .info_view {
   font-size: 0.9em;
   background-color: #f0f0ff;
 }
 
-.annowin_focused {
-  border-color: #71bcd1;
-  border-width: 2px;
+.mr_anno_selected {
+  border-color: @anno-selected-border-color;
+  border-width: @anno-highlight-border-width;
+  padding: 0;
 }
 
-.annowin_targeted {
-  border-color: orange;
-  border-width: 2px;
+.mr_anno_targeting {
+  border-color: @anno-targeting-border-color;
+  border-width: @anno-highlight-border-width;
+  padding: 0;
+}
+
+.mr_anno_targeted {
+  border-color: @anno-targeted-border-color;
+  border-width: @anno-highlight-border-width;
+  padding: 0;
 }
 
 .annowin_info {

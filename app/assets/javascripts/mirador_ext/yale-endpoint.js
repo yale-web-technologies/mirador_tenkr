@@ -15,18 +15,35 @@
 
   $.YaleEndpoint.prototype = {
 
-    init: function () {
-      console.log('YaleEndpoint#init');
+    init: function() {
+    },
+    
+    search: function(options, successCallback, errorCallback) {
       var _this = this;
-
-      this.getLayers(function (layers) {
-        _this.annotationLayers = layers;
+      var dfd = jQuery.Deferred();
+      
+      if (this.annotationLayers.length < 1) {
+        this.getLayers(function(layers) { // success
+          _this.annotationLayers = layers;
+          dfd.resolve();
+        }, function() { // error
+          dfd.reject();
+        });
+      } else {
+        dfd.resolve();
+      }
+      
+      dfd.done(function() {
+        _this._search(options, successCallback, errorCallback);
       });
     },
 
-    search: function (options, successCallback, errorCallback) {
+    _search: function(options, successCallback, errorCallback) {
       console.log('YaleEndpoint#search options: ' + JSON.stringify(options));
       var _this = this;
+      
+      
+      
       var canvasID = options.uri;
       var url = this.prefix + '/getAnnotations?includeTargetingAnnos=true&canvas_id=' + encodeURIComponent(canvasID);
       console.log('YaleEndpoint#search url: ' + url);
@@ -110,8 +127,6 @@
       console.dir(oaAnnotation);
       
       var _this = this;
-      //var fullId = oaAnnotation.fullId;
-      var fullId = oaAnnotation['@id'];
       var annotation = this.getAnnotationInEndpoint(oaAnnotation);
       var url = this.prefix + '/annotations';
 
@@ -135,12 +150,10 @@
       });
     },
 
-    deleteAnnotation: function (annotationID, successCallback, errorCallback) {
-      console.log('YaleEndpoint#delete oa annotationID: ' + annotationID);
+    deleteAnnotation: function (annotationId, successCallback, errorCallback) {
+      console.log('YaleEndpoint#delete oa annotationId: ' + annotationId);
       var _this = this;
-      var fullId = this.idMapper[annotationID];
-      //var url = this.prefix + '/annotations/' + encodeURIComponent(fullId);
-      var url = annotationID;
+      var url = annotationId;
       console.log('YaleEndpoint#delete url: ' + url);
 
       jQuery.ajax({
@@ -155,7 +168,7 @@
           }
         },
         error: function (jqXHR, textStatus, errorThrown) {
-          console.log('YaleEndpoint#deleteAnnotation failed for annotationID: ' + annotationID)
+          console.log('YaleEndpoint#deleteAnnotation failed for annotationId: ' + annotationId)
         }
       });
     },

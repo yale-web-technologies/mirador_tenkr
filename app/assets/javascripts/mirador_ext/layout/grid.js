@@ -22,6 +22,10 @@
           showPopoutIcon: false,
           selectionEnabled: false
         },
+        dimensions: {
+          minItemWidth: 200,
+          minItemHeight: 200
+        },
         content: [{
           type: 'row',
           content: [{

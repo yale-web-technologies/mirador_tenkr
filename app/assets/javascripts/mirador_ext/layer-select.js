@@ -3,6 +3,7 @@
   $.LayerSelect = function(options) {
     jQuery.extend(this, {
       parent: null,
+      addClass: null,
       endpoint: null,
       changeCallback: null
     }, options);

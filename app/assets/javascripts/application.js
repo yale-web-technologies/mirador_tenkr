@@ -28,6 +28,7 @@
 //= require mirador_ext/annotation-window
 //= require mirador_ext/annotation-editor
 //= require mirador_ext/annotation-dialog
+//= require mirador_ext/annotations-manager
 //= require mirador_ext/layer-select
 //= require mirador_ext/lines-overlay
 //= require mirador_ext/yale-endpoint
