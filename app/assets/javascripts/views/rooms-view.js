@@ -1,3 +1,5 @@
+// For rooms controller
+
 (function ($) {
   
   $.roomsView = {

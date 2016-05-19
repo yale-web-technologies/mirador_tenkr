@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160426220053) do
+ActiveRecord::Schema.define(version: 20160428202055) do
 
   create_table "admin_manifests", force: :cascade do |t|
     t.integer  "room_id",    limit: 4
@@ -36,13 +36,14 @@ ActiveRecord::Schema.define(version: 20160426220053) do
   add_index "admin_rooms", ["machine_name"], name: "index_admin_rooms_on_machine_name", unique: true, using: :btree
 
   create_table "admin_settings", force: :cascade do |t|
-    t.string   "site_name",           limit: 255
-    t.string   "landing_path",        limit: 255
-    t.string   "endpoint_url",        limit: 255
+    t.string   "site_name",              limit: 255
+    t.string   "landing_path",           limit: 255
+    t.string   "endpoint_url",           limit: 255
     t.boolean  "maintenance_mode"
-    t.string   "maintenance_message", limit: 255
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.string   "maintenance_message",    limit: 255
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.boolean  "disable_authentication"
   end
 
   create_table "admin_user_roles", force: :cascade do |t|

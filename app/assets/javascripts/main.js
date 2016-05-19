@@ -3,21 +3,16 @@ window.MR = {};
 (function ($) {
 
   jQuery(document).ready(function () {
+    console.log('document ready');
     var configId = jQuery('#config_id').text();
     configId = 1;
     var url = '/example/config/' + configId + '.json';
     
-    $.app.init();
+    $.headerView.init();
     $.roomsView.init();
     
-    var miradorViewer = jQuery('#viewer');
-    if (miradorViewer.size() > 0) {
-      $.miradorView.init(miradorViewer);
-    }
-    
-    var header = jQuery('.mr_header');
-    if (header.size() > 0) {
-      $.headerView.init();
+    if (jQuery('#viewer_template').size() > 0) {
+      $.mirador.init();
     }
 
   });

@@ -1,16 +1,25 @@
-#mirador_header {
-  height: 38px;
-  display:none;
+@import 'mirador';
+@import 'variables';
+@import 'mirador_ext/mirador';
+@import 'mirador_ext/grid';
+@import 'mirador_ext/annotation_dialog';
+@import 'mirador_ext/annotation_window/annotation_window';
+@import 'mirador_ext/annotation_window/annotation_cell';
+
+/* 
+ * Overriding Semantic UI
+ */
+ 
+.ui.selection.dropdown {
+  padding: @annowin-v-padding @annowin-h-padding;
+  min-height: 1em;
+  white-space: nowrap;
 }
 
-#viewer {
-  width: 100%;
-  //top: 38px;
-  top: 0px;
-  bottom: 0;
-}
-
-.mr_float_right {
-  float: right;
-}
-
+/* 
+ * Overriding GoldenLayout
+ */
+ 
+ .lm_item_container {
+   position: relative;
+ }

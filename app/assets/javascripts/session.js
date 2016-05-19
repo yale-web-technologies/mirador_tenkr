@@ -29,7 +29,6 @@
       var serviceURL = url || window.location.href;
       var casURL = this.casLoginURL + '?service=' +
         encodeURIComponent(serviceURL);
-
       window.location = casURL;
     },
 

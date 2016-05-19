@@ -1,38 +1,52 @@
 (function ($) {
 
-  $.TenkrEndpoint = function (options) {
+  $.YaleEndpoint = function (options) {
     jQuery.extend(this, {
       annotationLayers: [],
       annotationsList: [],
       dfd: null,
-      idMapper: {}, // internal list for module use to map ID to URI
       imagesList: null,
       prefix: null,
       windowID: null
     }, options);
-
-    console.log('TenkrEndpoint dfd: ' + this.dfd);
     
     this.init();
   };
 
-  $.TenkrEndpoint.prototype = {
+  $.YaleEndpoint.prototype = {
 
-    init: function () {
-      console.log('TenkrEndpoint#init');
+    init: function() {
+    },
+    
+    search: function(options, successCallback, errorCallback) {
       var _this = this;
-
-      this.getLayers(function (layers) {
-        _this.annotationLayers = layers;
+      var dfd = jQuery.Deferred();
+      
+      if (this.annotationLayers.length < 1) {
+        this.getLayers(function(layers) { // success
+          _this.annotationLayers = layers;
+          dfd.resolve();
+        }, function() { // error
+          dfd.reject();
+        });
+      } else {
+        dfd.resolve();
+      }
+      
+      dfd.done(function() {
+        _this._search(options, successCallback, errorCallback);
       });
     },
 
-    search: function (options, successCallback, errorCallback) {
-      console.log('TenkrEndpoint#search options: ' + JSON.stringify(options));
+    _search: function(options, successCallback, errorCallback) {
+      console.log('YaleEndpoint#search options: ' + JSON.stringify(options));
       var _this = this;
+      
+      
+      
       var canvasID = options.uri;
       var url = this.prefix + '/getAnnotations?includeTargetingAnnos=true&canvas_id=' + encodeURIComponent(canvasID);
-      console.log('TenkrEndpoint#search url: ' + url);
+      console.log('YaleEndpoint#search url: ' + url);
       this.annotationsList = [];
 
       jQuery.ajax({
@@ -44,14 +58,14 @@
         },
         contentType: 'application/json; charset=utf-8',
         success: function (data, textStatus, jqXHR) {
-          console.log('TenkrEndpoint#search data: ' + JSON.stringify(data, null, 2));
+          console.log('YaleEndpoint#search data: ' + JSON.stringify(data, null, 2));
           if (typeof successCallback === 'function') {
             successCallback(data);
           } else {
             var annotations = data;
             jQuery.each(annotations, function (index, value) {
               var oaAnnotation = _this.getAnnotationInOA(value.annotation);
-              oaAnnotation.layerID = value.layer_id;
+              oaAnnotation.layerId = value.layer_id;
               oaAnnotation.endpoint = _this;
               _this.annotationsList.push(oaAnnotation);
             });
@@ -62,14 +76,14 @@
           if (typeof errorCallback === 'function') {
             errorCallback();
           } else {
-            console.log('TenkrEndpoint#search error searching');
+            console.log('YaleEndpoint#search error searching');
           }
         }
       });
     },
 
     create: function (oaAnnotation, successCallback, errorCallback) {
-      console.log('TenkrEndpoint#create oaAnnotation:');
+      console.log('YaleEndpoint#create oaAnnotation:');
       console.dir(oaAnnotation);
       
       var _this = this;
@@ -81,9 +95,9 @@
         layer_id: layerId,
         annotation: annotation
       };
-      
-      console.dir(request);
-      
+
+      console.log('Request: ' + JSON.stringify(request, null, 2));
+
       jQuery.ajax({
         url: url,
         type: 'POST',
@@ -93,10 +107,8 @@
         success: function (data) {
           console.log('Creation was successful on the annotation server: ' + JSON.stringify(data, null, 2));
           var annotation = data;
-
           var oaAnnotation = _this.getAnnotationInOA(annotation);
           oaAnnotation.layerId = layerId;
-
           if (typeof successCallback === 'function') {
             successCallback(oaAnnotation);
           }
@@ -111,16 +123,14 @@
     },
 
     update: function (oaAnnotation, successCallback, errorCallback) {
-      console.log('TenkrEndpoint#update oaAnnotation:');
+      console.log('YaleEndpoint#update oaAnnotation:');
       console.dir(oaAnnotation);
       
       var _this = this;
-      //var fullId = oaAnnotation.fullId;
-      var fullId = oaAnnotation['@id'];
       var annotation = this.getAnnotationInEndpoint(oaAnnotation);
       var url = this.prefix + '/annotations';
 
-      console.log('TenkrEndpoint#update url: ' + url);
+      console.log('YaleEndpoint#update url: ' + url);
 
       jQuery.ajax({
         url: url,
@@ -134,20 +144,17 @@
           }
         },
         error: function (jqXHR, textStatus, errorThrown) {
-          console.log('TenkrEndpoint#update failed for annotation:');
+          console.log('YaleEndpoint#update failed for annotation:');
           console.dir(oaAnnotation);
         }
       });
     },
 
-    deleteAnnotation: function (annotationID, successCallback, errorCallback) {
-      console.log('TenkrEndpoint#delete oa annotationID: ' + annotationID);
-      
+    deleteAnnotation: function (annotationId, successCallback, errorCallback) {
+      console.log('YaleEndpoint#delete oa annotationId: ' + annotationId);
       var _this = this;
-      var fullId = this.idMapper[annotationID];
-      //var url = this.prefix + '/annotations/' + encodeURIComponent(fullId);
-      var url = annotationID;
-      console.log('TenkrEndpoint#delete url: ' + url);
+      var url = annotationId;
+      console.log('YaleEndpoint#delete url: ' + url);
 
       jQuery.ajax({
         url: url,
@@ -155,19 +162,19 @@
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         success: function (data, textStatus, jqXHR) {
-          console.log('TenkrEndpoint#deleteAnnotation success data: ' + JSON.stringify(data, null, 2));
+          console.log('YaleEndpoint#deleteAnnotation success data: ' + JSON.stringify(data, null, 2));
           if (typeof successCallback === 'function') {
             successCallback();
           }
         },
         error: function (jqXHR, textStatus, errorThrown) {
-          console.log('TenkrEndpoint#deleteAnnotation failed for annotationID: ' + annotationID)
+          console.log('YaleEndpoint#deleteAnnotation failed for annotationId: ' + annotationId)
         }
       });
     },
 
     set: function (prop, value, options) {
-      console.log('TenkrEndpoint#set prop: ' + prop + ', value: ' + value + ', options: ' + JSON.stringify(options));
+      console.log('YaleEndpoint#set prop: ' + prop + ', value: ' + value + ', options: ' + JSON.stringify(options));
       if (options) {
         this[options.parent][prop] = value;
       } else {
@@ -176,24 +183,21 @@
     },
     
     getLayers: function (successCallback, errorCallback) {
-      console.log('TenkrEndpoint#getLayers');
+      console.log('YaleEndpoint#getLayers');
       var _this = this;
       var url = this.prefix + '/layers';
       
-      //successCallback(this.mockLayers);
-      //return;
-
       jQuery.ajax({
         url: url,
         type: 'GET',
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         success: function (data, textStatus, jqXHR) {
-          console.log('TenkrEndpoint#getLayers data: ' + JSON.stringify(data, null, 2));
+          console.log('YaleEndpoint#getLayers data: ' + JSON.stringify(data, null, 2));
           successCallback(data);
         },
         error: function (jqXHR, textStatus, errorThrown) {
-          console.log('TenkrEndpoint#search error retrieving layers:');
+          console.log('YaleEndpoint#search error retrieving layers:');
           console.log('textStatus: ' + textStatus);
           console.log('errorThrown: ' + errorThrown);
           console.log('URL: ' + url);
@@ -219,15 +223,10 @@
 
     // Convert Endpoint annotation to OA
     getAnnotationInOA: function(annotation) {
-      var fullId = annotation['@id'];
-      //var shortId = $.genUUID();
-      //this.idMapper[shortId] = fullId;
-      var shortId = fullId;
-
       var oaAnnotation = {
         '@context': 'http://iiif.io/api/presentation/2/context.json',
         '@type': 'oa:Annotation',
-        '@id': shortId,
+        '@id': annotation['@id'],
         motivation: annotation.motivation,
         resource : annotation.resource,
         on: annotation.on,
@@ -235,36 +234,31 @@
         //annotatedAt: annotation.created,
         //serializedAt: annotation.updated,
         //permissions: annotation.permissions,
-        endpoint: this,
-        fullId: fullId
+        endpoint: this
       };
-      //console.log('TenkrEndpoint#getAnnotationInOA oaAnnotation:');
+      //console.log('YaleEndpoint#getAnnotationInOA oaAnnotation:');
       //console.dir(oaAnnotation);
       return oaAnnotation;
     },
 
     // Converts OA Annotation to endpoint format
     getAnnotationInEndpoint: function(oaAnnotation) {
-      var shortId = oaAnnotation['@id'];
-      //var fullId = this.idMapper[shortId];
-      var fullId = oaAnnotation['@id'];
-
       var annotation = {
-        '@id': fullId,
+        '@id': oaAnnotation['@id'],
         '@type': oaAnnotation['@type'],
         '@context': oaAnnotation['@context'],
         motivation: oaAnnotation.motivation,
         resource: oaAnnotation.resource,
-        on: oaAnnotation.on
+        on: oaAnnotation.on,
       };
       
       if (oaAnnotation.within) {
         annotation.within = oaAnnotation.within;
       }
-      /*
-      if (oaAnnotation.on['@type'] === 'oa:Annotation') {
-        annotation.on.full = this.idMapper[oaAnnotation.on.full];
-      }*/
+      
+      if (oaAnnotation.orderWeight) {
+        annotation.orderWeight = oaAnnotation.orderWeight;
+      }
       return annotation;
     }
 

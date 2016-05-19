@@ -2,12 +2,12 @@
   <div class="ui grid">
     <div class="column">
       <h1>Import</h1>
-      
-      <h2>Manifests</h2>
-      <form action="/admin/import/import_manifests" method="post">
+
+      <h2>User Roles</h2>
+      <form action="/admin/import/import_user_roles" method="post">
         <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-        <label for="manifests_url">Source URL</label>
-        <input id="manifests_url" name="url" type="text" size="58" />
+        <label for="user_roles_url">Source URL</label>
+        <input id="user_roles_url" name="url" type="text" size="58" />
         <input type="submit" value="Import" />
       </form>
       
@@ -16,6 +16,14 @@
         <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
         <label for="rooms_url">Source URL</label>
         <input id="rooms_url" name="url" type="text" size="58" />
+        <input type="submit" value="Import" />
+      </form>
+      
+      <h2>Manifests</h2>
+      <form action="/admin/import/import_manifests" method="post">
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        <label for="manifests_url">Source URL</label>
+        <input id="manifests_url" name="url" type="text" size="58" />
         <input type="submit" value="Import" />
       </form>
 
