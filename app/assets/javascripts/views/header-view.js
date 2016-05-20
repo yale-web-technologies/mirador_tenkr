@@ -12,9 +12,11 @@
 
     loginButton.click(function (event) {
       if ($.session.loggedIn()) {
-        $.session.casLogout();
+        //$.session.casLogout();
+        $.session.logout();
       } else {
-        $.session.casLogin();
+        //$.session.casLogin();
+        $.session.login();
       }
     });
     updateLoginButton(loginButton);
@@ -22,7 +24,8 @@
   
   function updateLoginButton(button) {
     if ($.session.loggedIn()) {
-      button.text('Log Out');
+      //button.text('Log Out');
+      button.hide();
     } else {
       button.text('Log In')
     }

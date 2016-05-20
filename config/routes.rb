@@ -70,6 +70,7 @@ Rails.application.routes.draw do
     get '/api/session_info', to: 'api#session_info'
   end
   
+  get '/login', to: 'application#login'
   get '/logout', to: 'application#logout'
   
   namespace :admin do

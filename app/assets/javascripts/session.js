@@ -19,6 +19,14 @@
     isEditor: function () {
       return Cookies.get('isEditor') == 'true';
     },
+    
+    login: function() {
+      window.location = '/login';
+    },
+    
+    logout: function() {
+      //window.location = '/logout'
+    },
 
     /**
      * Login via CAS.
