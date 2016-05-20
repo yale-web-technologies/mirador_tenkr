@@ -10,13 +10,13 @@ gem 'mysql2', '>= 0.3.13', '< 0.5'
 gem 'pg'
 
 #gem 'rubycas-client'
-gem 'rubycas-client', :git => 'git://github.com/rubycas/rubycas-client.git'
+#gem 'rubycas-client', :git => 'git://github.com/rubycas/rubycas-client.git'
 
 gem 'devise'
-#gem 'devise_cas_authenticatable'
 gem 'omniauth'
-gem 'omniauth-facebook'
+gem 'omniauth-cas', '~> 1.1.0'
 gem 'omniauth-google-oauth2'
+gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 
 # Use SCSS for stylesheets

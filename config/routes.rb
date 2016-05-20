@@ -1,8 +1,5 @@
 Rails.application.routes.draw do
 
-  namespace :admin do
-    resources :user_roles
-  end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -58,7 +55,7 @@ Rails.application.routes.draw do
   #     resources :products
   #   end
 
-  devise_for :users
+  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
 
   #root 'home#viewer', id: 1
   root 'home#index'
@@ -74,11 +71,12 @@ Rails.application.routes.draw do
   end
   
   get '/logout', to: 'application#logout'
-
+  
   namespace :admin do
     resources :manifests
     resources :rooms
     resources :settings
+    resources :user_roles
     
     get '/', to: 'home#index'
     get '/import', to: 'import#index'

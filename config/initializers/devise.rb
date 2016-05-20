@@ -234,14 +234,22 @@ Devise.setup do |config|
 
   # The default HTTP method used to sign out a resource. Default is :delete.
   config.sign_out_via = :delete
-  
+
   # ==> OmniAuth
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
-  
-  config.omniauth :google_oauth2, ENV['GOOGLE_OAUTH2_APP_ID'],
-    ENV['GOOGLE_OAUTH2_APP_SECRET'], scope: 'email', prompt: 'consent'
+
+  config.omniauth :cas,
+    host: 'secure.its.yale.edu',
+    login_url: '/cas/login',
+    service_validate_url: '/cas/serviceValidate',
+    disable_ssl_verification: true
+
+  #config.omniauth :google_oauth2, '1029834933803-ed8ch0htmt60hhn0b9d6snncis3tubu9.apps.googleusercontent.com', 'VMnXcxSQecoAUuo080aq9lVj', scope: 'email', prompt: 'consent'
+  config.omniauth :google_oauth2, '1029834933803-ed8ch0htmt60hhn0b9d6snncis3tubu9.apps.googleusercontent.com', 'VMnXcxSQecoAUuo080aq9lVj', { :access_type => 'online' }
+
+  config.omniauth :facebook, '1738741633033503', '7bfcda343b56843a732cf63684893852', scope: 'email', info_fields: 'email,name'
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
