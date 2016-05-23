@@ -13,9 +13,11 @@ class User < ActiveRecord::Base
         user.email = "#{auth.uid}@yale.edu"
       else
         user.email = auth.info.email
-        user.name = auth.info.name   # assuming the user model has a name
+        if auth.info.name
+          user.name = auth.info.name
+        end
       end
-      user.password = Devise.friendly_token[0,20]
+      #user.password = Devise.friendly_token[0,20]
     end
   end
 end

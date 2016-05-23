@@ -30,11 +30,13 @@ class ApplicationController < ActionController::Base
       else
         cookies[:isEditor] = { value: false }
       end
+      @userLabel = userLabel(user_role)
     else
       cookies[:loggedIn] = { value: false }
       cookies[:isEditor] = { value: false }
+      @userLabel = ''
     end
-    @userLabel = userLabel(user_role)
+    
   end
 
   def userLabel(user_role)
@@ -46,7 +48,7 @@ class ApplicationController < ActionController::Base
         label = "#{fname} #{lname[0]}."
       end
     else
-      label = ''
+      label = current_user.uid
     end
     label
   end

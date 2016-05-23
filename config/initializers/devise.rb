@@ -247,9 +247,9 @@ Devise.setup do |config|
     disable_ssl_verification: true
 
   #config.omniauth :google_oauth2, '1029834933803-ed8ch0htmt60hhn0b9d6snncis3tubu9.apps.googleusercontent.com', 'VMnXcxSQecoAUuo080aq9lVj', scope: 'email', prompt: 'consent'
-  config.omniauth :google_oauth2, '1029834933803-ed8ch0htmt60hhn0b9d6snncis3tubu9.apps.googleusercontent.com', 'VMnXcxSQecoAUuo080aq9lVj', { :access_type => 'online' }
+  config.omniauth :google_oauth2, ENV['GOOGLE_APP_ID'], ENV['GOOGLE_SECRET'], { :access_type => 'online' }
 
-  config.omniauth :facebook, '1738741633033503', '7bfcda343b56843a732cf63684893852', scope: 'email', info_fields: 'email,name'
+  config.omniauth :facebook, ENV['FACEBOOK_APP_ID'], ENV['FACEBOOK_APP_SECRET'], scope: 'email', info_fields: 'email,name'
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
