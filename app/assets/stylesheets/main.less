@@ -1,5 +1,6 @@
 @import 'mirador';
 @import 'variables';
+@import 'header';
 @import 'mirador_ext/mirador';
 @import 'mirador_ext/grid';
 @import 'mirador_ext/annotation_dialog';
@@ -23,3 +24,13 @@
  .lm_item_container {
    position: relative;
  }
+
+.mr_float_right {
+  float: right;
+  
+  &::after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+}

@@ -8,7 +8,12 @@ window.MR = {};
     configId = 1;
     var url = '/example/config/' + configId + '.json';
     
-    $.headerView.init();
+    var headerElem = jQuery('.mr_header');
+    if (headerElem.size() > 0) {
+      var headerView = new $.HeaderView({
+        element: headerElem
+      });
+    }
     $.roomsView.init();
     
     if (jQuery('#viewer_template').size() > 0) {
