@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
           user.name = auth.info.name
         end
       end
-      #user.password = Devise.friendly_token[0,20]
+      user.password = Devise.friendly_token[0,20]
     end
   end
 end
