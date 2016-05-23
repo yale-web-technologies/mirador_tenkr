@@ -55,6 +55,10 @@ class ApplicationController < ActionController::Base
   
   # Devise: run after successful sign-in.
   def after_sign_in_path_for(resource)
+    logger.debug("XXX after_sign_in_path_for")
+    logger.debug("omniauth.origin: #{request.env['omniauth.origin']}")
+    logger.debug("stored_location: #{stored_location_for(resource)}")
+    logger.debug("root_path: #{root_path}")
     request.env['omniauth.origin'] || stored_location_for(resource) || root_path
   end
 
