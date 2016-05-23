@@ -247,7 +247,7 @@ Devise.setup do |config|
     disable_ssl_verification: true
 
   #config.omniauth :google_oauth2, '1029834933803-ed8ch0htmt60hhn0b9d6snncis3tubu9.apps.googleusercontent.com', 'VMnXcxSQecoAUuo080aq9lVj', scope: 'email', prompt: 'consent'
-  config.omniauth :google_oauth2, ENV['GOOGLE_APP_ID'], ENV['GOOGLE_SECRET'], { :access_type => 'online' }
+  config.omniauth :google_oauth2, ENV['GOOGLE_APP_ID'], ENV['GOOGLE_APP_SECRET'], { :access_type => 'online' }
 
   config.omniauth :facebook, ENV['FACEBOOK_APP_ID'], ENV['FACEBOOK_APP_SECRET'], scope: 'email', info_fields: 'email,name'
 
