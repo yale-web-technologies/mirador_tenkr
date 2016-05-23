@@ -47,6 +47,8 @@ class ApplicationController < ActionController::Base
       if lname
         label = "#{fname} #{lname[0]}."
       end
+    elsif current_user.provider == 'cas'
+      label = current_user.uid
     else
       label = current_user.email
     end
