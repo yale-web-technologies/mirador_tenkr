@@ -115,7 +115,10 @@
       //console.log('AnnotationWindow#addAnnotation:');
       //console.dir(annotation);
       var content = annotation.resource[0].chars;
-      var annoHtml = this.annotationTemplate({content: content});
+      var annoHtml = this.annotationTemplate({
+        content: content,
+        isEditor: $.session.isEditor()
+      });
       var annoElem = jQuery(annoHtml);
       var infoDiv = annoElem.find('.info_view');
       
@@ -336,18 +339,20 @@
       '<div class="annowin_anno">',
       '  <div class="info_view"></div>',
       '  <div class="normal_view">',
-      '    <div class="menu_bar">',
-      '      <div class="ui text menu">',
-      '        <div class="ui dropdown item">',
-      '          Action<i class="dropdown icon"></i>',
-      '          <div class="menu">',
-      '            <div class="annotate item"><i class="fa fa-hand-o-left fa-fw"></i> Annotate</div>',
-      '            <div class="edit item"><i class="fa fa-edit fa-fw"></i> {{t "edit"}}</div>',
-      '            <div class="delete item"><i class="fa fa-times fa-fw"></i> {{t "delete"}}</div>',
+      '    {{#if isEditor}}',
+      '      <div class="menu_bar">',
+      '        <div class="ui text menu">',
+      '          <div class="ui dropdown item">',
+      '            Action<i class="dropdown icon"></i>',
+      '            <div class="menu">',
+      '              <div class="annotate item"><i class="fa fa-hand-o-left fa-fw"></i> Annotate</div>',
+      '              <div class="edit item"><i class="fa fa-edit fa-fw"></i> {{t "edit"}}</div>',
+      '              <div class="delete item"><i class="fa fa-times fa-fw"></i> {{t "delete"}}</div>',
+      '            </div>',
       '          </div>',
       '        </div>',
       '      </div>',
-      '    </div>',
+      '    {{/if}}',
       '    <div class="content">{{{content}}}</div>',
       '  </div>',
       '</div>'
