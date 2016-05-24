@@ -18,6 +18,7 @@
 //
 //= require main
 //= require session
+//= require util/util
 //= require util/selector
 //= require widgets/login-widget
 //= require views/header-view

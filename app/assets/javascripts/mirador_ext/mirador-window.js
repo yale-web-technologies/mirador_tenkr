@@ -36,7 +36,9 @@
         config.windowObjects[0].annotationCreation = false;
       }
       config.annotationEndpoint.options.prefix = endpointUrl;
-
+      if ($.util.isMobileOrTablet()) {
+        config.autoHideControls = false;
+      }
       var mirador = Mirador(config);
       this.miradorProxy.setMirador(mirador);
     },

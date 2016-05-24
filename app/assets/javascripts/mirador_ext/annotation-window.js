@@ -249,7 +249,7 @@
         }
       });
       
-      this.eventEmitter.subscribe(('currentCanvasIDUpdated.' + this.canvasWindow.id), function(event) {
+      this.miradorProxy.subscribe(('currentCanvasIDUpdated.' + this.canvasWindow.id), function(event) {
         _this.placeholder.text('Loading...').show();
       });
     },
