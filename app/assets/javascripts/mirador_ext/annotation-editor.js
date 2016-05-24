@@ -19,6 +19,7 @@
   $.AnnotationEditor.prototype = {
     
     init: function() {
+      this.miradorProxy = $.getMiradorProxy();
       this.id = this.id || Mirador.genUUID();
       
       this.element = jQuery(this.template({})).attr('id', this.id)
@@ -73,10 +74,10 @@
       if (this.mode == 'create') {
         var layerId = this.layerSelect.val();
         var annotation = this.createAnnotation(this.targetAnnotation, layerId, content);
-        jQuery.publish('annotationCreated.' + this.canvasWindow.id, [annotation, null]);
+        this.miradorProxy.publish('annotationCreated.' + this.canvasWindow.id, [annotation, null]);
       } else {
         this.annotation.resource[0].chars = content;
-        jQuery.publish('annotationUpdated.' + this.canvasWindow.id, [this.annotation]);
+        this.miradorProxy.publish('annotationUpdated.' + this.canvasWindow.id, [this.annotation]);
       }
     },
     

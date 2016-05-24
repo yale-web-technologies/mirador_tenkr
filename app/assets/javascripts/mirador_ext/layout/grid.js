@@ -9,13 +9,14 @@
     init: function () {
       console.log('Grid#init');
       this.element = jQuery('#mr_grid');
+      this.miradorProxy = $.getMiradorProxy();
       this.initLayout();
-      
       this.bindEvents();
     },
 
     // GoldenLayout
     initLayout: function () {
+      var _this = this;
       var config = {
         settings: {
           hasHeaders: true,
@@ -52,7 +53,9 @@
 
       this.layout.on('stateChanged', function (e) {
         console.log('layout stateChanged');
-        jQuery.publish('resizeMirador');
+        if (_this.miradorProxy.getMirador()) {
+          _this.miradorProxy.publish('resizeMirador');
+        }
         return true;
       });
       

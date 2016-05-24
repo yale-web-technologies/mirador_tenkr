@@ -17,10 +17,12 @@
   $.AnnotationWindow.prototype = {
     
     init: function () {
+      this.miradorProxy = $.getMiradorProxy();
       if (!this.id) {
         this.id = Mirador.genUUID();
       }
-      this.canvasWindow = Mirador.viewer.workspace.windows[0];
+      var viewer = $.mirador.viewer;
+      this.canvasWindow = this.miradorProxy.getFirstWindow();
       this.endpoint = this.canvasWindow.endpoint;
       this.element = jQuery(this.template({}));
       this.appendTo.append(this.element);
@@ -147,7 +149,7 @@
     
     getCurrentCanvas: function() {
       var window = this.canvasWindow;
-      var id = window.currentCanvasID;
+      var id = window.canvasID;
       var canvases = window.manifest.getCanvases();
       return canvases.filter(function (canvas) {
         return canvas['@id'] === id;
@@ -223,24 +225,7 @@
         _this.updateList(layerId);
       };
       
-      this.element.find('.annowin_create_anno').click(function (event) {
-        event.stopPropagation();
-        event.preventDefault();
-
-        if (_this.element.find('.annotation_editor').size() > 0) {
-          return;
-        }
-
-        var editor = new $.AnnotationEditor({
-          parent: _this.editorRow,
-          canvasWindow: _this.canvasWindow,
-          mode: 'create',
-          endpoint: _this.endpoint
-        });
-        editor.show();
-      });
-
-      jQuery.subscribe('ANNOTATIONS_LIST_UPDATED', function(event, windowId, annotationsList) {
+      this.miradorProxy.subscribe('ANNOTATIONS_LIST_UPDATED', function(event, windowId, annotationsList) {
         _this.reload(true);
       });
       
@@ -261,7 +246,7 @@
         }
       });
       
-      jQuery.subscribe(('currentCanvasIDUpdated.' + this.canvasWindow.id), function(event) {
+      this.eventEmitter.subscribe(('currentCanvasIDUpdated.' + this.canvasWindow.id), function(event) {
         _this.placeholder.text('Loading...').show();
       });
     },
@@ -276,6 +261,7 @@
         } else {
           _this.clearHighlights();
           _this.highlightFocusedAnnotation(annotation);
+          _this.miradorProxy.publish('ANNOTATION_FOCUSED', [_this.id, annotation]);
           jQuery.publish('ANNOTATION_FOCUSED', [_this.id, annotation]);
         }
       });
@@ -316,7 +302,7 @@
       
       annoElem.find('.delete').click(function (event) {
         if (window.confirm('Do you really want to delete the annotation?')) {
-          jQuery.publish('annotationDeleted.' + _this.canvasWindow.id, [annotation['@id']]);
+          _this.miradorProxy.publish('annotationDeleted.' + _this.canvasWindow.id, [annotation['@id']]);
         }
       });
       

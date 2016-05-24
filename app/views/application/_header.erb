@@ -2,14 +2,7 @@
   <div class="ui container">
     <h1 class="ui header"><%= @title %></h1>
     <div class="mr_float_right">
-      <span class="mr_user_label"><%= @userLabel %></span>
-      <% if user_signed_in? %>
-        <div class="ui teal button mr_logout_button">
-          <%= link_to('Log out', destroy_user_session_path, :method => :delete) %>
-        </div>
-      <% else %>
-        <%= render 'login' %>
-      <% end %>
+      <%= render 'login' %>
     </div>
   </div>
   <div class="ui clearing divider"/>

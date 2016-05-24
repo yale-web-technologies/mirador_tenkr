@@ -23,6 +23,7 @@
 //= require views/header-view
 //= require views/rooms-view
 //= require views/mirador-view
+//= require mirador_ext/mirador-proxy
 //= require mirador_ext/layout/grid
 //= require mirador_ext/main-menu
 //= require mirador_ext/mirador-window

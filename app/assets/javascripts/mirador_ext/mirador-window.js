@@ -13,6 +13,7 @@
   $.MiradorWindow.prototype = {
     
     init: function() {
+      this.miradorProxy = $.getMiradorProxy();
       this.initHeader();
       this.initMirador();
       this.bindEvents();
@@ -36,7 +37,8 @@
       }
       config.annotationEndpoint.options.prefix = endpointUrl;
 
-      Mirador(config);
+      var mirador = Mirador(config);
+      this.miradorProxy.setMirador(mirador);
     },
     
     bindEvents: function() {
