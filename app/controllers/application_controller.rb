@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
 
     if user_signed_in?
       cookies[:loggedIn] = { value: true }
-      user_role = Admin::UserRole.find_by_netid(current_user.uid)
+      user_role = Admin::UserRole.find_by_email(current_user.email)
       if (user_role && user_role.role == 'editor')
         cookies[:isEditor] = { value: true }
       else

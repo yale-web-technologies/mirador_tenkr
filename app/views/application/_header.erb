@@ -8,17 +8,7 @@
           <%= link_to('Log out', destroy_user_session_path, :method => :delete) %>
         </div>
       <% else %>
-        <div class="ui dropdown teal button mr_login_dropdown">
-          <div style="white-space: nowrap">
-            Log in with
-            <i class="dropdown icon"></i>
-          </div>
-          <div class="menu">
-            <div class="item" data-value="/users/auth/cas">CAS</div>
-            <div class="item" data-value="/users/auth/google_oauth2">Google</div>
-            <div class="item" data-value="/users/auth/facebook">Facebook</div>
-          </div>
-        </div>
+        <%= render 'login' %>
       <% end %>
     </div>
   </div>

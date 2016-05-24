@@ -1,5 +1,5 @@
 //! Mirador 2.0.0
-//! Built on 2016-05-18
+//! Built on 2016-05-23
 /*! jQuery v1.9.1 | (c) 2005, 2012 jQuery Foundation, Inc. | jquery.org/license
 */(function(e,t){var n,r,i=typeof t,o=e.document,a=e.location,s=e.jQuery,u=e.$,l={},c=[],p="1.9.1",f=c.concat,d=c.push,h=c.slice,g=c.indexOf,m=l.toString,y=l.hasOwnProperty,v=p.trim,b=function(e,t){return new b.fn.init(e,t,r)},x=/[+-]?(?:\d*\.|)\d+(?:[eE][+-]?\d+|)/.source,w=/\S+/g,T=/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g,N=/^(?:(<[\w\W]+>)[^>]*|#([\w-]*))$/,C=/^<(\w+)\s*\/?>(?:<\/\1>|)$/,k=/^[\],:{}\s]*$/,E=/(?:^|:|,)(?:\s*\[)+/g,S=/\\(?:["\\\/bfnrt]|u[\da-fA-F]{4})/g,A=/"[^"\\\r\n]*"|true|false|null|-?(?:\d+\.|)\d+(?:[eE][+-]?\d+|)/g,j=/^-ms-/,D=/-([\da-z])/gi,L=function(e,t){return t.toUpperCase()},H=function(e){(o.addEventListener||"load"===e.type||"complete"===o.readyState)&&(q(),b.ready())},q=function(){o.addEventListener?(o.removeEventListener("DOMContentLoaded",H,!1),e.removeEventListener("load",H,!1)):(o.detachEvent("onreadystatechange",H),e.detachEvent("onload",H))};b.fn=b.prototype={jquery:p,constructor:b,init:function(e,n,r){var i,a;if(!e)return this;if("string"==typeof e){if(i="<"===e.charAt(0)&&">"===e.charAt(e.length-1)&&e.length>=3?[null,e,null]:N.exec(e),!i||!i[1]&&n)return!n||n.jquery?(n||r).find(e):this.constructor(n).find(e);if(i[1]){if(n=n instanceof b?n[0]:n,b.merge(this,b.parseHTML(i[1],n&&n.nodeType?n.ownerDocument||n:o,!0)),C.test(i[1])&&b.isPlainObject(n))for(i in n)b.isFunction(this[i])?this[i](n[i]):this.attr(i,n[i]);return this}if(a=o.getElementById(i[2]),a&&a.parentNode){if(a.id!==i[2])return r.find(e);this.length=1,this[0]=a}return this.context=o,this.selector=e,this}return e.nodeType?(this.context=this[0]=e,this.length=1,this):b.isFunction(e)?r.ready(e):(e.selector!==t&&(this.selector=e.selector,this.context=e.context),b.makeArray(e,this))},selector:"",length:0,size:function(){return this.length},toArray:function(){return h.call(this)},get:function(e){return null==e?this.toArray():0>e?this[this.length+e]:this[e]},pushStack:function(e){var t=b.merge(this.constructor(),e);return t.prevObject=this,t.context=this.context,t},each:function(e,t){return b.each(this,e,t)},ready:function(e){return b.ready.promise().done(e),this},slice:function(){return this.pushStack(h.apply(this,arguments))},first:function(){return this.eq(0)},last:function(){return this.eq(-1)},eq:function(e){var t=this.length,n=+e+(0>e?t:0);return this.pushStack(n>=0&&t>n?[this[n]]:[])},map:function(e){return this.pushStack(b.map(this,function(t,n){return e.call(t,n,t)}))},end:function(){return this.prevObject||this.constructor(null)},push:d,sort:[].sort,splice:[].splice},b.fn.init.prototype=b.fn,b.extend=b.fn.extend=function(){var e,n,r,i,o,a,s=arguments[0]||{},u=1,l=arguments.length,c=!1;for("boolean"==typeof s&&(c=s,s=arguments[1]||{},u=2),"object"==typeof s||b.isFunction(s)||(s={}),l===u&&(s=this,--u);l>u;u++)if(null!=(o=arguments[u]))for(i in o)e=s[i],r=o[i],s!==r&&(c&&r&&(b.isPlainObject(r)||(n=b.isArray(r)))?(n?(n=!1,a=e&&b.isArray(e)?e:[]):a=e&&b.isPlainObject(e)?e:{},s[i]=b.extend(c,a,r)):r!==t&&(s[i]=r));return s},b.extend({noConflict:function(t){return e.$===b&&(e.$=u),t&&e.jQuery===b&&(e.jQuery=s),b},isReady:!1,readyWait:1,holdReady:function(e){e?b.readyWait++:b.ready(!0)},ready:function(e){if(e===!0?!--b.readyWait:!b.isReady){if(!o.body)return setTimeout(b.ready);b.isReady=!0,e!==!0&&--b.readyWait>0||(n.resolveWith(o,[b]),b.fn.trigger&&b(o).trigger("ready").off("ready"))}},isFunction:function(e){return"function"===b.type(e)},isArray:Array.isArray||function(e){return"array"===b.type(e)},isWindow:function(e){return null!=e&&e==e.window},isNumeric:function(e){return!isNaN(parseFloat(e))&&isFinite(e)},type:function(e){return null==e?e+"":"object"==typeof e||"function"==typeof e?l[m.call(e)]||"object":typeof e},isPlainObject:function(e){if(!e||"object"!==b.type(e)||e.nodeType||b.isWindow(e))return!1;try{if(e.constructor&&!y.call(e,"constructor")&&!y.call(e.constructor.prototype,"isPrototypeOf"))return!1}catch(n){return!1}var r;for(r in e);return r===t||y.call(e,r)},isEmptyObject:function(e){var t;for(t in e)return!1;return!0},error:function(e){throw Error(e)},parseHTML:function(e,t,n){if(!e||"string"!=typeof e)return null;"boolean"==typeof t&&(n=t,t=!1),t=t||o;var r=C.exec(e),i=!n&&[];return r?[t.createElement(r[1])]:(r=b.buildFragment([e],t,i),i&&b(i).remove(),b.merge([],r.childNodes))},parseJSON:function(n){return e.JSON&&e.JSON.parse?e.JSON.parse(n):null===n?n:"string"==typeof n&&(n=b.trim(n),n&&k.test(n.replace(S,"@").replace(A,"]").replace(E,"")))?Function("return "+n)():(b.error("Invalid JSON: "+n),t)},parseXML:function(n){var r,i;if(!n||"string"!=typeof n)return null;try{e.DOMParser?(i=new DOMParser,r=i.parseFromString(n,"text/xml")):(r=new ActiveXObject("Microsoft.XMLDOM"),r.async="false",r.loadXML(n))}catch(o){r=t}return r&&r.documentElement&&!r.getElementsByTagName("parsererror").length||b.error("Invalid XML: "+n),r},noop:function(){},globalEval:function(t){t&&b.trim(t)&&(e.execScript||function(t){e.eval.call(e,t)})(t)},camelCase:function(e){return e.replace(j,"ms-").replace(D,L)},nodeName:function(e,t){return e.nodeName&&e.nodeName.toLowerCase()===t.toLowerCase()},each:function(e,t,n){var r,i=0,o=e.length,a=M(e);if(n){if(a){for(;o>i;i++)if(r=t.apply(e[i],n),r===!1)break}else for(i in e)if(r=t.apply(e[i],n),r===!1)break}else if(a){for(;o>i;i++)if(r=t.call(e[i],i,e[i]),r===!1)break}else for(i in e)if(r=t.call(e[i],i,e[i]),r===!1)break;return e},trim:v&&!v.call("\ufeff\u00a0")?function(e){return null==e?"":v.call(e)}:function(e){return null==e?"":(e+"").replace(T,"")},makeArray:function(e,t){var n=t||[];return null!=e&&(M(Object(e))?b.merge(n,"string"==typeof e?[e]:e):d.call(n,e)),n},inArray:function(e,t,n){var r;if(t){if(g)return g.call(t,e,n);for(r=t.length,n=n?0>n?Math.max(0,r+n):n:0;r>n;n++)if(n in t&&t[n]===e)return n}return-1},merge:function(e,n){var r=n.length,i=e.length,o=0;if("number"==typeof r)for(;r>o;o++)e[i++]=n[o];else while(n[o]!==t)e[i++]=n[o++];return e.length=i,e},grep:function(e,t,n){var r,i=[],o=0,a=e.length;for(n=!!n;a>o;o++)r=!!t(e[o],o),n!==r&&i.push(e[o]);return i},map:function(e,t,n){var r,i=0,o=e.length,a=M(e),s=[];if(a)for(;o>i;i++)r=t(e[i],i,n),null!=r&&(s[s.length]=r);else for(i in e)r=t(e[i],i,n),null!=r&&(s[s.length]=r);return f.apply([],s)},guid:1,proxy:function(e,n){var r,i,o;return"string"==typeof n&&(o=e[n],n=e,e=o),b.isFunction(e)?(r=h.call(arguments,2),i=function(){return e.apply(n||this,r.concat(h.call(arguments)))},i.guid=e.guid=e.guid||b.guid++,i):t},access:function(e,n,r,i,o,a,s){var u=0,l=e.length,c=null==r;if("object"===b.type(r)){o=!0;for(u in r)b.access(e,n,u,r[u],!0,a,s)}else if(i!==t&&(o=!0,b.isFunction(i)||(s=!0),c&&(s?(n.call(e,i),n=null):(c=n,n=function(e,t,n){return c.call(b(e),n)})),n))for(;l>u;u++)n(e[u],r,s?i:i.call(e[u],u,n(e[u],r)));return o?e:c?n.call(e):l?n(e[0],r):a},now:function(){return(new Date).getTime()}}),b.ready.promise=function(t){if(!n)if(n=b.Deferred(),"complete"===o.readyState)setTimeout(b.ready);else if(o.addEventListener)o.addEventListener("DOMContentLoaded",H,!1),e.addEventListener("load",H,!1);else{o.attachEvent("onreadystatechange",H),e.attachEvent("onload",H);var r=!1;try{r=null==e.frameElement&&o.documentElement}catch(i){}r&&r.doScroll&&function a(){if(!b.isReady){try{r.doScroll("left")}catch(e){return setTimeout(a,50)}q(),b.ready()}}()}return n.promise(t)},b.each("Boolean Number String Function Array Date RegExp Object Error".split(" "),function(e,t){l["[object "+t+"]"]=t.toLowerCase()});function M(e){var t=e.length,n=b.type(e);return b.isWindow(e)?!1:1===e.nodeType&&t?!0:"array"===n||"function"!==n&&(0===t||"number"==typeof t&&t>0&&t-1 in e)}r=b(o);var _={};function F(e){var t=_[e]={};return b.each(e.match(w)||[],function(e,n){t[n]=!0}),t}b.Callbacks=function(e){e="string"==typeof e?_[e]||F(e):b.extend({},e);var n,r,i,o,a,s,u=[],l=!e.once&&[],c=function(t){for(r=e.memory&&t,i=!0,a=s||0,s=0,o=u.length,n=!0;u&&o>a;a++)if(u[a].apply(t[0],t[1])===!1&&e.stopOnFalse){r=!1;break}n=!1,u&&(l?l.length&&c(l.shift()):r?u=[]:p.disable())},p={add:function(){if(u){var t=u.length;(function i(t){b.each(t,function(t,n){var r=b.type(n);"function"===r?e.unique&&p.has(n)||u.push(n):n&&n.length&&"string"!==r&&i(n)})})(arguments),n?o=u.length:r&&(s=t,c(r))}return this},remove:function(){return u&&b.each(arguments,function(e,t){var r;while((r=b.inArray(t,u,r))>-1)u.splice(r,1),n&&(o>=r&&o--,a>=r&&a--)}),this},has:function(e){return e?b.inArray(e,u)>-1:!(!u||!u.length)},empty:function(){return u=[],this},disable:function(){return u=l=r=t,this},disabled:function(){return!u},lock:function(){return l=t,r||p.disable(),this},locked:function(){return!l},fireWith:function(e,t){return t=t||[],t=[e,t.slice?t.slice():t],!u||i&&!l||(n?l.push(t):c(t)),this},fire:function(){return p.fireWith(this,arguments),this},fired:function(){return!!i}};return p},b.extend({Deferred:function(e){var t=[["resolve","done",b.Callbacks("once memory"),"resolved"],["reject","fail",b.Callbacks("once memory"),"rejected"],["notify","progress",b.Callbacks("memory")]],n="pending",r={state:function(){return n},always:function(){return i.done(arguments).fail(arguments),this},then:function(){var e=arguments;return b.Deferred(function(n){b.each(t,function(t,o){var a=o[0],s=b.isFunction(e[t])&&e[t];i[o[1]](function(){var e=s&&s.apply(this,arguments);e&&b.isFunction(e.promise)?e.promise().done(n.resolve).fail(n.reject).progress(n.notify):n[a+"With"](this===r?n.promise():this,s?[e]:arguments)})}),e=null}).promise()},promise:function(e){return null!=e?b.extend(e,r):r}},i={};return r.pipe=r.then,b.each(t,function(e,o){var a=o[2],s=o[3];r[o[1]]=a.add,s&&a.add(function(){n=s},t[1^e][2].disable,t[2][2].lock),i[o[0]]=function(){return i[o[0]+"With"](this===i?r:this,arguments),this},i[o[0]+"With"]=a.fireWith}),r.promise(i),e&&e.call(i,i),i},when:function(e){var t=0,n=h.call(arguments),r=n.length,i=1!==r||e&&b.isFunction(e.promise)?r:0,o=1===i?e:b.Deferred(),a=function(e,t,n){return function(r){t[e]=this,n[e]=arguments.length>1?h.call(arguments):r,n===s?o.notifyWith(t,n):--i||o.resolveWith(t,n)}},s,u,l;if(r>1)for(s=Array(r),u=Array(r),l=Array(r);r>t;t++)n[t]&&b.isFunction(n[t].promise)?n[t].promise().done(a(t,l,n)).fail(o.reject).progress(a(t,u,s)):--i;return i||o.resolveWith(l,n),o.promise()}}),b.support=function(){var t,n,r,a,s,u,l,c,p,f,d=o.createElement("div");if(d.setAttribute("className","t"),d.innerHTML="  <link/><table></table><a href='/a'>a</a><input type='checkbox'/>",n=d.getElementsByTagName("*"),r=d.getElementsByTagName("a")[0],!n||!r||!n.length)return{};s=o.createElement("select"),l=s.appendChild(o.createElement("option")),a=d.getElementsByTagName("input")[0],r.style.cssText="top:1px;float:left;opacity:.5",t={getSetAttribute:"t"!==d.className,leadingWhitespace:3===d.firstChild.nodeType,tbody:!d.getElementsByTagName("tbody").length,htmlSerialize:!!d.getElementsByTagName("link").length,style:/top/.test(r.getAttribute("style")),hrefNormalized:"/a"===r.getAttribute("href"),opacity:/^0.5/.test(r.style.opacity),cssFloat:!!r.style.cssFloat,checkOn:!!a.value,optSelected:l.selected,enctype:!!o.createElement("form").enctype,html5Clone:"<:nav></:nav>"!==o.createElement("nav").cloneNode(!0).outerHTML,boxModel:"CSS1Compat"===o.compatMode,deleteExpando:!0,noCloneEvent:!0,inlineBlockNeedsLayout:!1,shrinkWrapBlocks:!1,reliableMarginRight:!0,boxSizingReliable:!0,pixelPosition:!1},a.checked=!0,t.noCloneChecked=a.cloneNode(!0).checked,s.disabled=!0,t.optDisabled=!l.disabled;try{delete d.test}catch(h){t.deleteExpando=!1}a=o.createElement("input"),a.setAttribute("value",""),t.input=""===a.getAttribute("value"),a.value="t",a.setAttribute("type","radio"),t.radioValue="t"===a.value,a.setAttribute("checked","t"),a.setAttribute("name","t"),u=o.createDocumentFragment(),u.appendChild(a),t.appendChecked=a.checked,t.checkClone=u.cloneNode(!0).cloneNode(!0).lastChild.checked,d.attachEvent&&(d.attachEvent("onclick",function(){t.noCloneEvent=!1}),d.cloneNode(!0).click());for(f in{submit:!0,change:!0,focusin:!0})d.setAttribute(c="on"+f,"t"),t[f+"Bubbles"]=c in e||d.attributes[c].expando===!1;return d.style.backgroundClip="content-box",d.cloneNode(!0).style.backgroundClip="",t.clearCloneStyle="content-box"===d.style.backgroundClip,b(function(){var n,r,a,s="padding:0;margin:0;border:0;display:block;box-sizing:content-box;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;",u=o.getElementsByTagName("body")[0];u&&(n=o.createElement("div"),n.style.cssText="border:0;width:0;height:0;position:absolute;top:0;left:-9999px;margin-top:1px",u.appendChild(n).appendChild(d),d.innerHTML="<table><tr><td></td><td>t</td></tr></table>",a=d.getElementsByTagName("td"),a[0].style.cssText="padding:0;margin:0;border:0;display:none",p=0===a[0].offsetHeight,a[0].style.display="",a[1].style.display="none",t.reliableHiddenOffsets=p&&0===a[0].offsetHeight,d.innerHTML="",d.style.cssText="box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;padding:1px;border:1px;display:block;width:4px;margin-top:1%;position:absolute;top:1%;",t.boxSizing=4===d.offsetWidth,t.doesNotIncludeMarginInBodyOffset=1!==u.offsetTop,e.getComputedStyle&&(t.pixelPosition="1%"!==(e.getComputedStyle(d,null)||{}).top,t.boxSizingReliable="4px"===(e.getComputedStyle(d,null)||{width:"4px"}).width,r=d.appendChild(o.createElement("div")),r.style.cssText=d.style.cssText=s,r.style.marginRight=r.style.width="0",d.style.width="1px",t.reliableMarginRight=!parseFloat((e.getComputedStyle(r,null)||{}).marginRight)),typeof d.style.zoom!==i&&(d.innerHTML="",d.style.cssText=s+"width:1px;padding:1px;display:inline;zoom:1",t.inlineBlockNeedsLayout=3===d.offsetWidth,d.style.display="block",d.innerHTML="<div></div>",d.firstChild.style.width="5px",t.shrinkWrapBlocks=3!==d.offsetWidth,t.inlineBlockNeedsLayout&&(u.style.zoom=1)),u.removeChild(n),n=d=a=r=null)}),n=s=u=l=r=a=null,t}();var O=/(?:\{[\s\S]*\}|\[[\s\S]*\])$/,B=/([A-Z])/g;function P(e,n,r,i){if(b.acceptData(e)){var o,a,s=b.expando,u="string"==typeof n,l=e.nodeType,p=l?b.cache:e,f=l?e[s]:e[s]&&s;if(f&&p[f]&&(i||p[f].data)||!u||r!==t)return f||(l?e[s]=f=c.pop()||b.guid++:f=s),p[f]||(p[f]={},l||(p[f].toJSON=b.noop)),("object"==typeof n||"function"==typeof n)&&(i?p[f]=b.extend(p[f],n):p[f].data=b.extend(p[f].data,n)),o=p[f],i||(o.data||(o.data={}),o=o.data),r!==t&&(o[b.camelCase(n)]=r),u?(a=o[n],null==a&&(a=o[b.camelCase(n)])):a=o,a}}function R(e,t,n){if(b.acceptData(e)){var r,i,o,a=e.nodeType,s=a?b.cache:e,u=a?e[b.expando]:b.expando;if(s[u]){if(t&&(o=n?s[u]:s[u].data)){b.isArray(t)?t=t.concat(b.map(t,b.camelCase)):t in o?t=[t]:(t=b.camelCase(t),t=t in o?[t]:t.split(" "));for(r=0,i=t.length;i>r;r++)delete o[t[r]];if(!(n?$:b.isEmptyObject)(o))return}(n||(delete s[u].data,$(s[u])))&&(a?b.cleanData([e],!0):b.support.deleteExpando||s!=s.window?delete s[u]:s[u]=null)}}}b.extend({cache:{},expando:"jQuery"+(p+Math.random()).replace(/\D/g,""),noData:{embed:!0,object:"clsid:D27CDB6E-AE6D-11cf-96B8-444553540000",applet:!0},hasData:function(e){return e=e.nodeType?b.cache[e[b.expando]]:e[b.expando],!!e&&!$(e)},data:function(e,t,n){return P(e,t,n)},removeData:function(e,t){return R(e,t)},_data:function(e,t,n){return P(e,t,n,!0)},_removeData:function(e,t){return R(e,t,!0)},acceptData:function(e){if(e.nodeType&&1!==e.nodeType&&9!==e.nodeType)return!1;var t=e.nodeName&&b.noData[e.nodeName.toLowerCase()];return!t||t!==!0&&e.getAttribute("classid")===t}}),b.fn.extend({data:function(e,n){var r,i,o=this[0],a=0,s=null;if(e===t){if(this.length&&(s=b.data(o),1===o.nodeType&&!b._data(o,"parsedAttrs"))){for(r=o.attributes;r.length>a;a++)i=r[a].name,i.indexOf("data-")||(i=b.camelCase(i.slice(5)),W(o,i,s[i]));b._data(o,"parsedAttrs",!0)}return s}return"object"==typeof e?this.each(function(){b.data(this,e)}):b.access(this,function(n){return n===t?o?W(o,e,b.data(o,e)):null:(this.each(function(){b.data(this,e,n)}),t)},null,n,arguments.length>1,null,!0)},removeData:function(e){return this.each(function(){b.removeData(this,e)})}});function W(e,n,r){if(r===t&&1===e.nodeType){var i="data-"+n.replace(B,"-$1").toLowerCase();if(r=e.getAttribute(i),"string"==typeof r){try{r="true"===r?!0:"false"===r?!1:"null"===r?null:+r+""===r?+r:O.test(r)?b.parseJSON(r):r}catch(o){}b.data(e,n,r)}else r=t}return r}function $(e){var t;for(t in e)if(("data"!==t||!b.isEmptyObject(e[t]))&&"toJSON"!==t)return!1;return!0}b.extend({queue:function(e,n,r){var i;return e?(n=(n||"fx")+"queue",i=b._data(e,n),r&&(!i||b.isArray(r)?i=b._data(e,n,b.makeArray(r)):i.push(r)),i||[]):t},dequeue:function(e,t){t=t||"fx";var n=b.queue(e,t),r=n.length,i=n.shift(),o=b._queueHooks(e,t),a=function(){b.dequeue(e,t)};"inprogress"===i&&(i=n.shift(),r--),o.cur=i,i&&("fx"===t&&n.unshift("inprogress"),delete o.stop,i.call(e,a,o)),!r&&o&&o.empty.fire()},_queueHooks:function(e,t){var n=t+"queueHooks";return b._data(e,n)||b._data(e,n,{empty:b.Callbacks("once memory").add(function(){b._removeData(e,t+"queue"),b._removeData(e,n)})})}}),b.fn.extend({queue:function(e,n){var r=2;return"string"!=typeof e&&(n=e,e="fx",r--),r>arguments.length?b.queue(this[0],e):n===t?this:this.each(function(){var t=b.queue(this,e,n);b._queueHooks(this,e),"fx"===e&&"inprogress"!==t[0]&&b.dequeue(this,e)})},dequeue:function(e){return this.each(function(){b.dequeue(this,e)})},delay:function(e,t){return e=b.fx?b.fx.speeds[e]||e:e,t=t||"fx",this.queue(t,function(t,n){var r=setTimeout(t,e);n.stop=function(){clearTimeout(r)}})},clearQueue:function(e){return this.queue(e||"fx",[])},promise:function(e,n){var r,i=1,o=b.Deferred(),a=this,s=this.length,u=function(){--i||o.resolveWith(a,[a])};"string"!=typeof e&&(n=e,e=t),e=e||"fx";while(s--)r=b._data(a[s],e+"queueHooks"),r&&r.empty&&(i++,r.empty.add(u));return u(),o.promise(n)}});var I,z,X=/[\t\r\n]/g,U=/\r/g,V=/^(?:input|select|textarea|button|object)$/i,Y=/^(?:a|area)$/i,J=/^(?:checked|selected|autofocus|autoplay|async|controls|defer|disabled|hidden|loop|multiple|open|readonly|required|scoped)$/i,G=/^(?:checked|selected)$/i,Q=b.support.getSetAttribute,K=b.support.input;b.fn.extend({attr:function(e,t){return b.access(this,b.attr,e,t,arguments.length>1)},removeAttr:function(e){return this.each(function(){b.removeAttr(this,e)})},prop:function(e,t){return b.access(this,b.prop,e,t,arguments.length>1)},removeProp:function(e){return e=b.propFix[e]||e,this.each(function(){try{this[e]=t,delete this[e]}catch(n){}})},addClass:function(e){var t,n,r,i,o,a=0,s=this.length,u="string"==typeof e&&e;if(b.isFunction(e))return this.each(function(t){b(this).addClass(e.call(this,t,this.className))});if(u)for(t=(e||"").match(w)||[];s>a;a++)if(n=this[a],r=1===n.nodeType&&(n.className?(" "+n.className+" ").replace(X," "):" ")){o=0;while(i=t[o++])0>r.indexOf(" "+i+" ")&&(r+=i+" ");n.className=b.trim(r)}return this},removeClass:function(e){var t,n,r,i,o,a=0,s=this.length,u=0===arguments.length||"string"==typeof e&&e;if(b.isFunction(e))return this.each(function(t){b(this).removeClass(e.call(this,t,this.className))});if(u)for(t=(e||"").match(w)||[];s>a;a++)if(n=this[a],r=1===n.nodeType&&(n.className?(" "+n.className+" ").replace(X," "):"")){o=0;while(i=t[o++])while(r.indexOf(" "+i+" ")>=0)r=r.replace(" "+i+" "," ");n.className=e?b.trim(r):""}return this},toggleClass:function(e,t){var n=typeof e,r="boolean"==typeof t;return b.isFunction(e)?this.each(function(n){b(this).toggleClass(e.call(this,n,this.className,t),t)}):this.each(function(){if("string"===n){var o,a=0,s=b(this),u=t,l=e.match(w)||[];while(o=l[a++])u=r?u:!s.hasClass(o),s[u?"addClass":"removeClass"](o)}else(n===i||"boolean"===n)&&(this.className&&b._data(this,"__className__",this.className),this.className=this.className||e===!1?"":b._data(this,"__className__")||"")})},hasClass:function(e){var t=" "+e+" ",n=0,r=this.length;for(;r>n;n++)if(1===this[n].nodeType&&(" "+this[n].className+" ").replace(X," ").indexOf(t)>=0)return!0;return!1},val:function(e){var n,r,i,o=this[0];{if(arguments.length)return i=b.isFunction(e),this.each(function(n){var o,a=b(this);1===this.nodeType&&(o=i?e.call(this,n,a.val()):e,null==o?o="":"number"==typeof o?o+="":b.isArray(o)&&(o=b.map(o,function(e){return null==e?"":e+""})),r=b.valHooks[this.type]||b.valHooks[this.nodeName.toLowerCase()],r&&"set"in r&&r.set(this,o,"value")!==t||(this.value=o))});if(o)return r=b.valHooks[o.type]||b.valHooks[o.nodeName.toLowerCase()],r&&"get"in r&&(n=r.get(o,"value"))!==t?n:(n=o.value,"string"==typeof n?n.replace(U,""):null==n?"":n)}}}),b.extend({valHooks:{option:{get:function(e){var t=e.attributes.value;return!t||t.specified?e.value:e.text}},select:{get:function(e){var t,n,r=e.options,i=e.selectedIndex,o="select-one"===e.type||0>i,a=o?null:[],s=o?i+1:r.length,u=0>i?s:o?i:0;for(;s>u;u++)if(n=r[u],!(!n.selected&&u!==i||(b.support.optDisabled?n.disabled:null!==n.getAttribute("disabled"))||n.parentNode.disabled&&b.nodeName(n.parentNode,"optgroup"))){if(t=b(n).val(),o)return t;a.push(t)}return a},set:function(e,t){var n=b.makeArray(t);return b(e).find("option").each(function(){this.selected=b.inArray(b(this).val(),n)>=0}),n.length||(e.selectedIndex=-1),n}}},attr:function(e,n,r){var o,a,s,u=e.nodeType;if(e&&3!==u&&8!==u&&2!==u)return typeof e.getAttribute===i?b.prop(e,n,r):(a=1!==u||!b.isXMLDoc(e),a&&(n=n.toLowerCase(),o=b.attrHooks[n]||(J.test(n)?z:I)),r===t?o&&a&&"get"in o&&null!==(s=o.get(e,n))?s:(typeof e.getAttribute!==i&&(s=e.getAttribute(n)),null==s?t:s):null!==r?o&&a&&"set"in o&&(s=o.set(e,r,n))!==t?s:(e.setAttribute(n,r+""),r):(b.removeAttr(e,n),t))},removeAttr:function(e,t){var n,r,i=0,o=t&&t.match(w);if(o&&1===e.nodeType)while(n=o[i++])r=b.propFix[n]||n,J.test(n)?!Q&&G.test(n)?e[b.camelCase("default-"+n)]=e[r]=!1:e[r]=!1:b.attr(e,n,""),e.removeAttribute(Q?n:r)},attrHooks:{type:{set:function(e,t){if(!b.support.radioValue&&"radio"===t&&b.nodeName(e,"input")){var n=e.value;return e.setAttribute("type",t),n&&(e.value=n),t}}}},propFix:{tabindex:"tabIndex",readonly:"readOnly","for":"htmlFor","class":"className",maxlength:"maxLength",cellspacing:"cellSpacing",cellpadding:"cellPadding",rowspan:"rowSpan",colspan:"colSpan",usemap:"useMap",frameborder:"frameBorder",contenteditable:"contentEditable"},prop:function(e,n,r){var i,o,a,s=e.nodeType;if(e&&3!==s&&8!==s&&2!==s)return a=1!==s||!b.isXMLDoc(e),a&&(n=b.propFix[n]||n,o=b.propHooks[n]),r!==t?o&&"set"in o&&(i=o.set(e,r,n))!==t?i:e[n]=r:o&&"get"in o&&null!==(i=o.get(e,n))?i:e[n]},propHooks:{tabIndex:{get:function(e){var n=e.getAttributeNode("tabindex");return n&&n.specified?parseInt(n.value,10):V.test(e.nodeName)||Y.test(e.nodeName)&&e.href?0:t}}}}),z={get:function(e,n){var r=b.prop(e,n),i="boolean"==typeof r&&e.getAttribute(n),o="boolean"==typeof r?K&&Q?null!=i:G.test(n)?e[b.camelCase("default-"+n)]:!!i:e.getAttributeNode(n);return o&&o.value!==!1?n.toLowerCase():t},set:function(e,t,n){return t===!1?b.removeAttr(e,n):K&&Q||!G.test(n)?e.setAttribute(!Q&&b.propFix[n]||n,n):e[b.camelCase("default-"+n)]=e[n]=!0,n}},K&&Q||(b.attrHooks.value={get:function(e,n){var r=e.getAttributeNode(n);return b.nodeName(e,"input")?e.defaultValue:r&&r.specified?r.value:t},set:function(e,n,r){return b.nodeName(e,"input")?(e.defaultValue=n,t):I&&I.set(e,n,r)}}),Q||(I=b.valHooks.button={get:function(e,n){var r=e.getAttributeNode(n);return r&&("id"===n||"name"===n||"coords"===n?""!==r.value:r.specified)?r.value:t},set:function(e,n,r){var i=e.getAttributeNode(r);return i||e.setAttributeNode(i=e.ownerDocument.createAttribute(r)),i.value=n+="","value"===r||n===e.getAttribute(r)?n:t}},b.attrHooks.contenteditable={get:I.get,set:function(e,t,n){I.set(e,""===t?!1:t,n)}},b.each(["width","height"],function(e,n){b.attrHooks[n]=b.extend(b.attrHooks[n],{set:function(e,r){return""===r?(e.setAttribute(n,"auto"),r):t}})})),b.support.hrefNormalized||(b.each(["href","src","width","height"],function(e,n){b.attrHooks[n]=b.extend(b.attrHooks[n],{get:function(e){var r=e.getAttribute(n,2);return null==r?t:r}})}),b.each(["href","src"],function(e,t){b.propHooks[t]={get:function(e){return e.getAttribute(t,4)}}})),b.support.style||(b.attrHooks.style={get:function(e){return e.style.cssText||t},set:function(e,t){return e.style.cssText=t+""}}),b.support.optSelected||(b.propHooks.selected=b.extend(b.propHooks.selected,{get:function(e){var t=e.parentNode;return t&&(t.selectedIndex,t.parentNode&&t.parentNode.selectedIndex),null}})),b.support.enctype||(b.propFix.enctype="encoding"),b.support.checkOn||b.each(["radio","checkbox"],function(){b.valHooks[this]={get:function(e){return null===e.getAttribute("value")?"on":e.value}}}),b.each(["radio","checkbox"],function(){b.valHooks[this]=b.extend(b.valHooks[this],{set:function(e,n){return b.isArray(n)?e.checked=b.inArray(b(e).val(),n)>=0:t}})});var Z=/^(?:input|select|textarea)$/i,et=/^key/,tt=/^(?:mouse|contextmenu)|click/,nt=/^(?:focusinfocus|focusoutblur)$/,rt=/^([^.]*)(?:\.(.+)|)$/;function it(){return!0}function ot(){return!1}b.event={global:{},add:function(e,n,r,o,a){var s,u,l,c,p,f,d,h,g,m,y,v=b._data(e);if(v){r.handler&&(c=r,r=c.handler,a=c.selector),r.guid||(r.guid=b.guid++),(u=v.events)||(u=v.events={}),(f=v.handle)||(f=v.handle=function(e){return typeof b===i||e&&b.event.triggered===e.type?t:b.event.dispatch.apply(f.elem,arguments)},f.elem=e),n=(n||"").match(w)||[""],l=n.length;while(l--)s=rt.exec(n[l])||[],g=y=s[1],m=(s[2]||"").split(".").sort(),p=b.event.special[g]||{},g=(a?p.delegateType:p.bindType)||g,p=b.event.special[g]||{},d=b.extend({type:g,origType:y,data:o,handler:r,guid:r.guid,selector:a,needsContext:a&&b.expr.match.needsContext.test(a),namespace:m.join(".")},c),(h=u[g])||(h=u[g]=[],h.delegateCount=0,p.setup&&p.setup.call(e,o,m,f)!==!1||(e.addEventListener?e.addEventListener(g,f,!1):e.attachEvent&&e.attachEvent("on"+g,f))),p.add&&(p.add.call(e,d),d.handler.guid||(d.handler.guid=r.guid)),a?h.splice(h.delegateCount++,0,d):h.push(d),b.event.global[g]=!0;e=null}},remove:function(e,t,n,r,i){var o,a,s,u,l,c,p,f,d,h,g,m=b.hasData(e)&&b._data(e);if(m&&(c=m.events)){t=(t||"").match(w)||[""],l=t.length;while(l--)if(s=rt.exec(t[l])||[],d=g=s[1],h=(s[2]||"").split(".").sort(),d){p=b.event.special[d]||{},d=(r?p.delegateType:p.bindType)||d,f=c[d]||[],s=s[2]&&RegExp("(^|\\.)"+h.join("\\.(?:.*\\.|)")+"(\\.|$)"),u=o=f.length;while(o--)a=f[o],!i&&g!==a.origType||n&&n.guid!==a.guid||s&&!s.test(a.namespace)||r&&r!==a.selector&&("**"!==r||!a.selector)||(f.splice(o,1),a.selector&&f.delegateCount--,p.remove&&p.remove.call(e,a));u&&!f.length&&(p.teardown&&p.teardown.call(e,h,m.handle)!==!1||b.removeEvent(e,d,m.handle),delete c[d])}else for(d in c)b.event.remove(e,d+t[l],n,r,!0);b.isEmptyObject(c)&&(delete m.handle,b._removeData(e,"events"))}},trigger:function(n,r,i,a){var s,u,l,c,p,f,d,h=[i||o],g=y.call(n,"type")?n.type:n,m=y.call(n,"namespace")?n.namespace.split("."):[];if(l=f=i=i||o,3!==i.nodeType&&8!==i.nodeType&&!nt.test(g+b.event.triggered)&&(g.indexOf(".")>=0&&(m=g.split("."),g=m.shift(),m.sort()),u=0>g.indexOf(":")&&"on"+g,n=n[b.expando]?n:new b.Event(g,"object"==typeof n&&n),n.isTrigger=!0,n.namespace=m.join("."),n.namespace_re=n.namespace?RegExp("(^|\\.)"+m.join("\\.(?:.*\\.|)")+"(\\.|$)"):null,n.result=t,n.target||(n.target=i),r=null==r?[n]:b.makeArray(r,[n]),p=b.event.special[g]||{},a||!p.trigger||p.trigger.apply(i,r)!==!1)){if(!a&&!p.noBubble&&!b.isWindow(i)){for(c=p.delegateType||g,nt.test(c+g)||(l=l.parentNode);l;l=l.parentNode)h.push(l),f=l;f===(i.ownerDocument||o)&&h.push(f.defaultView||f.parentWindow||e)}d=0;while((l=h[d++])&&!n.isPropagationStopped())n.type=d>1?c:p.bindType||g,s=(b._data(l,"events")||{})[n.type]&&b._data(l,"handle"),s&&s.apply(l,r),s=u&&l[u],s&&b.acceptData(l)&&s.apply&&s.apply(l,r)===!1&&n.preventDefault();if(n.type=g,!(a||n.isDefaultPrevented()||p._default&&p._default.apply(i.ownerDocument,r)!==!1||"click"===g&&b.nodeName(i,"a")||!b.acceptData(i)||!u||!i[g]||b.isWindow(i))){f=i[u],f&&(i[u]=null),b.event.triggered=g;try{i[g]()}catch(v){}b.event.triggered=t,f&&(i[u]=f)}return n.result}},dispatch:function(e){e=b.event.fix(e);var n,r,i,o,a,s=[],u=h.call(arguments),l=(b._data(this,"events")||{})[e.type]||[],c=b.event.special[e.type]||{};if(u[0]=e,e.delegateTarget=this,!c.preDispatch||c.preDispatch.call(this,e)!==!1){s=b.event.handlers.call(this,e,l),n=0;while((o=s[n++])&&!e.isPropagationStopped()){e.currentTarget=o.elem,a=0;while((i=o.handlers[a++])&&!e.isImmediatePropagationStopped())(!e.namespace_re||e.namespace_re.test(i.namespace))&&(e.handleObj=i,e.data=i.data,r=((b.event.special[i.origType]||{}).handle||i.handler).apply(o.elem,u),r!==t&&(e.result=r)===!1&&(e.preventDefault(),e.stopPropagation()))}return c.postDispatch&&c.postDispatch.call(this,e),e.result}},handlers:function(e,n){var r,i,o,a,s=[],u=n.delegateCount,l=e.target;if(u&&l.nodeType&&(!e.button||"click"!==e.type))for(;l!=this;l=l.parentNode||this)if(1===l.nodeType&&(l.disabled!==!0||"click"!==e.type)){for(o=[],a=0;u>a;a++)i=n[a],r=i.selector+" ",o[r]===t&&(o[r]=i.needsContext?b(r,this).index(l)>=0:b.find(r,this,null,[l]).length),o[r]&&o.push(i);o.length&&s.push({elem:l,handlers:o})}return n.length>u&&s.push({elem:this,handlers:n.slice(u)}),s},fix:function(e){if(e[b.expando])return e;var t,n,r,i=e.type,a=e,s=this.fixHooks[i];s||(this.fixHooks[i]=s=tt.test(i)?this.mouseHooks:et.test(i)?this.keyHooks:{}),r=s.props?this.props.concat(s.props):this.props,e=new b.Event(a),t=r.length;while(t--)n=r[t],e[n]=a[n];return e.target||(e.target=a.srcElement||o),3===e.target.nodeType&&(e.target=e.target.parentNode),e.metaKey=!!e.metaKey,s.filter?s.filter(e,a):e},props:"altKey bubbles cancelable ctrlKey currentTarget eventPhase metaKey relatedTarget shiftKey target timeStamp view which".split(" "),fixHooks:{},keyHooks:{props:"char charCode key keyCode".split(" "),filter:function(e,t){return null==e.which&&(e.which=null!=t.charCode?t.charCode:t.keyCode),e}},mouseHooks:{props:"button buttons clientX clientY fromElement offsetX offsetY pageX pageY screenX screenY toElement".split(" "),filter:function(e,n){var r,i,a,s=n.button,u=n.fromElement;return null==e.pageX&&null!=n.clientX&&(i=e.target.ownerDocument||o,a=i.documentElement,r=i.body,e.pageX=n.clientX+(a&&a.scrollLeft||r&&r.scrollLeft||0)-(a&&a.clientLeft||r&&r.clientLeft||0),e.pageY=n.clientY+(a&&a.scrollTop||r&&r.scrollTop||0)-(a&&a.clientTop||r&&r.clientTop||0)),!e.relatedTarget&&u&&(e.relatedTarget=u===e.target?n.toElement:u),e.which||s===t||(e.which=1&s?1:2&s?3:4&s?2:0),e}},special:{load:{noBubble:!0},click:{trigger:function(){return b.nodeName(this,"input")&&"checkbox"===this.type&&this.click?(this.click(),!1):t}},focus:{trigger:function(){if(this!==o.activeElement&&this.focus)try{return this.focus(),!1}catch(e){}},delegateType:"focusin"},blur:{trigger:function(){return this===o.activeElement&&this.blur?(this.blur(),!1):t},delegateType:"focusout"},beforeunload:{postDispatch:function(e){e.result!==t&&(e.originalEvent.returnValue=e.result)}}},simulate:function(e,t,n,r){var i=b.extend(new b.Event,n,{type:e,isSimulated:!0,originalEvent:{}});r?b.event.trigger(i,null,t):b.event.dispatch.call(t,i),i.isDefaultPrevented()&&n.preventDefault()}},b.removeEvent=o.removeEventListener?function(e,t,n){e.removeEventListener&&e.removeEventListener(t,n,!1)}:function(e,t,n){var r="on"+t;e.detachEvent&&(typeof e[r]===i&&(e[r]=null),e.detachEvent(r,n))},b.Event=function(e,n){return this instanceof b.Event?(e&&e.type?(this.originalEvent=e,this.type=e.type,this.isDefaultPrevented=e.defaultPrevented||e.returnValue===!1||e.getPreventDefault&&e.getPreventDefault()?it:ot):this.type=e,n&&b.extend(this,n),this.timeStamp=e&&e.timeStamp||b.now(),this[b.expando]=!0,t):new b.Event(e,n)},b.Event.prototype={isDefaultPrevented:ot,isPropagationStopped:ot,isImmediatePropagationStopped:ot,preventDefault:function(){var e=this.originalEvent;this.isDefaultPrevented=it,e&&(e.preventDefault?e.preventDefault():e.returnValue=!1)},stopPropagation:function(){var e=this.originalEvent;this.isPropagationStopped=it,e&&(e.stopPropagation&&e.stopPropagation(),e.cancelBubble=!0)},stopImmediatePropagation:function(){this.isImmediatePropagationStopped=it,this.stopPropagation()}},b.each({mouseenter:"mouseover",mouseleave:"mouseout"},function(e,t){b.event.special[e]={delegateType:t,bindType:t,handle:function(e){var n,r=this,i=e.relatedTarget,o=e.handleObj;
 return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,arguments),e.type=t),n}}}),b.support.submitBubbles||(b.event.special.submit={setup:function(){return b.nodeName(this,"form")?!1:(b.event.add(this,"click._submit keypress._submit",function(e){var n=e.target,r=b.nodeName(n,"input")||b.nodeName(n,"button")?n.form:t;r&&!b._data(r,"submitBubbles")&&(b.event.add(r,"submit._submit",function(e){e._submit_bubble=!0}),b._data(r,"submitBubbles",!0))}),t)},postDispatch:function(e){e._submit_bubble&&(delete e._submit_bubble,this.parentNode&&!e.isTrigger&&b.event.simulate("submit",this.parentNode,e,!0))},teardown:function(){return b.nodeName(this,"form")?!1:(b.event.remove(this,"._submit"),t)}}),b.support.changeBubbles||(b.event.special.change={setup:function(){return Z.test(this.nodeName)?(("checkbox"===this.type||"radio"===this.type)&&(b.event.add(this,"propertychange._change",function(e){"checked"===e.originalEvent.propertyName&&(this._just_changed=!0)}),b.event.add(this,"click._change",function(e){this._just_changed&&!e.isTrigger&&(this._just_changed=!1),b.event.simulate("change",this,e,!0)})),!1):(b.event.add(this,"beforeactivate._change",function(e){var t=e.target;Z.test(t.nodeName)&&!b._data(t,"changeBubbles")&&(b.event.add(t,"change._change",function(e){!this.parentNode||e.isSimulated||e.isTrigger||b.event.simulate("change",this.parentNode,e,!0)}),b._data(t,"changeBubbles",!0))}),t)},handle:function(e){var n=e.target;return this!==n||e.isSimulated||e.isTrigger||"radio"!==n.type&&"checkbox"!==n.type?e.handleObj.handler.apply(this,arguments):t},teardown:function(){return b.event.remove(this,"._change"),!Z.test(this.nodeName)}}),b.support.focusinBubbles||b.each({focus:"focusin",blur:"focusout"},function(e,t){var n=0,r=function(e){b.event.simulate(t,e.target,b.event.fix(e),!0)};b.event.special[t]={setup:function(){0===n++&&o.addEventListener(e,r,!0)},teardown:function(){0===--n&&o.removeEventListener(e,r,!0)}}}),b.fn.extend({on:function(e,n,r,i,o){var a,s;if("object"==typeof e){"string"!=typeof n&&(r=r||n,n=t);for(a in e)this.on(a,n,r,e[a],o);return this}if(null==r&&null==i?(i=n,r=n=t):null==i&&("string"==typeof n?(i=r,r=t):(i=r,r=n,n=t)),i===!1)i=ot;else if(!i)return this;return 1===o&&(s=i,i=function(e){return b().off(e),s.apply(this,arguments)},i.guid=s.guid||(s.guid=b.guid++)),this.each(function(){b.event.add(this,e,i,r,n)})},one:function(e,t,n,r){return this.on(e,t,n,r,1)},off:function(e,n,r){var i,o;if(e&&e.preventDefault&&e.handleObj)return i=e.handleObj,b(e.delegateTarget).off(i.namespace?i.origType+"."+i.namespace:i.origType,i.selector,i.handler),this;if("object"==typeof e){for(o in e)this.off(o,n,e[o]);return this}return(n===!1||"function"==typeof n)&&(r=n,n=t),r===!1&&(r=ot),this.each(function(){b.event.remove(this,e,r,n)})},bind:function(e,t,n){return this.on(e,null,t,n)},unbind:function(e,t){return this.off(e,null,t)},delegate:function(e,t,n,r){return this.on(t,e,n,r)},undelegate:function(e,t,n){return 1===arguments.length?this.off(e,"**"):this.off(t,e||"**",n)},trigger:function(e,t){return this.each(function(){b.event.trigger(e,t,this)})},triggerHandler:function(e,n){var r=this[0];return r?b.event.trigger(e,n,r,!0):t}}),function(e,t){var n,r,i,o,a,s,u,l,c,p,f,d,h,g,m,y,v,x="sizzle"+-new Date,w=e.document,T={},N=0,C=0,k=it(),E=it(),S=it(),A=typeof t,j=1<<31,D=[],L=D.pop,H=D.push,q=D.slice,M=D.indexOf||function(e){var t=0,n=this.length;for(;n>t;t++)if(this[t]===e)return t;return-1},_="[\\x20\\t\\r\\n\\f]",F="(?:\\\\.|[\\w-]|[^\\x00-\\xa0])+",O=F.replace("w","w#"),B="([*^$|!~]?=)",P="\\["+_+"*("+F+")"+_+"*(?:"+B+_+"*(?:(['\"])((?:\\\\.|[^\\\\])*?)\\3|("+O+")|)|)"+_+"*\\]",R=":("+F+")(?:\\(((['\"])((?:\\\\.|[^\\\\])*?)\\3|((?:\\\\.|[^\\\\()[\\]]|"+P.replace(3,8)+")*)|.*)\\)|)",W=RegExp("^"+_+"+|((?:^|[^\\\\])(?:\\\\.)*)"+_+"+$","g"),$=RegExp("^"+_+"*,"+_+"*"),I=RegExp("^"+_+"*([\\x20\\t\\r\\n\\f>+~])"+_+"*"),z=RegExp(R),X=RegExp("^"+O+"$"),U={ID:RegExp("^#("+F+")"),CLASS:RegExp("^\\.("+F+")"),NAME:RegExp("^\\[name=['\"]?("+F+")['\"]?\\]"),TAG:RegExp("^("+F.replace("w","w*")+")"),ATTR:RegExp("^"+P),PSEUDO:RegExp("^"+R),CHILD:RegExp("^:(only|first|last|nth|nth-last)-(child|of-type)(?:\\("+_+"*(even|odd|(([+-]|)(\\d*)n|)"+_+"*(?:([+-]|)"+_+"*(\\d+)|))"+_+"*\\)|)","i"),needsContext:RegExp("^"+_+"*[>+~]|:(even|odd|eq|gt|lt|nth|first|last)(?:\\("+_+"*((?:-\\d)?\\d*)"+_+"*\\)|)(?=[^-]|$)","i")},V=/[\x20\t\r\n\f]*[+~]/,Y=/^[^{]+\{\s*\[native code/,J=/^(?:#([\w-]+)|(\w+)|\.([\w-]+))$/,G=/^(?:input|select|textarea|button)$/i,Q=/^h\d$/i,K=/'|\\/g,Z=/\=[\x20\t\r\n\f]*([^'"\]]*)[\x20\t\r\n\f]*\]/g,et=/\\([\da-fA-F]{1,6}[\x20\t\r\n\f]?|.)/g,tt=function(e,t){var n="0x"+t-65536;return n!==n?t:0>n?String.fromCharCode(n+65536):String.fromCharCode(55296|n>>10,56320|1023&n)};try{q.call(w.documentElement.childNodes,0)[0].nodeType}catch(nt){q=function(e){var t,n=[];while(t=this[e++])n.push(t);return n}}function rt(e){return Y.test(e+"")}function it(){var e,t=[];return e=function(n,r){return t.push(n+=" ")>i.cacheLength&&delete e[t.shift()],e[n]=r}}function ot(e){return e[x]=!0,e}function at(e){var t=p.createElement("div");try{return e(t)}catch(n){return!1}finally{t=null}}function st(e,t,n,r){var i,o,a,s,u,l,f,g,m,v;if((t?t.ownerDocument||t:w)!==p&&c(t),t=t||p,n=n||[],!e||"string"!=typeof e)return n;if(1!==(s=t.nodeType)&&9!==s)return[];if(!d&&!r){if(i=J.exec(e))if(a=i[1]){if(9===s){if(o=t.getElementById(a),!o||!o.parentNode)return n;if(o.id===a)return n.push(o),n}else if(t.ownerDocument&&(o=t.ownerDocument.getElementById(a))&&y(t,o)&&o.id===a)return n.push(o),n}else{if(i[2])return H.apply(n,q.call(t.getElementsByTagName(e),0)),n;if((a=i[3])&&T.getByClassName&&t.getElementsByClassName)return H.apply(n,q.call(t.getElementsByClassName(a),0)),n}if(T.qsa&&!h.test(e)){if(f=!0,g=x,m=t,v=9===s&&e,1===s&&"object"!==t.nodeName.toLowerCase()){l=ft(e),(f=t.getAttribute("id"))?g=f.replace(K,"\\$&"):t.setAttribute("id",g),g="[id='"+g+"'] ",u=l.length;while(u--)l[u]=g+dt(l[u]);m=V.test(e)&&t.parentNode||t,v=l.join(",")}if(v)try{return H.apply(n,q.call(m.querySelectorAll(v),0)),n}catch(b){}finally{f||t.removeAttribute("id")}}}return wt(e.replace(W,"$1"),t,n,r)}a=st.isXML=function(e){var t=e&&(e.ownerDocument||e).documentElement;return t?"HTML"!==t.nodeName:!1},c=st.setDocument=function(e){var n=e?e.ownerDocument||e:w;return n!==p&&9===n.nodeType&&n.documentElement?(p=n,f=n.documentElement,d=a(n),T.tagNameNoComments=at(function(e){return e.appendChild(n.createComment("")),!e.getElementsByTagName("*").length}),T.attributes=at(function(e){e.innerHTML="<select></select>";var t=typeof e.lastChild.getAttribute("multiple");return"boolean"!==t&&"string"!==t}),T.getByClassName=at(function(e){return e.innerHTML="<div class='hidden e'></div><div class='hidden'></div>",e.getElementsByClassName&&e.getElementsByClassName("e").length?(e.lastChild.className="e",2===e.getElementsByClassName("e").length):!1}),T.getByName=at(function(e){e.id=x+0,e.innerHTML="<a name='"+x+"'></a><div name='"+x+"'></div>",f.insertBefore(e,f.firstChild);var t=n.getElementsByName&&n.getElementsByName(x).length===2+n.getElementsByName(x+0).length;return T.getIdNotName=!n.getElementById(x),f.removeChild(e),t}),i.attrHandle=at(function(e){return e.innerHTML="<a href='#'></a>",e.firstChild&&typeof e.firstChild.getAttribute!==A&&"#"===e.firstChild.getAttribute("href")})?{}:{href:function(e){return e.getAttribute("href",2)},type:function(e){return e.getAttribute("type")}},T.getIdNotName?(i.find.ID=function(e,t){if(typeof t.getElementById!==A&&!d){var n=t.getElementById(e);return n&&n.parentNode?[n]:[]}},i.filter.ID=function(e){var t=e.replace(et,tt);return function(e){return e.getAttribute("id")===t}}):(i.find.ID=function(e,n){if(typeof n.getElementById!==A&&!d){var r=n.getElementById(e);return r?r.id===e||typeof r.getAttributeNode!==A&&r.getAttributeNode("id").value===e?[r]:t:[]}},i.filter.ID=function(e){var t=e.replace(et,tt);return function(e){var n=typeof e.getAttributeNode!==A&&e.getAttributeNode("id");return n&&n.value===t}}),i.find.TAG=T.tagNameNoComments?function(e,n){return typeof n.getElementsByTagName!==A?n.getElementsByTagName(e):t}:function(e,t){var n,r=[],i=0,o=t.getElementsByTagName(e);if("*"===e){while(n=o[i++])1===n.nodeType&&r.push(n);return r}return o},i.find.NAME=T.getByName&&function(e,n){return typeof n.getElementsByName!==A?n.getElementsByName(name):t},i.find.CLASS=T.getByClassName&&function(e,n){return typeof n.getElementsByClassName===A||d?t:n.getElementsByClassName(e)},g=[],h=[":focus"],(T.qsa=rt(n.querySelectorAll))&&(at(function(e){e.innerHTML="<select><option selected=''></option></select>",e.querySelectorAll("[selected]").length||h.push("\\["+_+"*(?:checked|disabled|ismap|multiple|readonly|selected|value)"),e.querySelectorAll(":checked").length||h.push(":checked")}),at(function(e){e.innerHTML="<input type='hidden' i=''/>",e.querySelectorAll("[i^='']").length&&h.push("[*^$]="+_+"*(?:\"\"|'')"),e.querySelectorAll(":enabled").length||h.push(":enabled",":disabled"),e.querySelectorAll("*,:x"),h.push(",.*:")})),(T.matchesSelector=rt(m=f.matchesSelector||f.mozMatchesSelector||f.webkitMatchesSelector||f.oMatchesSelector||f.msMatchesSelector))&&at(function(e){T.disconnectedMatch=m.call(e,"div"),m.call(e,"[s!='']:x"),g.push("!=",R)}),h=RegExp(h.join("|")),g=RegExp(g.join("|")),y=rt(f.contains)||f.compareDocumentPosition?function(e,t){var n=9===e.nodeType?e.documentElement:e,r=t&&t.parentNode;return e===r||!(!r||1!==r.nodeType||!(n.contains?n.contains(r):e.compareDocumentPosition&&16&e.compareDocumentPosition(r)))}:function(e,t){if(t)while(t=t.parentNode)if(t===e)return!0;return!1},v=f.compareDocumentPosition?function(e,t){var r;return e===t?(u=!0,0):(r=t.compareDocumentPosition&&e.compareDocumentPosition&&e.compareDocumentPosition(t))?1&r||e.parentNode&&11===e.parentNode.nodeType?e===n||y(w,e)?-1:t===n||y(w,t)?1:0:4&r?-1:1:e.compareDocumentPosition?-1:1}:function(e,t){var r,i=0,o=e.parentNode,a=t.parentNode,s=[e],l=[t];if(e===t)return u=!0,0;if(!o||!a)return e===n?-1:t===n?1:o?-1:a?1:0;if(o===a)return ut(e,t);r=e;while(r=r.parentNode)s.unshift(r);r=t;while(r=r.parentNode)l.unshift(r);while(s[i]===l[i])i++;return i?ut(s[i],l[i]):s[i]===w?-1:l[i]===w?1:0},u=!1,[0,0].sort(v),T.detectDuplicates=u,p):p},st.matches=function(e,t){return st(e,null,null,t)},st.matchesSelector=function(e,t){if((e.ownerDocument||e)!==p&&c(e),t=t.replace(Z,"='$1']"),!(!T.matchesSelector||d||g&&g.test(t)||h.test(t)))try{var n=m.call(e,t);if(n||T.disconnectedMatch||e.document&&11!==e.document.nodeType)return n}catch(r){}return st(t,p,null,[e]).length>0},st.contains=function(e,t){return(e.ownerDocument||e)!==p&&c(e),y(e,t)},st.attr=function(e,t){var n;return(e.ownerDocument||e)!==p&&c(e),d||(t=t.toLowerCase()),(n=i.attrHandle[t])?n(e):d||T.attributes?e.getAttribute(t):((n=e.getAttributeNode(t))||e.getAttribute(t))&&e[t]===!0?t:n&&n.specified?n.value:null},st.error=function(e){throw Error("Syntax error, unrecognized expression: "+e)},st.uniqueSort=function(e){var t,n=[],r=1,i=0;if(u=!T.detectDuplicates,e.sort(v),u){for(;t=e[r];r++)t===e[r-1]&&(i=n.push(r));while(i--)e.splice(n[i],1)}return e};function ut(e,t){var n=t&&e,r=n&&(~t.sourceIndex||j)-(~e.sourceIndex||j);if(r)return r;if(n)while(n=n.nextSibling)if(n===t)return-1;return e?1:-1}function lt(e){return function(t){var n=t.nodeName.toLowerCase();return"input"===n&&t.type===e}}function ct(e){return function(t){var n=t.nodeName.toLowerCase();return("input"===n||"button"===n)&&t.type===e}}function pt(e){return ot(function(t){return t=+t,ot(function(n,r){var i,o=e([],n.length,t),a=o.length;while(a--)n[i=o[a]]&&(n[i]=!(r[i]=n[i]))})})}o=st.getText=function(e){var t,n="",r=0,i=e.nodeType;if(i){if(1===i||9===i||11===i){if("string"==typeof e.textContent)return e.textContent;for(e=e.firstChild;e;e=e.nextSibling)n+=o(e)}else if(3===i||4===i)return e.nodeValue}else for(;t=e[r];r++)n+=o(t);return n},i=st.selectors={cacheLength:50,createPseudo:ot,match:U,find:{},relative:{">":{dir:"parentNode",first:!0}," ":{dir:"parentNode"},"+":{dir:"previousSibling",first:!0},"~":{dir:"previousSibling"}},preFilter:{ATTR:function(e){return e[1]=e[1].replace(et,tt),e[3]=(e[4]||e[5]||"").replace(et,tt),"~="===e[2]&&(e[3]=" "+e[3]+" "),e.slice(0,4)},CHILD:function(e){return e[1]=e[1].toLowerCase(),"nth"===e[1].slice(0,3)?(e[3]||st.error(e[0]),e[4]=+(e[4]?e[5]+(e[6]||1):2*("even"===e[3]||"odd"===e[3])),e[5]=+(e[7]+e[8]||"odd"===e[3])):e[3]&&st.error(e[0]),e},PSEUDO:function(e){var t,n=!e[5]&&e[2];return U.CHILD.test(e[0])?null:(e[4]?e[2]=e[4]:n&&z.test(n)&&(t=ft(n,!0))&&(t=n.indexOf(")",n.length-t)-n.length)&&(e[0]=e[0].slice(0,t),e[2]=n.slice(0,t)),e.slice(0,3))}},filter:{TAG:function(e){return"*"===e?function(){return!0}:(e=e.replace(et,tt).toLowerCase(),function(t){return t.nodeName&&t.nodeName.toLowerCase()===e})},CLASS:function(e){var t=k[e+" "];return t||(t=RegExp("(^|"+_+")"+e+"("+_+"|$)"))&&k(e,function(e){return t.test(e.className||typeof e.getAttribute!==A&&e.getAttribute("class")||"")})},ATTR:function(e,t,n){return function(r){var i=st.attr(r,e);return null==i?"!="===t:t?(i+="","="===t?i===n:"!="===t?i!==n:"^="===t?n&&0===i.indexOf(n):"*="===t?n&&i.indexOf(n)>-1:"$="===t?n&&i.slice(-n.length)===n:"~="===t?(" "+i+" ").indexOf(n)>-1:"|="===t?i===n||i.slice(0,n.length+1)===n+"-":!1):!0}},CHILD:function(e,t,n,r,i){var o="nth"!==e.slice(0,3),a="last"!==e.slice(-4),s="of-type"===t;return 1===r&&0===i?function(e){return!!e.parentNode}:function(t,n,u){var l,c,p,f,d,h,g=o!==a?"nextSibling":"previousSibling",m=t.parentNode,y=s&&t.nodeName.toLowerCase(),v=!u&&!s;if(m){if(o){while(g){p=t;while(p=p[g])if(s?p.nodeName.toLowerCase()===y:1===p.nodeType)return!1;h=g="only"===e&&!h&&"nextSibling"}return!0}if(h=[a?m.firstChild:m.lastChild],a&&v){c=m[x]||(m[x]={}),l=c[e]||[],d=l[0]===N&&l[1],f=l[0]===N&&l[2],p=d&&m.childNodes[d];while(p=++d&&p&&p[g]||(f=d=0)||h.pop())if(1===p.nodeType&&++f&&p===t){c[e]=[N,d,f];break}}else if(v&&(l=(t[x]||(t[x]={}))[e])&&l[0]===N)f=l[1];else while(p=++d&&p&&p[g]||(f=d=0)||h.pop())if((s?p.nodeName.toLowerCase()===y:1===p.nodeType)&&++f&&(v&&((p[x]||(p[x]={}))[e]=[N,f]),p===t))break;return f-=i,f===r||0===f%r&&f/r>=0}}},PSEUDO:function(e,t){var n,r=i.pseudos[e]||i.setFilters[e.toLowerCase()]||st.error("unsupported pseudo: "+e);return r[x]?r(t):r.length>1?(n=[e,e,"",t],i.setFilters.hasOwnProperty(e.toLowerCase())?ot(function(e,n){var i,o=r(e,t),a=o.length;while(a--)i=M.call(e,o[a]),e[i]=!(n[i]=o[a])}):function(e){return r(e,0,n)}):r}},pseudos:{not:ot(function(e){var t=[],n=[],r=s(e.replace(W,"$1"));return r[x]?ot(function(e,t,n,i){var o,a=r(e,null,i,[]),s=e.length;while(s--)(o=a[s])&&(e[s]=!(t[s]=o))}):function(e,i,o){return t[0]=e,r(t,null,o,n),!n.pop()}}),has:ot(function(e){return function(t){return st(e,t).length>0}}),contains:ot(function(e){return function(t){return(t.textContent||t.innerText||o(t)).indexOf(e)>-1}}),lang:ot(function(e){return X.test(e||"")||st.error("unsupported lang: "+e),e=e.replace(et,tt).toLowerCase(),function(t){var n;do if(n=d?t.getAttribute("xml:lang")||t.getAttribute("lang"):t.lang)return n=n.toLowerCase(),n===e||0===n.indexOf(e+"-");while((t=t.parentNode)&&1===t.nodeType);return!1}}),target:function(t){var n=e.location&&e.location.hash;return n&&n.slice(1)===t.id},root:function(e){return e===f},focus:function(e){return e===p.activeElement&&(!p.hasFocus||p.hasFocus())&&!!(e.type||e.href||~e.tabIndex)},enabled:function(e){return e.disabled===!1},disabled:function(e){return e.disabled===!0},checked:function(e){var t=e.nodeName.toLowerCase();return"input"===t&&!!e.checked||"option"===t&&!!e.selected},selected:function(e){return e.parentNode&&e.parentNode.selectedIndex,e.selected===!0},empty:function(e){for(e=e.firstChild;e;e=e.nextSibling)if(e.nodeName>"@"||3===e.nodeType||4===e.nodeType)return!1;return!0},parent:function(e){return!i.pseudos.empty(e)},header:function(e){return Q.test(e.nodeName)},input:function(e){return G.test(e.nodeName)},button:function(e){var t=e.nodeName.toLowerCase();return"input"===t&&"button"===e.type||"button"===t},text:function(e){var t;return"input"===e.nodeName.toLowerCase()&&"text"===e.type&&(null==(t=e.getAttribute("type"))||t.toLowerCase()===e.type)},first:pt(function(){return[0]}),last:pt(function(e,t){return[t-1]}),eq:pt(function(e,t,n){return[0>n?n+t:n]}),even:pt(function(e,t){var n=0;for(;t>n;n+=2)e.push(n);return e}),odd:pt(function(e,t){var n=1;for(;t>n;n+=2)e.push(n);return e}),lt:pt(function(e,t,n){var r=0>n?n+t:n;for(;--r>=0;)e.push(r);return e}),gt:pt(function(e,t,n){var r=0>n?n+t:n;for(;t>++r;)e.push(r);return e})}};for(n in{radio:!0,checkbox:!0,file:!0,password:!0,image:!0})i.pseudos[n]=lt(n);for(n in{submit:!0,reset:!0})i.pseudos[n]=ct(n);function ft(e,t){var n,r,o,a,s,u,l,c=E[e+" "];if(c)return t?0:c.slice(0);s=e,u=[],l=i.preFilter;while(s){(!n||(r=$.exec(s)))&&(r&&(s=s.slice(r[0].length)||s),u.push(o=[])),n=!1,(r=I.exec(s))&&(n=r.shift(),o.push({value:n,type:r[0].replace(W," ")}),s=s.slice(n.length));for(a in i.filter)!(r=U[a].exec(s))||l[a]&&!(r=l[a](r))||(n=r.shift(),o.push({value:n,type:a,matches:r}),s=s.slice(n.length));if(!n)break}return t?s.length:s?st.error(e):E(e,u).slice(0)}function dt(e){var t=0,n=e.length,r="";for(;n>t;t++)r+=e[t].value;return r}function ht(e,t,n){var i=t.dir,o=n&&"parentNode"===i,a=C++;return t.first?function(t,n,r){while(t=t[i])if(1===t.nodeType||o)return e(t,n,r)}:function(t,n,s){var u,l,c,p=N+" "+a;if(s){while(t=t[i])if((1===t.nodeType||o)&&e(t,n,s))return!0}else while(t=t[i])if(1===t.nodeType||o)if(c=t[x]||(t[x]={}),(l=c[i])&&l[0]===p){if((u=l[1])===!0||u===r)return u===!0}else if(l=c[i]=[p],l[1]=e(t,n,s)||r,l[1]===!0)return!0}}function gt(e){return e.length>1?function(t,n,r){var i=e.length;while(i--)if(!e[i](t,n,r))return!1;return!0}:e[0]}function mt(e,t,n,r,i){var o,a=[],s=0,u=e.length,l=null!=t;for(;u>s;s++)(o=e[s])&&(!n||n(o,r,i))&&(a.push(o),l&&t.push(s));return a}function yt(e,t,n,r,i,o){return r&&!r[x]&&(r=yt(r)),i&&!i[x]&&(i=yt(i,o)),ot(function(o,a,s,u){var l,c,p,f=[],d=[],h=a.length,g=o||xt(t||"*",s.nodeType?[s]:s,[]),m=!e||!o&&t?g:mt(g,f,e,s,u),y=n?i||(o?e:h||r)?[]:a:m;if(n&&n(m,y,s,u),r){l=mt(y,d),r(l,[],s,u),c=l.length;while(c--)(p=l[c])&&(y[d[c]]=!(m[d[c]]=p))}if(o){if(i||e){if(i){l=[],c=y.length;while(c--)(p=y[c])&&l.push(m[c]=p);i(null,y=[],l,u)}c=y.length;while(c--)(p=y[c])&&(l=i?M.call(o,p):f[c])>-1&&(o[l]=!(a[l]=p))}}else y=mt(y===a?y.splice(h,y.length):y),i?i(null,a,y,u):H.apply(a,y)})}function vt(e){var t,n,r,o=e.length,a=i.relative[e[0].type],s=a||i.relative[" "],u=a?1:0,c=ht(function(e){return e===t},s,!0),p=ht(function(e){return M.call(t,e)>-1},s,!0),f=[function(e,n,r){return!a&&(r||n!==l)||((t=n).nodeType?c(e,n,r):p(e,n,r))}];for(;o>u;u++)if(n=i.relative[e[u].type])f=[ht(gt(f),n)];else{if(n=i.filter[e[u].type].apply(null,e[u].matches),n[x]){for(r=++u;o>r;r++)if(i.relative[e[r].type])break;return yt(u>1&&gt(f),u>1&&dt(e.slice(0,u-1)).replace(W,"$1"),n,r>u&&vt(e.slice(u,r)),o>r&&vt(e=e.slice(r)),o>r&&dt(e))}f.push(n)}return gt(f)}function bt(e,t){var n=0,o=t.length>0,a=e.length>0,s=function(s,u,c,f,d){var h,g,m,y=[],v=0,b="0",x=s&&[],w=null!=d,T=l,C=s||a&&i.find.TAG("*",d&&u.parentNode||u),k=N+=null==T?1:Math.random()||.1;for(w&&(l=u!==p&&u,r=n);null!=(h=C[b]);b++){if(a&&h){g=0;while(m=e[g++])if(m(h,u,c)){f.push(h);break}w&&(N=k,r=++n)}o&&((h=!m&&h)&&v--,s&&x.push(h))}if(v+=b,o&&b!==v){g=0;while(m=t[g++])m(x,y,u,c);if(s){if(v>0)while(b--)x[b]||y[b]||(y[b]=L.call(f));y=mt(y)}H.apply(f,y),w&&!s&&y.length>0&&v+t.length>1&&st.uniqueSort(f)}return w&&(N=k,l=T),x};return o?ot(s):s}s=st.compile=function(e,t){var n,r=[],i=[],o=S[e+" "];if(!o){t||(t=ft(e)),n=t.length;while(n--)o=vt(t[n]),o[x]?r.push(o):i.push(o);o=S(e,bt(i,r))}return o};function xt(e,t,n){var r=0,i=t.length;for(;i>r;r++)st(e,t[r],n);return n}function wt(e,t,n,r){var o,a,u,l,c,p=ft(e);if(!r&&1===p.length){if(a=p[0]=p[0].slice(0),a.length>2&&"ID"===(u=a[0]).type&&9===t.nodeType&&!d&&i.relative[a[1].type]){if(t=i.find.ID(u.matches[0].replace(et,tt),t)[0],!t)return n;e=e.slice(a.shift().value.length)}o=U.needsContext.test(e)?0:a.length;while(o--){if(u=a[o],i.relative[l=u.type])break;if((c=i.find[l])&&(r=c(u.matches[0].replace(et,tt),V.test(a[0].type)&&t.parentNode||t))){if(a.splice(o,1),e=r.length&&dt(a),!e)return H.apply(n,q.call(r,0)),n;break}}}return s(e,p)(r,t,d,n,V.test(e)),n}i.pseudos.nth=i.pseudos.eq;function Tt(){}i.filters=Tt.prototype=i.pseudos,i.setFilters=new Tt,c(),st.attr=b.attr,b.find=st,b.expr=st.selectors,b.expr[":"]=b.expr.pseudos,b.unique=st.uniqueSort,b.text=st.getText,b.isXMLDoc=st.isXML,b.contains=st.contains}(e);var at=/Until$/,st=/^(?:parents|prev(?:Until|All))/,ut=/^.[^:#\[\.,]*$/,lt=b.expr.match.needsContext,ct={children:!0,contents:!0,next:!0,prev:!0};b.fn.extend({find:function(e){var t,n,r,i=this.length;if("string"!=typeof e)return r=this,this.pushStack(b(e).filter(function(){for(t=0;i>t;t++)if(b.contains(r[t],this))return!0}));for(n=[],t=0;i>t;t++)b.find(e,this[t],n);return n=this.pushStack(i>1?b.unique(n):n),n.selector=(this.selector?this.selector+" ":"")+e,n},has:function(e){var t,n=b(e,this),r=n.length;return this.filter(function(){for(t=0;r>t;t++)if(b.contains(this,n[t]))return!0})},not:function(e){return this.pushStack(ft(this,e,!1))},filter:function(e){return this.pushStack(ft(this,e,!0))},is:function(e){return!!e&&("string"==typeof e?lt.test(e)?b(e,this.context).index(this[0])>=0:b.filter(e,this).length>0:this.filter(e).length>0)},closest:function(e,t){var n,r=0,i=this.length,o=[],a=lt.test(e)||"string"!=typeof e?b(e,t||this.context):0;for(;i>r;r++){n=this[r];while(n&&n.ownerDocument&&n!==t&&11!==n.nodeType){if(a?a.index(n)>-1:b.find.matchesSelector(n,e)){o.push(n);break}n=n.parentNode}}return this.pushStack(o.length>1?b.unique(o):o)},index:function(e){return e?"string"==typeof e?b.inArray(this[0],b(e)):b.inArray(e.jquery?e[0]:e,this):this[0]&&this[0].parentNode?this.first().prevAll().length:-1},add:function(e,t){var n="string"==typeof e?b(e,t):b.makeArray(e&&e.nodeType?[e]:e),r=b.merge(this.get(),n);return this.pushStack(b.unique(r))},addBack:function(e){return this.add(null==e?this.prevObject:this.prevObject.filter(e))}}),b.fn.andSelf=b.fn.addBack;function pt(e,t){do e=e[t];while(e&&1!==e.nodeType);return e}b.each({parent:function(e){var t=e.parentNode;return t&&11!==t.nodeType?t:null},parents:function(e){return b.dir(e,"parentNode")},parentsUntil:function(e,t,n){return b.dir(e,"parentNode",n)},next:function(e){return pt(e,"nextSibling")},prev:function(e){return pt(e,"previousSibling")},nextAll:function(e){return b.dir(e,"nextSibling")},prevAll:function(e){return b.dir(e,"previousSibling")},nextUntil:function(e,t,n){return b.dir(e,"nextSibling",n)},prevUntil:function(e,t,n){return b.dir(e,"previousSibling",n)},siblings:function(e){return b.sibling((e.parentNode||{}).firstChild,e)},children:function(e){return b.sibling(e.firstChild)},contents:function(e){return b.nodeName(e,"iframe")?e.contentDocument||e.contentWindow.document:b.merge([],e.childNodes)}},function(e,t){b.fn[e]=function(n,r){var i=b.map(this,t,n);return at.test(e)||(r=n),r&&"string"==typeof r&&(i=b.filter(r,i)),i=this.length>1&&!ct[e]?b.unique(i):i,this.length>1&&st.test(e)&&(i=i.reverse()),this.pushStack(i)}}),b.extend({filter:function(e,t,n){return n&&(e=":not("+e+")"),1===t.length?b.find.matchesSelector(t[0],e)?[t[0]]:[]:b.find.matches(e,t)},dir:function(e,n,r){var i=[],o=e[n];while(o&&9!==o.nodeType&&(r===t||1!==o.nodeType||!b(o).is(r)))1===o.nodeType&&i.push(o),o=o[n];return i},sibling:function(e,t){var n=[];for(;e;e=e.nextSibling)1===e.nodeType&&e!==t&&n.push(e);return n}});function ft(e,t,n){if(t=t||0,b.isFunction(t))return b.grep(e,function(e,r){var i=!!t.call(e,r,e);return i===n});if(t.nodeType)return b.grep(e,function(e){return e===t===n});if("string"==typeof t){var r=b.grep(e,function(e){return 1===e.nodeType});if(ut.test(t))return b.filter(t,r,!n);t=b.filter(t,r)}return b.grep(e,function(e){return b.inArray(e,t)>=0===n})}function dt(e){var t=ht.split("|"),n=e.createDocumentFragment();if(n.createElement)while(t.length)n.createElement(t.pop());return n}var ht="abbr|article|aside|audio|bdi|canvas|data|datalist|details|figcaption|figure|footer|header|hgroup|mark|meter|nav|output|progress|section|summary|time|video",gt=/ jQuery\d+="(?:null|\d+)"/g,mt=RegExp("<(?:"+ht+")[\\s/>]","i"),yt=/^\s+/,vt=/<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/gi,bt=/<([\w:]+)/,xt=/<tbody/i,wt=/<|&#?\w+;/,Tt=/<(?:script|style|link)/i,Nt=/^(?:checkbox|radio)$/i,Ct=/checked\s*(?:[^=]|=\s*.checked.)/i,kt=/^$|\/(?:java|ecma)script/i,Et=/^true\/(.*)/,St=/^\s*<!(?:\[CDATA\[|--)|(?:\]\]|--)>\s*$/g,At={option:[1,"<select multiple='multiple'>","</select>"],legend:[1,"<fieldset>","</fieldset>"],area:[1,"<map>","</map>"],param:[1,"<object>","</object>"],thead:[1,"<table>","</table>"],tr:[2,"<table><tbody>","</tbody></table>"],col:[2,"<table><tbody></tbody><colgroup>","</colgroup></table>"],td:[3,"<table><tbody><tr>","</tr></tbody></table>"],_default:b.support.htmlSerialize?[0,"",""]:[1,"X<div>","</div>"]},jt=dt(o),Dt=jt.appendChild(o.createElement("div"));At.optgroup=At.option,At.tbody=At.tfoot=At.colgroup=At.caption=At.thead,At.th=At.td,b.fn.extend({text:function(e){return b.access(this,function(e){return e===t?b.text(this):this.empty().append((this[0]&&this[0].ownerDocument||o).createTextNode(e))},null,e,arguments.length)},wrapAll:function(e){if(b.isFunction(e))return this.each(function(t){b(this).wrapAll(e.call(this,t))});if(this[0]){var t=b(e,this[0].ownerDocument).eq(0).clone(!0);this[0].parentNode&&t.insertBefore(this[0]),t.map(function(){var e=this;while(e.firstChild&&1===e.firstChild.nodeType)e=e.firstChild;return e}).append(this)}return this},wrapInner:function(e){return b.isFunction(e)?this.each(function(t){b(this).wrapInner(e.call(this,t))}):this.each(function(){var t=b(this),n=t.contents();n.length?n.wrapAll(e):t.append(e)})},wrap:function(e){var t=b.isFunction(e);return this.each(function(n){b(this).wrapAll(t?e.call(this,n):e)})},unwrap:function(){return this.parent().each(function(){b.nodeName(this,"body")||b(this).replaceWith(this.childNodes)}).end()},append:function(){return this.domManip(arguments,!0,function(e){(1===this.nodeType||11===this.nodeType||9===this.nodeType)&&this.appendChild(e)})},prepend:function(){return this.domManip(arguments,!0,function(e){(1===this.nodeType||11===this.nodeType||9===this.nodeType)&&this.insertBefore(e,this.firstChild)})},before:function(){return this.domManip(arguments,!1,function(e){this.parentNode&&this.parentNode.insertBefore(e,this)})},after:function(){return this.domManip(arguments,!1,function(e){this.parentNode&&this.parentNode.insertBefore(e,this.nextSibling)})},remove:function(e,t){var n,r=0;for(;null!=(n=this[r]);r++)(!e||b.filter(e,[n]).length>0)&&(t||1!==n.nodeType||b.cleanData(Ot(n)),n.parentNode&&(t&&b.contains(n.ownerDocument,n)&&Mt(Ot(n,"script")),n.parentNode.removeChild(n)));return this},empty:function(){var e,t=0;for(;null!=(e=this[t]);t++){1===e.nodeType&&b.cleanData(Ot(e,!1));while(e.firstChild)e.removeChild(e.firstChild);e.options&&b.nodeName(e,"select")&&(e.options.length=0)}return this},clone:function(e,t){return e=null==e?!1:e,t=null==t?e:t,this.map(function(){return b.clone(this,e,t)})},html:function(e){return b.access(this,function(e){var n=this[0]||{},r=0,i=this.length;if(e===t)return 1===n.nodeType?n.innerHTML.replace(gt,""):t;if(!("string"!=typeof e||Tt.test(e)||!b.support.htmlSerialize&&mt.test(e)||!b.support.leadingWhitespace&&yt.test(e)||At[(bt.exec(e)||["",""])[1].toLowerCase()])){e=e.replace(vt,"<$1></$2>");try{for(;i>r;r++)n=this[r]||{},1===n.nodeType&&(b.cleanData(Ot(n,!1)),n.innerHTML=e);n=0}catch(o){}}n&&this.empty().append(e)},null,e,arguments.length)},replaceWith:function(e){var t=b.isFunction(e);return t||"string"==typeof e||(e=b(e).not(this).detach()),this.domManip([e],!0,function(e){var t=this.nextSibling,n=this.parentNode;n&&(b(this).remove(),n.insertBefore(e,t))})},detach:function(e){return this.remove(e,!0)},domManip:function(e,n,r){e=f.apply([],e);var i,o,a,s,u,l,c=0,p=this.length,d=this,h=p-1,g=e[0],m=b.isFunction(g);if(m||!(1>=p||"string"!=typeof g||b.support.checkClone)&&Ct.test(g))return this.each(function(i){var o=d.eq(i);m&&(e[0]=g.call(this,i,n?o.html():t)),o.domManip(e,n,r)});if(p&&(l=b.buildFragment(e,this[0].ownerDocument,!1,this),i=l.firstChild,1===l.childNodes.length&&(l=i),i)){for(n=n&&b.nodeName(i,"tr"),s=b.map(Ot(l,"script"),Ht),a=s.length;p>c;c++)o=l,c!==h&&(o=b.clone(o,!0,!0),a&&b.merge(s,Ot(o,"script"))),r.call(n&&b.nodeName(this[c],"table")?Lt(this[c],"tbody"):this[c],o,c);if(a)for(u=s[s.length-1].ownerDocument,b.map(s,qt),c=0;a>c;c++)o=s[c],kt.test(o.type||"")&&!b._data(o,"globalEval")&&b.contains(u,o)&&(o.src?b.ajax({url:o.src,type:"GET",dataType:"script",async:!1,global:!1,"throws":!0}):b.globalEval((o.text||o.textContent||o.innerHTML||"").replace(St,"")));l=i=null}return this}});function Lt(e,t){return e.getElementsByTagName(t)[0]||e.appendChild(e.ownerDocument.createElement(t))}function Ht(e){var t=e.getAttributeNode("type");return e.type=(t&&t.specified)+"/"+e.type,e}function qt(e){var t=Et.exec(e.type);return t?e.type=t[1]:e.removeAttribute("type"),e}function Mt(e,t){var n,r=0;for(;null!=(n=e[r]);r++)b._data(n,"globalEval",!t||b._data(t[r],"globalEval"))}function _t(e,t){if(1===t.nodeType&&b.hasData(e)){var n,r,i,o=b._data(e),a=b._data(t,o),s=o.events;if(s){delete a.handle,a.events={};for(n in s)for(r=0,i=s[n].length;i>r;r++)b.event.add(t,n,s[n][r])}a.data&&(a.data=b.extend({},a.data))}}function Ft(e,t){var n,r,i;if(1===t.nodeType){if(n=t.nodeName.toLowerCase(),!b.support.noCloneEvent&&t[b.expando]){i=b._data(t);for(r in i.events)b.removeEvent(t,r,i.handle);t.removeAttribute(b.expando)}"script"===n&&t.text!==e.text?(Ht(t).text=e.text,qt(t)):"object"===n?(t.parentNode&&(t.outerHTML=e.outerHTML),b.support.html5Clone&&e.innerHTML&&!b.trim(t.innerHTML)&&(t.innerHTML=e.innerHTML)):"input"===n&&Nt.test(e.type)?(t.defaultChecked=t.checked=e.checked,t.value!==e.value&&(t.value=e.value)):"option"===n?t.defaultSelected=t.selected=e.defaultSelected:("input"===n||"textarea"===n)&&(t.defaultValue=e.defaultValue)}}b.each({appendTo:"append",prependTo:"prepend",insertBefore:"before",insertAfter:"after",replaceAll:"replaceWith"},function(e,t){b.fn[e]=function(e){var n,r=0,i=[],o=b(e),a=o.length-1;for(;a>=r;r++)n=r===a?this:this.clone(!0),b(o[r])[t](n),d.apply(i,n.get());return this.pushStack(i)}});function Ot(e,n){var r,o,a=0,s=typeof e.getElementsByTagName!==i?e.getElementsByTagName(n||"*"):typeof e.querySelectorAll!==i?e.querySelectorAll(n||"*"):t;if(!s)for(s=[],r=e.childNodes||e;null!=(o=r[a]);a++)!n||b.nodeName(o,n)?s.push(o):b.merge(s,Ot(o,n));return n===t||n&&b.nodeName(e,n)?b.merge([e],s):s}function Bt(e){Nt.test(e.type)&&(e.defaultChecked=e.checked)}b.extend({clone:function(e,t,n){var r,i,o,a,s,u=b.contains(e.ownerDocument,e);if(b.support.html5Clone||b.isXMLDoc(e)||!mt.test("<"+e.nodeName+">")?o=e.cloneNode(!0):(Dt.innerHTML=e.outerHTML,Dt.removeChild(o=Dt.firstChild)),!(b.support.noCloneEvent&&b.support.noCloneChecked||1!==e.nodeType&&11!==e.nodeType||b.isXMLDoc(e)))for(r=Ot(o),s=Ot(e),a=0;null!=(i=s[a]);++a)r[a]&&Ft(i,r[a]);if(t)if(n)for(s=s||Ot(e),r=r||Ot(o),a=0;null!=(i=s[a]);a++)_t(i,r[a]);else _t(e,o);return r=Ot(o,"script"),r.length>0&&Mt(r,!u&&Ot(e,"script")),r=s=i=null,o},buildFragment:function(e,t,n,r){var i,o,a,s,u,l,c,p=e.length,f=dt(t),d=[],h=0;for(;p>h;h++)if(o=e[h],o||0===o)if("object"===b.type(o))b.merge(d,o.nodeType?[o]:o);else if(wt.test(o)){s=s||f.appendChild(t.createElement("div")),u=(bt.exec(o)||["",""])[1].toLowerCase(),c=At[u]||At._default,s.innerHTML=c[1]+o.replace(vt,"<$1></$2>")+c[2],i=c[0];while(i--)s=s.lastChild;if(!b.support.leadingWhitespace&&yt.test(o)&&d.push(t.createTextNode(yt.exec(o)[0])),!b.support.tbody){o="table"!==u||xt.test(o)?"<table>"!==c[1]||xt.test(o)?0:s:s.firstChild,i=o&&o.childNodes.length;while(i--)b.nodeName(l=o.childNodes[i],"tbody")&&!l.childNodes.length&&o.removeChild(l)
@@ -5742,19 +5742,30 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
 // Distributed under MIT license
 // http://i18next.com
 !function(a){function b(a,b){if(!b||"function"==typeof b)return a;for(var c in b)a[c]=b[c];return a}function c(a,b){for(var d in b)d in a?c(a[d],b[d]):a[d]=b[d];return a}function d(a,b,c){var d,e=0,f=a.length,g=void 0===f||"[object Array]"!==Object.prototype.toString.apply(a)||"function"==typeof a;if(c)if(g){for(d in a)if(b.apply(a[d],c)===!1)break}else for(;f>e&&b.apply(a[e++],c)!==!1;);else if(g){for(d in a)if(b.call(a[d],d,a[d])===!1)break}else for(;f>e&&b.call(a[e],e,a[e++])!==!1;);return a}function e(a){return"string"==typeof a?a.replace(/[&<>"'\/]/g,function(a){return Q[a]}):a}function f(a){var b=function(a){if(window.XMLHttpRequest)return a(null,new XMLHttpRequest);if(window.ActiveXObject)try{return a(null,new ActiveXObject("Msxml2.XMLHTTP"))}catch(b){return a(null,new ActiveXObject("Microsoft.XMLHTTP"))}return a(new Error)},c=function(a){if("string"==typeof a)return a;var b=[];for(var c in a)a.hasOwnProperty(c)&&b.push(encodeURIComponent(c)+"="+encodeURIComponent(a[c]));return b.join("&")},d=function(a){a=a.replace(/\r\n/g,"\n");for(var b="",c=0;c<a.length;c++){var d=a.charCodeAt(c);128>d?b+=String.fromCharCode(d):d>127&&2048>d?(b+=String.fromCharCode(d>>6|192),b+=String.fromCharCode(63&d|128)):(b+=String.fromCharCode(d>>12|224),b+=String.fromCharCode(d>>6&63|128),b+=String.fromCharCode(63&d|128))}return b},e=function(a){var b="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";a=d(a);var c,e,f,g,h,i,j,k="",l=0;do c=a.charCodeAt(l++),e=a.charCodeAt(l++),f=a.charCodeAt(l++),g=c>>2,h=(3&c)<<4|e>>4,i=(15&e)<<2|f>>6,j=63&f,isNaN(e)?i=j=64:isNaN(f)&&(j=64),k+=b.charAt(g)+b.charAt(h)+b.charAt(i)+b.charAt(j),c=e=f="",g=h=i=j="";while(l<a.length);return k},f=function(){for(var a=arguments[0],b=1;b<arguments.length;b++){var c=arguments[b];for(var d in c)c.hasOwnProperty(d)&&(a[d]=c[d])}return a},g=function(a,d,e,h){"function"==typeof e&&(h=e,e={}),e.cache=e.cache||!1,e.data=e.data||{},e.headers=e.headers||{},e.jsonp=e.jsonp||!1,e.async=void 0===e.async?!0:e.async;var i,j=f({accept:"*/*","content-type":"application/x-www-form-urlencoded;charset=UTF-8"},g.headers,e.headers);if(i="application/json"===j["content-type"]?JSON.stringify(e.data):c(e.data),"GET"===a){var k=[];if(i&&(k.push(i),i=null),e.cache||k.push("_="+(new Date).getTime()),e.jsonp&&(k.push("callback="+e.jsonp),k.push("jsonp="+e.jsonp)),k=k.join("&"),k.length>1&&(d+=d.indexOf("?")>-1?"&"+k:"?"+k),e.jsonp){var l=document.getElementsByTagName("head")[0],m=document.createElement("script");return m.type="text/javascript",m.src=d,void l.appendChild(m)}}b(function(b,c){if(b)return h(b);c.open(a,d,e.async);for(var f in j)j.hasOwnProperty(f)&&c.setRequestHeader(f,j[f]);c.onreadystatechange=function(){if(4===c.readyState){var a=c.responseText||"";if(!h)return;h(c.status,{text:function(){return a},json:function(){try{return JSON.parse(a)}catch(b){return T.error("Can not parse JSON. URL: "+d),{}}}})}},c.send(i)})},h={authBasic:function(a,b){g.headers.Authorization="Basic "+e(a+":"+b)},connect:function(a,b,c){return g("CONNECT",a,b,c)},del:function(a,b,c){return g("DELETE",a,b,c)},get:function(a,b,c){return g("GET",a,b,c)},head:function(a,b,c){return g("HEAD",a,b,c)},headers:function(a){g.headers=a||{}},isAllowed:function(a,b,c){this.options(a,function(a,d){c(-1!==d.text().indexOf(b))})},options:function(a,b,c){return g("OPTIONS",a,b,c)},patch:function(a,b,c){return g("PATCH",a,b,c)},post:function(a,b,c){return g("POST",a,b,c)},put:function(a,b,c){return g("PUT",a,b,c)},trace:function(a,b,c){return g("TRACE",a,b,c)}},i=a.type?a.type.toLowerCase():"get";h[i](a.url,a,function(b,c){200===b||0===b&&c.text()?a.success(c.json(),b,null):a.error(c.text(),b,null)})}function g(a,b){"function"==typeof a&&(b=a,a={}),a=a||{},T.extend(P,a),delete P.fixLng,P.functions&&(delete P.functions,T.extend(T,a.functions)),"string"==typeof P.ns&&(P.ns={namespaces:[P.ns],defaultNs:P.ns}),"string"==typeof P.fallbackNS&&(P.fallbackNS=[P.fallbackNS]),("string"==typeof P.fallbackLng||"boolean"==typeof P.fallbackLng)&&(P.fallbackLng=[P.fallbackLng]),P.interpolationPrefixEscaped=T.regexEscape(P.interpolationPrefix),P.interpolationSuffixEscaped=T.regexEscape(P.interpolationSuffix),P.lng||(P.lng=T.detectLanguage()),M=T.toLanguages(P.lng),H=M[0],T.log("currentLng set to: "+H),P.useCookie&&T.cookie.read(P.cookieName)!==H&&T.cookie.create(P.cookieName,H,P.cookieExpirationTime,P.cookieDomain),P.detectLngFromLocalStorage&&"undefined"!=typeof document&&window.localStorage&&T.localStorage.setItem("i18next_lng",H);var c=B;a.fixLng&&(c=function(a,b){return b=b||{},b.lng=b.lng||c.lng,B(a,b)},c.lng=H),W.setCurrentLng(H),I&&P.setJqueryExt&&u();var d;if(I&&I.Deferred&&(d=I.Deferred()),!P.resStore){var e=T.toLanguages(P.lng);"string"==typeof P.preload&&(P.preload=[P.preload]);for(var f=0,g=P.preload.length;g>f;f++)for(var h=T.toLanguages(P.preload[f]),i=0,j=h.length;j>i;i++)e.indexOf(h[i])<0&&e.push(h[i]);return J.sync.load(e,P,function(a,e){K=e,N=!0,b&&b(c),d&&d.resolve(c)}),d?d.promise():void 0}return K=P.resStore,N=!0,b&&b(c),d&&d.resolve(c),d?d.promise():void 0}function h(a,b){"string"==typeof a&&(a=[a]);for(var c=0,d=a.length;d>c;c++)P.preload.indexOf(a[c])<0&&P.preload.push(a[c]);return g(b)}function i(a,b,c,d){"string"!=typeof b?(c=b,b=P.ns.defaultNs):P.ns.namespaces.indexOf(b)<0&&P.ns.namespaces.push(b),K[a]=K[a]||{},K[a][b]=K[a][b]||{},d?T.deepExtend(K[a][b],c):T.extend(K[a][b],c),P.useLocalStorage&&O._storeLocal(K)}function j(a,b){"string"!=typeof b&&(b=P.ns.defaultNs),K[a]=K[a]||{};var c=K[a][b]||{},d=!1;for(var e in c)c.hasOwnProperty(e)&&(d=!0);return d}function k(a,b){return"string"!=typeof b&&(b=P.ns.defaultNs),K[a]=K[a]||{},T.extend({},K[a][b])}function l(a,b){"string"!=typeof b&&(b=P.ns.defaultNs),K[a]=K[a]||{},K[a][b]={},P.useLocalStorage&&O._storeLocal(K)}function m(a,b,c,d){"string"!=typeof b?(resource=b,b=P.ns.defaultNs):P.ns.namespaces.indexOf(b)<0&&P.ns.namespaces.push(b),K[a]=K[a]||{},K[a][b]=K[a][b]||{};for(var e=c.split(P.keyseparator),f=0,g=K[a][b];e[f];)f==e.length-1?g[e[f]]=d:(null==g[e[f]]&&(g[e[f]]={}),g=g[e[f]]),f++;P.useLocalStorage&&O._storeLocal(K)}function n(a,b,c){"string"!=typeof b?(resource=b,b=P.ns.defaultNs):P.ns.namespaces.indexOf(b)<0&&P.ns.namespaces.push(b);for(var d in c)"string"==typeof c[d]&&m(a,b,d,c[d])}function o(a){P.ns.defaultNs=a}function p(a,b){q([a],b)}function q(a,b){var c={dynamicLoad:P.dynamicLoad,resGetPath:P.resGetPath,getAsync:P.getAsync,customLoad:P.customLoad,ns:{namespaces:a,defaultNs:""}},d=T.toLanguages(P.lng);"string"==typeof P.preload&&(P.preload=[P.preload]);for(var e=0,f=P.preload.length;f>e;e++)for(var g=T.toLanguages(P.preload[e]),h=0,i=g.length;i>h;h++)d.indexOf(g[h])<0&&d.push(g[h]);for(var j=[],k=0,l=d.length;l>k;k++){var m=!1,n=K[d[k]];if(n)for(var o=0,p=a.length;p>o;o++)n[a[o]]||(m=!0);else m=!0;m&&j.push(d[k])}j.length?J.sync._fetch(j,c,function(c,d){var e=a.length*j.length;T.each(a,function(a,c){P.ns.namespaces.indexOf(c)<0&&P.ns.namespaces.push(c),T.each(j,function(a,f){K[f]=K[f]||{},K[f][c]=d[f][c],e--,0===e&&b&&(P.useLocalStorage&&J.sync._storeLocal(K),b())})})}):b&&b()}function r(a,b,c){return"function"==typeof b?(c=b,b={}):b||(b={}),b.lng=a,g(b,c)}function s(){return H}function t(a){K={},r(H,a)}function u(){function a(a,b,c){if(0!==b.length){var d="text";if(0===b.indexOf("[")){var e=b.split("]");b=e[1],d=e[0].substr(1,e[0].length-1)}b.indexOf(";")===b.length-1&&(b=b.substr(0,b.length-2));var f;if("html"===d)f=P.defaultValueFromContent?I.extend({defaultValue:a.html()},c):c,a.html(I.t(b,f));else if("text"===d)f=P.defaultValueFromContent?I.extend({defaultValue:a.text()},c):c,a.text(I.t(b,f));else if("prepend"===d)f=P.defaultValueFromContent?I.extend({defaultValue:a.html()},c):c,a.prepend(I.t(b,f));else if("append"===d)f=P.defaultValueFromContent?I.extend({defaultValue:a.html()},c):c,a.append(I.t(b,f));else if(0===d.indexOf("data-")){var g=d.substr("data-".length);f=P.defaultValueFromContent?I.extend({defaultValue:a.data(g)},c):c;var h=I.t(b,f);a.data(g,h),a.attr(d,h)}else f=P.defaultValueFromContent?I.extend({defaultValue:a.attr(d)},c):c,a.attr(d,I.t(b,f))}}function b(b,c){var d=b.attr(P.selectorAttr);if(d||"undefined"==typeof d||d===!1||(d=b.text()||b.val()),d){var e=b,f=b.data("i18n-target");if(f&&(e=b.find(f)||b),c||P.useDataAttrOptions!==!0||(c=b.data("i18n-options")),c=c||{},d.indexOf(";")>=0){var g=d.split(";");I.each(g,function(b,d){""!==d&&a(e,d,c)})}else a(e,d,c);P.useDataAttrOptions===!0&&b.data("i18n-options",c)}}I.t=I.t||B,I.fn.i18n=function(a){return this.each(function(){b(I(this),a);var c=I(this).find("["+P.selectorAttr+"]");c.each(function(){b(I(this),a)})})}}function v(a,b,c,d){if(!a)return a;if(d=d||b,a.indexOf(d.interpolationPrefix||P.interpolationPrefix)<0)return a;var e=d.interpolationPrefix?T.regexEscape(d.interpolationPrefix):P.interpolationPrefixEscaped,f=d.interpolationSuffix?T.regexEscape(d.interpolationSuffix):P.interpolationSuffixEscaped,g="HTML"+f,h=b.replace&&"object"==typeof b.replace?b.replace:b;return T.each(h,function(b,h){var i=c?c+P.keyseparator+b:b;"object"==typeof h&&null!==h?a=v(a,h,i,d):d.escapeInterpolation||P.escapeInterpolation?(a=a.replace(new RegExp([e,i,g].join(""),"g"),T.regexReplacementEscape(h)),a=a.replace(new RegExp([e,i,f].join(""),"g"),T.regexReplacementEscape(T.escape(h)))):a=a.replace(new RegExp([e,i,f].join(""),"g"),T.regexReplacementEscape(h))}),a}function w(a,b){var c=",",d="{",e="}",f=T.extend({},b);for(delete f.postProcess;-1!=a.indexOf(P.reusePrefix)&&(L++,!(L>P.maxRecursion));){var g=a.lastIndexOf(P.reusePrefix),h=a.indexOf(P.reuseSuffix,g)+P.reuseSuffix.length,i=a.substring(g,h),j=i.replace(P.reusePrefix,"").replace(P.reuseSuffix,"");if(g>=h)return T.error("there is an missing closing in following translation value",a),"";if(-1!=j.indexOf(c)){var k=j.indexOf(c);if(-1!=j.indexOf(d,k)&&-1!=j.indexOf(e,k)){var l=j.indexOf(d,k),m=j.indexOf(e,l)+e.length;try{f=T.extend(f,JSON.parse(j.substring(l,m))),j=j.substring(0,k)}catch(n){}}}var o=E(j,f);a=a.replace(i,T.regexReplacementEscape(o))}return a}function x(a){return a.context&&("string"==typeof a.context||"number"==typeof a.context)}function y(a){return void 0!==a.count&&"string"!=typeof a.count}function z(a){return void 0!==a.indefinite_article&&"string"!=typeof a.indefinite_article&&a.indefinite_article}function A(a,b){b=b||{};var c=C(a,b),d=F(a,b);return void 0!==d||d===c}function B(a,b){return b=b||{},N?(L=0,E.apply(null,arguments)):(T.log("i18next not finished initialization. you might have called t function before loading resources finished."),b.defaultValue||"")}function C(a,b){return void 0!==b.defaultValue?b.defaultValue:a}function D(){for(var a=[],b=1;b<arguments.length;b++)a.push(arguments[b]);return{postProcess:"sprintf",sprintf:a}}function E(a,b){if(b&&"object"!=typeof b?"sprintf"===P.shortcutFunction?b=D.apply(null,arguments):"defaultValue"===P.shortcutFunction&&(b={defaultValue:b}):b=b||{},"object"==typeof P.defaultVariables&&(b=T.extend({},P.defaultVariables,b)),void 0===a||null===a||""===a)return"";"number"==typeof a&&(a=String(a)),"string"==typeof a&&(a=[a]);var c=a[0];if(a.length>1)for(var d=0;d<a.length&&(c=a[d],!A(c,b));d++);var e,f=C(c,b),g=F(c,b),h=b.lng?T.toLanguages(b.lng,b.fallbackLng):M,i=b.ns||P.ns.defaultNs;c.indexOf(P.nsseparator)>-1&&(e=c.split(P.nsseparator),i=e[0],c=e[1]),void 0===g&&P.sendMissing&&"function"==typeof P.missingKeyHandler&&(b.lng?P.missingKeyHandler(h[0],i,c,f,h):P.missingKeyHandler(P.lng,i,c,f,h));var j;j="string"==typeof P.postProcess&&""!==P.postProcess?[P.postProcess]:"array"==typeof P.postProcess||"object"==typeof P.postProcess?P.postProcess:[],"string"==typeof b.postProcess&&""!==b.postProcess?j=j.concat([b.postProcess]):("array"==typeof b.postProcess||"object"==typeof b.postProcess)&&(j=j.concat(b.postProcess)),void 0!==g&&j.length&&j.forEach(function(a){X[a]&&(g=X[a](g,c,b))});var k=f;if(f.indexOf(P.nsseparator)>-1&&(e=f.split(P.nsseparator),k=e[1]),k===c&&P.parseMissingKey&&(f=P.parseMissingKey(f)),void 0===g&&(f=v(f,b),f=w(f,b),j.length)){var l=C(c,b);j.forEach(function(a){X[a]&&(g=X[a](l,c,b))})}return void 0!==g?g:f}function F(a,b){b=b||{};var c,d,e=C(a,b),f=M;if(!K)return e;if("cimode"===f[0].toLowerCase())return e;if(b.lngs&&(f=b.lngs),b.lng&&(f=T.toLanguages(b.lng,b.fallbackLng),!K[f[0]])){var g=P.getAsync;P.getAsync=!1,J.sync.load(f,P,function(a,b){T.extend(K,b),P.getAsync=g})}var h=b.ns||P.ns.defaultNs;if(a.indexOf(P.nsseparator)>-1){var i=a.split(P.nsseparator);h=i[0],a=i[1]}if(x(b)){c=T.extend({},b),delete c.context,c.defaultValue=P.contextNotFound;var j=h+P.nsseparator+a+"_"+b.context;if(d=B(j,c),d!=P.contextNotFound)return v(d,{context:b.context})}if(y(b,f[0])){c=T.extend({lngs:[f[0]]},b),delete c.count,c._origLng=c._origLng||c.lng||f[0],delete c.lng,c.defaultValue=P.pluralNotFound;var k;if(W.needsPlural(f[0],b.count)){k=h+P.nsseparator+a+P.pluralSuffix;var l=W.get(f[0],b.count);l>=0?k=k+"_"+l:1===l&&(k=h+P.nsseparator+a)}else k=h+P.nsseparator+a;if(d=B(k,c),d!=P.pluralNotFound)return v(d,{count:b.count,interpolationPrefix:b.interpolationPrefix,interpolationSuffix:b.interpolationSuffix});if(!(f.length>1))return c.lng=c._origLng,delete c._origLng,d=B(h+P.nsseparator+a,c),v(d,{count:b.count,interpolationPrefix:b.interpolationPrefix,interpolationSuffix:b.interpolationSuffix});var m=f.slice();if(m.shift(),b=T.extend(b,{lngs:m}),b._origLng=c._origLng,delete b.lng,d=B(h+P.nsseparator+a,b),d!=P.pluralNotFound)return d}if(z(b)){var n=T.extend({},b);delete n.indefinite_article,n.defaultValue=P.indefiniteNotFound;var o=h+P.nsseparator+a+(b.count&&!y(b,f[0])||!b.count?P.indefiniteSuffix:"");if(d=B(o,n),d!=P.indefiniteNotFound)return d}for(var p,q=a.split(P.keyseparator),r=0,s=f.length;s>r&&void 0===p;r++){for(var t=f[r],u=0,A=K[t]&&K[t][h];q[u];)A=A&&A[q[u]],u++;if(void 0!==A){var D=Object.prototype.toString.apply(A);if("string"==typeof A)A=v(A,b),A=w(A,b);else if("[object Array]"!==D||P.returnObjectTrees||b.returnObjectTrees){if(null===A&&P.fallbackOnNull===!0)A=void 0;else if(null!==A)if(P.returnObjectTrees||b.returnObjectTrees){if("[object Number]"!==D&&"[object Function]"!==D&&"[object RegExp]"!==D){var G="[object Array]"===D?[]:{};T.each(A,function(c){G[c]=E(h+P.nsseparator+a+P.keyseparator+c,b)}),A=G}}else P.objectTreeKeyHandler&&"function"==typeof P.objectTreeKeyHandler?A=P.objectTreeKeyHandler(a,A,t,h,b):(A="key '"+h+":"+a+" ("+t+")' returned an object instead of string.",T.log(A))}else A=A.join("\n"),A=v(A,b),A=w(A,b);"string"==typeof A&&""===A.trim()&&P.fallbackOnEmpty===!0&&(A=void 0),p=A}}if(void 0===p&&!b.isFallbackLookup&&(P.fallbackToDefaultNS===!0||P.fallbackNS&&P.fallbackNS.length>0)){if(b.isFallbackLookup=!0,P.fallbackNS.length){for(var H=0,I=P.fallbackNS.length;I>H;H++)if(p=F(P.fallbackNS[H]+P.nsseparator+a,b),p||""===p&&P.fallbackOnEmpty===!1){var L=p.indexOf(P.nsseparator)>-1?p.split(P.nsseparator)[1]:p,N=e.indexOf(P.nsseparator)>-1?e.split(P.nsseparator)[1]:e;if(L!==N)break}}else p=F(a,b);b.isFallbackLookup=!1}return p}function G(){var a,b=P.lngWhitelist||[],c=[];if("undefined"!=typeof window&&!function(){for(var a=window.location.search.substring(1),b=a.split("&"),d=0;d<b.length;d++){var e=b[d].indexOf("=");if(e>0){var f=b[d].substring(0,e);f==P.detectLngQS&&c.push(b[d].substring(e+1))}}}(),P.useCookie&&"undefined"!=typeof document){var d=T.cookie.read(P.cookieName);d&&c.push(d)}if(P.detectLngFromLocalStorage&&"undefined"!=typeof window&&window.localStorage&&c.push(T.localStorage.getItem("i18next_lng")),"undefined"!=typeof navigator){if(navigator.languages)for(var e=0;e<navigator.languages.length;e++)c.push(navigator.languages[e]);navigator.userLanguage&&c.push(navigator.userLanguage),navigator.language&&c.push(navigator.language)}return function(){for(var d=0;d<c.length;d++){var e=c[d];if(e.indexOf("-")>-1){var f=e.split("-");e=P.lowerCaseLng?f[0].toLowerCase()+"-"+f[1].toLowerCase():f[0].toLowerCase()+"-"+f[1].toUpperCase()}if(0===b.length||b.indexOf(e)>-1){a=e;break}}}(),a||(a=P.fallbackLng[0]),a}Array.prototype.indexOf||(Array.prototype.indexOf=function(a){"use strict";if(null==this)throw new TypeError;var b=Object(this),c=b.length>>>0;if(0===c)return-1;var d=0;if(arguments.length>0&&(d=Number(arguments[1]),d!=d?d=0:0!=d&&d!=1/0&&d!=-(1/0)&&(d=(d>0||-1)*Math.floor(Math.abs(d)))),d>=c)return-1;for(var e=d>=0?d:Math.max(c-Math.abs(d),0);c>e;e++)if(e in b&&b[e]===a)return e;return-1}),Array.prototype.lastIndexOf||(Array.prototype.lastIndexOf=function(a){"use strict";if(null==this)throw new TypeError;var b=Object(this),c=b.length>>>0;if(0===c)return-1;var d=c;arguments.length>1&&(d=Number(arguments[1]),d!=d?d=0:0!=d&&d!=1/0&&d!=-(1/0)&&(d=(d>0||-1)*Math.floor(Math.abs(d))));for(var e=d>=0?Math.min(d,c-1):c-Math.abs(d);e>=0;e--)if(e in b&&b[e]===a)return e;return-1}),"function"!=typeof String.prototype.trim&&(String.prototype.trim=function(){return this.replace(/^\s+|\s+$/g,"")});var H,I=a.jQuery||a.Zepto,J={},K={},L=0,M=[],N=!1,O={};"undefined"!=typeof module&&module.exports?module.exports=J:(I&&(I.i18n=I.i18n||J),a.i18n=a.i18n||J),O={load:function(a,b,c){b.useLocalStorage?O._loadLocal(a,b,function(d,e){for(var f=[],g=0,h=a.length;h>g;g++)e[a[g]]||f.push(a[g]);f.length>0?O._fetch(f,b,function(a,b){T.extend(e,b),O._storeLocal(b),c(null,e)}):c(null,e)}):O._fetch(a,b,function(a,b){c(null,b)})},_loadLocal:function(a,b,c){var d={},e=(new Date).getTime();if(window.localStorage){var f=a.length;T.each(a,function(a,g){var h=T.localStorage.getItem("res_"+g);h&&(h=JSON.parse(h),h.i18nStamp&&h.i18nStamp+b.localStorageExpirationTime>e&&(d[g]=h)),f--,0===f&&c(null,d)})}},_storeLocal:function(a){if(window.localStorage)for(var b in a)a[b].i18nStamp=(new Date).getTime(),T.localStorage.setItem("res_"+b,JSON.stringify(a[b]))},_fetch:function(a,b,c){var d=b.ns,e={};if(b.dynamicLoad){var f=function(a,b){c(null,b)};if("function"==typeof b.customLoad)b.customLoad(a,d.namespaces,b,f);else{var g=v(b.resGetPath,{lng:a.join("+"),ns:d.namespaces.join("+")});T.ajax({url:g,success:function(a){T.log("loaded: "+g),f(null,a)},error:function(a,b,c){T.log("failed loading: "+g),f("failed loading resource.json error: "+c)},dataType:"json",async:b.getAsync})}}else{var h,i=d.namespaces.length*a.length;T.each(d.namespaces,function(d,f){T.each(a,function(a,d){var g=function(a,b){a&&(h=h||[],h.push(a)),e[d]=e[d]||{},e[d][f]=b,i--,0===i&&c(h,e)};"function"==typeof b.customLoad?b.customLoad(d,f,b,g):O._fetchOne(d,f,b,g)})})}},_fetchOne:function(a,b,c,d){var e=v(c.resGetPath,{lng:a,ns:b});T.ajax({url:e,success:function(a){T.log("loaded: "+e),d(null,a)},error:function(a,b,c){if(b&&200==b||a&&a.status&&200==a.status)T.error("There is a typo in: "+e);else if(b&&404==b||a&&a.status&&404==a.status)T.log("Does not exist: "+e);else{var f=b?b:a&&a.status?a.status:null;T.log(f+" when loading "+e)}d(c,{})},dataType:"json",async:c.getAsync})},postMissing:function(a,b,c,d,e){var f={};f[c]=d;var g=[];if("fallback"===P.sendMissingTo&&P.fallbackLng[0]!==!1)for(var h=0;h<P.fallbackLng.length;h++)g.push({lng:P.fallbackLng[h],url:v(P.resPostPath,{lng:P.fallbackLng[h],ns:b})});else if("current"===P.sendMissingTo||"fallback"===P.sendMissingTo&&P.fallbackLng[0]===!1)g.push({lng:a,url:v(P.resPostPath,{lng:a,ns:b})});else if("all"===P.sendMissingTo)for(var h=0,i=e.length;i>h;h++)g.push({lng:e[h],url:v(P.resPostPath,{lng:e[h],ns:b})});for(var j=0,k=g.length;k>j;j++){var l=g[j];T.ajax({url:l.url,type:P.sendType,data:f,success:function(){T.log("posted missing key '"+c+"' to: "+l.url);for(var a=c.split("."),e=0,f=K[l.lng][b];a[e];)f=f[a[e]]=e===a.length-1?d:f[a[e]]||{},e++},error:function(){T.log("failed posting missing key '"+c+"' to: "+l.url)},dataType:"json",async:P.postAsync})}},reload:t};var P={lng:void 0,load:"all",preload:[],lowerCaseLng:!1,returnObjectTrees:!1,fallbackLng:["dev"],fallbackNS:[],detectLngQS:"setLng",detectLngFromLocalStorage:!1,ns:{namespaces:["translation"],defaultNs:"translation"},fallbackOnNull:!0,fallbackOnEmpty:!1,fallbackToDefaultNS:!1,nsseparator:":",keyseparator:".",selectorAttr:"data-i18n",debug:!1,resGetPath:"locales/__lng__/__ns__.json",resPostPath:"locales/add/__lng__/__ns__",getAsync:!0,postAsync:!0,resStore:void 0,useLocalStorage:!1,localStorageExpirationTime:6048e5,dynamicLoad:!1,sendMissing:!1,sendMissingTo:"fallback",sendType:"POST",interpolationPrefix:"__",interpolationSuffix:"__",defaultVariables:!1,reusePrefix:"$t(",reuseSuffix:")",pluralSuffix:"_plural",pluralNotFound:["plural_not_found",Math.random()].join(""),contextNotFound:["context_not_found",Math.random()].join(""),escapeInterpolation:!1,indefiniteSuffix:"_indefinite",indefiniteNotFound:["indefinite_not_found",Math.random()].join(""),setJqueryExt:!0,defaultValueFromContent:!0,useDataAttrOptions:!1,cookieExpirationTime:void 0,useCookie:!0,cookieName:"i18next",cookieDomain:void 0,objectTreeKeyHandler:void 0,postProcess:void 0,parseMissingKey:void 0,missingKeyHandler:O.postMissing,shortcutFunction:"sprintf"},Q={"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;","/":"&#x2F;"},R={create:function(a,b,c,d){var e;if(c){var f=new Date;f.setTime(f.getTime()+60*c*1e3),e="; expires="+f.toGMTString()}else e="";d=d?"domain="+d+";":"",document.cookie=a+"="+b+e+";"+d+"path=/"},read:function(a){for(var b=a+"=",c=document.cookie.split(";"),d=0;d<c.length;d++){for(var e=c[d];" "==e.charAt(0);)e=e.substring(1,e.length);if(0===e.indexOf(b))return e.substring(b.length,e.length)}return null},remove:function(a){this.create(a,"",-1)}},S={create:function(){},read:function(){return null},remove:function(){}},T={extend:I?I.extend:b,deepExtend:c,each:I?I.each:d,ajax:I?I.ajax:"undefined"!=typeof document?f:function(){},cookie:"undefined"!=typeof document?R:S,detectLanguage:G,escape:e,log:function(a){P.debug&&"undefined"!=typeof console&&console.log(a)},error:function(a){"undefined"!=typeof console&&console.error(a)},getCountyIndexOfLng:function(a){var b=0;return("nb-NO"===a||"nn-NO"===a||"nb-no"===a||"nn-no"===a)&&(b=1),b},toLanguages:function(a){function b(a){var b=a;if("string"==typeof a&&a.indexOf("-")>-1){var c=a.split("-");b=P.lowerCaseLng?c[0].toLowerCase()+"-"+c[1].toLowerCase():c[0].toLowerCase()+"-"+c[1].toUpperCase()}else b=P.lowerCaseLng?a.toLowerCase():a;return b}var c=this.log,d=[],e=P.lngWhitelist||!1,f=function(a){!e||e.indexOf(a)>-1?d.push(a):c("rejecting non-whitelisted language: "+a)};if("string"==typeof a&&a.indexOf("-")>-1){var g=a.split("-");"unspecific"!==P.load&&f(b(a)),"current"!==P.load&&f(b(g[this.getCountyIndexOfLng(a)]))}else f(b(a));for(var h=0;h<P.fallbackLng.length;h++)-1===d.indexOf(P.fallbackLng[h])&&P.fallbackLng[h]&&d.push(b(P.fallbackLng[h]));return d},regexEscape:function(a){return a.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g,"\\$&")},regexReplacementEscape:function(a){return"string"==typeof a?a.replace(/\$/g,"$$$$"):a},localStorage:{setItem:function(a,b){if(window.localStorage)try{window.localStorage.setItem(a,b)}catch(c){T.log('failed to set value for key "'+a+'" to localStorage.')}},getItem:function(a,b){if(window.localStorage)try{return window.localStorage.getItem(a,b)}catch(c){return void T.log('failed to get value for key "'+a+'" from localStorage.')}}}};T.applyReplacement=v;var U=[["ach","Acholi",[1,2],1],["af","Afrikaans",[1,2],2],["ak","Akan",[1,2],1],["am","Amharic",[1,2],1],["an","Aragonese",[1,2],2],["ar","Arabic",[0,1,2,3,11,100],5],["arn","Mapudungun",[1,2],1],["ast","Asturian",[1,2],2],["ay","Aymará",[1],3],["az","Azerbaijani",[1,2],2],["be","Belarusian",[1,2,5],4],["bg","Bulgarian",[1,2],2],["bn","Bengali",[1,2],2],["bo","Tibetan",[1],3],["br","Breton",[1,2],1],["bs","Bosnian",[1,2,5],4],["ca","Catalan",[1,2],2],["cgg","Chiga",[1],3],["cs","Czech",[1,2,5],6],["csb","Kashubian",[1,2,5],7],["cy","Welsh",[1,2,3,8],8],["da","Danish",[1,2],2],["de","German",[1,2],2],["dev","Development Fallback",[1,2],2],["dz","Dzongkha",[1],3],["el","Greek",[1,2],2],["en","English",[1,2],2],["eo","Esperanto",[1,2],2],["es","Spanish",[1,2],2],["es_ar","Argentinean Spanish",[1,2],2],["et","Estonian",[1,2],2],["eu","Basque",[1,2],2],["fa","Persian",[1],3],["fi","Finnish",[1,2],2],["fil","Filipino",[1,2],1],["fo","Faroese",[1,2],2],["fr","French",[1,2],9],["fur","Friulian",[1,2],2],["fy","Frisian",[1,2],2],["ga","Irish",[1,2,3,7,11],10],["gd","Scottish Gaelic",[1,2,3,20],11],["gl","Galician",[1,2],2],["gu","Gujarati",[1,2],2],["gun","Gun",[1,2],1],["ha","Hausa",[1,2],2],["he","Hebrew",[1,2],2],["hi","Hindi",[1,2],2],["hr","Croatian",[1,2,5],4],["hu","Hungarian",[1,2],2],["hy","Armenian",[1,2],2],["ia","Interlingua",[1,2],2],["id","Indonesian",[1],3],["is","Icelandic",[1,2],12],["it","Italian",[1,2],2],["ja","Japanese",[1],3],["jbo","Lojban",[1],3],["jv","Javanese",[0,1],13],["ka","Georgian",[1],3],["kk","Kazakh",[1],3],["km","Khmer",[1],3],["kn","Kannada",[1,2],2],["ko","Korean",[1],3],["ku","Kurdish",[1,2],2],["kw","Cornish",[1,2,3,4],14],["ky","Kyrgyz",[1],3],["lb","Letzeburgesch",[1,2],2],["ln","Lingala",[1,2],1],["lo","Lao",[1],3],["lt","Lithuanian",[1,2,10],15],["lv","Latvian",[1,2,0],16],["mai","Maithili",[1,2],2],["mfe","Mauritian Creole",[1,2],1],["mg","Malagasy",[1,2],1],["mi","Maori",[1,2],1],["mk","Macedonian",[1,2],17],["ml","Malayalam",[1,2],2],["mn","Mongolian",[1,2],2],["mnk","Mandinka",[0,1,2],18],["mr","Marathi",[1,2],2],["ms","Malay",[1],3],["mt","Maltese",[1,2,11,20],19],["nah","Nahuatl",[1,2],2],["nap","Neapolitan",[1,2],2],["nb","Norwegian Bokmal",[1,2],2],["ne","Nepali",[1,2],2],["nl","Dutch",[1,2],2],["nn","Norwegian Nynorsk",[1,2],2],["no","Norwegian",[1,2],2],["nso","Northern Sotho",[1,2],2],["oc","Occitan",[1,2],1],["or","Oriya",[2,1],2],["pa","Punjabi",[1,2],2],["pap","Papiamento",[1,2],2],["pl","Polish",[1,2,5],7],["pms","Piemontese",[1,2],2],["ps","Pashto",[1,2],2],["pt","Portuguese",[1,2],2],["pt_br","Brazilian Portuguese",[1,2],2],["rm","Romansh",[1,2],2],["ro","Romanian",[1,2,20],20],["ru","Russian",[1,2,5],4],["sah","Yakut",[1],3],["sco","Scots",[1,2],2],["se","Northern Sami",[1,2],2],["si","Sinhala",[1,2],2],["sk","Slovak",[1,2,5],6],["sl","Slovenian",[5,1,2,3],21],["so","Somali",[1,2],2],["son","Songhay",[1,2],2],["sq","Albanian",[1,2],2],["sr","Serbian",[1,2,5],4],["su","Sundanese",[1],3],["sv","Swedish",[1,2],2],["sw","Swahili",[1,2],2],["ta","Tamil",[1,2],2],["te","Telugu",[1,2],2],["tg","Tajik",[1,2],1],["th","Thai",[1],3],["ti","Tigrinya",[1,2],1],["tk","Turkmen",[1,2],2],["tr","Turkish",[1,2],1],["tt","Tatar",[1],3],["ug","Uyghur",[1],3],["uk","Ukrainian",[1,2,5],4],["ur","Urdu",[1,2],2],["uz","Uzbek",[1,2],1],["vi","Vietnamese",[1],3],["wa","Walloon",[1,2],1],["wo","Wolof",[1],3],["yo","Yoruba",[1,2],2],["zh","Chinese",[1],3]],V={1:function(a){return Number(a>1)},2:function(a){return Number(1!=a)},3:function(){return 0},4:function(a){return Number(a%10==1&&a%100!=11?0:a%10>=2&&4>=a%10&&(10>a%100||a%100>=20)?1:2)},5:function(a){return Number(0===a?0:1==a?1:2==a?2:a%100>=3&&10>=a%100?3:a%100>=11?4:5)},6:function(a){return Number(1==a?0:a>=2&&4>=a?1:2)},7:function(a){return Number(1==a?0:a%10>=2&&4>=a%10&&(10>a%100||a%100>=20)?1:2)},8:function(a){return Number(1==a?0:2==a?1:8!=a&&11!=a?2:3)},9:function(a){return Number(a>=2)},10:function(a){return Number(1==a?0:2==a?1:7>a?2:11>a?3:4)},11:function(a){return Number(1==a||11==a?0:2==a||12==a?1:a>2&&20>a?2:3)},12:function(a){return Number(a%10!=1||a%100==11)},13:function(a){return Number(0!==a)},14:function(a){return Number(1==a?0:2==a?1:3==a?2:3)},15:function(a){return Number(a%10==1&&a%100!=11?0:a%10>=2&&(10>a%100||a%100>=20)?1:2)},16:function(a){return Number(a%10==1&&a%100!=11?0:0!==a?1:2)},17:function(a){return Number(1==a||a%10==1?0:1)},18:function(a){return Number(1==a?1:2)},19:function(a){return Number(1==a?0:0===a||a%100>1&&11>a%100?1:a%100>10&&20>a%100?2:3)},20:function(a){return Number(1==a?0:0===a||a%100>0&&20>a%100?1:2)},21:function(a){return Number(a%100==1?1:a%100==2?2:a%100==3||a%100==4?3:0)}},W={rules:function(){var a,b={};for(a=U.length;a--;)b[U[a][0]]={name:U[a][1],numbers:U[a][2],plurals:V[U[a][3]]};return b}(),addRule:function(a,b){W.rules[a]=b},setCurrentLng:function(a){if(!W.currentRule||W.currentRule.lng!==a){var b=a.split("-");W.currentRule={lng:a,rule:W.rules[b[0]]}}},needsPlural:function(a,b){var c,d=a.split("-");return c=W.currentRule&&W.currentRule.lng===a?W.currentRule.rule:W.rules[d[T.getCountyIndexOfLng(a)]],c&&c.numbers.length<=1?!1:1!==this.get(a,b)},get:function(a,b){function c(b,c){var d;if(d=W.currentRule&&W.currentRule.lng===a?W.currentRule.rule:W.rules[b]){var e;e=d.plurals(d.noAbs?c:Math.abs(c));var f=d.numbers[e];return 2===d.numbers.length&&1===d.numbers[0]&&(2===f?f=-1:1===f&&(f=1)),f}return 1===c?"1":"-1"}var d=a.split("-");return c(d[T.getCountyIndexOfLng(a)],b)}},X={},Y=function(a,b){X[a]=b},Z=function(){function a(a){return Object.prototype.toString.call(a).slice(8,-1).toLowerCase()}function b(a,b){for(var c=[];b>0;c[--b]=a);return c.join("")}var c=function(){return c.cache.hasOwnProperty(arguments[0])||(c.cache[arguments[0]]=c.parse(arguments[0])),c.format.call(null,c.cache[arguments[0]],arguments)};return c.format=function(c,d){var e,f,g,h,i,j,k,l=1,m=c.length,n="",o=[];for(f=0;m>f;f++)if(n=a(c[f]),"string"===n)o.push(c[f]);else if("array"===n){if(h=c[f],h[2])for(e=d[l],g=0;g<h[2].length;g++){if(!e.hasOwnProperty(h[2][g]))throw Z('[sprintf] property "%s" does not exist',h[2][g]);e=e[h[2][g]]}else e=h[1]?d[h[1]]:d[l++];if(/[^s]/.test(h[8])&&"number"!=a(e))throw Z("[sprintf] expecting number but found %s",a(e));switch(h[8]){case"b":e=e.toString(2);break;case"c":e=String.fromCharCode(e);break;case"d":e=parseInt(e,10);break;case"e":e=h[7]?e.toExponential(h[7]):e.toExponential();break;case"f":e=h[7]?parseFloat(e).toFixed(h[7]):parseFloat(e);break;case"o":e=e.toString(8);break;case"s":e=(e=String(e))&&h[7]?e.substring(0,h[7]):e;break;case"u":e=Math.abs(e);break;case"x":e=e.toString(16);break;case"X":e=e.toString(16).toUpperCase()}e=/[def]/.test(h[8])&&h[3]&&e>=0?"+"+e:e,j=h[4]?"0"==h[4]?"0":h[4].charAt(1):" ",k=h[6]-String(e).length,i=h[6]?b(j,k):"",o.push(h[5]?e+i:i+e)}return o.join("")},c.cache={},c.parse=function(a){for(var b=a,c=[],d=[],e=0;b;){if(null!==(c=/^[^\x25]+/.exec(b)))d.push(c[0]);else if(null!==(c=/^\x25{2}/.exec(b)))d.push("%");else{if(null===(c=/^\x25(?:([1-9]\d*)\$|\(([^\)]+)\))?(\+)?(0|'[^$])?(-)?(\d+)?(?:\.(\d+))?([b-fosuxX])/.exec(b)))throw"[sprintf] huh?";if(c[2]){e|=1;var f=[],g=c[2],h=[];if(null===(h=/^([a-z_][a-z_\d]*)/i.exec(g)))throw"[sprintf] huh?";for(f.push(h[1]);""!==(g=g.substring(h[0].length));)if(null!==(h=/^\.([a-z_][a-z_\d]*)/i.exec(g)))f.push(h[1]);else{if(null===(h=/^\[(\d+)\]/.exec(g)))throw"[sprintf] huh?";f.push(h[1])}c[2]=f}else e|=2;if(3===e)throw"[sprintf] mixing positional and named placeholders is not (yet) supported";d.push(c)}b=b.substring(c[0].length)}return d},c}(),$=function(a,b){return b.unshift(a),Z.apply(null,b)};Y("sprintf",function(a,b,c){return c.sprintf?"[object Array]"===Object.prototype.toString.apply(c.sprintf)?$(a,c.sprintf):"object"==typeof c.sprintf?Z(a,c.sprintf):a:a}),J.init=g,J.setLng=r,J.preload=h,J.addResourceBundle=i,J.hasResourceBundle=j,J.getResourceBundle=k,J.addResource=m,J.addResources=n,J.removeResourceBundle=l,J.loadNamespace=p,J.loadNamespaces=q,J.setDefaultNamespace=o,J.t=B,J.translate=B,J.exists=A,J.detectLanguage=T.detectLanguage,J.pluralExtensions=W,J.sync=O,J.functions=T,J.lng=s,J.addPostProcessor=Y,J.applyReplacement=T.applyReplacement,J.options=P}("undefined"==typeof exports?window:exports);
-window.Mirador = window.Mirador || function(config) {
-
-  // pass the config through the save and restore process,
-  // returning the config that will, in fact, populate the
-  // application.
-  Mirador.saveController = new Mirador.SaveController(config);
-
-  //config = Mirador.saveController.currentConfig;
-
-  // initialise application 
-  Mirador.viewer = new Mirador.Viewer({'state' : Mirador.saveController});
-};
-
+// This file defines the global Mirador constructor function.
+// This is the entry point to Miraodr and is intentionally sparse.
+(function(global) {
+  function Mirador(config) {
+    if (this instanceof Mirador) {
+        // initialize the event emitter for this mirador instance
+        this.eventEmitter = new Mirador.EventEmitter();
+  
+        // pass the config through the save and restore process,
+        // returning the config that will, in fact, populate the application
+        this.saveController = new Mirador.SaveController(jQuery.extend(true, {}, config, {'eventEmitter': this.eventEmitter}));
+  
+        // initialize the application
+        this.viewer = new Mirador.Viewer({
+            'state': this.saveController,
+            'eventEmitter': this.eventEmitter
+        });
+        return this;
+    } else {
+        return new Mirador(config);
+    }
+  }
+  global.Mirador = global.Mirador || Mirador;
+})(window);
 (function($) {
 
   /**
@@ -5795,53 +5806,48 @@ window.Mirador = window.Mirador || function(config) {
                                 //only valid if no windowObjects have been initialized
                                 //if there are multiple slots, it will be bound to the first slot and the selected manifest will open in that slot
 
-    'windowObjects' : [
-      /** within a single object, the following options:
-       *   "loadedManifest": [manifestURI] e.g. "http://dms-data.stanford.edu/data/manifests/Walters/qm670kv1873/manifest.json"
-       *   "canvasID": [canvas URI] e.g. "http://dms-data.stanford.edu/data/manifests/Walters/qm670kv1873/canvas/canvas-12"
-       *
-       *   "availableViews" : defaults to ['ThumbnailsView', 'ImageView', 'ScrollView', 'BookView'], any subset removes others
-       *   "viewType" : one of [_'ThumbnailsView'_, 'ImageView', 'ScrollView', 'BookView'] - if using availableViews, must be in subset
-       *
-       *   "bottomPanel" : [_true_, false] whether or not to make the bottom panel available in this window
-       *   "bottomPanelVisible" : [_true_, false] whether or not to make the bottom panel visible in this window on load. This setting is dependent
-       *                           on bottomPanel being true
-       *   "sidePanel" : [_true_, false] whether or not to make the side panel available in this window
-       *   "sidePanelOptions" : control individual menu items in layout menu. if "displayLayout" is false, these options won't be applied
-       *     {
-       *     "toc" : [_true_, false]
-       *     "annotations" : [true, _false_]
-       *     }
-       *   "sidePanelVisible" : [_true_, false] whether or not to make the side panel visible in this window on load. This setting is dependent
-       *                           on sidePanel being true
-       *   "overlay" : [_true_, false] whether or not to make the overlay available/visible in this window
-       *
-       *   "annotationLayer" : [_true_, false] whether or not to make annotation layer available in this window
-       *   "annotationCreation" : [_true_, false] whether or not to make annotation creation available in this window,
-       *                          only valid if annotationLayer is set to True and an annotationEndpoint is defined.
-       *                          This setting does NOT affect whether or not a user can edit an individual annotation that has already been created.
-       *   "annotationState" : [_'annoOff'_, 'annoOnCreateOff', 'annoOnCreateOn'] whether or not to turn on the annotation layer on window load
-       *
-       *   "fullScreen" : [_true_, false] whether or not to make the fullScreen HUD button visible to user
-       *
-       *   "displayLayout" : [_true_, false], whether or not to display all layout options, removing individual menu options is separate
-       *   "layoutOptions" : control individual menu items in layout menu. if "displayLayout" is false, these options won't be applied
-       *     {
-       *     "newObject" : [_true_, false]
-       *     "close" : [_true_, false]
-       *     "slotRight" : [_true_, false]
-       *     "slotLeft" : [_true_, false]
-       *     "slotAbove" : [_true_, false]
-       *     "slotBelow" : [_true_, false]
-       *     }
-       *   "windowOptions" : [data specific to the view type, such as OSD bounds and zoom level - automatically saved in SaveController]
-       *   "id" : [unique window ID - set by application and automatically saved in SaveController]
-       **/
-    ],
-
-    'defaultWindowSettings': {
-
+    //default window settings, but can be changed in Mirador configuration on initialization
+    'windowSettings' : {
+      "availableViews" : ['ThumbnailsView', 'ImageView', 'ScrollView', 'BookView'], //any subset removes others
+      "viewType" : 'ThumbnailsView', //one of [_'ThumbnailsView'_, 'ImageView', 'ScrollView', 'BookView'] - if using availableViews, must be in subset
+      "bottomPanel" : true, //whether or not to make the bottom panel available in this window
+      "bottomPanelVisible" : true, //whether or not to make the bottom panel visible in this window on load. This setting is dependent on bottomPanel being true
+      "sidePanel" : true, //whether or not to make the side panel available in this window
+      //control what is available in the side panel. if "sidePanel" is false, these options won't be applied
+      "sidePanelOptions" : {
+        "toc" : true,
+        "annotations" : false
+      },
+      "sidePanelVisible" : true, //whether or not to make the side panel visible in this window on load. This setting is dependent on sidePanel being true
+      "overlay" : true, //whether or not to make the metadata overlay available/visible in this window
+      "annotationLayer" : true, //whether or not to make annotation layer available in this window
+      "annotationCreation" : true, /*whether or not to make annotation creation available in this window,
+                             only valid if annotationLayer is set to True and an annotationEndpoint is defined.
+                             This setting does NOT affect whether or not a user can edit an individual annotation that has already been created.*/
+      "annotationState" : 'annoOff', //[_'annoOff'_, 'annoOnCreateOff', 'annoOnCreateOn'] whether or not to turn on the annotation layer on window load
+      "fullScreen" : true, //whether or not to make the window's fullScreen button visible to user
+      "displayLayout" : true, //whether or not to display all layout options, removing individual menu options is separate
+      //control individual menu items in layout menu. if "displayLayout" is false, these options won't be applied
+      "layoutOptions" : {
+        "newObject" : true,
+        "close" : true,
+        "slotRight" : true,
+        "slotLeft" : true,
+        "slotAbove" : true,
+        "slotBelow" : true,
+      }
     },
+
+    'windowObjects' : [
+      /* Using the same settings listed in `windowSettings`, change the settings for a specific window
+       * Structured as an array of objects
+       * A few additional settings only available in `windowObjecs`
+       * "loadedManifest": [manifestURI] e.g. "http://dms-data.stanford.edu/data/manifests/Walters/qm670kv1873/manifest.json"
+       * "canvasID": [canvas URI] e.g. "http://dms-data.stanford.edu/data/manifests/Walters/qm670kv1873/canvas/canvas-12"
+       * "id" : [unique window ID - set by application and automatically saved in SaveController]
+       * "windowOptions" : [data specific to the view type, such as OSD bounds and zoom level - automatically saved in SaveController]
+       */
+    ],
 
     // Control for whether or not to auto hide controls on the OSD canvas and specific durations in milliseconds
     // durations assume `autoHideControls` is true
@@ -5970,6 +5976,7 @@ window.Mirador = window.Mirador || function(config) {
       resizeRatio:            {},
       currentWorkspaceVisible: true,
       state:                  null,
+      eventEmitter:           null,
       overlayStates:          {
         'workspacePanelVisible': false,
         'manifestsPanelVisible': false,
@@ -5999,7 +6006,7 @@ window.Mirador = window.Mirador || function(config) {
       .css('background-repeat','repeat').css('position','fixed');
 
       //initialize i18next
-      i18n.init({debug: false, getAsync: false, resGetPath: _this.state.getStateProperty('buildPath') + _this.state.getStateProperty('i18nPath')+'__lng__/__ns__.json'});
+      i18n.init({fallbackLng: 'en', load: 'unspecific', debug: false, getAsync: false, resGetPath: _this.state.getStateProperty('buildPath') + _this.state.getStateProperty('i18nPath')+'__lng__/__ns__.json'});
 
       //register Handlebars helper
       Handlebars.registerHelper('t', function(i18n_key) {
@@ -6028,7 +6035,7 @@ window.Mirador = window.Mirador || function(config) {
 
       // add main menu
       if (showMainMenu) {
-        this.mainMenu = new $.MainMenu({ appendTo: this.element, state: this.state });
+        this.mainMenu = new $.MainMenu({ appendTo: this.element, state: this.state, eventEmitter: this.eventEmitter });
       }
 
       // add viewer area
@@ -6045,18 +6052,20 @@ window.Mirador = window.Mirador || function(config) {
       this.workspace = new $.Workspace({
         layoutDescription: this.layout.charAt(0) === '{' ? JSON.parse(this.layout) : $.layoutDescriptionFromGridString(this.layout),
         appendTo: this.element.find('.mirador-viewer'),
-        state: this.state
+        state: this.state,
+        eventEmitter: this.eventEmitter
       });
 
       this.workspacePanel = new $.WorkspacePanel({
         appendTo: this.element.find('.mirador-viewer'),
-        state: this.state
+        state: this.state,
+        eventEmitter: this.eventEmitter
       });
 
-      this.manifestsPanel = new $.ManifestsPanel({ appendTo: this.element.find('.mirador-viewer'), state: this.state });
+      this.manifestsPanel = new $.ManifestsPanel({ appendTo: this.element.find('.mirador-viewer'), state: this.state, eventEmitter: this.eventEmitter });
       //only instatiate bookmarkPanel if we need it
       if (showMainMenu && this.state.getStateProperty('mainMenuSettings').buttons.bookmark) {
-        this.bookmarkPanel = new $.BookmarkPanel({ appendTo: this.element.find('.mirador-viewer'), state: this.state });
+        this.bookmarkPanel = new $.BookmarkPanel({ appendTo: this.element.find('.mirador-viewer'), state: this.state, eventEmitter: this.eventEmitter });
       }
 
       // set this to be displayed
@@ -6076,7 +6085,7 @@ window.Mirador = window.Mirador || function(config) {
       var _this = this;
 
       // check that windows are loading first to set state of slot?
-      jQuery.subscribe('manifestReceived', function(event, newManifest) {
+      _this.eventEmitter.subscribe('manifestReceived', function(event, newManifest) {
         if (_this.state.getStateProperty('windowObjects')) {
           var check = jQuery.grep(_this.state.getStateProperty('windowObjects'), function(object, index) {
             return object.loadedManifest === newManifest.uri;
@@ -6087,43 +6096,43 @@ window.Mirador = window.Mirador || function(config) {
         }
       });
 
-      jQuery.subscribe('TOGGLE_WORKSPACE_PANEL', function(event) {
+      _this.eventEmitter.subscribe('TOGGLE_WORKSPACE_PANEL', function(event) {
         _this.toggleWorkspacePanel();
       });
 
-      jQuery.subscribe('TOGGLE_BOOKMARK_PANEL', function(event) {
+      _this.eventEmitter.subscribe('TOGGLE_BOOKMARK_PANEL', function(event) {
         _this.toggleBookmarkPanel();
       });
 
-      jQuery.subscribe('TOGGLE_FULLSCREEN', function(event) {
+      _this.eventEmitter.subscribe('TOGGLE_FULLSCREEN', function(event) {
         if ($.fullscreenElement()) {
           $.exitFullscreen();
           //enable any window-specific fullscreen buttons
-          jQuery.publish('ENABLE_WINDOW_FULLSCREEN');
+          _this.eventEmitter.publish('ENABLE_WINDOW_FULLSCREEN');
         } else {
           $.enterFullscreen(_this.element[0]);
           //disable any window-specific fullscreen buttons
-          jQuery.publish('DISABLE_WINDOW_FULLSCREEN');
+          _this.eventEmitter.publish('DISABLE_WINDOW_FULLSCREEN');
         }
       });
       
       jQuery(document).on("webkitfullscreenchange mozfullscreenchange fullscreenchange", function() {
-        jQuery.publish('MAINMENU_FULLSCREEN_BUTTON');
+        _this.eventEmitter.publish('MAINMENU_FULLSCREEN_BUTTON');
         // in case the user clicked ESC instead of clicking on the toggle fullscreen button, reenable the window fullscreen button
         if (!$.fullscreenElement()) {
-          jQuery.publish('ENABLE_WINDOW_FULLSCREEN');
+          _this.eventEmitter.publish('ENABLE_WINDOW_FULLSCREEN');
         }
       });
 
-      jQuery.subscribe('TOGGLE_LOAD_WINDOW', function(event) {
+      _this.eventEmitter.subscribe('TOGGLE_LOAD_WINDOW', function(event) {
         _this.toggleLoadWindow();
       });
 
-      jQuery.subscribe('ADD_MANIFEST_FROM_URL', function(event, url, location) {
+      _this.eventEmitter.subscribe('ADD_MANIFEST_FROM_URL', function(event, url, location) {
         _this.addManifestFromUrl(url, location);
       });
 
-      jQuery.subscribe('TOGGLE_OVERLAYS_FALSE', function(event) {
+      _this.eventEmitter.subscribe('TOGGLE_OVERLAYS_FALSE', function(event) {
         jQuery.each(_this.overlayStates, function(oState, value) {
           // toggles the other top-level panels closed and focuses the
           // workspace. For instance, after selecting an object from the
@@ -6152,7 +6161,7 @@ window.Mirador = window.Mirador || function(config) {
       } else {
         this[prop] = value;
       }
-      jQuery.publish(prop + '.set', value);
+      _this.eventEmitter.publish(prop + '.set', value);
     },
 
     // Sets state of overlays that layer over the UI state
@@ -6219,9 +6228,9 @@ window.Mirador = window.Mirador || function(config) {
 
       if (!_this.state.getStateProperty('manifests')[url]) {
         manifest = new $.Manifest(url, location, content);
-        jQuery.publish('manifestQueued', manifest, location);
+        _this.eventEmitter.publish('manifestQueued', manifest, location);
         manifest.request.done(function() {
-          jQuery.publish('manifestReceived', manifest);
+          _this.eventEmitter.publish('manifestReceived', manifest);
         });
       }
     },
@@ -6229,34 +6238,17 @@ window.Mirador = window.Mirador || function(config) {
     loadManifestFromConfig: function(options) {
       // check if there are available slots, otherwise don't process this object from config
       //if we have more windowObjects that slots in the layout, return
+      // it may not be necesary to set the slotAddress here since it is also covered in workspace
+      var _this = this;
       var slotAddress = options.slotAddress ? options.slotAddress : this.workspace.getAvailableSlot() ? this.workspace.getAvailableSlot().layoutAddress : null;
+      options.slotAddress = slotAddress;
       if (!slotAddress) {
         return;
       }
 
-      var windowConfig = {
-        manifest: this.state.getStateProperty('manifests')[options.loadedManifest],
-        currentFocus : options.viewType,
-        focusesOriginal : options.availableViews,
-        currentCanvasID : options.canvasID,
-        id : options.id,
-        focusOptions : options.windowOptions,
-        bottomPanelAvailable : options.bottomPanel,
-        bottomPanelVisible : options.bottomPanelVisible,
-        sidePanelAvailable : options.sidePanel,
-        sidePanelOptions : options.sidePanelOptions,
-        sidePanelVisible : options.sidePanelVisible,
-        overlayAvailable : options.overlay,
-        annotationLayerAvailable : options.annotationLayer,
-        annotationCreationAvailable : options.annotationCreation,
-        annotationState : options.annotationState,
-        fullScreenAvailable : options.fullScreen,
-        slotAddress: slotAddress,
-        displayLayout : options.displayLayout,
-        layoutOptions: options.layoutOptions
-      };
-
-      jQuery.publish('ADD_WINDOW', windowConfig);
+      //make a copy of options and pass that so we don't get a circular reference
+      var windowConfig = jQuery.extend(true, {}, options);
+      _this.eventEmitter.publish('ADD_WINDOW', windowConfig);
     }
   };
 
@@ -6272,7 +6264,9 @@ window.Mirador = window.Mirador || function(config) {
       slots:            [],
       windows:          [],
       appendTo:         null,
-      layoutDescription:    null
+      layoutDescription:    null,
+      state:            null,
+      eventEmitter:     null
     }, options);
 
     this.element  = this.element || jQuery('<div class="workspace-container" id="workspace">');
@@ -6298,11 +6292,11 @@ window.Mirador = window.Mirador || function(config) {
     listenForActions: function() {
       var _this = this;
 
-      jQuery.subscribe('resizeMirador', function(event) {
+      _this.eventEmitter.subscribe('resizeMirador', function(event) {
         _this.calculateLayout();
       });
 
-      jQuery.subscribe('manifestQueued', function(event, manifestPromise) {
+      _this.eventEmitter.subscribe('manifestQueued', function(event, manifestPromise) {
         // Trawl windowObjects preemptively for slotAddresses and
         // notify those slots to display a "loading" state.
         // Similar to the operation of the manifestLoadStatusIndicator
@@ -6324,41 +6318,41 @@ window.Mirador = window.Mirador || function(config) {
         }
       });
 
-      jQuery.subscribe('windowRemoved', function(event, windowId) {
+      _this.eventEmitter.subscribe('windowRemoved', function(event, windowId) {
         _this.windows = jQuery.grep(_this.windows, function(window) {
           return window.id !== windowId;
         });
       });
 
-      jQuery.subscribe('REMOVE_NODE', function(event, node){
+      _this.eventEmitter.subscribe('REMOVE_NODE', function(event, node){
         _this.removeNode(node);
       });
 
-      jQuery.subscribe('ADD_SLOT_ITEM', function(event, slot){
+      _this.eventEmitter.subscribe('ADD_SLOT_ITEM', function(event, slot){
         _this.addItem(slot);
       });
 
-      jQuery.subscribe('ADD_WINDOW', function(event, windowConfig) {
+      _this.eventEmitter.subscribe('ADD_WINDOW', function(event, windowConfig) {
         _this.addWindow(windowConfig);
       });
 
-      jQuery.subscribe('SPLIT_RIGHT', function(event, slot) {
+      _this.eventEmitter.subscribe('SPLIT_RIGHT', function(event, slot) {
         _this.splitRight(slot);
       });
 
-      jQuery.subscribe('SPLIT_LEFT', function(event, slot) {
+      _this.eventEmitter.subscribe('SPLIT_LEFT', function(event, slot) {
         _this.splitLeft(slot);
       });
 
-      jQuery.subscribe('SPLIT_DOWN', function(event, slot) {
+      _this.eventEmitter.subscribe('SPLIT_DOWN', function(event, slot) {
         _this.splitDown(slot);
       });
 
-      jQuery.subscribe('SPLIT_UP', function(event, slot) {
+      _this.eventEmitter.subscribe('SPLIT_UP', function(event, slot) {
         _this.splitUp(slot);
       });
 
-      jQuery.subscribe('RESET_WORKSPACE_LAYOUT', function(event, options) {
+      _this.eventEmitter.subscribe('RESET_WORKSPACE_LAYOUT', function(event, options) {
         _this.resetLayout(options.layoutDescription);
       });
     },
@@ -6403,7 +6397,7 @@ window.Mirador = window.Mirador || function(config) {
       } else {
         this[prop] = value;
       }
-      jQuery.publish(prop + '.set', value);
+      _this.eventEmitter.publish(prop + '.set', value);
     },
 
     calculateLayout: function(resetting) {
@@ -6447,7 +6441,8 @@ window.Mirador = window.Mirador || function(config) {
           layoutAddress: d.address,
           focused: true,
           appendTo: appendTo,
-          state: _this.state
+          state: _this.state,
+          eventEmitter: _this.eventEmitter
         }));
       });
 
@@ -6464,7 +6459,7 @@ window.Mirador = window.Mirador || function(config) {
         slot = slotMap[d.id];
 
         if (slot && slot.window && !resetting) {
-          jQuery.publish("windowRemoved", slot.window.id);
+          _this.eventEmitter.publish("windowRemoved", slot.window.id);
         }
         
         // nullify the window parameter of old slots
@@ -6482,13 +6477,13 @@ window.Mirador = window.Mirador || function(config) {
 
       var root = jQuery.grep(_this.layout, function(node) { return !node.parent;})[0];
 
-      jQuery.publish("layoutChanged", root);
-      jQuery.publish('slotsUpdated', {slots: _this.slots});
+      _this.eventEmitter.publish("layoutChanged", root);
+      _this.eventEmitter.publish('slotsUpdated', {slots: _this.slots});
 
       if (_this.slots.length <= 1) {
-          jQuery.publish('HIDE_REMOVE_SLOT');
+          _this.eventEmitter.publish('HIDE_REMOVE_SLOT');
         } else {
-          jQuery.publish('SHOW_REMOVE_SLOT');
+          _this.eventEmitter.publish('SHOW_REMOVE_SLOT');
         }
     },
 
@@ -6691,7 +6686,7 @@ window.Mirador = window.Mirador || function(config) {
         // function because we need the other windows to remain,
         // so we filter them here.
         _this.windows.splice(0, _this.windows.length -_this.slots.length).forEach(function(removedWindow){
-          jQuery.publish('windowRemoved', removedWindow.id);
+          _this.eventEmitter.publish('windowRemoved', removedWindow.id);
         });
       }
 
@@ -6704,8 +6699,8 @@ window.Mirador = window.Mirador || function(config) {
           slotAddress: slot.layoutAddress, 
           state: _this.state,
           appendTo: slot.element,
-          currentCanvasID: window.currentCanvasID,
-          currentFOcus: window.currentFocus
+          canvasID: window.canvasID,
+          viewType: window.viewType
         });
       });
     },
@@ -6724,8 +6719,9 @@ window.Mirador = window.Mirador || function(config) {
     },
 
     addItem: function(slot) {
+      var _this = this;
       this.focusedSlot = slot;
-      jQuery.publish('TOGGLE_LOAD_WINDOW');
+      _this.eventEmitter.publish('TOGGLE_LOAD_WINDOW');
     },
 
     addWindow: function(windowConfig) {
@@ -6744,7 +6740,7 @@ window.Mirador = window.Mirador || function(config) {
       // toggles the other top-level panels closed and focuses the
       // workspace. For instance, after selecting an object from the
       // manifestPanel.
-      jQuery.publish('TOGGLE_OVERLAYS_FALSE');
+      _this.eventEmitter.publish('TOGGLE_OVERLAYS_FALSE');
 
       if (isAnno) {
         targetSlot = _this.getAvailableSlot();
@@ -6756,30 +6752,49 @@ window.Mirador = window.Mirador || function(config) {
 
       windowConfig.appendTo = targetSlot.element;
       windowConfig.state = _this.state;
+      windowConfig.eventEmitter = _this.eventEmitter;
 
       if (!targetSlot.window) {
         windowConfig.slotAddress = targetSlot.layoutAddress;
         windowConfig.id = windowConfig.id || $.genUUID();
 
-        jQuery.publish("windowSlotAdded", {id: windowConfig.id, slotAddress: windowConfig.slotAddress});
+        _this.eventEmitter.publish("windowSlotAdded", {id: windowConfig.id, slotAddress: windowConfig.slotAddress});
 
-        if (windowConfig.windowType === 'annotations') { // XXX seong
-          newWindow = new $.AnnotationWindow(windowConfig);
-        } else {
-          newWindow = new $.Window(windowConfig);
+        //extend the windowConfig with the default settings
+        var mergedConfig = jQuery.extend(true, {}, _this.state.getStateProperty('windowSettings'), windowConfig);
+
+        //"rename" some keys in the merged object to align settings parameters with window parameters        
+        if (mergedConfig.loadedManifest) {
+          mergedConfig.manifest = _this.state.getStateProperty('manifests')[mergedConfig.loadedManifest];
+          delete mergedConfig.loadedManifest;
         }
 
+        if (mergedConfig.bottomPanel) {
+          mergedConfig.bottomPanelAvailable = mergedConfig.bottomPanel;
+          delete mergedConfig.bottomPanel;
+        }
+
+        if (mergedConfig.sidePanel) {
+          mergedConfig.sidePanelAvailable = mergedConfig.sidePanel;
+          delete mergedConfig.sidePanel;
+        }
+
+        if (mergedConfig.overlay) {
+          mergedConfig.overlayAvailable = mergedConfig.overlay;
+          delete mergedConfig.overlay;
+        }
+        newWindow = new $.Window(mergedConfig);
         _this.windows.push(newWindow);
 
         targetSlot.window = newWindow;
 
-        jQuery.publish("windowAdded", {id: windowConfig.id, slotAddress: windowConfig.slotAddress});
+        _this.eventEmitter.publish("windowAdded", {id: windowConfig.id, slotAddress: windowConfig.slotAddress});
 
-        jQuery.publish(('currentCanvasIDUpdated.' + windowConfig.id), windowConfig.currentCanvasID);
+        _this.eventEmitter.publish(('currentCanvasIDUpdated.' + windowConfig.id), windowConfig.currentCanvasID);
       } else {
         targetSlot.window.element.remove();
         targetSlot.window.update(windowConfig);
-        jQuery.publish(('currentCanvasIDUpdated.' + windowConfig.id), windowConfig.currentCanvasID);
+        _this.eventEmitter.publish(('currentCanvasIDUpdated.' + windowConfig.id), windowConfig.currentCanvasID);
         // The target slot already has a window in it, so just update that window instead,
         // using the appropriate saving functions, etc. This obviates the need changing the
         // parent, slotAddress, setting a new ID, and so on.
@@ -6807,6 +6822,8 @@ window.Mirador = window.Mirador || function(config) {
     jQuery.extend(true, this, {
       element: null,
       appendTo: null,
+	  state: null,
+	  eventEmitter: null
     }, options);
 
     this.init();
@@ -6831,10 +6848,10 @@ window.Mirador = window.Mirador || function(config) {
 
     listenForActions: function() {
       var _this = this;
-      jQuery.subscribe('bookmarkPanelVisible.set', function(_, stateValue) {
+      _this.eventEmitter.subscribe('bookmarkPanelVisible.set', function(_, stateValue) {
         _this.onPanelVisible(_, stateValue);
       });
-      jQuery.subscribe('saveControllerConfigUpdated', function() {
+      _this.eventEmitter.subscribe('saveControllerConfigUpdated', function() {
         _this.onConfigUpdated();
       });
     },
@@ -6892,7 +6909,9 @@ window.Mirador = window.Mirador || function(config) {
             windowOptionsMenuCls:       'mirador-window-options-menu',
             clearLocalStorageCls:       'clear-local-storage',
             clearLocalStorageDialogCls: 'mirador-main-menu-clear-local-storage',
-            collectionsListingCls:      'mirador-listing-collections'
+            collectionsListingCls:      'mirador-listing-collections',
+            state:                      null,
+            eventEmitter:               null
         }, options);
 
         this.element  = this.element || jQuery('<div/>');
@@ -6945,7 +6964,7 @@ window.Mirador = window.Mirador || function(config) {
         listenForActions: function() {
           var _this = this;
 
-          jQuery.subscribe('MAINMENU_FULLSCREEN_BUTTON', function(event) {
+          _this.eventEmitter.subscribe('MAINMENU_FULLSCREEN_BUTTON', function(event) {
             var fullScreenButton = _this.element.find('.fullscreen-viewer span');
             if (fullScreenButton.hasClass('fa-expand')) {
               fullScreenButton.removeClass('fa-expand').addClass('fa-compress');
@@ -6959,7 +6978,7 @@ window.Mirador = window.Mirador || function(config) {
             var _this = this;
             //change 'change-layout' to mouseover events rather than click?
             this.element.find('.change-layout').on('click', function() { 
-              jQuery.publish('TOGGLE_WORKSPACE_PANEL');
+              _this.eventEmitter.publish('TOGGLE_WORKSPACE_PANEL');
               //remove active class from other buttons
               _this.element.find('.bookmark-workspace').removeClass('active');
               if (jQuery(this).hasClass('active')) {
@@ -6970,7 +6989,7 @@ window.Mirador = window.Mirador || function(config) {
             });
 
             this.element.find('.bookmark-workspace').on('click', function() { 
-              jQuery.publish('TOGGLE_BOOKMARK_PANEL');
+              _this.eventEmitter.publish('TOGGLE_BOOKMARK_PANEL');
               //remove active class from other buttons
               _this.element.find('.change-layout').removeClass('active');
               if (jQuery(this).hasClass('active')) {
@@ -6983,7 +7002,7 @@ window.Mirador = window.Mirador || function(config) {
             // when options are implemented, this will need to do something
             this.element.find('.window-options').on('click', function() { });
             this.element.find('.fullscreen-viewer').on('click', function() {
-              jQuery.publish('TOGGLE_FULLSCREEN');
+              _this.eventEmitter.publish('TOGGLE_FULLSCREEN');
             });
         },
 
@@ -7153,7 +7172,9 @@ window.Mirador = window.Mirador || function(config) {
       imagesTotalWidth:           0,
       tplData:                    null,
       allImages:                  [],
-      remaining:                  0
+      remaining:                  0,
+      state:                      null,
+      eventEmitter:               null
     }, options);
 
     this.init();
@@ -7190,7 +7211,7 @@ window.Mirador = window.Mirador || function(config) {
       manifest = _this.manifest.jsonLd;
 
       this.tplData = {
-        label: manifest.label,
+        label: $.JsonLd.getTextValue(manifest.label),
         repository: location,
         canvasCount: manifest.sequences[0].canvases.length,
         images: []
@@ -7258,7 +7279,7 @@ window.Mirador = window.Mirador || function(config) {
     listenForActions: function() {
       var _this = this;
 
-      jQuery.subscribe('manifestPanelWidthChanged', function(event, newWidth){
+      _this.eventEmitter.subscribe('manifestPanelWidthChanged', function(event, newWidth){
         _this.updateDisplay(newWidth);
       });
     },
@@ -7274,20 +7295,20 @@ window.Mirador = window.Mirador || function(config) {
       this.element.on('click', function() {
         var windowConfig = {
           manifest: _this.manifest,
-          currentCanvasID: null,
-          currentFocus: 'ThumbnailsView'
+          canvasID: null,
+          viewType: 'ThumbnailsView'
         };
-        jQuery.publish('ADD_WINDOW', windowConfig);
+        _this.eventEmitter.publish('ADD_WINDOW', windowConfig);
       });
 
       this.element.find('.preview-image').on('click', function(e) {
         e.stopPropagation();
         var windowConfig = {
           manifest: _this.manifest,
-          currentCanvasID: jQuery(this).attr('data-image-id'),
-          currentFocus: 'ImageView'
+          canvasID: jQuery(this).attr('data-image-id'),
+          viewType: _this.state.getStateProperty('windowSettings').viewType //get the view type from settings rather than always defaulting to ImageView
         };
-        jQuery.publish('ADD_WINDOW', windowConfig);
+        _this.eventEmitter.publish('ADD_WINDOW', windowConfig);
       });
     },
 
@@ -7395,7 +7416,9 @@ window.Mirador = window.Mirador || function(config) {
             manifestListItems:          [],
             manifestListElement:        null,
             manifestLoadStatusIndicator: null,
-            resultsWidth:               0
+            resultsWidth:               0,
+            state:                      null,
+            eventEmitter:               null
         }, options);
 
         var _this = this;
@@ -7432,11 +7455,11 @@ window.Mirador = window.Mirador || function(config) {
           var _this = this;
 
           // handle subscribed events
-          jQuery.subscribe('manifestsPanelVisible.set', function(_, stateValue) {
+          _this.eventEmitter.subscribe('manifestsPanelVisible.set', function(_, stateValue) {
             _this.onPanelVisible(_, stateValue);
           });
 
-          jQuery.subscribe('manifestReceived', function(event, newManifest) {
+          _this.eventEmitter.subscribe('manifestReceived', function(event, newManifest) {
             _this.onManifestReceived(event, newManifest);
           });
         },
@@ -7479,11 +7502,13 @@ window.Mirador = window.Mirador || function(config) {
         },
         
         addManifestUrl: function(url) {
-          jQuery.publish('ADD_MANIFEST_FROM_URL', url, "(Added from URL)");
+          var _this = this;
+          _this.eventEmitter.publish('ADD_MANIFEST_FROM_URL', url, "(Added from URL)");
         },
         
         togglePanel: function(event) {
-          jQuery.publish('TOGGLE_LOAD_WINDOW');
+          var _this = this;
+          _this.eventEmitter.publish('TOGGLE_LOAD_WINDOW');
         },
         
         filterManifests: function(value) {
@@ -7502,7 +7527,7 @@ window.Mirador = window.Mirador || function(config) {
           var clone = _this.element.clone().css("visibility","hidden").css("display", "block").appendTo(_this.appendTo);
           _this.resultsWidth = clone.find('.select-results').outerWidth();
           clone.remove();
-          jQuery.publish("manifestPanelWidthChanged", _this.resultsWidth);
+          _this.eventEmitter.publish("manifestPanelWidthChanged", _this.resultsWidth);
         },
         
         onPanelVisible: function(_, stateValue) {
@@ -7517,6 +7542,7 @@ window.Mirador = window.Mirador || function(config) {
             manifest: newManifest, 
             resultsWidth: _this.resultsWidth, 
             state: _this.state,
+            eventEmitter: _this.eventEmitter,
             appendTo: _this.manifestListElement }));
           _this.element.find('#manifest-search').keyup();
         },
@@ -7559,7 +7585,9 @@ window.Mirador = window.Mirador || function(config) {
     jQuery.extend(true, this, {
       element: null,
       appendTo: null,
-      workspace: null
+      workspace: null,
+      state: null,
+      eventEmitter: null
     }, options);
 
     this.init();
@@ -7589,7 +7617,7 @@ window.Mirador = window.Mirador || function(config) {
 
     listenForActions: function() {
       var _this = this;
-      jQuery.subscribe('workspacePanelVisible.set', function(_, stateValue) {
+      _this.eventEmitter.subscribe('workspacePanelVisible.set', function(_, stateValue) {
         _this.onPanelVisible(_, stateValue);
       });
     },
@@ -7615,8 +7643,8 @@ window.Mirador = window.Mirador || function(config) {
     select: function(gridString) {
       var _this = this;
       var layoutDescription = $.layoutDescriptionFromGridString(gridString);
-      jQuery.publish('RESET_WORKSPACE_LAYOUT', {layoutDescription: layoutDescription});
-      jQuery.publish('TOGGLE_WORKSPACE_PANEL');
+      _this.eventEmitter.publish('RESET_WORKSPACE_LAYOUT', {layoutDescription: layoutDescription});
+      _this.eventEmitter.publish('TOGGLE_WORKSPACE_PANEL');
     },
 
     hover: function(gridString) {
@@ -7942,6 +7970,7 @@ window.Mirador = window.Mirador || function(config) {
       targetElement: null,
       annotations: [],
       windowId: "",
+      eventEmitter: null
     }, options);
 
     this.init();
@@ -8004,8 +8033,8 @@ window.Mirador = window.Mirador || function(config) {
         },
         events: {
           render: function(event, api) {
-            jQuery.publish('annotationEditorAvailable.' + _this.windowId);
-            jQuery.publish('disableTooltips.' + _this.windowId);
+            _this.eventEmitter.publish('annotationEditorAvailable.' + _this.windowId);
+            _this.eventEmitter.publish('disableTooltips.' + _this.windowId);
 
             jQuery(selector).parent().parent().draggable();
 
@@ -8033,7 +8062,7 @@ window.Mirador = window.Mirador || function(config) {
 
               api.destroy();
               //reenable viewer tooltips
-              jQuery.publish('enableTooltips.' + _this.windowId);
+              _this.eventEmitter.publish('enableTooltips.' + _this.windowId);
               _this.activeEditor = null;
               _this.activeEditorTip = null;
 
@@ -8133,7 +8162,7 @@ window.Mirador = window.Mirador || function(config) {
         }
         var display = jQuery(this).parents('.annotation-display');
         var id = display.attr('data-anno-id');
-        jQuery.publish('annotationDeleted.' + _this.windowId, [id]);
+        _this.eventEmitter.publish('annotationDeleted.' + _this.windowId, [id]);
         api.hide();
         display.remove();
       });
@@ -8227,10 +8256,11 @@ window.Mirador = window.Mirador || function(config) {
     },
 
     setTooltipContent: function(annotations) {
+      var _this = this;
       var api = jQuery(this.targetElement).qtip('api');
       if (api) {
         api.set({'content.text': this.getViewerContent(annotations)});
-        jQuery.publish('tooltipViewerSet.' + this.windowId);
+        _this.eventEmitter.publish('tooltipViewerSet.' + this.windowId);
       }
     },
 
@@ -8286,9 +8316,10 @@ window.Mirador = window.Mirador || function(config) {
     },
 
     freezeQtip: function(api, oaAnno, viewerParams) {
+      var _this = this;
       if (this.inEditOrCreateMode) { throw 'AnnotationTooltip already in edit mode'; }
       this.inEditOrCreateMode = true;
-      jQuery.publish('disableRectTool.' + this.windowId);
+      _this.eventEmitter.publish('disableRectTool.' + this.windowId);
       var editorContainer = this.editorTemplate({
         id: jQuery.isEmptyObject(oaAnno) ? "" : oaAnno['@id'],
         windowId: this.windowId
@@ -8297,7 +8328,7 @@ window.Mirador = window.Mirador || function(config) {
         'content.text': editorContainer,
         'hide.event': false
       });
-      jQuery.publish('annotationEditorAvailable.' + this.windowId);
+      _this.eventEmitter.publish('annotationEditorAvailable.' + this.windowId);
       //add rich text editor
       this.activeEditor = new this.editor(
         jQuery.extend({}, this.editorOptions, {
@@ -8312,9 +8343,10 @@ window.Mirador = window.Mirador || function(config) {
     },
 
     unFreezeQtip: function(api, oaAnno, viewerParams) {
+      var _this = this;
       if (!this.inEditOrCreateMode) { throw 'AnnotationTooltip not in edit mode'; }
       this.inEditOrCreateMode = false;
-      jQuery.publish('enableRectTool.' + this.windowId);
+      _this.eventEmitter.publish('enableRectTool.' + this.windowId);
       api.set({
         'content.text': this.getViewerContent([oaAnno]),
         'hide.event': 'mouseleave'
@@ -8393,7 +8425,8 @@ window.Mirador = window.Mirador || function(config) {
       username:  "mirador-test",
       annotationsList: [],        //OA list for Mirador use
       annotationsListCatch: null,  //internal list for module use
-      windowID: null
+      windowID: null,
+      eventEmitter: null
     }, options);
 
     this.init();
@@ -8460,7 +8493,7 @@ window.Mirador = window.Mirador || function(config) {
               _this.annotationsList.push(_this.getAnnotationInOA(value));
             });
             _this.dfd.resolve(true);
-            jQuery.publish('catchAnnotationsLoaded.'+_this.windowID, _this.annotationsListCatch);
+            _this.eventEmitter.publish('catchAnnotationsLoaded.'+_this.windowID, _this.annotationsListCatch);
           }
         },
         error: function() {
@@ -8488,7 +8521,7 @@ window.Mirador = window.Mirador || function(config) {
         if (typeof successCallback === "function") {
           successCallback();
         }
-        jQuery.publish('catchAnnotationDeleted.'+_this.windowID, annotationID);
+        _this.eventEmitter.publish('catchAnnotationDeleted.'+_this.windowID, annotationID);
       },
       error: function() {
         if (typeof errorCallback === "function") {
@@ -8517,7 +8550,7 @@ window.Mirador = window.Mirador || function(config) {
           if (typeof successCallback === "function") {
             successCallback();
           }
-          jQuery.publish('catchAnnotationUpdated.'+_this.windowID, annotation);
+          _this.eventEmitter.publish('catchAnnotationUpdated.'+_this.windowID, annotation);
         },
         error: function() {
           if (typeof errorCallback === "function") {
@@ -8550,7 +8583,7 @@ window.Mirador = window.Mirador || function(config) {
           if (typeof successCallback === "function") {
             successCallback(_this.getAnnotationInOA(data));
           }
-          jQuery.publish('catchAnnotationCreated.'+_this.windowID, data);
+          _this.eventEmitter.publish('catchAnnotationCreated.'+_this.windowID, data);
         },
         error: function() {
           if (typeof errorCallback === "function") {
@@ -8746,7 +8779,8 @@ window.Mirador = window.Mirador || function(config) {
     jQuery.extend(this, {
       dfd:             null,
       annotationsList: [],        //OA list for Mirador use
-      windowID:        null
+      windowID:        null,
+      eventEmitter:    null
     }, options);
 
     this.init();
@@ -8904,7 +8938,8 @@ window.Mirador = window.Mirador || function(config) {
       prefix:    null,
       dfd:       null,
       annotationsList: [],        
-      windowID: null
+      windowID: null,
+      eventEmitter: null
     }, options);
 
     this.init();
@@ -9076,7 +9111,8 @@ window.Mirador = window.Mirador || function(config) {
       parent: null,
       osd: null,
       list: null,
-      annotationsToShapesMap: {}
+      annotationsToShapesMap: {},
+      eventEmitter: null
     }, options);
 
     this.init();
@@ -9086,7 +9122,7 @@ window.Mirador = window.Mirador || function(config) {
   $.OsdRegionDrawTool.prototype = {
 
     init: function() {
-      this.svgOverlay = this.osdViewer.svgOverlay(this.osdViewer.id, this.windowId, this.state);
+      this.svgOverlay = this.osdViewer.svgOverlay(this.osdViewer.id, this.windowId, this.state, this.eventEmitter);
       this.svgOverlay.show();
       this.svgOverlay.disable();
     },
@@ -9121,7 +9157,7 @@ window.Mirador = window.Mirador || function(config) {
                   if (!window.confirm("Do you want to delete this shape and annotation?")) {
                     return false;
                   }
-                  jQuery.publish('annotationDeleted.' + _this.windowId, [oaAnno['@id']]);
+                  _this.eventEmitter.publish('annotationDeleted.' + _this.windowId, [oaAnno['@id']]);
                   this.svgOverlay.removeFocus();
                   return true;
                 } else {
@@ -9138,7 +9174,7 @@ window.Mirador = window.Mirador || function(config) {
                     };
                   }
                   oaAnno.on.selector.value = _this.svgOverlay.getSVGString(shapeArray);
-                  jQuery.publish('annotationUpdated.' + _this.windowId, [oaAnno]);
+                  _this.eventEmitter.publish('annotationUpdated.' + _this.windowId, [oaAnno]);
                   this.svgOverlay.removeFocus();
                   return true;
                 }
@@ -9181,7 +9217,7 @@ window.Mirador = window.Mirador || function(config) {
         }
       }
       for (var j = 0; j < oaAnnos.length; j++) {
-        jQuery.publish('annotationUpdated.' + _this.windowId, [oaAnnos[j]]);
+        _this.eventEmitter.publish('annotationUpdated.' + _this.windowId, [oaAnnos[j]]);
       }
       this.svgOverlay.restoreEditedShapes();
     },
@@ -9241,13 +9277,14 @@ window.Mirador = window.Mirador || function(config) {
       }
 
       jQuery.when.apply(jQuery, deferreds).done(function() {
-        jQuery.publish('overlaysRendered.' + _this.windowId);
+        _this.eventEmitter.publish('overlaysRendered.' + _this.windowId);
       });
 
       var windowElement = _this.state.getWindowElement(_this.windowId);
       this.annoTooltip = new $.AnnotationTooltip({
         targetElement: jQuery(this.osdViewer.element),
         state: _this.state,
+        eventEmitter: _this.eventEmitter,
         windowId: _this.parent.windowId
       });
       this.annoTooltip.initializeViewerUpgradableToEditor({
@@ -9256,7 +9293,7 @@ window.Mirador = window.Mirador || function(config) {
         getAnnoFromRegion: _this.getAnnoFromRegion.bind(this),
         onAnnotationSaved: function(oaAnno) {
           //save to endpoint
-          jQuery.publish('annotationUpdated.' + _this.windowId, [oaAnno]);
+          _this.eventEmitter.publish('annotationUpdated.' + _this.windowId, [oaAnno]);
         }
       });
       this.svgOverlay.paperScope.view.draw();
@@ -9308,36 +9345,36 @@ window.Mirador = window.Mirador || function(config) {
     bindEvents: function() {
       var _this = this;
 
-      jQuery.subscribe('refreshOverlay.' + _this.windowId, function(event) {
+      _this.eventEmitter.subscribe('refreshOverlay.' + _this.windowId, function(event) {
         _this.svgOverlay.restoreEditedShapes();
         _this.svgOverlay.deselectAll();
         _this.svgOverlay.mode = '';
         _this.render();
       });
-      jQuery.subscribe('deleteShape.' + _this.windowId, function(event) {
+      _this.eventEmitter.subscribe('deleteShape.' + _this.windowId, function(event) {
         _this.deleteShape();
       });
-      jQuery.subscribe('updateEditedShape.' + _this.windowId, function(event) {
+      _this.eventEmitter.subscribe('updateEditedShape.' + _this.windowId, function(event) {
         _this.saveEditedShape();
       });
 
-      jQuery.subscribe('updateTooltips.' + _this.windowId, function(event, location, absoluteLocation) {
+      _this.eventEmitter.subscribe('updateTooltips.' + _this.windowId, function(event, location, absoluteLocation) {
         if (_this.annoTooltip && !_this.annoTooltip.inEditOrCreateMode) {
           _this.showTooltipsFromMousePosition(event, location, absoluteLocation);
         }
       });
 
-      jQuery.subscribe('removeTooltips.' + _this.windowId, function() {
+      _this.eventEmitter.subscribe('removeTooltips.' + _this.windowId, function() {
         jQuery(_this.osdViewer.element).qtip('destroy', true);
       });
 
-      jQuery.subscribe('disableTooltips.' + _this.windowId, function() {
+      _this.eventEmitter.subscribe('disableTooltips.' + _this.windowId, function() {
         if (_this.annoTooltip) {
           _this.annoTooltip.inEditOrCreateMode = true;
         }
       });
 
-      jQuery.subscribe('enableTooltips.' + _this.windowId, function() {
+      _this.eventEmitter.subscribe('enableTooltips.' + _this.windowId, function() {
         if (_this.annoTooltip) {
           _this.annoTooltip.inEditOrCreateMode = false;
         }
@@ -9683,11 +9720,11 @@ window.Mirador = window.Mirador || function(config) {
     return this.svgOverlayTools;
   };
 
-  OpenSeadragon.Viewer.prototype.svgOverlay = function(osdViewerId, windowId, state) {
-    return new $.Overlay(this, osdViewerId, windowId, state);
+  OpenSeadragon.Viewer.prototype.svgOverlay = function(osdViewerId, windowId, state, eventEmitter) {
+    return new $.Overlay(this, osdViewerId, windowId, state, eventEmitter);
   };
 
-  $.Overlay = function(viewer, osdViewerId, windowId, state) {
+  $.Overlay = function(viewer, osdViewerId, windowId, state, eventEmitter) {
     var drawingToolsSettings = state.getStateProperty('drawingToolsSettings'),
     availableAnnotationDrawingTools = state.getStateProperty('availableAnnotationDrawingTools');
     availableExternalCommentsPanel = state.getStateProperty('availableExternalCommentsPanel'); // XXX Seong
@@ -9730,6 +9767,7 @@ window.Mirador = window.Mirador || function(config) {
 
     var _this = this;
     this.state = state;
+    this.eventEmitter = eventEmitter;
     this.viewer.addHandler('animation', function() {
       _this.resize();
     });
@@ -9742,7 +9780,7 @@ window.Mirador = window.Mirador || function(config) {
     this.viewer.addHandler('update-viewport', function() {
       _this.resize();
     });
-    jQuery.subscribe('toggleDrawingTool.' + _this.windowId, function(event, tool) {
+    _this.eventEmitter.subscribe('toggleDrawingTool.' + _this.windowId, function(event, tool) {
       jQuery('#' + osdViewerId).parent().find('.hud-container').find('.draw-tool').removeClass('selected');
       if (_this.disabled) {
         jQuery('.qtip' + _this.windowId).qtip('hide');
@@ -9757,7 +9795,7 @@ window.Mirador = window.Mirador || function(config) {
         }
       }
     });
-    jQuery.subscribe('toggleDefaultDrawingTool.' + _this.windowId, function(event) {
+    _this.eventEmitter.subscribe('toggleDefaultDrawingTool.' + _this.windowId, function(event) {
       jQuery('#' + osdViewerId).parent().find('.hud-container').find('.draw-tool').removeClass('selected');
       if (_this.disabled) {
         jQuery('.qtip' + _this.windowId).qtip('hide');
@@ -9778,14 +9816,14 @@ window.Mirador = window.Mirador || function(config) {
         }
       }
     });
-    jQuery.subscribe('changeBorderColor.' + _this.windowId, function(event, color) {
+    _this.eventEmitter.subscribe('changeBorderColor.' + _this.windowId, function(event, color) {
       _this.strokeColor = color;
       if (_this.hoveredPath) {
         _this.hoveredPath.strokeColor = color;
         _this.paperScope.view.draw();
       }
     });
-    jQuery.subscribe('changeFillColor.' + _this.windowId, function(event, color, alpha) {
+    _this.eventEmitter.subscribe('changeFillColor.' + _this.windowId, function(event, color, alpha) {
       _this.fillColor = color;
       _this.fillColorAlpha = alpha;
       if (_this.hoveredPath && _this.hoveredPath.closed) {
@@ -9794,22 +9832,8 @@ window.Mirador = window.Mirador || function(config) {
         _this.paperScope.view.draw();
       }
     });
-    jQuery.subscribe('toggleBorderType.' + _this.windowId, function(event, type) {
-      if (type == 'solid') {
-        _this.dashArray = [];
-      } else if (type == 'dashed') {
-        _this.dashArray = [5, 5];
-      } else if (type == 'dotdashed') {
-        _this.dashArray = [2, 5, 7, 5];
-      }
-      if (_this.hoveredPath) {
-        _this.hoveredPath.dashArray = _this.dashArray;
-        _this.paperScope.view.draw();
-      }
-    });
-    jQuery.publish('initBorderType.' + _this.windowId, 'solid');
-    jQuery.publish('initBorderColor.' + _this.windowId, _this.strokeColor);
-    jQuery.publish('initFillColor.' + _this.windowId, [_this.fillColor, _this.fillColorAlpha]);
+    _this.eventEmitter.publish('initBorderColor.' + _this.windowId, _this.strokeColor);
+    _this.eventEmitter.publish('initFillColor.' + _this.windowId, [_this.fillColor, _this.fillColorAlpha]);
 
     this.resize();
     this.show();
@@ -9872,6 +9896,7 @@ window.Mirador = window.Mirador || function(config) {
     },
 
     onMouseDrag: function(event) {
+      var _this = this;
       if (!this.overlay.disabled) {
         event.stopPropagation();
         this.overlay.currentTool.onMouseDrag(event, this.overlay);
@@ -9880,12 +9905,13 @@ window.Mirador = window.Mirador || function(config) {
           'x': event.event.clientX,
           'y': event.event.clientY
         };
-        jQuery.publish('updateTooltips.' + this.overlay.windowId, [event.point, absolutePoint]);
+        _this.overlay.eventEmitter.publish('updateTooltips.' + this.overlay.windowId, [event.point, absolutePoint]);
       }
       this.overlay.paperScope.view.draw();
     },
 
     onMouseMove: function(event) {
+      var _this = this;
       this.overlay.cursorLocation = event.point;
       if (!this.overlay.disabled) {
         event.stopPropagation();
@@ -9895,12 +9921,13 @@ window.Mirador = window.Mirador || function(config) {
           'x': event.event.clientX,
           'y': event.event.clientY
         };
-        jQuery.publish('updateTooltips.' + this.overlay.windowId, [event.point, absolutePoint]);
+        _this.overlay.eventEmitter.publish('updateTooltips.' + this.overlay.windowId, [event.point, absolutePoint]);
       }
       this.overlay.paperScope.view.draw();
     },
 
     onMouseDown: function(event) {
+      var _this = this;
       if (this.overlay.disabled) {
         return;
       }
@@ -9918,7 +9945,7 @@ window.Mirador = window.Mirador || function(config) {
           prefix = prefix.substring(0, prefix.lastIndexOf('_') + 1);
           for (var j = 0; j < this.overlay.tools.length; j++) {
             if (this.overlay.tools[j].idPrefix == prefix) {
-              jQuery.publish('toggleDrawingTool.' + this.overlay.windowId, this.overlay.tools[j].logoClass);
+              _this.overlay.eventEmitter.publish('toggleDrawingTool.' + this.overlay.windowId, this.overlay.tools[j].logoClass);
               this.overlay.paperScope.project.activeLayer.selected = false;
               this.overlay.hoveredPath = null;
               this.overlay.segment = null;
@@ -10184,23 +10211,25 @@ window.Mirador = window.Mirador || function(config) {
     },
 
     disable: function() {
+      var _this = this;
       this.disabled = true;
-      jQuery.publish('hideDrawTools.' + this.windowId);
-      jQuery.publish('disableBorderColorPicker.' + this.windowId, this.disabled);
-      jQuery.publish('disableFillColorPicker.' + this.windowId, this.disabled);
-      jQuery.publish('enableTooltips.' + this.windowId);
+      _this.eventEmitter.publish('hideDrawTools.' + this.windowId);
+      _this.eventEmitter.publish('disableBorderColorPicker.' + this.windowId, this.disabled);
+      _this.eventEmitter.publish('disableFillColorPicker.' + this.windowId, this.disabled);
+      _this.eventEmitter.publish('enableTooltips.' + this.windowId);
       this.deselectAll();
     },
 
     enable: function() {
+      var _this = this;
       var setDefaultTool = this.disabled;
       this.disabled = false;
-      jQuery.publish('showDrawTools.' + this.windowId);
-      jQuery.publish('disableBorderColorPicker.' + this.windowId, this.disabled);
-      jQuery.publish('disableFillColorPicker.' + this.windowId, this.disabled);
-      jQuery.publish('disableTooltips.' + this.windowId);
+      _this.eventEmitter.publish('showDrawTools.' + this.windowId);
+      _this.eventEmitter.publish('disableBorderColorPicker.' + this.windowId, this.disabled);
+      _this.eventEmitter.publish('disableFillColorPicker.' + this.windowId, this.disabled);
+      _this.eventEmitter.publish('disableTooltips.' + this.windowId);
       if (setDefaultTool) {
-        jQuery.publish('toggleDefaultDrawingTool.' + this.windowId);
+        _this.eventEmitter.publish('toggleDefaultDrawingTool.' + this.windowId);
       }
     },
 
@@ -10209,7 +10238,8 @@ window.Mirador = window.Mirador || function(config) {
     },
 
     destroyCommentPanel: function() {
-      jQuery.publish('removeTooltips.' + this.windowId);
+      var _this = this;
+      _this.eventEmitter.publish('removeTooltips.' + this.windowId);
       jQuery(this.canvas).parents('.mirador-osd').qtip('destroy', true);
       this.commentPanel = null;
     },
@@ -10266,6 +10296,7 @@ window.Mirador = window.Mirador || function(config) {
       var annoTooltip = new $.AnnotationTooltip({
         targetElement: jQuery(this.canvas).parents('.mirador-osd'),
         state: this.state,
+        eventEmitter: this.eventEmitter,
         windowId: this.windowId
       });
       var _this = this;
@@ -10283,7 +10314,7 @@ window.Mirador = window.Mirador || function(config) {
           };
 
           //save to endpoint
-          jQuery.publish('annotationCreated.' + _this.windowId, [oaAnno, shape]);
+          _this.eventEmitter.publish('annotationCreated.' + _this.windowId, [oaAnno, shape]);
         },
         onCancel: function() {
           _this.clearDraftData();
@@ -11062,7 +11093,9 @@ window.Mirador = window.Mirador || function(config) {
       focused:          null,
       appendTo:         null,
       window:           null,
-      windowElement:    null
+      windowElement:    null,
+      state:            null,
+      eventEmitter:     null
     }, options);
 
     this.init();
@@ -11084,7 +11117,7 @@ window.Mirador = window.Mirador || function(config) {
     listenForActions: function() {
       var _this = this;
 
-      jQuery.subscribe('windowRemoved', function(event, id) {
+      _this.eventEmitter.subscribe('windowRemoved', function(event, id) {
         if (_this.window && _this.window.id === id) {
           // This prevents the save controller
           // from attempting to re-save the window
@@ -11093,64 +11126,64 @@ window.Mirador = window.Mirador || function(config) {
         }
       });
 
-      jQuery.subscribe('layoutChanged', function(event, layoutRoot) {
+      _this.eventEmitter.subscribe('layoutChanged', function(event, layoutRoot) {
         // Must reset the slotAddress of the window.
         if (_this.window) {
           _this.window.slotAddress = _this.layoutAddress;
-          jQuery.publish('windowSlotAddressUpdated', {
+          _this.eventEmitter.publish('windowSlotAddressUpdated', {
             id: _this.window.id,
             slotAddress: _this.window.slotAddress
           });
         }
       });
 
-      jQuery.subscribe('HIDE_REMOVE_SLOT', function(event) {
+      _this.eventEmitter.subscribe('HIDE_REMOVE_SLOT', function(event) {
         _this.element.find('.remove-slot-option').hide();
         if (_this.window) {
-          jQuery.publish('HIDE_REMOVE_OBJECT.' + _this.window.id);
+          _this.eventEmitter.publish('HIDE_REMOVE_OBJECT.' + _this.window.id);
         }
       });
 
-      jQuery.subscribe('SHOW_REMOVE_SLOT', function(event) {
+      _this.eventEmitter.subscribe('SHOW_REMOVE_SLOT', function(event) {
         _this.element.find('.remove-slot-option').show();
         if (_this.window) {
-          jQuery.publish('SHOW_REMOVE_OBJECT.' + _this.window.id);
+          _this.eventEmitter.publish('SHOW_REMOVE_OBJECT.' + _this.window.id);
         }
       });
 
-      jQuery.subscribe('ADD_ITEM_FROM_WINDOW', function(event, id) {
+      _this.eventEmitter.subscribe('ADD_ITEM_FROM_WINDOW', function(event, id) {
         if (_this.window && _this.window.id === id) {
           _this.addItem();
         }
       });
 
-      jQuery.subscribe('REMOVE_SLOT_FROM_WINDOW', function(event, id) {
+      _this.eventEmitter.subscribe('REMOVE_SLOT_FROM_WINDOW', function(event, id) {
         if (_this.window && _this.window.id === id) {
-          jQuery.publish('REMOVE_NODE', _this);
+          _this.eventEmitter.publish('REMOVE_NODE', _this);
         }
       });
 
-      jQuery.subscribe('SPLIT_RIGHT_FROM_WINDOW', function(event, id) {
+      _this.eventEmitter.subscribe('SPLIT_RIGHT_FROM_WINDOW', function(event, id) {
         if (_this.window && _this.window.id === id) {
-          jQuery.publish('SPLIT_RIGHT', _this);
+          _this.eventEmitter.publish('SPLIT_RIGHT', _this);
         }
       });
 
-      jQuery.subscribe('SPLIT_LEFT_FROM_WINDOW', function(event, id) {
+      _this.eventEmitter.subscribe('SPLIT_LEFT_FROM_WINDOW', function(event, id) {
         if (_this.window && _this.window.id === id) {
-          jQuery.publish('SPLIT_LEFT', _this);
+          _this.eventEmitter.publish('SPLIT_LEFT', _this);
         }
       });
 
-      jQuery.subscribe('SPLIT_DOWN_FROM_WINDOW', function(event, id) {
+      _this.eventEmitter.subscribe('SPLIT_DOWN_FROM_WINDOW', function(event, id) {
         if (_this.window && _this.window.id === id) {
-          jQuery.publish('SPLIT_DOWN', _this);
+          _this.eventEmitter.publish('SPLIT_DOWN', _this);
         }
       });
 
-      jQuery.subscribe('SPLIT_UP_FROM_WINDOW', function(event, id) {
+      _this.eventEmitter.subscribe('SPLIT_UP_FROM_WINDOW', function(event, id) {
         if (_this.window && _this.window.id === id) {
-          jQuery.publish('SPLIT_UP', _this);
+          _this.eventEmitter.publish('SPLIT_UP', _this);
         }
       });
     },
@@ -11161,7 +11194,7 @@ window.Mirador = window.Mirador || function(config) {
 
       this.element.find('.addItemLink').on('click', function(){ _this.addItem(); });
       this.element.find('.remove-slot-option').on('click', function(){
-        jQuery.publish('REMOVE_NODE', _this);
+        _this.eventEmitter.publish('REMOVE_NODE', _this);
       });
       this.element.on('dragover', function(e) {
         e.preventDefault();
@@ -11216,23 +11249,23 @@ window.Mirador = window.Mirador || function(config) {
             // image view. If we don't specify the focus, the
             // window will open in thumbnail view with the
             // chosen page highlighted.
-            windowConfig.currentCanvasID = canvasId;
-            windowConfig.currentFocus = 'ImageView';
+            windowConfig.canvasID = canvasId;
+            windowConfig.viewType = 'ImageView';
           }
 
-          jQuery.publish('ADD_WINDOW', windowConfig);
+          _this.eventEmitter.publish('ADD_WINDOW', windowConfig);
 
         } else if (typeof imageInfoUrl !== 'undefined') {
           if (!_this.state.getStateProperty('manifests')[imageInfoUrl]) {
-            jQuery.publish('ADD_MANIFEST_FROM_URL', imageInfoUrl, "(Added from URL)");
+            _this.eventEmitter.publish('ADD_MANIFEST_FROM_URL', imageInfoUrl, "(Added from URL)");
           }
         } else {
           if (!_this.state.getStateProperty('manifests')[imageInfoUrl]) {
-            jQuery.publish('ADD_MANIFEST_FROM_URL', manifestUrl, "(Added from URL)");
+            _this.eventEmitter.publish('ADD_MANIFEST_FROM_URL', manifestUrl, "(Added from URL)");
           }
         }
 
-        jQuery.subscribe('manifestReceived', function(event, manifest) {
+        _this.eventEmitter.subscribe('manifestReceived', function(event, manifest) {
           var windowConfig;
           if (manifest.jsonLd['@id'] === manifestUrl || manifest.jsonLd['@id']+'/info.json' === imageInfoUrl) {
             // There are many manifests that may be received
@@ -11257,11 +11290,11 @@ window.Mirador = window.Mirador || function(config) {
               // image view. If we don't specify the focus, the
               // window will open in thumbnail view with the
               // chosen page highlighted.
-              windowConfig.currentCanvasID = canvasId;
-              windowConfig.currentFocus = 'ImageView';
+              windowConfig.canvasID = canvasId;
+              windowConfig.viewType = 'ImageView';
             }
 
-            jQuery.publish('ADD_WINDOW', windowConfig);
+            _this.eventEmitter.publish('ADD_WINDOW', windowConfig);
           }
         });
     },
@@ -11281,7 +11314,7 @@ window.Mirador = window.Mirador || function(config) {
       var _this = this;
       _this.focused = true;
 
-      jQuery.publish('ADD_SLOT_ITEM', _this);
+      _this.eventEmitter.publish('ADD_SLOT_ITEM', _this);
     },
 
     // template should be based on workspace type
@@ -11324,19 +11357,18 @@ window.Mirador = window.Mirador || function(config) {
   $.Window = function(options) {
 
     jQuery.extend(this, {
+      state:             null,
+      eventEmitter:      null,
       element:           null,
       scrollImageRatio:  0.9,
-      manifest:          null,
-      currentCanvasID:    null,
+      canvasID:          null,
       focusImages:       [],
       imagesList:        null,
       annotationsList:   [],
       endpoint:          null,
-      slotAddress:     null,
       currentImageMode:  'ImageView',
       imageModes:        ['ImageView', 'BookView'],
-      currentFocus:      'ThumbnailsView',
-      focusesOriginal:   ['ThumbnailsView', 'ImageView', 'ScrollView', 'BookView'],
+      originalImageModes:['ImageView', 'BookView'],
       focuses:           ['ThumbnailsView', 'ImageView', 'ScrollView', 'BookView'],
       focusModules:           {'ThumbnailsView': null, 'ImageView': null, 'ScrollView': null, 'BookView': null},
       focusOverlaysAvailable: {
@@ -11357,16 +11389,8 @@ window.Mirador = window.Mirador || function(config) {
           'bottomPanel' : {'ThumbnailsView' : true}
         }
       },
-      focusOptions: null,
-      id : null,
+      windowOptions: null,
       sidePanel: null, //the actual module for the side panel
-      sidePanelAvailable: true,
-      sidePanelOptions: {
-        "toc" : true,
-        "annotations" : false,
-        "layers" : false
-      },
-      sidePanelVisible: true,
       annotationsAvailable: {
         'ThumbnailsView' : false,
         'ImageView' : true,
@@ -11374,23 +11398,8 @@ window.Mirador = window.Mirador || function(config) {
         'BookView' : false
       },
       bottomPanel: null, //the actual module for the bottom panel
-      bottomPanelAvailable: true,
-      bottomPanelVisible: true,
       overlay: null,
-      annotationLayerAvailable: true,
-      annotationCreationAvailable: true,
       annoEndpointAvailable : false,
-      annotationState : 'annoOff',
-      fullScreenAvailable : true,
-      displayLayout: true,
-      layoutOptions : {
-        "newObject" : true,
-        "close" : true,
-        "slotRight" : true,
-        "slotLeft" : true,
-        "slotAbove" : true,
-        "slotBelow" : true
-      },
       iconClasses: {
         "ImageView" : "fa fa-photo fa-lg fa-fw",
         "BookView" : "fa fa-columns fa-lg fa-fw",
@@ -11407,7 +11416,7 @@ window.Mirador = window.Mirador || function(config) {
     init: function () {
       var _this = this,
       manifest = _this.manifest.jsonLd,
-      focusState = _this.currentFocus,
+      focusState = _this.viewType,
       templateData = {};
 
       //make sure annotations list is cleared out when changing objects within window
@@ -11415,31 +11424,32 @@ window.Mirador = window.Mirador || function(config) {
         _this.annotationsList.pop();
       }
       //unsubscribe from stale events as they will be updated with new module calls
-      jQuery.unsubscribe(('currentCanvasIDUpdated.' + _this.id));
+      _this.eventEmitter.unsubscribe(('currentCanvasIDUpdated.' + _this.id));
 
       _this.removeBookView();
 
-      //remove any imageModes that are not available as a focus
+      //reset imagemodes and then remove any imageModes that are not available as a focus
+      this.imageModes = this.originalImageModes;
       this.imageModes = jQuery.map(this.imageModes, function(value, index) {
         if (jQuery.inArray(value, _this.focuses) === -1) return null;
         return value;
       });
 
       _this.imagesList = _this.manifest.getCanvases();
-      if (!_this.currentCanvasID) {
-        _this.currentCanvasID = _this.imagesList[0]['@id'];
+      if (!_this.canvasID) {
+        _this.canvasID = _this.imagesList[0]['@id'];
       }
 
       this.annoEndpointAvailable = !jQuery.isEmptyObject(_this.state.getStateProperty('annotationEndpoint'));
-      if (!this.annotationLayerAvailable) {
-        this.annotationCreationAvailable = false;
+      if (!this.annotationLayer) {
+        this.annotationCreation = false;
         this.annoEndpointAvailable = false;
         this.annotationState = 'annoOff';
       }
       _this.getAnnotations();
 
       //for use by SidePanel, which needs to know if the current view can have the annotations tab
-      jQuery.publish(('windowUpdated'), {
+      _this.eventEmitter.publish(('windowUpdated'), {
         id: _this.id,
         annotationsAvailable: this.annotationsAvailable
       });
@@ -11480,8 +11490,8 @@ window.Mirador = window.Mirador || function(config) {
           return _this.layoutOptions[element] === false;
         });
       }
-      templateData.currentFocusClass = _this.iconClasses[_this.currentFocus];
-      templateData.showFullScreen = _this.fullScreenAvailable;
+      templateData.currentFocusClass = _this.iconClasses[_this.viewType];
+      templateData.showFullScreen = _this.fullScreen;
       _this.element = jQuery(this.template(templateData)).appendTo(_this.appendTo);
       this.element.find('.manifest-info .mirador-tooltip').each(function() {
         jQuery(this).qtip({
@@ -11523,7 +11533,7 @@ window.Mirador = window.Mirador || function(config) {
           classes: 'qtip-dark qtip-shadow qtip-rounded'
         }
       });
-      jQuery.publish('WINDOW_ELEMENT_UPDATED', {windowId: _this.id, element: _this.element});
+      _this.eventEmitter.publish('WINDOW_ELEMENT_UPDATED', {windowId: _this.id, element: _this.element});
 
       //clear any existing objects
       _this.clearViews();
@@ -11536,16 +11546,16 @@ window.Mirador = window.Mirador || function(config) {
       _this.bindNavigation();
       switch(focusState) {
         case 'ThumbnailsView':
-          _this.toggleThumbnails(_this.currentCanvasID);
+          _this.toggleThumbnails(_this.canvasID);
         break;
         case 'ImageView':
-          _this.toggleImageView(_this.currentCanvasID);
+          _this.toggleImageView(_this.canvasID);
         break;
         case 'BookView':
-          _this.toggleBookView(_this.currentCanvasID);
+          _this.toggleBookView(_this.canvasID);
         break;
         case 'ScrollView':
-          _this.toggleScrollView(_this.currentCanvasID);
+          _this.toggleScrollView(_this.canvasID);
         break;
         default:
           break;
@@ -11567,9 +11577,9 @@ window.Mirador = window.Mirador || function(config) {
 
     update: function(options) {
       jQuery.extend(this, options);
-      if (this.focusOptions) {
-        this.focusOptions.osdBounds = null;
-        this.focusOptions.zoomLevel = null;
+      if (this.windowOptions) {
+        this.windowOptions.osdBounds = null;
+        this.windowOptions.zoomLevel = null;
       }
       this.init();
     },
@@ -11577,7 +11587,7 @@ window.Mirador = window.Mirador || function(config) {
     // reset whether BookView is available every time as a user might switch between paged and non-paged objects within a single slot/window
     removeBookView: function() {
       var _this = this;
-      this.focuses = this.focusesOriginal;
+      this.focuses = this.availableViews;
       var manifest = this.manifest.jsonLd;
       if (manifest.sequences[0].viewingHint) {
         if (manifest.sequences[0].viewingHint.toLowerCase() !== 'paged') {
@@ -11591,22 +11601,7 @@ window.Mirador = window.Mirador || function(config) {
 
     listenForActions: function() {
       var _this = this;
-
-      // XXX seong - Rashimi removed this resize callback - and put it in bindEvents().
-      //this event should trigger from layout
-      jQuery(window).resize($.debounce(function(event){
-        if (_this.focusModules.ScrollView) {
-          var containerHeight = _this.element.find('.view-container').height();
-          var triggerShow = false;
-          if (_this.currentFocus === "ScrollView") {
-            triggerShow = true;
-          }
-          _this.focusModules.ScrollView.reloadImages(Math.floor(containerHeight * _this.scrollImageRatio), triggerShow);
-        }
-        jQuery.publish('resizeMirador', [event]);
-      }, 300));
-
-      jQuery.subscribe('bottomPanelSet.' + _this.id, function(event, visible) {
+      _this.eventEmitter.subscribe('bottomPanelSet.' + _this.id, function(event, visible) {
         var panel = _this.element.find('.bottomPanel');
         if (visible === true) {
           panel.css({transform: 'translateY(0)'});
@@ -11615,15 +11610,15 @@ window.Mirador = window.Mirador || function(config) {
         }
       });
 
-      jQuery.subscribe('HIDE_REMOVE_OBJECT.' + _this.id, function(event) {
+      _this.eventEmitter.subscribe('HIDE_REMOVE_OBJECT.' + _this.id, function(event) {
         _this.element.find('.remove-object-option').hide();
       });
 
-      jQuery.subscribe('SHOW_REMOVE_OBJECT.' + _this.id, function(event) {
+      _this.eventEmitter.subscribe('SHOW_REMOVE_OBJECT.' + _this.id, function(event) {
         _this.element.find('.remove-object-option').show();
       });
 
-      jQuery.subscribe('sidePanelStateUpdated.' + this.id, function(event, state) {
+      _this.eventEmitter.subscribe('sidePanelStateUpdated.' + this.id, function(event, state) {
         if (state.open) {
             _this.element.find('.mirador-icon-toc').addClass('selected');
             _this.element.find('.view-container').removeClass('maximised');
@@ -11634,12 +11629,12 @@ window.Mirador = window.Mirador || function(config) {
       });
 
       // TODO: temporary logic to minimize side panel if only tab is toc and toc is empty
-      jQuery.subscribe('sidePanelVisibilityByTab.' + this.id, function(event, visible) {
+      _this.eventEmitter.subscribe('sidePanelVisibilityByTab.' + this.id, function(event, visible) {
         _this.sidePanelVisibility(visible, '0s');
       });
 
       // XXX seong
-      jQuery.subscribe('ANNOTATION_FOCUSED', function(event, annoWinId, annotation) {
+      _this.eventEmitter.subscribe('ANNOTATION_FOCUSED', function(event, annoWinId, annotation) {
         var imageView = _this.focusModules.ImageView;
         var annoState = imageView.hud.annoState.current;
         
@@ -11649,31 +11644,31 @@ window.Mirador = window.Mirador || function(config) {
         }
       });
 
-      jQuery.subscribe('SET_CURRENT_CANVAS_ID.' + this.id, function(event, canvasID) {
+      _this.eventEmitter.subscribe('SET_CURRENT_CANVAS_ID.' + this.id, function(event, canvasID) {
         _this.setCurrentCanvasID(canvasID);
       });
 
-      jQuery.subscribe('REMOVE_CLASS.' + this.id, function(event, className) {
+      _this.eventEmitter.subscribe('REMOVE_CLASS.' + this.id, function(event, className) {
         _this.element.find('.view-container').removeClass(className);
       });
 
-      jQuery.subscribe('ADD_CLASS.' + this.id, function(event, className) {
+      _this.eventEmitter.subscribe('ADD_CLASS.' + this.id, function(event, className) {
         _this.element.find('.view-container').addClass(className);
       });
 
-      jQuery.subscribe('UPDATE_FOCUS_IMAGES.' + this.id, function(event, images) {
+      _this.eventEmitter.subscribe('UPDATE_FOCUS_IMAGES.' + this.id, function(event, images) {
         _this.updateFocusImages(images.array); 
       });
 
-      jQuery.subscribe('HIDE_ICON_TOC.' + this.id, function(event) {
+      _this.eventEmitter.subscribe('HIDE_ICON_TOC.' + this.id, function(event) {
         _this.element.find('.mirador-icon-toc').hide();
       });
 
-      jQuery.subscribe('SHOW_ICON_TOC.' + this.id, function(event) {
+      _this.eventEmitter.subscribe('SHOW_ICON_TOC.' + this.id, function(event) {
         _this.element.find('.mirador-icon-toc').show();
       });
 
-      jQuery.subscribe('SET_BOTTOM_PANEL_VISIBILITY.' + this.id, function(event, visibility) {
+      _this.eventEmitter.subscribe('SET_BOTTOM_PANEL_VISIBILITY.' + this.id, function(event, visibility) {
         if (typeof visibility !== 'undefined' && visibility !== null) {
           _this.bottomPanelVisibility(visibility);
         } else {
@@ -11681,16 +11676,16 @@ window.Mirador = window.Mirador || function(config) {
         }
       });
 
-      jQuery.subscribe('TOGGLE_BOTTOM_PANEL_VISIBILITY.' + this.id, function(event) {
+      _this.eventEmitter.subscribe('TOGGLE_BOTTOM_PANEL_VISIBILITY.' + this.id, function(event) {
         var visible = !_this.bottomPanelVisible;
         _this.bottomPanelVisibility(visible);
       });
       
-      jQuery.subscribe('DISABLE_WINDOW_FULLSCREEN', function(event) {
+      _this.eventEmitter.subscribe('DISABLE_WINDOW_FULLSCREEN', function(event) {
         _this.element.find('.mirador-osd-fullscreen').hide();
       });
 
-      jQuery.subscribe('ENABLE_WINDOW_FULLSCREEN', function(event) {
+      _this.eventEmitter.subscribe('ENABLE_WINDOW_FULLSCREEN', function(event) {
         _this.element.find('.mirador-osd-fullscreen').show();        
       });
     },
@@ -11703,7 +11698,7 @@ window.Mirador = window.Mirador || function(config) {
         if (_this.focusModules.ScrollView) {
           var containerHeight = _this.element.find('.view-container').height();
           var triggerShow = false;
-          if (_this.currentFocus === "ScrollView") {
+          if (_this.viewType === "ScrollView") {
             triggerShow = true;
           }
           _this.focusModules.ScrollView.reloadImages(Math.floor(containerHeight * _this.scrollImageRatio), triggerShow);
@@ -11726,7 +11721,7 @@ window.Mirador = window.Mirador || function(config) {
 
     bindAnnotationEvents: function() {
       var _this = this;
-      jQuery.subscribe('annotationCreated.'+_this.id, function(event, oaAnno, osdOverlay) {
+      _this.eventEmitter.subscribe('annotationCreated.'+_this.id, function(event, oaAnno, osdOverlay) {
         var annoID;
         //first function is success callback, second is error callback
         _this.endpoint.create(oaAnno, function(data) {
@@ -11735,7 +11730,7 @@ window.Mirador = window.Mirador || function(config) {
           _this.annotationsList.push(data);
           //update overlay so it can be a part of the annotationList rendering
           jQuery(osdOverlay).removeClass('osd-select-rectangle').addClass('annotation').attr('id', annoID);
-          jQuery.publish('ANNOTATIONS_LIST_UPDATED', {windowId: _this.id, annotationsList: _this.annotationsList});
+          _this.eventEmitter.publish('ANNOTATIONS_LIST_UPDATED', {windowId: _this.id, annotationsList: _this.annotationsList});
         },
         function() {
           //provide useful feedback to user
@@ -11745,7 +11740,7 @@ window.Mirador = window.Mirador || function(config) {
         });
       });
 
-      jQuery.subscribe('annotationUpdated.'+_this.id, function(event, oaAnno) {
+      _this.eventEmitter.subscribe('annotationUpdated.'+_this.id, function(event, oaAnno) {
         //first function is success callback, second is error callback
         _this.endpoint.update(oaAnno, function() {
           jQuery.each(_this.annotationsList, function(index, value) {
@@ -11754,28 +11749,27 @@ window.Mirador = window.Mirador || function(config) {
               return false;
             }
           });
-
-          jQuery.publish('ANNOTATIONS_LIST_UPDATED', {windowId: _this.id, annotationsList: _this.annotationsList});
+          _this.eventEmitter.publish('ANNOTATIONS_LIST_UPDATED', {windowId: _this.id, annotationsList: _this.annotationsList});
         },
         function() {
           console.log("There was an error updating this annotation");
         });
       });
 
-      jQuery.subscribe('annotationDeleted.'+_this.id, function(event, annoId) {
+      _this.eventEmitter.subscribe('annotationDeleted.'+_this.id, function(event, annoId) {
         //remove from endpoint
         //first function is success callback, second is error callback
         _this.endpoint.deleteAnnotation(annoId, function() {
           _this.annotationsList = jQuery.grep(_this.annotationsList, function(e){ return e['@id'] !== annoId; });
-          jQuery.publish(('removeOverlay.' + _this.id), annoId);
-          jQuery.publish('ANNOTATIONS_LIST_UPDATED', {windowId: _this.id, annotationsList: _this.annotationsList});
+          _this.eventEmitter.publish(('removeOverlay.' + _this.id), annoId);
+          _this.eventEmitter.publish('ANNOTATIONS_LIST_UPDATED', {windowId: _this.id, annotationsList: _this.annotationsList});
         },
         function() {
           // console.log("There was an error deleting this annotation");
         });
       });
 
-      jQuery.subscribe('updateAnnotationList.'+_this.id, function(event) {
+      _this.eventEmitter.subscribe('updateAnnotationList.'+_this.id, function(event) {
         while(_this.annotationsList.length > 0) {
           _this.annotationsList.pop();
         }
@@ -11808,9 +11802,10 @@ window.Mirador = window.Mirador || function(config) {
               manifest: _this.manifest,
               appendTo: _this.element.find('.'+panelType),
               state:  _this.state,
+              eventEmitter: _this.eventEmitter,
               windowId: _this.id,
               panel: true,
-              canvasID: _this.currentCanvasID,
+              canvasID: _this.canvasID,
               imagesList: _this.imagesList,
               thumbInfo: {thumbsHeight: 80, listingCssCls: 'panel-listing-thumbs', thumbnailCls: 'panel-thumbnail-view'}
             });
@@ -11862,9 +11857,10 @@ window.Mirador = window.Mirador || function(config) {
         this.sidePanel = new $.SidePanel({
               windowId: _this.id,
               state: _this.state,
+              eventEmitter: _this.eventEmitter,
               appendTo: _this.element.find('.sidePanel'),
               manifest: _this.manifest,
-              canvasID: _this.currentCanvasID,
+              canvasID: _this.canvasID,
               layersTabAvailable: layersTabAvailable,
               tocTabAvailable: tocAvailable,
               annotationsTabAvailable: annotationsTabAvailable,
@@ -11926,7 +11922,7 @@ window.Mirador = window.Mirador || function(config) {
         viewContainerElement.css('margin-left', 0);
         sidePanelElement.addClass('minimized').css('border', 'none').width(0);
       }
-      jQuery.publish(('windowUpdated'), {
+      _this.eventEmitter.publish(('windowUpdated'), {
         id: _this.id,
         sidePanelVisible: visible
       });
@@ -11935,8 +11931,8 @@ window.Mirador = window.Mirador || function(config) {
     bottomPanelVisibility: function(visible) {
       var _this = this;
       _this.bottomPanelVisible = visible;
-      jQuery.publish(('bottomPanelSet.' + _this.id), visible);
-      jQuery.publish(('windowUpdated'), {
+      _this.eventEmitter.publish(('bottomPanelSet.' + _this.id), visible);
+      _this.eventEmitter.publish(('windowUpdated'), {
         id: _this.id,
         bottomPanelVisible: visible
       });
@@ -11944,9 +11940,9 @@ window.Mirador = window.Mirador || function(config) {
 
     adjustFocusSize: function(panelType, panelState) {
       if (panelType === 'bottomPanel') {
-        this.focusModules[this.currentFocus].adjustHeight('focus-max-height', panelState);
+        this.focusModules[this.viewType].adjustHeight('focus-max-height', panelState);
       } else if (panelType === 'sidePanel') {
-        this.focusModules[this.currentFocus].adjustWidth('focus-max-width', panelState);
+        this.focusModules[this.viewType].adjustWidth('focus-max-width', panelState);
       } else {}
     },
 
@@ -11971,7 +11967,7 @@ window.Mirador = window.Mirador || function(config) {
     toggleFocus: function(focusState, imageMode) {
       var _this = this;
 
-      this.currentFocus = focusState;
+      this.viewType = focusState;
       if (imageMode && jQuery.inArray(imageMode, this.imageModes) > -1) {
         this.currentImageMode = imageMode;
       }
@@ -11985,11 +11981,11 @@ window.Mirador = window.Mirador || function(config) {
       this.updateManifestInfo();
       this.updatePanelsAndOverlay(focusState);
       this.updateSidePanel();
-      jQuery.publish("focusUpdated");
-      jQuery.publish("windowUpdated", {
+      _this.eventEmitter.publish("focusUpdated");
+      _this.eventEmitter.publish("windowUpdated", {
         id: _this.id,
-        viewType: _this.currentFocus,
-        canvasID: _this.currentCanvasID,
+        viewType: _this.viewType,
+        canvasID: _this.canvasID,
         imageMode: _this.currentImageMode,
         loadedManifest: _this.manifest.jsonLd['@id'],
         slotAddress: _this.slotAddress
@@ -11997,14 +11993,15 @@ window.Mirador = window.Mirador || function(config) {
     },
 
     toggleThumbnails: function(canvasID) {
-      this.currentCanvasID = canvasID;
+      this.canvasID = canvasID;
       if (this.focusModules.ThumbnailsView === null) {
         this.focusModules.ThumbnailsView = new $.ThumbnailsView({
           manifest: this.manifest,
           appendTo: this.element.find('.view-container'),
           state:  this.state,
+          eventEmitter: this.eventEmitter,
           windowId: this.id,
-          canvasID: this.currentCanvasID,
+          canvasID: this.canvasID,
           imagesList: this.imagesList
         });
       } else {
@@ -12015,19 +12012,20 @@ window.Mirador = window.Mirador || function(config) {
     },
 
     toggleImageView: function(canvasID) {
-      this.currentCanvasID = canvasID;
+      this.canvasID = canvasID;
       if (this.focusModules.ImageView === null) {
         this.focusModules.ImageView = new $.ImageView({
           manifest: this.manifest,
           appendTo: this.element.find('.view-container'),
           windowId: this.id,
           state:  this.state,
+          eventEmitter: this.eventEmitter,
           canvasID: canvasID,
           imagesList: this.imagesList,
-          osdOptions: this.focusOptions,
+          osdOptions: this.windowOptions,
           bottomPanelAvailable: this.bottomPanelAvailable,
-          annotationLayerAvailable: this.annotationLayerAvailable,
-          annotationCreationAvailable: this.annotationCreationAvailable,
+          annotationLayerAvailable: this.annotationLayer,
+          annotationCreationAvailable: this.annotationCreation,
           annoEndpointAvailable: this.annoEndpointAvailable,
           annotationState : this.annotationState
         });
@@ -12039,16 +12037,17 @@ window.Mirador = window.Mirador || function(config) {
     },
 
     toggleBookView: function(canvasID) {
-      this.currentCanvasID = canvasID;
+      this.canvasID = canvasID;
       if (this.focusModules.BookView === null) {
         this.focusModules.BookView = new $.BookView({
           manifest: this.manifest,
           appendTo: this.element.find('.view-container'),
           windowId: this.id,
           state:  this.state,
+          eventEmitter: this.eventEmitter,
           canvasID: canvasID,
           imagesList: this.imagesList,
-          osdOptions: this.focusOptions,
+          osdOptions: this.windowOptions,
           bottomPanelAvailable: this.bottomPanelAvailable
         });
       } else {
@@ -12059,15 +12058,16 @@ window.Mirador = window.Mirador || function(config) {
     },
 
     toggleScrollView: function(canvasID) {
-      this.currentCanvasID = canvasID;
+      this.canvasID = canvasID;
       if (this.focusModules.ScrollView === null) {
         var containerHeight = this.element.find('.view-container').height();
         this.focusModules.ScrollView = new $.ScrollView({
           manifest: this.manifest,
           appendTo: this.element.find('.view-container'),
           state:  this.state,
+          eventEmitter: this.eventEmitter,
           windowId: this.id,
-          canvasID: this.currentCanvasID,
+          canvasID: this.canvasID,
           imagesList: this.imagesList,
           thumbInfo: {thumbsHeight: Math.floor(containerHeight * this.scrollImageRatio), listingCssCls: 'scroll-listing-thumbs', thumbnailCls: 'scroll-view'}
         });
@@ -12085,24 +12085,24 @@ window.Mirador = window.Mirador || function(config) {
 
     setCurrentCanvasID: function(canvasID) {
       var _this = this;
-      this.currentCanvasID = canvasID;
-      jQuery.publish('removeTooltips.' + _this.id);
-      jQuery.unsubscribe(('annotationListLoaded.' + _this.id));
+      this.canvasID = canvasID;
+      _this.eventEmitter.publish('removeTooltips.' + _this.id);
+      _this.eventEmitter.unsubscribe(('annotationListLoaded.' + _this.id));
       while(_this.annotationsList.length > 0) {
         _this.annotationsList.pop();
       }
       this.getAnnotations();
       switch(this.currentImageMode) {
         case 'ImageView':
-          this.toggleImageView(this.currentCanvasID);
+          this.toggleImageView(this.canvasID);
         break;
         case 'BookView':
-          this.toggleBookView(this.currentCanvasID);
+          this.toggleBookView(this.canvasID);
         break;
         default:
           break;
       }
-      jQuery.publish(('currentCanvasIDUpdated.' + _this.id), canvasID);
+      _this.eventEmitter.publish(('currentCanvasIDUpdated.' + _this.id), canvasID);
     },
 
     replaceWindow: function(newSlotAddress, newElement) {
@@ -12116,9 +12116,9 @@ window.Mirador = window.Mirador || function(config) {
 
     updateManifestInfo: function() {
       var _this = this;
-      _this.element.find('.mirador-icon-view-type > i:first').removeClass().addClass(_this.iconClasses[_this.currentFocus]);
+      _this.element.find('.mirador-icon-view-type > i:first').removeClass().addClass(_this.iconClasses[_this.viewType]);
       
-      if (this.focusOverlaysAvailable[this.currentFocus].overlay.MetadataView) {
+      if (this.focusOverlaysAvailable[this.viewType].overlay.MetadataView) {
         this.element.find('.mirador-icon-metadata-view').addClass('selected');
       }
     },
@@ -12130,7 +12130,7 @@ window.Mirador = window.Mirador || function(config) {
     getAnnotations: function() {
       //first look for manifest annotations
       var _this = this,
-      url = _this.manifest.getAnnotationsListUrl(_this.currentCanvasID);
+      url = _this.manifest.getAnnotationsListUrl(_this.canvasID);
 
       if (url !== false) {
         jQuery.get(url, function(list) {
@@ -12143,7 +12143,7 @@ window.Mirador = window.Mirador || function(config) {
             //indicate this is a manifest annotation - which affects the UI
             value.endpoint = "manifest";
           });
-          jQuery.publish('ANNOTATIONS_LIST_UPDATED', {windowId: _this.id, annotationsList: _this.annotationsList});
+          _this.eventEmitter.publish('ANNOTATIONS_LIST_UPDATED', {windowId: _this.id, annotationsList: _this.annotationsList});
         });
       }
 
@@ -12161,9 +12161,10 @@ window.Mirador = window.Mirador || function(config) {
           options.dfd = dfd;
           options.windowID = _this.id;
           options.imagesList = _this.imagesList;
+          options.eventEmitter = _this.eventEmitter;
           _this.endpoint = new $[module](options);
         }
-        _this.endpoint.search({ "uri" : _this.currentCanvasID});
+        _this.endpoint.search({ "uri" : _this.canvasID});
 
         dfd.done(function(loaded) {
           _this.annotationsList = _this.annotationsList.concat(_this.endpoint.annotationsList);
@@ -12174,21 +12175,21 @@ window.Mirador = window.Mirador || function(config) {
             }
             return true;
           });
-          
-          jQuery.publish('ANNOTATIONS_LIST_UPDATED', {windowId: _this.id, annotationsList: _this.annotationsList});
+          _this.eventEmitter.publish('ANNOTATIONS_LIST_UPDATED', {windowId: _this.id, annotationsList: _this.annotationsList});
         });
       }
     },
 
     fullScreen: function() {
+      var _this = this;
       if (!OpenSeadragon.isFullScreen()) {
         this.element.find('.mirador-osd-fullscreen i').removeClass('fa-compress').addClass('fa-expand');
         this.element.find('.mirador-osd-toggle-bottom-panel').show();
-        jQuery.publish('SET_BOTTOM_PANEL_VISIBILITY.' + this.id, true);
+        _this.eventEmitter.publish('SET_BOTTOM_PANEL_VISIBILITY.' + this.id, true);
       } else {
         this.element.find('.mirador-osd-fullscreen i').removeClass('fa-expand').addClass('fa-compress');
         this.element.find('.mirador-osd-toggle-bottom-panel').hide();
-        jQuery.publish('SET_BOTTOM_PANEL_VISIBILITY.' + this.id, false);
+        _this.eventEmitter.publish('SET_BOTTOM_PANEL_VISIBILITY.' + this.id, false);
       }
     },
 
@@ -12213,23 +12214,23 @@ window.Mirador = window.Mirador || function(config) {
       });
 
       this.element.find('.single-image-option').on('click', function() {
-        _this.toggleImageView(_this.currentCanvasID);
+        _this.toggleImageView(_this.canvasID);
       });
 
       this.element.find('.book-option').on('click', function() {
-        _this.toggleBookView(_this.currentCanvasID);
+        _this.toggleBookView(_this.canvasID);
       });
 
       this.element.find('.scroll-option').on('click', function() {
-        _this.toggleScrollView(_this.currentCanvasID);
+        _this.toggleScrollView(_this.canvasID);
       });
 
       this.element.find('.thumbnails-option').on('click', function() {
-        _this.toggleThumbnails(_this.currentCanvasID);
+        _this.toggleThumbnails(_this.canvasID);
       });
 
       this.element.find('.mirador-icon-metadata-view').on('click', function() {
-        _this.toggleMetadataOverlay(_this.currentFocus);
+        _this.toggleMetadataOverlay(_this.viewType);
       });
 
       this.element.find('.mirador-icon-toc').on('click', function() {
@@ -12237,27 +12238,27 @@ window.Mirador = window.Mirador || function(config) {
       });
 
       this.element.find('.new-object-option').on('click', function() {
-        jQuery.publish('ADD_ITEM_FROM_WINDOW', _this.id);
+        _this.eventEmitter.publish('ADD_ITEM_FROM_WINDOW', _this.id);
       });
 
       this.element.find('.remove-object-option').on('click', function() {
-        jQuery.publish('REMOVE_SLOT_FROM_WINDOW', _this.id);
+        _this.eventEmitter.publish('REMOVE_SLOT_FROM_WINDOW', _this.id);
       });
 
       this.element.find('.add-slot-right').on('click', function() {
-        jQuery.publish('SPLIT_RIGHT_FROM_WINDOW', _this.id);
+        _this.eventEmitter.publish('SPLIT_RIGHT_FROM_WINDOW', _this.id);
       });
 
       this.element.find('.add-slot-left').on('click', function() {
-        jQuery.publish('SPLIT_LEFT_FROM_WINDOW', _this.id);
+        _this.eventEmitter.publish('SPLIT_LEFT_FROM_WINDOW', _this.id);
       });
 
       this.element.find('.add-slot-below').on('click', function() {
-        jQuery.publish('SPLIT_DOWN_FROM_WINDOW', _this.id);
+        _this.eventEmitter.publish('SPLIT_DOWN_FROM_WINDOW', _this.id);
       });
 
       this.element.find('.add-slot-above').on('click', function() {
-        jQuery.publish('SPLIT_UP_FROM_WINDOW', _this.id);
+        _this.eventEmitter.publish('SPLIT_UP_FROM_WINDOW', _this.id);
       });
     },
 
@@ -12354,7 +12355,8 @@ window.Mirador = window.Mirador || function(config) {
       hovered:           null,
       windowId:          null,
       mode:              'default',
-      element:           null
+      element:           null,
+      eventEmitter:      null
     }, options);
 
     this.init();
@@ -12364,7 +12366,7 @@ window.Mirador = window.Mirador || function(config) {
 
     init: function() {
       var _this = this;
-      jQuery.unsubscribe(('modeChange.' + _this.windowId));
+      _this.eventEmitter.unsubscribe(('modeChange.' + _this.windowId));
 
       this.createRenderer();
       this.bindEvents();
@@ -12374,12 +12376,12 @@ window.Mirador = window.Mirador || function(config) {
     listenForActions: function() {
       var _this = this;
 
-      jQuery.subscribe('modeChange.' + _this.windowId, function(event, modeName) {
+      _this.eventEmitter.subscribe('modeChange.' + _this.windowId, function(event, modeName) {
         _this.mode = modeName;
         _this.modeSwitch();
       });
 
-      jQuery.subscribe('annotationListLoaded.' + _this.windowId, function(event) {
+      _this.eventEmitter.subscribe('annotationListLoaded.' + _this.windowId, function(event) {
         _this.annotationsList = _this.state.getWindowAnnotationsList(_this.windowId);
         _this.updateRenderer();
       });
@@ -12397,7 +12399,8 @@ window.Mirador = window.Mirador || function(config) {
         list: _this.annotationsList, // must be passed by reference.
         visible: false,
         windowId: _this.windowId,
-        state: _this.state
+        state: _this.state,
+        eventEmitter: _this.eventEmitter
       });
       this.modeSwitch();
     },
@@ -12438,7 +12441,9 @@ window.Mirador = window.Mirador || function(config) {
             element:           null,
             appendTo:          null,
             manifest:          null,
-            visible:           null
+            visible:           null,
+            state:             null,
+            eventEmitter:      null
         }, options);
 
         this.init();
@@ -12464,11 +12469,12 @@ window.Mirador = window.Mirador || function(config) {
             this.bindEvents();
         },
         localState: function(state, initial) {
+            var _this = this;
             if (!arguments.length) return this.annoTabState;
             this.annoTabState = state;
 
             if (!initial) {
-                jQuery.publish('annotationsTabStateUpdated.' + this.windowId, this.annoTabState);
+                _this.eventEmitter.publish('annotationsTabStateUpdated.' + this.windowId, this.annoTabState);
             }
 
             return this.annoTabState;
@@ -12540,22 +12546,22 @@ window.Mirador = window.Mirador || function(config) {
         listenForActions: function() {
             var _this = this;
 
-            jQuery.subscribe('annotationsTabStateUpdated.' + _this.windowId, function(_, data) {
+            _this.eventEmitter.subscribe('annotationsTabStateUpdated.' + _this.windowId, function(_, data) {
                 _this.render(data);
             });
 
-            jQuery.subscribe('tabStateUpdated.' + _this.windowId, function(_, data) {
+            _this.eventEmitter.subscribe('tabStateUpdated.' + _this.windowId, function(_, data) {
                 _this.tabStateUpdated(data.annotationsTab);
             });
 
 
-            jQuery.subscribe('annotationListLoaded.' + _this.windowId, function(_, data) {
+            _this.eventEmitter.subscribe('annotationListLoaded.' + _this.windowId, function(_, data) {
                 _this.annotationListLoaded();
             });
 
-            jQuery.subscribe('currentCanvasIDUpdated.' + _this.windowId, function(event) {
+            _this.eventEmitter.subscribe('currentCanvasIDUpdated.' + _this.windowId, function(event) {
 
-              jQuery.subscribe('annotationListLoaded.' + _this.windowId, function(event) {
+              _this.eventEmitter.subscribe('annotationListLoaded.' + _this.windowId, function(event) {
                   _this.annotationListLoaded();
               });
 
@@ -12563,11 +12569,11 @@ window.Mirador = window.Mirador || function(config) {
 
             });
 
-            jQuery.subscribe('listSelected.' + _this.windowId, function(event, listId) {
+            _this.eventEmitter.subscribe('listSelected.' + _this.windowId, function(event, listId) {
                 _this.selectList(listId);
             });
 
-            jQuery.subscribe('listDeselected.' + _this.windowId, function(event, listId) {
+            _this.eventEmitter.subscribe('listDeselected.' + _this.windowId, function(event, listId) {
                 _this.deselectList(listId);
             });
 
@@ -12581,10 +12587,10 @@ window.Mirador = window.Mirador || function(config) {
                 var listClicked = jQuery(this).data('id');
                 if(_this.localState().selectedList === listClicked){
                     //_this.deselectList(listClicked);
-                    jQuery.publish('listDeselected.' + _this.windowId, listClicked);
+                    _this.eventEmitter.publish('listDeselected.' + _this.windowId, listClicked);
                 }else{
                     //_this.selectList(listClicked);
-                    jQuery.publish('listSelected.' + _this.windowId, listClicked);
+                    _this.eventEmitter.publish('listSelected.' + _this.windowId, listClicked);
                 }
 
             });
@@ -12647,7 +12653,8 @@ window.Mirador = window.Mirador || function(config) {
         osdBounds:        null,
         zoomLevel:        null
       },
-      stitchTileMargin: 10
+      stitchTileMargin: 10,
+      eventEmitter: null
     }, options);
 
     this.init();
@@ -12657,6 +12664,7 @@ window.Mirador = window.Mirador || function(config) {
   $.BookView.prototype = {
 
     init: function() {
+      var _this = this;
       if (this.canvasID !== null) {
         this.currentImgIndex = $.getImageIndexById(this.imagesList, this.canvasID);
       }
@@ -12678,7 +12686,7 @@ window.Mirador = window.Mirador || function(config) {
         windowId: this.windowId,
         annotationLayerAvailable: false,
         showNextPrev : this.imagesList.length !== 1,
-        state: this.state
+        eventEmitter: this.eventEmitter
       });
 
       if (this.manifest.jsonLd.sequences[0].viewingDirection) {
@@ -12695,9 +12703,9 @@ window.Mirador = window.Mirador || function(config) {
       this.listenForActions();
 
       if (typeof this.bottomPanelAvailable !== 'undefined' && !this.bottomPanelAvailable) {
-        jQuery.publish('SET_BOTTOM_PANEL_VISIBILITY.' + this.windowId, false);
+        _this.eventEmitter.publish('SET_BOTTOM_PANEL_VISIBILITY.' + this.windowId, false);
       } else {
-        jQuery.publish('SET_BOTTOM_PANEL_VISIBILITY.' + this.windowId, null);
+        _this.eventEmitter.publish('SET_BOTTOM_PANEL_VISIBILITY.' + this.windowId, null);
       }
     },
 
@@ -12711,7 +12719,7 @@ window.Mirador = window.Mirador || function(config) {
       firstCanvasId = _this.imagesList[0]['@id'],
       lastCanvasId = _this.imagesList[_this.imagesList.length-1]['@id'];
 
-      jQuery.subscribe('bottomPanelSet.' + _this.windowId, function(event, visible) {
+      _this.eventEmitter.subscribe('bottomPanelSet.' + _this.windowId, function(event, visible) {
         var dodgers = _this.element.find('.mirador-osd-toggle-bottom-panel, .mirador-pan-zoom-controls');
         var arrows = _this.element.find('.mirador-osd-next, .mirador-osd-previous');
         if (visible === true) {
@@ -12723,12 +12731,12 @@ window.Mirador = window.Mirador || function(config) {
         }
       });
 
-      jQuery.subscribe('fitBounds.' + _this.windowId, function(event, bounds) {
+      _this.eventEmitter.subscribe('fitBounds.' + _this.windowId, function(event, bounds) {
         var rect = _this.osd.viewport.imageToViewportRectangle(Number(bounds.x), Number(bounds.y), Number(bounds.width), Number(bounds.height));
         _this.osd.viewport.fitBoundsWithConstraints(rect, false);
       });
 
-      jQuery.subscribe('currentCanvasIDUpdated.' + _this.windowId, function(event, canvasId) {
+      _this.eventEmitter.subscribe('currentCanvasIDUpdated.' + _this.windowId, function(event, canvasId) {
         // If it is the first canvas, hide the "go to previous" button, otherwise show it.
         if (canvasId === firstCanvasId) {
           _this.element.find('.mirador-osd-previous').hide();
@@ -12800,7 +12808,7 @@ bindEvents: function() {
       });
 
       this.element.find('.mirador-osd-toggle-bottom-panel').on('click', function() {
-        jQuery.publish('TOGGLE_BOTTOM_PANEL_VISIBILITY.' + _this.windowId);
+        _this.eventEmitter.publish('TOGGLE_BOTTOM_PANEL_VISIBILITY.' + _this.windowId);
       });
     },
 
@@ -12817,7 +12825,7 @@ bindEvents: function() {
     setBounds: function() {
       var _this = this;
       this.osdOptions.osdBounds = this.osd.viewport.getBounds(true);
-      jQuery.publish("imageBoundsUpdated", {
+      _this.eventEmitter.publish("imageBoundsUpdated", {
         id: _this.windowId, 
           osdBounds: {
             x: _this.osdOptions.osdBounds.x, 
@@ -12846,9 +12854,9 @@ bindEvents: function() {
 
     adjustWidth: function(className, hasClass) {
       if (hasClass) {
-        jQuery.publish('REMOVE_CLASS.'+this.windowId, className);
+        _this.eventEmitter.publish('REMOVE_CLASS.'+this.windowId, className);
       } else {
-        jQuery.publish('ADD_CLASS.'+this.windowId, className);
+        _this.eventEmitter.publish('ADD_CLASS.'+this.windowId, className);
       }
     },
 
@@ -12980,6 +12988,7 @@ bindEvents: function() {
     // need next single page for lining pages up
     // don't need for continuous or individuals
     next: function() {
+      var _this = this;
       var next;
       if (this.currentImgIndex % 2 === 0) {
         next = this.currentImgIndex + 1;
@@ -12987,7 +12996,7 @@ bindEvents: function() {
         next = this.currentImgIndex + 2;
       }
       if (next < this.imagesList.length) {
-        jQuery.publish('SET_CURRENT_CANVAS_ID.' + this.windowId, this.imagesList[next]['@id']);
+        _this.eventEmitter.publish('SET_CURRENT_CANVAS_ID.' + this.windowId, this.imagesList[next]['@id']);
       }
     },
 
@@ -12995,6 +13004,7 @@ bindEvents: function() {
     // need previous single page for lining things up
     // don't need for continuous or individuals
     previous: function() {
+      var _this = this;
       var prev;
       if (this.currentImgIndex % 2 === 0) {
         prev = this.currentImgIndex - 2;
@@ -13002,7 +13012,7 @@ bindEvents: function() {
         prev = this.currentImgIndex - 1;
       }
       if (prev >= 0) {
-        jQuery.publish('SET_CURRENT_CANVAS_ID.' + this.windowId, this.imagesList[prev]['@id']);
+        _this.eventEmitter.publish('SET_CURRENT_CANVAS_ID.' + this.windowId, this.imagesList[prev]['@id']);
       }
     },
 
@@ -13082,7 +13092,7 @@ bindEvents: function() {
       jQuery.each(stitchList, function(index, image) {
         _this.focusImages.push(image['@id']);
       });
-      jQuery.publish('UPDATE_FOCUS_IMAGES.' + this.windowId, {array: this.focusImages});
+      _this.eventEmitter.publish('UPDATE_FOCUS_IMAGES.' + this.windowId, {array: this.focusImages});
       return stitchList;
     }
   };
@@ -13099,7 +13109,8 @@ bindEvents: function() {
       mode: null,
       windowId: null,
       annoEndpointAvailable: false,
-      annotationCreationAvailable: true
+      annotationCreationAvailable: true,
+      eventEmitter: null
     }, options);
 
     this.init();
@@ -13133,7 +13144,7 @@ bindEvents: function() {
         hide: function(color) {
           color = jQuery.data(document.body, 'borderColorPickerPop' + _this.windowId);
           if (color) {
-            jQuery.publish('changeBorderColor.' + _this.windowId, color.toHexString());
+            _this.eventEmitter.publish('changeBorderColor.' + _this.windowId, color.toHexString());
           }
         },
         maxSelectionSize: 4,
@@ -13176,9 +13187,10 @@ bindEvents: function() {
           jQuery.data(document.body, 'fillColorPickerPop' + _this.windowId, color);
         },
         hide: function(color) {
+          var _this = this;
           color = jQuery.data(document.body, 'fillColorPickerPop' + _this.windowId);
           if (color) {
-            jQuery.publish('changeFillColor.' + _this.windowId, [color.toHexString(), color.getAlpha()]);
+            _this.eventEmitter.publish('changeFillColor.' + _this.windowId, [color.toHexString(), color.getAlpha()]);
           }
         },
         maxSelectionSize: 4,
@@ -13312,7 +13324,8 @@ bindEvents: function() {
       windowId:  null,
       annoState: null,
       showAnnotations: true,
-      annoEndpointAvailable: false
+      annoEndpointAvailable: false,
+      eventEmitter: null
     }, options);
 
     this.init();
@@ -13336,7 +13349,8 @@ bindEvents: function() {
           mode: 'displayAnnotations',
           windowId: this.windowId,
           annotationCreationAvailable: this.annotationCreationAvailable,
-          availableTools: this.availableTools
+          availableTools: this.availableTools,
+          eventEmitter: this.eventEmitter
         });
       }
 
@@ -13364,40 +13378,40 @@ bindEvents: function() {
         ],
         callbacks: {
           onstartup: function(event, from, to) {
-            jQuery.publish(('windowUpdated'), {
+            _this.eventEmitter.publish(('windowUpdated'), {
               id: _this.windowId,
               annotationState: to
             });
           },
           ondisplayOn: function(event, from, to) { 
             if (_this.annoEndpointAvailable) {
-                jQuery.publish('HUD_FADE_OUT.' + _this.windowId, ['.mirador-osd-annotations-layer', duration, function() {      
+                _this.eventEmitter.publish('HUD_FADE_OUT.' + _this.windowId, ['.mirador-osd-annotations-layer', duration, function() {      
                   _this.contextControls.show();
                 }]);
             } else {
-              jQuery.publish('HUD_ADD_CLASS.'+_this.windowId, ['.mirador-osd-annotations-layer', 'selected']);
+              _this.eventEmitter.publish('HUD_ADD_CLASS.'+_this.windowId, ['.mirador-osd-annotations-layer', 'selected']);
             }
-            jQuery.publish('modeChange.' + _this.windowId, 'displayAnnotations');
-            jQuery.publish(('windowUpdated'), {
+            _this.eventEmitter.publish('modeChange.' + _this.windowId, 'displayAnnotations');
+            _this.eventEmitter.publish(('windowUpdated'), {
               id: _this.windowId,
               annotationState: to
             });
           },
           onrefreshCreateOff: function(event, from, to) {
-            jQuery.publish('modeChange.' + _this.windowId, 'displayAnnotations');
-            jQuery.publish(('windowUpdated'), {
+            _this.eventEmitter.publish('modeChange.' + _this.windowId, 'displayAnnotations');
+            _this.eventEmitter.publish(('windowUpdated'), {
               id: _this.windowId,
               annotationState: to
             });
           },
           oncreateOn: function(event, from, to) {
             function enableEditingAnnotations() {
-              jQuery.publish('HUD_ADD_CLASS.'+_this.windowId, ['.mirador-osd-edit-mode', 'selected']);
-              jQuery.publish('modeChange.' + _this.windowId, 'editingAnnotations');
+              _this.eventEmitter.publish('HUD_ADD_CLASS.'+_this.windowId, ['.mirador-osd-edit-mode', 'selected']);
+              _this.eventEmitter.publish('modeChange.' + _this.windowId, 'editingAnnotations');
             }
             if (_this.annoEndpointAvailable) {
               if (from === "annoOff") {
-                jQuery.publish('HUD_FADE_OUT.' + _this.windowId, ['.mirador-osd-annotations-layer', duration, function() {      
+                _this.eventEmitter.publish('HUD_FADE_OUT.' + _this.windowId, ['.mirador-osd-annotations-layer', duration, function() {      
                   _this.contextControls.show();
                   enableEditingAnnotations();
                 }]);
@@ -13405,37 +13419,37 @@ bindEvents: function() {
                 enableEditingAnnotations();
               }
             }
-            jQuery.publish(('windowUpdated'), {
+            _this.eventEmitter.publish(('windowUpdated'), {
               id: _this.windowId,
               annotationState: to
             });
           },
           onrefreshCreateOn: function(event, from, to) {
-            jQuery.publish('modeChange.' + _this.windowId, 'editingAnnotations');
-            jQuery.publish(('windowUpdated'), {
+            _this.eventEmitter.publish('modeChange.' + _this.windowId, 'editingAnnotations');
+            _this.eventEmitter.publish(('windowUpdated'), {
               id: _this.windowId,
               annotationState: to
             });
           },
           oncreateOff: function(event, from, to) { 
-            jQuery.publish('HUD_REMOVE_CLASS.'+_this.windowId, ['.mirador-osd-edit-mode', 'selected']);
-            jQuery.publish('modeChange.' + _this.windowId, 'displayAnnotations');
-            jQuery.publish(('windowUpdated'), {
+            _this.eventEmitter.publish('HUD_REMOVE_CLASS.'+_this.windowId, ['.mirador-osd-edit-mode', 'selected']);
+            _this.eventEmitter.publish('modeChange.' + _this.windowId, 'displayAnnotations');
+            _this.eventEmitter.publish(('windowUpdated'), {
               id: _this.windowId,
               annotationState: to
             });
           },
           ondisplayOff: function(event, from, to) { 
             if (_this.annoEndpointAvailable) {
-              jQuery.publish('HUD_REMOVE_CLASS.'+_this.windowId, ['.mirador-osd-edit-mode', 'selected']);
+              _this.eventEmitter.publish('HUD_REMOVE_CLASS.'+_this.windowId, ['.mirador-osd-edit-mode', 'selected']);
               _this.contextControls.hide(function() {
-                jQuery.publish('HUD_FADE_IN.' + _this.windowId, ['.mirador-osd-annotations-layer', duration]);
+                _this.eventEmitter.publish('HUD_FADE_IN.' + _this.windowId, ['.mirador-osd-annotations-layer', duration]);
               });
             } else {
-              jQuery.publish('HUD_REMOVE_CLASS.'+_this.windowId, ['.mirador-osd-annotations-layer', 'selected']);
+              _this.eventEmitter.publish('HUD_REMOVE_CLASS.'+_this.windowId, ['.mirador-osd-annotations-layer', 'selected']);
             }
-            jQuery.publish('modeChange.' + _this.windowId, 'default');
-            jQuery.publish(('windowUpdated'), {
+            _this.eventEmitter.publish('modeChange.' + _this.windowId, 'default');
+            _this.eventEmitter.publish(('windowUpdated'), {
               id: _this.windowId,
               annotationState: to
             });
@@ -13517,7 +13531,8 @@ bindEvents: function() {
       annoCls:          'annotation-canvas',
       annotationLayerAvailable: null,
       annotationsLayer: null,
-      forceShowControls: false
+      forceShowControls: false,
+      eventEmitter:     null
     }, options);
 
     this.init();
@@ -13526,6 +13541,7 @@ bindEvents: function() {
   $.ImageView.prototype = {
 
     init: function() {    
+      var _this = this;
       // check (for thumbnail view) if the canvasID is set. 
       // If not, make it page/item 1.
       if (this.canvasID !== null) {
@@ -13545,7 +13561,7 @@ bindEvents: function() {
       .appendTo(this.element);
 
       this.createOpenSeadragonInstance($.Iiif.getImageUrl(this.currentImg));
-      jQuery.publish('UPDATE_FOCUS_IMAGES.' + this.windowId, {array: [this.canvasID]});
+      _this.eventEmitter.publish('UPDATE_FOCUS_IMAGES.' + this.windowId, {array: [this.canvasID]});
 
       var allTools = $.getTools(this.state.getStateProperty('drawingToolsSettings'));
       this.availableTools = [];
@@ -13566,16 +13582,17 @@ bindEvents: function() {
         annotationCreationAvailable: this.annotationCreationAvailable,
         annoEndpointAvailable: this.annoEndpointAvailable,
         showNextPrev : this.imagesList.length !== 1,
-        availableTools: this.availableTools
+        availableTools: this.availableTools,
+        eventEmitter: this.eventEmitter
       });
 
       this.bindEvents();
       this.listenForActions();
 
       if (typeof this.bottomPanelAvailable !== 'undefined' && !this.bottomPanelAvailable) {
-        jQuery.publish('SET_BOTTOM_PANEL_VISIBILITY.' + this.windowId, false);
+        _this.eventEmitter.publish('SET_BOTTOM_PANEL_VISIBILITY.' + this.windowId, false);
       } else {
-        jQuery.publish('SET_BOTTOM_PANEL_VISIBILITY.' + this.windowId, null);
+        _this.eventEmitter.publish('SET_BOTTOM_PANEL_VISIBILITY.' + this.windowId, null);
       }
     },
 
@@ -13589,7 +13606,7 @@ bindEvents: function() {
       firstCanvasId = _this.imagesList[0]['@id'],
       lastCanvasId = _this.imagesList[_this.imagesList.length-1]['@id'];
 
-      jQuery.subscribe('bottomPanelSet.' + _this.windowId, function(event, visible) {
+      _this.eventEmitter.subscribe('bottomPanelSet.' + _this.windowId, function(event, visible) {
         var dodgers = _this.element.find('.mirador-osd-toggle-bottom-panel, .mirador-pan-zoom-controls');
         var arrows = _this.element.find('.mirador-osd-next, .mirador-osd-previous');
         if (visible === true) {
@@ -13601,12 +13618,12 @@ bindEvents: function() {
         }
       });
 
-      jQuery.subscribe('fitBounds.' + _this.windowId, function(event, bounds) {
+      _this.eventEmitter.subscribe('fitBounds.' + _this.windowId, function(event, bounds) {
         var rect = _this.osd.viewport.imageToViewportRectangle(Number(bounds.x), Number(bounds.y), Number(bounds.width), Number(bounds.height));
         _this.osd.viewport.fitBoundsWithConstraints(rect, false);
       });
 
-      jQuery.subscribe('currentCanvasIDUpdated.' + _this.windowId, function(event, canvasId) {
+      _this.eventEmitter.subscribe('currentCanvasIDUpdated.' + _this.windowId, function(event, canvasId) {
         // If it is the first canvas, hide the "go to previous" button, otherwise show it.
         if (canvasId === firstCanvasId) {
           _this.element.find('.mirador-osd-previous').hide();
@@ -13622,51 +13639,48 @@ bindEvents: function() {
       });
 
       //Related to Annotations HUD
-      jQuery.subscribe('HUD_REMOVE_CLASS.' + _this.windowId, function(event, elementSelector, className) {
+      _this.eventEmitter.subscribe('HUD_REMOVE_CLASS.' + _this.windowId, function(event, elementSelector, className) {
         _this.element.find(elementSelector).removeClass(className);
       });
 
-      jQuery.subscribe('HUD_ADD_CLASS.' + _this.windowId, function(event, elementSelector, className) {
+      _this.eventEmitter.subscribe('HUD_ADD_CLASS.' + _this.windowId, function(event, elementSelector, className) {
         _this.element.find(elementSelector).addClass(className);
       });
 
-      jQuery.subscribe('HUD_FADE_IN.' + _this.windowId, function(event, elementSelector, duration) {
+      _this.eventEmitter.subscribe('HUD_FADE_IN.' + _this.windowId, function(event, elementSelector, duration) {
         _this.element.find(elementSelector).fadeIn(duration);
       });
 
-      jQuery.subscribe('HUD_FADE_OUT.' + _this.windowId, function(event, elementSelector, duration, complete) {
+      _this.eventEmitter.subscribe('HUD_FADE_OUT.' + _this.windowId, function(event, elementSelector, duration, complete) {
         _this.element.find(elementSelector).fadeOut(duration, complete);
       });
 
-      jQuery.subscribe('initBorderType.' + _this.windowId, function(event, type) {
-        _this.element.find('.mirador-line-type').find('ul li:contains(\'' + type + '\')').click();
-      });
-      jQuery.subscribe('initBorderColor.' + _this.windowId, function(event, color) {
+      _this.eventEmitter.subscribe('initBorderColor.' + _this.windowId, function(event, color) {
         _this.element.find('.borderColorPicker').spectrum('set', color);
       });
-      jQuery.subscribe('initFillColor.' + _this.windowId, function(event, color, alpha) {
+      _this.eventEmitter.subscribe('initFillColor.' + _this.windowId, function(event, color, alpha) {
         var colorObj = tinycolor(color);
         colorObj.setAlpha(alpha);
         _this.element.find('.fillColorPicker').spectrum('set', colorObj);
       });
-      jQuery.subscribe('disableBorderColorPicker.'+_this.windowId, function(event, disablePicker) {
+      _this.eventEmitter.subscribe('disableBorderColorPicker.'+_this.windowId, function(event, disablePicker) {
         if(disablePicker) {
           _this.element.find('.borderColorPicker').spectrum("disable");
         }else{
           _this.element.find('.borderColorPicker').spectrum("enable");
         }
       });
-      jQuery.subscribe('disableFillColorPicker.'+_this.windowId, function(event, disablePicker) {
+      _this.eventEmitter.subscribe('disableFillColorPicker.'+_this.windowId, function(event, disablePicker) {
         if(disablePicker) {
           _this.element.find('.fillColorPicker').spectrum("disable");
         }else{
           _this.element.find('.fillColorPicker').spectrum("enable");
         }
       });
-      jQuery.subscribe('showDrawTools.'+_this.windowId, function(event) {
+      _this.eventEmitter.subscribe('showDrawTools.'+_this.windowId, function(event) {
         _this.element.find('.draw-tool').show();
       });
-      jQuery.subscribe('hideDrawTools.'+_this.windowId, function(event) {
+      _this.eventEmitter.subscribe('hideDrawTools.'+_this.windowId, function(event) {
         _this.element.find('.draw-tool').hide();
       });
       //Related to Annotations HUD
@@ -13739,7 +13753,7 @@ bindEvents: function() {
       });
 
       this.element.find('.mirador-osd-toggle-bottom-panel').on('click', function() {
-        jQuery.publish('TOGGLE_BOTTOM_PANEL_VISIBILITY.' + _this.windowId);
+        _this.eventEmitter.publish('TOGGLE_BOTTOM_PANEL_VISIBILITY.' + _this.windowId);
       });
 
       //related the ContextControls
@@ -13762,25 +13776,25 @@ bindEvents: function() {
 
       this.element.find('.mirador-osd-refresh-mode').on('click', function() {
         //update annotation list from endpoint
-        jQuery.publish('updateAnnotationList.'+_this.windowId);
-        jQuery.publish('refreshOverlay.'+_this.windowId, '');
+        _this.eventEmitter.publish('updateAnnotationList.'+_this.windowId);
+        _this.eventEmitter.publish('refreshOverlay.'+_this.windowId, '');
       });
       this.element.find('.mirador-osd-delete-mode').on('click', function() {
-        jQuery.publish('deleteShape.'+_this.windowId, '');
+        _this.eventEmitter.publish('deleteShape.'+_this.windowId, '');
       });
       this.element.find('.mirador-osd-save-mode').on('click', function() {
-        jQuery.publish('updateEditedShape.'+_this.windowId, '');
+        _this.eventEmitter.publish('updateEditedShape.'+_this.windowId, '');
       });
       this.element.find('.mirador-osd-close').on('click', function() {
-        jQuery.publish('toggleDefaultDrawingTool.'+_this.windowId);
+        _this.eventEmitter.publish('toggleDefaultDrawingTool.'+_this.windowId);
       });
       this.element.find('.mirador-osd-edit-mode').on('click', function() {
-        jQuery.publish('toggleDefaultDrawingTool.'+_this.windowId);
+        _this.eventEmitter.publish('toggleDefaultDrawingTool.'+_this.windowId);
       });
 
       function make_handler(shapeMode) {
         return function () {
-          jQuery.publish('toggleDrawingTool.'+_this.windowId, shapeMode);
+          _this.eventEmitter.publish('toggleDrawingTool.'+_this.windowId, shapeMode);
         };
       }
       for (var value in _this.availableTools) {
@@ -13814,7 +13828,7 @@ bindEvents: function() {
     setBounds: function() {
       var _this = this;
       this.osdOptions.osdBounds = this.osd.viewport.getBounds(true);
-      jQuery.publish("imageBoundsUpdated", {
+      _this.eventEmitter.publish("imageBoundsUpdated", {
         id: _this.windowId, 
           osdBounds: {
             x: _this.osdOptions.osdBounds.x, 
@@ -13824,7 +13838,7 @@ bindEvents: function() {
           }
       });
       var rectangle = this.osd.viewport.viewportToImageRectangle(this.osdOptions.osdBounds);
-      jQuery.publish("imageRectangleUpdated", {
+      _this.eventEmitter.publish("imageRectangleUpdated", {
         id: _this.windowId,
         osdBounds: {
           x: Math.round(rectangle.x),
@@ -13852,10 +13866,11 @@ bindEvents: function() {
     },
 
     adjustWidth: function(className, hasClass) {
+      var _this = this;
       if (hasClass) {
-        jQuery.publish('REMOVE_CLASS.'+this.windowId, className);
+        _this.eventEmitter.publish('REMOVE_CLASS.'+this.windowId, className);
       } else {
-        jQuery.publish('ADD_CLASS.'+this.windowId, className);
+        _this.eventEmitter.publish('ADD_CLASS.'+this.windowId, className);
       }
     },
 
@@ -13894,7 +13909,7 @@ bindEvents: function() {
             'x': -10000000,
             'y': -10000000
           };
-          jQuery.publish('updateTooltips.' + _this.windowId, [point, point]);
+          _this.eventEmitter.publish('updateTooltips.' + _this.windowId, [point, point]);
         }, 30));
 
         _this.osd.addHandler('pan', $.debounce(function(){
@@ -13902,7 +13917,7 @@ bindEvents: function() {
             'x': -10000000,
             'y': -10000000
           };
-          jQuery.publish('updateTooltips.' + _this.windowId, [point, point]);
+          _this.eventEmitter.publish('updateTooltips.' + _this.windowId, [point, point]);
         }, 30));
 
         if (_this.state.getStateProperty('autoHideControls')) {
@@ -13929,7 +13944,7 @@ bindEvents: function() {
         }
 
         _this.osd.addHandler('open', function(){
-          jQuery.publish('osdOpen.'+_this.windowId);
+          _this.eventEmitter.publish('osdOpen.'+_this.windowId);
           if (_this.osdOptions.osdBounds) {
             var rect = new OpenSeadragon.Rect(_this.osdOptions.osdBounds.x, _this.osdOptions.osdBounds.y, _this.osdOptions.osdBounds.width, _this.osdOptions.osdBounds.height);
             _this.osd.viewport.fitBounds(rect, true);
@@ -13981,11 +13996,13 @@ bindEvents: function() {
         annotationsList: _this.state.getWindowAnnotationsList(_this.windowId) || [],
         viewer: _this.osd,
         windowId: _this.windowId,
-        element: element
+        element: element,
+        eventEmitter: _this.eventEmitter
       });
     },
 
     updateImage: function(canvasID) {
+      var _this = this;
       if (this.canvasID !== canvasID) {
         this.canvasID = canvasID;
         this.currentImgIndex = $.getImageIndexById(this.imagesList, canvasID);
@@ -13996,25 +14013,27 @@ bindEvents: function() {
         };
         this.osd.close();
         this.createOpenSeadragonInstance($.Iiif.getImageUrl(this.currentImg));
-        jQuery.publish('UPDATE_FOCUS_IMAGES.' + this.windowId, {array: [canvasID]});
+        _this.eventEmitter.publish('UPDATE_FOCUS_IMAGES.' + this.windowId, {array: [canvasID]});
       } else {
-        jQuery.publish('UPDATE_FOCUS_IMAGES.' + this.windowId, {array: [canvasID]});
+        _this.eventEmitter.publish('UPDATE_FOCUS_IMAGES.' + this.windowId, {array: [canvasID]});
       }
     },
 
     next: function() {
+      var _this = this;
       var next = this.currentImgIndex + 1;
 
       if (next < this.imagesList.length) {
-        jQuery.publish('SET_CURRENT_CANVAS_ID.' + this.windowId, this.imagesList[next]['@id']);
+        _this.eventEmitter.publish('SET_CURRENT_CANVAS_ID.' + this.windowId, this.imagesList[next]['@id']);
       }
     },
 
     previous: function() {
+      var _this = this;
       var prev = this.currentImgIndex - 1;
 
       if (prev >= 0) {
-        jQuery.publish('SET_CURRENT_CANVAS_ID.' + this.windowId, this.imagesList[prev]['@id']);
+        _this.eventEmitter.publish('SET_CURRENT_CANVAS_ID.' + this.windowId, this.imagesList[prev]['@id']);
       }
     },
     
@@ -14048,7 +14067,9 @@ bindEvents: function() {
       element:           null,
       appendTo:          null,
       manifest:          null,
-      visible:           null
+      visible:           null,
+      state:             null,
+      eventEmitter:      null
     }, options);
 
     this.init();
@@ -14073,11 +14094,12 @@ bindEvents: function() {
     },
 
     localState: function(state, initial) {
+      var _this = this;
       if (!arguments.length) return this.layerTabState;
       this.layerTabState = state;
 
       if (!initial) {
-        jQuery.publish('layersTabStateUpdated.' + this.windowId, this.layerTabState);
+        _this.eventEmitter.publish('layersTabStateUpdated.' + this.windowId, this.layerTabState);
       }
 
       return this.layerTabState;
@@ -14100,15 +14122,15 @@ bindEvents: function() {
     listenForActions: function() {
       var _this = this;
 
-      jQuery.subscribe('layersTabStateUpdated.' + _this.windowId, function(_, data) {
+      _this.eventEmitter.subscribe('layersTabStateUpdated.' + _this.windowId, function(_, data) {
         _this.render(data);
       });
 
-      jQuery.subscribe('tabStateUpdated.' + _this.windowId, function(_, data) {
+      _this.eventEmitter.subscribe('tabStateUpdated.' + _this.windowId, function(_, data) {
         _this.tabStateUpdated(data.layersTab);
       });
 
-      jQuery.subscribe('currentCanvasIDUpdated.' + _this.windowId, function(event, canvasID) {
+      _this.eventEmitter.subscribe('currentCanvasIDUpdated.' + _this.windowId, function(event, canvasID) {
         //update layers for this canvasID
       });
     },
@@ -14441,7 +14463,9 @@ bindEvents: function() {
       annotationsTabAvailable: false,
       layersTabAvailable: false,
       toolsTabAvailable: false,
-      hasStructures:     false
+      hasStructures:     false,
+      state:             null,
+      eventEmitter:      null
     }, options);
 
     this.init();
@@ -14503,7 +14527,8 @@ bindEvents: function() {
         windowId: this.windowId,
         appendTo: this.appendTo,
         tabs : this.panelState.tabs,
-        hasStructures : this.hasStructures
+        hasStructures : this.hasStructures,
+        eventEmitter: this.eventEmitter
       });
 
       if (this.tocTabAvailable) {
@@ -14512,7 +14537,8 @@ bindEvents: function() {
           appendTo: this.element.find('.tabContentArea'),
           windowId: this.windowId,
           canvasID: this.canvasID,
-          manifestVersion: this.manifest.getVersion()
+          manifestVersion: this.manifest.getVersion(),
+          eventEmitter: this.eventEmitter
         });
       }
       if (_this.annotationsTabAvailable) {
@@ -14520,7 +14546,8 @@ bindEvents: function() {
           manifest: _this.manifest,
           windowId: this.windowId,
           appendTo: _this.element.find('.tabContentArea'),
-          state: _this.state
+          state: _this.state,
+          eventEmitter: _this.eventEmitter
         });
       }
       if (_this.layersTabAvailable) {
@@ -14529,7 +14556,8 @@ bindEvents: function() {
           windowId: this.windowId,
           appendTo: _this.element.find('.tabContentArea'),
           canvasID: this.canvasID,
-          state: _this.state
+          state: _this.state,
+          eventEmitter: _this.eventEmitter
         });
       }
 
@@ -14546,11 +14574,12 @@ bindEvents: function() {
     },
 
     updateState: function(newState, initial) {
+      var _this = this;
       if (!arguments.length) return this.panelState;
       jQuery.extend(true, this.panelState, newState);
 
       if (!initial) {
-        jQuery.publish('sidePanelStateUpdated.' + this.windowId, this.panelState);
+        _this.eventEmitter.publish('sidePanelStateUpdated.' + this.windowId, this.panelState);
       }
 
       /*var enableSidePanel = false;
@@ -14583,18 +14612,18 @@ bindEvents: function() {
 
     listenForActions: function() {
       var _this = this;
-      jQuery.subscribe('sidePanelStateUpdated.' + this.windowId, function(_, data) {
+      _this.eventEmitter.subscribe('sidePanelStateUpdated.' + this.windowId, function(_, data) {
         _this.render(data);
       });
 
-      jQuery.subscribe('sidePanelResized', function() {
+      _this.eventEmitter.subscribe('sidePanelResized', function() {
       });
 
-      jQuery.subscribe('sidePanelToggled.' + this.windowId, function() {
+      _this.eventEmitter.subscribe('sidePanelToggled.' + this.windowId, function() {
         _this.panelToggled();
       });
 
-      jQuery.subscribe('annotationListLoaded.' + _this.windowId, function(event) {
+      _this.eventEmitter.subscribe('annotationListLoaded.' + _this.windowId, function(event) {
         var windowObject = _this.state.getWindowObjectById(_this.windowId);
         if (windowObject.annotationsAvailable[windowObject.viewType]) {
           if (_this.state.getWindowAnnotationsList(_this.windowId).length > 0) {
@@ -14603,7 +14632,7 @@ bindEvents: function() {
         }
       });
 
-      jQuery.subscribe('currentCanvasIDUpdated.' + _this.windowId, function(event, newCanvasId) {
+      _this.eventEmitter.subscribe('currentCanvasIDUpdated.' + _this.windowId, function(event, newCanvasId) {
         _this.canvasID = newCanvasId;
       });
 
@@ -14633,14 +14662,15 @@ bindEvents: function() {
     ].join('')),
 
     toggle: function (enableSidePanel) {
+      var _this = this;
       if (!enableSidePanel) {
         jQuery(this.appendTo).hide();
-        jQuery.publish('ADD_CLASS.'+this.windowId, 'focus-max-width');
-        jQuery.publish('HIDE_ICON_TOC.'+this.windowId);                
+        _this.eventEmitter.publish('ADD_CLASS.'+this.windowId, 'focus-max-width');
+        _this.eventEmitter.publish('HIDE_ICON_TOC.'+this.windowId);                
       } else {
         jQuery(this.appendTo).show({effect: "fade", duration: 300, easing: "easeInCubic"});
-        jQuery.publish('REMOVE_CLASS.'+this.windowId, 'focus-max-width');
-        jQuery.publish('SHOW_ICON_TOC.'+this.windowId);                
+        _this.eventEmitter.publish('REMOVE_CLASS.'+this.windowId, 'focus-max-width');
+        _this.eventEmitter.publish('SHOW_ICON_TOC.'+this.windowId);                
       }
     }
   };
@@ -14672,7 +14702,8 @@ bindEvents: function() {
             appendTo:          null,
             windowId:          null,
             tabState:          {},
-            tabs:              []
+            tabs:              [],
+            eventEmitter:      null
         }, options);
 
         this.init();
@@ -14693,11 +14724,12 @@ bindEvents: function() {
             this.bindEvents();
         },
         state: function(state, initial) {
+            var _this = this;
             if (!arguments.length) return this.tabState;
             jQuery.extend(true, this.tabState, state);
 
            if (!initial) {
-                jQuery.publish('tabStateUpdated.' + this.windowId, this.tabState);
+                _this.eventEmitter.publish('tabStateUpdated.' + this.windowId, this.tabState);
            }
 
             return this.tabState;
@@ -14716,22 +14748,22 @@ bindEvents: function() {
         listenForActions: function() {
             var _this = this;
 
-            jQuery.subscribe('tabStateUpdated.' + this.windowId, function(_, data) {
+            _this.eventEmitter.subscribe('tabStateUpdated.' + this.windowId, function(_, data) {
                 _this.render(data);
             });
 
-            jQuery.subscribe('tabSelected.' + this.windowId, function(_, data) {
+            _this.eventEmitter.subscribe('tabSelected.' + this.windowId, function(_, data) {
                 _this.tabSelected(data);
             });
 
-            jQuery.subscribe('tabFocused.', function() {
+            _this.eventEmitter.subscribe('tabFocused.', function() {
             });
         },
         bindEvents: function() {
             var _this = this;
 
             this.element.find('.tab').on('click', function(event) {
-                jQuery.publish('tabSelected.' + _this.windowId, jQuery( this ).index());
+                _this.eventEmitter.publish('tabSelected.' + _this.windowId, jQuery( this ).index());
             });
         },
         render: function(renderingData) {
@@ -14746,7 +14778,7 @@ bindEvents: function() {
                 if(renderingData.tabs.length === 1){                    
                     // TODO: temporary logic to minimize side panel if only tab is toc and toc is empty
                     if (renderingData.tabs[0].name === 'toc' && !_this.hasStructures) {
-                        jQuery.publish("sidePanelVisibilityByTab." + _this.windowId, false);
+                        _this.eventEmitter.publish("sidePanelVisibilityByTab." + _this.windowId, false);
                     }
 
                     // don't show button if only one tab
@@ -14792,7 +14824,8 @@ bindEvents: function() {
       defaultThumbHeight:   150,
       windowId:             null,
       panel:                false,
-      lazyLoadingFactor:    1.5  //should be >= 1
+      lazyLoadingFactor:    1.5,  //should be >= 1
+      eventEmitter:         null
     }, options);
 
     this.init();
@@ -14830,7 +14863,7 @@ bindEvents: function() {
 
         return {
           thumbUrl: thumbnailUrl,
-          title:    canvas.label,
+          title:    $.JsonLd.getTextValue(canvas.label),
           id:       canvas['@id'],
           width:    width,
           highlight: _this.currentImgIndex === index ? 'highlight' : ''
@@ -14873,11 +14906,11 @@ bindEvents: function() {
 
     listenForActions: function() {
       var _this = this;
-      jQuery.subscribe(('currentCanvasIDUpdated.' + _this.windowId), function(event) {
+      _this.eventEmitter.subscribe(('currentCanvasIDUpdated.' + _this.windowId), function(event) {
         _this.currentImageChanged();
       });
 
-      jQuery.subscribe('windowResize', $.debounce(function(){
+      _this.eventEmitter.subscribe('windowResize', $.debounce(function(){
         _this.loadImages();
       }, 100));
     },
@@ -14896,7 +14929,7 @@ bindEvents: function() {
 
       _this.element.find('.thumbnail-image').on('click', function() {
         var canvasID = jQuery(this).attr('data-image-id');
-        jQuery.publish('SET_CURRENT_CANVAS_ID.' + _this.windowId, canvasID);
+        _this.eventEmitter.publish('SET_CURRENT_CANVAS_ID.' + _this.windowId, canvasID);
       });
     },
 
@@ -14982,10 +15015,11 @@ bindEvents: function() {
     },
 
     adjustWidth: function(className, hasClass) {
+      var _this = this;
       if (hasClass) {
-        jQuery.publish('REMOVE_CLASS.'+this.windowId, className);
+        _this.eventEmitter.publish('REMOVE_CLASS.'+this.windowId, className);
       } else {
-        jQuery.publish('ADD_CLASS.'+this.windowId, className);
+        _this.eventEmitter.publish('ADD_CLASS.'+this.windowId, className);
       }
     },
 
@@ -15019,7 +15053,8 @@ bindEvents: function() {
       hoveredElement:   [],
       selectContext:    null,
       tocData: {},
-      active: null
+      active: null,
+      eventEmitter: null
     }, options);
 
     this.init();
@@ -15042,11 +15077,11 @@ bindEvents: function() {
     },
 
     tabStateUpdated: function(data) {
-        if (data.tabs[data.selectedTabIndex].options.id === 'tocTab') {
-            this.element.show();
-        } else {
-            this.element.hide();
-        }
+      if (data.tabs[data.selectedTabIndex].options.id === 'tocTab') {
+        this.element.show();
+      } else {
+        this.element.hide();
+      }
     },
 
     getTplData: function() {
@@ -15064,8 +15099,8 @@ bindEvents: function() {
       case '2':
         ranges = _this.extractV2RangeTrees(_this.structures);
         break;
-      // case '2.1':
-      //   _this.extractV21RangeTrees(_this.structures);
+        // case '2.1':
+        //   _this.extractV21RangeTrees(_this.structures);
       }
 
       if (ranges.length < 2) {
@@ -15083,11 +15118,11 @@ bindEvents: function() {
 
     initTocData: function() {
       var _this = this,
-      tocData = {};
+          tocData = {};
 
       _this.structures.forEach(function(structure) {
         var rangeID = structure['@id'],
-        attrString = '[data-rangeid="' + rangeID +'"]';
+            attrString = '[data-rangeid="' + rangeID +'"]';
 
         tocData[structure['@id']] = {
           element: _this.element.find(attrString).closest('li')
@@ -15199,36 +15234,44 @@ bindEvents: function() {
 
     render: function() {
       var _this = this,
-      toDeselect = jQuery.map(_this.previousSelectedElements, function(rangeID) {
-            return _this.tocData[rangeID].element.toArray();
-      }),
-      toSelect = jQuery.map(_this.selectedElements, function(rangeID) {
-            return _this.tocData[rangeID].element.toArray();
-      }),
-      toOpen = jQuery.map(_this.selectedElements, function(rangeID) {
-          if ((jQuery.inArray(rangeID, _this.openElements) < 0) && (jQuery.inArray(rangeID, _this.previousSelectedElements) < 0)) {
-            return _this.tocData[rangeID].element.toArray();
-          } else { return false; }
-      }),
-      toClose = jQuery.map(_this.previousSelectedElements, function(rangeID) {
-          if ((jQuery.inArray(rangeID, _this.openElements) < 0) && (jQuery.inArray(rangeID, _this.selectedElements) < 0)) {
-            return _this.tocData[rangeID].element.toArray();
-          } else { return false; }
-      });
+          toDeselect = _this.previousSelectedElements.map(function(rangeID) {
+            return _this.tocData[rangeID].element;
+          }),
+          toSelect = _this.selectedElements.map(function(rangeID) {
+            return _this.tocData[rangeID].element;
+          }),
+          toOpen = _this.selectedElements.filter(function(rangeID) {
+            return (jQuery.inArray(rangeID, _this.openElements) < 0) && (jQuery.inArray(rangeID, _this.previousSelectedElements) < 0);
+          }).map(function(rangeID) {
+            return _this.tocData[rangeID].element;
+          }),
+          toClose = _this.previousSelectedElements.filter(function(rangeID) {
+            return (jQuery.inArray(rangeID, _this.openElements) < 0) && (jQuery.inArray(rangeID, _this.selectedElements) < 0);
+          }).map(function(rangeID) {
+            return _this.tocData[rangeID].element;
+          });
 
       // Deselect elements
-      jQuery(toDeselect).removeClass('selected');
+      toDeselect.forEach(function(element) {
+          element.removeClass('selected');
+      });
 
       // Select new elements
-      jQuery(toSelect).addClass('selected');
-
+      toSelect.forEach(function(element) {
+        element.addClass('selected');
+      });
       // Scroll to new elements
       scroll();
 
-      // Open new ones
-      jQuery(toOpen).toggleClass('open').find('ul:first').slideFadeToggle();
-      // Close old ones (find way to keep scroll position).
-      jQuery(toClose).toggleClass('open').find('ul:first').slideFadeToggle(400, 'swing', scroll);
+      // Open newly opened sections
+      toOpen.forEach(function(element) {
+        element.addClass('open').find('ul:first').slideFadeToggle();
+      });
+
+      // Close previously opened selections (find way to keep scroll position).
+      toClose.forEach(function(element) {
+        element.removeClass('open').find('ul:first').slideFadeToggle(400, 'swing', scroll);
+      });
 
       // Get the sum of the outer height of all elements to be removed.
       // Subtract from current parent height to retreive the new height.
@@ -15247,17 +15290,17 @@ bindEvents: function() {
     bindEvents: function() {
       var _this = this;
 
-      // jQuery.subscribe('focusChanged', function(_, focusFrame) {
+      // _this.eventEmitter.subscribe('focusChanged', function(_, focusFrame) {
       // });
 
-      // jQuery.subscribe('cursorFrameUpdated', function(_, cursorBounds) {
+      // _this.eventEmitter.subscribe('cursorFrameUpdated', function(_, cursorBounds) {
       // });
 
-      jQuery.subscribe('tabStateUpdated.' + _this.windowId, function(_, data) {
+      _this.eventEmitter.subscribe('tabStateUpdated.' + _this.windowId, function(_, data) {
         _this.tabStateUpdated(data);
       });
 
-      jQuery.subscribe(('currentCanvasIDUpdated.' + _this.windowId), function(event, canvasID) {
+      _this.eventEmitter.subscribe(('currentCanvasIDUpdated.' + _this.windowId), function(event, canvasID) {
         if (!_this.structures) { return; }
         _this.setSelectedElements($.getRangeIDByCanvasID(_this.structures, canvasID));
         _this.render();
@@ -15270,7 +15313,7 @@ bindEvents: function() {
             canvasID = jQuery.grep(_this.structures, function(item) { return item['@id'] == rangeID; })[0].canvases[0],
             isLeaf = jQuery(this).closest('li').hasClass('leaf-item');
 
-        jQuery.publish('SET_CURRENT_CANVAS_ID.' + _this.windowId, canvasID);
+        _this.eventEmitter.publish('SET_CURRENT_CANVAS_ID.' + _this.windowId, canvasID);
       });
 
       _this.element.find('.toc-caret').on('click', function(event) {
@@ -15278,8 +15321,7 @@ bindEvents: function() {
 
         var rangeID = jQuery(this).parent().data().rangeid;
         _this.setOpenItem(rangeID);
-
-        jQuery(this).closest('li').toggleClass('open').find('ul:first').slideFadeToggle();
+        _this.render();
       });
     },
 
@@ -15314,26 +15356,26 @@ bindEvents: function() {
     },
 
     emptyTemplate: Handlebars.compile([
-            '<ul class="toc">',
-            '<li class="leaf-item open">',
-            '<h2><span>No index available</span></h2>',
-            '</ul>',
-        ].join('')),
+      '<ul class="toc">',
+      '<li class="leaf-item open">',
+      '<h2><span>No index available</span></h2>',
+      '</ul>',
+    ].join('')),
 
     template: function(tplData) {
 
       var template = Handlebars.compile([
         '<ul class="toc">',
-          '{{#nestedRangeLevel ranges}}',
-            '<li class="{{#if children}}has-child{{else}}leaf-item{{/if}}"">',
-              '{{{tocLevel id label level children}}}',
-              '{{#if children}}',
-                '<ul>',
-                '{{{nestedRangeLevel children}}}',
-                '</ul>',
-              '{{/if}}',
-            '<li>',
-          '{{/nestedRangeLevel}}',
+        '{{#nestedRangeLevel ranges}}',
+        '<li class="{{#if children}}has-child{{else}}leaf-item{{/if}}">',
+        '{{{tocLevel id label level children}}}',
+        '{{#if children}}',
+        '<ul>',
+        '{{{nestedRangeLevel children}}}',
+        '</ul>',
+        '{{/if}}',
+        '<li>',
+        '{{/nestedRangeLevel}}',
         '</ul>'
       ].join(''));
 
@@ -15347,6 +15389,7 @@ bindEvents: function() {
         }
 
         children.forEach(function(child) {
+          child.label = $.JsonLd.getTextValue(child.label);
           out = out + previousTemplate(child);
         });
 
@@ -15355,7 +15398,7 @@ bindEvents: function() {
 
       Handlebars.registerHelper('tocLevel', function(id, label, level, children) {
         var caret = '<i class="fa fa-caret-right toc-caret"></i>',
-        cert = '<i class="fa fa-certificate star"></i>';
+            cert = '<i class="fa fa-certificate star"></i>';
         return '<h' + (level+1) + '><a class="toc-link" data-rangeID="' + id + '">' + caret + cert + '<span>' + label + '</span></a></h' + (level+1) + '>';
       });
 
@@ -15363,19 +15406,47 @@ bindEvents: function() {
     },
 
     hide: function() {
+      var _this = this;
       jQuery(this.appendTo).hide();
-      jQuery.publish('ADD_CLASS.'+this.windowId, 'focus-max-width');
+      _this.eventEmitter.publish('ADD_CLASS.'+this.windowId, 'focus-max-width');
     },
 
     show: function() {
+      var _this = this;
       jQuery(this.appendTo).show({effect: "fade", duration: 300, easing: "easeInCubic"});
-      jQuery.publish('REMOVE_CLASS.'+this.windowId, 'focus-max-width');
+      _this.eventEmitter.publish('REMOVE_CLASS.'+this.windowId, 'focus-max-width');
     }
 
   };
 
 }(Mirador));
 
+(function($) {
+  $.EventEmitter = function(config) {
+    jQuery.extend(true, this, {
+      'debug': $.EventEmitter.debug
+    }, config);
+    this.emitterId = $.EventEmitter.nextId();
+  };
+  
+  $.EventEmitter.debug = false;
+  $.EventEmitter.id = 0;
+  $.EventEmitter.nextId = function() {
+    $.EventEmitter.id++;
+    return $.EventEmitter.id;
+  };
+  
+  ['subscribe', 'unsubscribe', 'publish'].forEach(function(action) {
+    $.EventEmitter.prototype[action] = function() {
+      var args = Array.prototype.slice.call(arguments);
+      args[0] = this.emitterId.toString() +"::"+ args[0];
+      if (this.debug) {
+        console.trace("EventEmitter:"+action+":", args);
+      }
+      jQuery[action].apply(jQuery, args);
+    };
+  });
+})(Mirador);
 
 (function($) {
 
@@ -15589,7 +15660,8 @@ bindEvents: function() {
       shareEndpoint: null, // the place where POST requests for new saved sessions will go 
       historySize: null, // wishful thinking for later.
       sessionID: null,
-      slots: []
+      slots: [],
+      eventEmitter: null
     });
 
     // error check - removes invalid annotation tools
@@ -15614,6 +15686,8 @@ bindEvents: function() {
 
     init: function(config) {
       var _this = this;
+      
+      this.eventEmitter = config.eventEmitter;
       
       // Don't want to save session, therefore don't set up save controller
       if (config.saveSession === false) {
@@ -15720,6 +15794,7 @@ bindEvents: function() {
     },
 
     set: function(prop, value, options) {
+      var _this = this;
       // when a property of the config is updated,
       // save it to localStore.
       if (options) {
@@ -15730,7 +15805,7 @@ bindEvents: function() {
       if (this.currentConfig.saveSession) {
         this.save();
       }
-      jQuery.publish("saveControllerConfigUpdated");
+      _this.eventEmitter.publish("saveControllerConfigUpdated");
     },
 
     bindEvents: function() {
@@ -15739,7 +15814,7 @@ bindEvents: function() {
       // available data to update the appropriate 
       // field in the stored config.
 
-      jQuery.subscribe('windowUpdated', function(event, options) {
+      _this.eventEmitter.subscribe('windowUpdated', function(event, options) {
         var windowObjects = _this.currentConfig.windowObjects;
         if (windowObjects && windowObjects.length > 0) {
           jQuery.each(windowObjects, function(index, window){
@@ -15753,7 +15828,7 @@ bindEvents: function() {
         _this.set("windowObjects", windowObjects, {parent: "currentConfig"} );
       });
 
-      jQuery.subscribe("imageBoundsUpdated", function(event, options) {   
+      _this.eventEmitter.subscribe("imageBoundsUpdated", function(event, options) {   
         var windowObjects = _this.currentConfig.windowObjects;   
         if (windowObjects && windowObjects.length > 0) {   
           jQuery.each(windowObjects, function(index, window){    
@@ -15768,22 +15843,22 @@ bindEvents: function() {
         _this.set("windowObjects", windowObjects, {parent: "currentConfig"} );   
       });
 
-      jQuery.subscribe('ANNOTATIONS_LIST_UPDATED', function(event, options) {
+      _this.eventEmitter.subscribe('ANNOTATIONS_LIST_UPDATED', function(event, options) {
         if (!_this.windowsAnnotationsLists) {
           _this.windowsAnnotationsLists = {};
         }
         _this.windowsAnnotationsLists[options.windowId] = options.annotationsList;
-        jQuery.publish('annotationListLoaded.' + options.windowId);
+        _this.eventEmitter.publish('annotationListLoaded.' + options.windowId);
       });
 
-      jQuery.subscribe('WINDOW_ELEMENT_UPDATED', function(event, options) {
+      _this.eventEmitter.subscribe('WINDOW_ELEMENT_UPDATED', function(event, options) {
         if (!_this.windowsElements) {
           _this.windowsElements = {};
         }
         _this.windowsElements[options.windowId] = options.element;
       });
 
-      jQuery.subscribe('windowSlotAddressUpdated', function(event, options) {
+      _this.eventEmitter.subscribe('windowSlotAddressUpdated', function(event, options) {
         var windowObjects = _this.currentConfig.windowObjects;
         if (windowObjects && windowObjects.length > 0) {
           jQuery.each(windowObjects, function(index, window){
@@ -15797,7 +15872,7 @@ bindEvents: function() {
         _this.set("windowObjects", windowObjects, {parent: "currentConfig"} );
       });
 
-      jQuery.subscribe('manifestQueued', function(event, manifestObject, repository) {
+      _this.eventEmitter.subscribe('manifestQueued', function(event, manifestObject, repository) {
         var data = _this.currentConfig.data,
         objectInConfig = false,
         url = manifestObject.uri;
@@ -15816,11 +15891,11 @@ bindEvents: function() {
         _this.set('manifests', manifests, {parent: 'currentConfig'});
       });
 
-      jQuery.subscribe("slotsUpdated", function(event, options) {
+      _this.eventEmitter.subscribe("slotsUpdated", function(event, options) {
         _this.slots = options.slots;
       });
 
-      jQuery.subscribe("layoutChanged", function(event, layoutDescription) {
+      _this.eventEmitter.subscribe("layoutChanged", function(event, layoutDescription) {
         // string parents to prevent invalid circular representation.
         var serialisedLayout = JSON.stringify(layoutDescription, function(key, value) {
           if (key === 'parent') return undefined;
@@ -15829,7 +15904,7 @@ bindEvents: function() {
         _this.set('layout', serialisedLayout, {parent: "currentConfig"} );
       });
 
-      jQuery.subscribe("windowSlotAdded", function(event, options) {
+      _this.eventEmitter.subscribe("windowSlotAdded", function(event, options) {
         var windowObjects = _this.currentConfig.windowObjects,
         inArray = jQuery.grep(windowObjects, function(windowObj) {
           return windowObj.id === options.id;
@@ -15843,18 +15918,18 @@ bindEvents: function() {
         }
       });
 
-        jQuery.subscribe("windowsRemoved", function(event) {
+        _this.eventEmitter.subscribe("windowsRemoved", function(event) {
           _this.set("windowObjects", [], {parent: "currentConfig"} );
         });
 
-      jQuery.subscribe("windowRemoved", function(event, windowID) {
+      _this.eventEmitter.subscribe("windowRemoved", function(event, windowID) {
         var windowObjects = jQuery.grep(_this.currentConfig.windowObjects, function(window, index) {
           return window.id !== windowID;
         });
         _this.set("windowObjects", windowObjects, {parent: "currentConfig"} );
       });
 
-      jQuery.subscribe('etc...', function(junk) {
+      _this.eventEmitter.subscribe('etc...', function(junk) {
         // handle adding the property in the appropriate place 
         // in this.currentConfig by passing to the _this.set(), 
         // which "saves" to localstore as a side effect.
@@ -15869,7 +15944,7 @@ bindEvents: function() {
       // currently do that the way the app is written, since we 
       // didn't actually follow that patttern almost anywhere. 
       // 
-      // jQuery.subscribe('set', function(junk) {
+      // _this.eventEmitter.subscribe('set', function(junk) {
       //  // 1.) send the junk to a parser function
       //  // 2.) use this.set(parsedJunk) to update
       //  // this.currentConfig, with the side effect of

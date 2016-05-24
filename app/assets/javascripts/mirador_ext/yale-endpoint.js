@@ -41,9 +41,6 @@
     _search: function(options, successCallback, errorCallback) {
       console.log('YaleEndpoint#search options: ' + JSON.stringify(options));
       var _this = this;
-      
-      
-      
       var canvasID = options.uri;
       var url = this.prefix + '/getAnnotations?includeTargetingAnnos=true&canvas_id=' + encodeURIComponent(canvasID);
       console.log('YaleEndpoint#search url: ' + url);
