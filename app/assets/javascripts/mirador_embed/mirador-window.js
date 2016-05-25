@@ -75,6 +75,13 @@
           sidePanel: true
         }
       ],
+      annotationBodyEditor: {
+        module: 'AnnotationEditor',
+        options: {
+          miradorDriven: true,
+          mode: 'create'
+        }
+      },
       annotationLayer: true,
       annotationEndpoint: {
         name: 'Yale Annotations',

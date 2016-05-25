@@ -1,15 +1,19 @@
-(function($) {
+(function($, MR) {
+  'use strict';
   
   $.AnnotationEditor = function(options) {
     jQuery.extend(this, {
+      miradorDriven: false, // true if created and managed by Mirador core.
+      windowId: null,
+      annotation: null,
       id: null,
       parent: null,
       canvasWindow: null, // reference window that contains the canvas
       mode: null, // "create" or "update"
       endpoint: null,
-      annotation: null,
+      
       targetAnnotation: null, // target annotation (annotation annotated by this annotation)
-      closeCallback: null
+      closeCallback: null,
     }, options);
 
     this.init();
@@ -19,11 +23,19 @@
   $.AnnotationEditor.prototype = {
     
     init: function() {
-      this.miradorProxy = $.getMiradorProxy();
-      this.id = this.id || Mirador.genUUID();
-      
-      this.element = jQuery(this.template({})).attr('id', this.id)
-        .appendTo(this.parent);
+      this.miradorProxy = MR.getMiradorProxy();
+      this.endpoint = this.endpoint || this.miradorProxy.getEndPoint(this.windowId);
+      this.id = this.id || $.genUUID();
+      this.element = jQuery(this.template({miradorDriven: this.miradorDriven}))
+        .attr('id', this.id);
+        
+      if (!this.miradorDriven) {
+        this.reload(this.parent);
+      }
+    },
+    
+    reload: function(parent) {
+      parent.prepend(this.element);
       var header = this.element.find('.header');
       var title = header.find('.title');
       this.linkToTarget = header.find('.anno_target_icon');
@@ -32,10 +44,11 @@
       if (this.mode === 'create') {
         title.text('Create Annotation');
         this.layerSelectContainer = this.element.find('.layer_select');
-        this.layerSelect = new $.LayerSelect({
+        this.layerSelect = new MR.LayerSelector({
           parent: this.layerSelectContainer,
           endpoint: this.endpoint
         });
+        this.layerSelect.init();
       } else { // update
         this.linkToTarget.hide();
         title.text('');
@@ -56,7 +69,11 @@
       this.bindEvents();
     },
     
-    show: function() {
+    // Called by Mirador core
+    show: function(selector) {
+      if (selector) {
+        this.reload(jQuery(selector));
+      }
       this.element.show();
     },
     
@@ -68,15 +85,87 @@
       this.element.remove();
     },
     
-    save: function() {
-      var content = tinymce.activeEditor.getContent();
+    // Called by Mirador core
+    isDirty: function() {
+      return tinymce.activeEditor.isDirty();
+    },
+    
+    // Called by Mirador core
+    createAnnotation: function (targetAnnotation) {
+      var tagText = this.element.find('.tags_editor').val().trim();
+      var resourceText = tinymce.activeEditor.getContent();
+      var tags = [];
+      
+      if (tagText) {
+        tags = tagText.split(/\s+/);
+      }
+      var layerId = this.layerSelect.val();
+      var annotation = {
+        '@context': 'http://iiif.io/api/presentation/2/context.json',
+        '@type': 'oa:Annotation',
+        motivation: ['oa:commenting'],
+        resource: [{ 
+          '@type': 'dctypes:Text',
+          format: 'text/html',
+          chars: resourceText
+        }],
+        layerId: layerId
+      };
+      if (targetAnnotation) {
+        annotation.on = {
+          '@type': 'oa:Annotation',
+          full: targetAnnotation['@id']
+        };
+      }
+      console.log('AnnotationEditor#createAnnotation anno: ' + JSON.stringify(annotation, null, 2));
+      console.log('AnnotationEditor#createAnnotation layer: ' + layerId);
+      return annotation;
+    },
 
+    // Called by Mirador core
+    updateAnnotation: function(oaAnno) {
+      var tagText = this.element.find('.tags_editor').val().trim();
+      var resourceText = tinymce.activeEditor.getContent();
+      var tags = [];
+      
+      if (tagText) {
+        tags = tagText.split(/\s+/);
+      }
+      var motivation = [],
+        resource = [];
+
+      //remove all tag-related content in annotation
+      oaAnno.motivation = jQuery.grep(oaAnno.motivation, function(value) {
+        return value !== 'oa:tagging';
+      });
+      oaAnno.resource = jQuery.grep(oaAnno.resource, function(value) {
+        return value['@type'] !== 'oa:Tag';
+      });
+      
+      //re-add tagging if we have them
+      if (tags.length > 0) {
+        oaAnno.motivation.push('oa:tagging');
+        jQuery.each(tags, function(index, value) {
+          oaAnno.resource.push({
+            '@type': 'oa:Tag',
+            chars: value
+          });
+        });
+      }
+      jQuery.each(oaAnno.resource, function(index, value) {
+        if (value['@type'] === 'dctypes:Text') {
+          value.chars = resourceText;
+        }
+      });
+    },
+    
+    save: function() {
+      var annotation = null;
       if (this.mode == 'create') {
-        var layerId = this.layerSelect.val();
-        var annotation = this.createAnnotation(this.targetAnnotation, layerId, content);
+        annotation = this.createAnnotation(this.targetAnnotation);
         this.miradorProxy.publish('annotationCreated.' + this.canvasWindow.id, [annotation, null]);
       } else {
-        this.annotation.resource[0].chars = content;
+        annotation = this.updateAnnotation(this.annotation);
         this.miradorProxy.publish('annotationUpdated.' + this.canvasWindow.id, [this.annotation]);
       }
     },
@@ -105,34 +194,13 @@
       }
     },
     
-    createAnnotation: function (targetAnnotation, layerId, content) {
-      var annotation = {
-        '@context': 'http://iiif.io/api/presentation/2/context.json',
-        '@type': 'oa:Annotation',
-        motivation: ['oa:commenting'],
-        resource: [{ 
-          '@type': 'dctypes:Text',
-          format: 'text/html',
-          chars: content
-        }],
-        on: {
-          '@type': 'oa:Annotation',
-          full: targetAnnotation['@id']
-        },
-        layerId: layerId
-      };
-      console.log('AnnotationEditor#createAnnotation anno: ' + JSON.stringify(annotation, null, 2));
-      console.log('AnnotationEditor#createAnnotation layer: ' + layerId);
-      return annotation;
-    },
-    
     bindEvents: function() {
       var _this = this;
       
       this.linkToTarget.click(function(event) {
         event.preventDefault();
         event.stopPropagation();
-        $.getLinesOverlay().startLine(event.pageX, event.pageY);
+        MR.getLinesOverlay().startLine(event.pageX, event.pageY);
       });
       
       this.element.find('.save').click(function() {
@@ -167,15 +235,18 @@
       '    <span class="layer_select"></span>',
       '  </div>',
       '  <textarea></textarea>',
-      '  <div class="bottom_row">',
-      '    <div class="to_right">',
-      '      <button class="save">Save</button>',
-      '      <button class="cancel">Cancel</button>',
+      '  <input class="tags_editor" placeholder="{{t "addTagsHere"}}…" {{#if tags}}value="{{tags}}"{{/if}}/>',
+      '  {{#unless miradorDriven}}',
+      '    <div class="bottom_row">',
+      '      <div class="to_right">',
+      '        <button class="save">Save</button>',
+      '        <button class="cancel">Cancel</button>',
+      '      </div>',
       '    </div>',
-      '  </div>',
+      '  {{/unless}}',
       '</div>'
     ].join(''))
     
   };
   
-})(MR);
+})(Mirador, MR);

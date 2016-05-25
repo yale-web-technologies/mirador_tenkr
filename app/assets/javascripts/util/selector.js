@@ -1,5 +1,8 @@
 (function($) {
   
+  /**
+   * A selector dropdown implemented with Semantic UI.
+   */
   $.Selector = function(options) {
     jQuery.extend(this, {
       appendTo: null,
@@ -41,7 +44,6 @@
       if (value === undefined) {
         return this.element.dropdown('get value');
       } else {
-        console.log('SET to ' + value);
         this.element.dropdown('set selected', value);
       }
     },

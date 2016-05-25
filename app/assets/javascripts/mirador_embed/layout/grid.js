@@ -1,6 +1,6 @@
-(function ($) {
+(function($, Mirador) {
   
-  $.Grid = function () {
+  $.Grid = function() {
     this.init();
   };
   
@@ -90,4 +90,4 @@
     
   };
 
-})(MR);
+})(MR, Mirador);

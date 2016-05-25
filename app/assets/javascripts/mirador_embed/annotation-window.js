@@ -1,4 +1,4 @@
-(function($) {
+(function($, Mirador) {
 
   $.AnnotationWindow = function(options) {
     jQuery.extend(this, {
@@ -27,8 +27,9 @@
       this.element = jQuery(this.template({}));
       this.appendTo.append(this.element);
       
-      this.layerSelector = new $.Selector({
-        appendTo: this.element.find('.layer_selector_container')
+      this.layerSelector = new $.LayerSelector({
+        parent: this.element.find('.layer_selector_container'),
+        endpoint: this.endpoint
       });
       
       this.editorRow = this.element.find('.annowin_creator'); // placeholder for annotation editor for creation
@@ -48,15 +49,17 @@
     reload: function(skipLayerLoading) {
       console.log('RELOAD');
       var _this = this;
+      var dfd = null;
+      
       this.placeholder.hide();
       var canvas = this.getCurrentCanvas();
       this.element.find('.title').text(canvas.label);
-      var dfd = jQuery.Deferred();
       
       if (skipLayerLoading) {
+        dfd = jQuery.Deferred();
         dfd.resolve();
       } else {
-        this.updateLayers(dfd);
+        dfd = this.layerSelector.init();
       }
 
       dfd.done(function() {
@@ -64,24 +67,6 @@
         _this.updateAnnoMgr(layerId);
         _this.updateList(layerId);
       });
-    },
-    
-    updateLayers: function(dfd) {
-      var _this = this;
-      var layers = this.endpoint.annotationLayers;
-      var selector = this.layerSelector
-      
-      selector.empty();
-      jQuery.each(layers, function(index, value) {
-        selector.addItem(value.label, value['@id']);
-      })
-      setTimeout(function() {
-        if (layers.length > 0) {
-          selector.val(layers[0]['@id']);
-        }
-        dfd.resolve();
-      }, 0);
-      return dfd;
     },
     
     updateList: function(layerId) {
@@ -273,7 +258,7 @@
         var dialogElement = jQuery('#mr_annotation_dialog');
         var dfdOnSave = jQuery.Deferred();
         var dfdOnCancel = jQuery.Deferred();
-        var editor = new $.AnnotationEditor({
+        var editor = new Mirador.AnnotationEditor({
           parent: dialogElement,
           canvasWindow: _this.canvasWindow,
           mode: 'create',
@@ -288,7 +273,7 @@
       });
       
       annoElem.find('.edit').click(function (event) {
-        var editor = new $.AnnotationEditor({
+        var editor = new Mirador.AnnotationEditor({
           parent: annoElem,
           canvasWindow: _this.canvasWindow,
           mode: 'update',
@@ -366,4 +351,4 @@
     ].join(''))
   };
 
-})(MR);
+})(MR, Mirador);
