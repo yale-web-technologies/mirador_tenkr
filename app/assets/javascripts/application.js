@@ -35,5 +35,4 @@
 //= require mirador_embed/annotation-dialog
 //= require mirador_embed/annotations-manager
 //= require mirador_embed/layer-selector
-//= require mirador_embed/layer-select
 //= require mirador_embed/lines-overlay
