@@ -177,7 +177,6 @@
     },
     
     scrollToElem: function(annoElem) {
-      console.log('top: ' + annoElem.position().top);
       this.listElem.animate({
         scrollTop: annoElem.position().top
       }, 250);
@@ -226,13 +225,12 @@
         console.log('Annotation window ' + _this.id + ' received annotation_focused event');
         
         if (annoWinId !== _this.id) {
-          var targetID = annotation.on.full;
           _this.clearHighlights();
           var annotationsList = _this.canvasWindow.annotationsList;
-          var targeting = MR.annoUtil.findTargetingAnnotations(annotationsList, 
+          var targeting = $.annoUtil.findTargetingAnnotations(annotationsList, 
             _this.currentLayerId, annotation);
           console.log('TARGETING: '); console.dir(targeting);
-          var targeted = MR.annoUtil.findTargetAnnotations(annotationsList, 
+          var targeted = $.annoUtil.findTargetAnnotations(annotationsList, 
             _this.currentLayerId, annotation);
           console.log('TARGETED: '); console.dir(targeted);
           _this.highlightAnnotations(targeting, 'TARGETING');

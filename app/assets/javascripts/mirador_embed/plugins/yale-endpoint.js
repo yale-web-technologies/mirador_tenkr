@@ -145,7 +145,7 @@
           console.dir(oaAnnotation);
           console.log(textStatus);
           if (typeof errorCallback === 'function') {
-            errorCallback(jqXHR, textSTatus, errorThrown);
+            errorCallback(jqXHR, textStatus, errorThrown);
           }
         }
       });
