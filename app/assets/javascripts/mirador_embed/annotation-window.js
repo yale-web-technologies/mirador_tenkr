@@ -40,14 +40,7 @@
       this.bindEvents();
     },
 
-    // Should run when either the layer or the annotationsList for this
-    // window is updated.
-    updateAnnoMgr: function(layerId) {
-      this.annoMgr = new $.AnnotationsManager(layerId, this.canvasWindow.annotationsList);
-    },
-    
     reload: function(skipLayerLoading) {
-      console.log('RELOAD');
       var _this = this;
       var dfd = null;
       
@@ -64,7 +57,7 @@
 
       dfd.done(function() {
         var layerId = _this.layerSelector.val();
-        _this.updateAnnoMgr(layerId);
+        _this.currentLayerId = layerId;
         _this.updateList(layerId);
       });
     },
@@ -203,31 +196,44 @@
       return jQuery(this.infoTemplate({ on: targetLink }));
     },
     
+    hasOpenEditor: function() {
+      var hasOne = false;
+      this.listElem.find('.annowin_anno').each(function(index, value) {
+        if (jQuery(value).data('editing') === true) {
+          hasOne = true;
+          return false; // breaking out of jQuery.each
+        };
+      });
+      return hasOne;
+    },
+    
     bindEvents: function() {
       var _this = this;
       
       // When a new layer is selected
-      this.layerSelector.changeCallback = function (label, value) {
-        var layerId = _this.layerSelector.val();
-        _this.updateAnnoMgr(layerId);
+      this.layerSelector.changeCallback = function(value, text) {
+        var layerId = value;
         _this.updateList(layerId);
       };
       
       this.miradorProxy.subscribe('ANNOTATIONS_LIST_UPDATED', function(event, windowId, annotationsList) {
-        _this.reload(true);
+        if (! _this.hasOpenEditor()) {
+          _this.reload(true);
+        }
       });
       
       jQuery.subscribe('ANNOTATION_FOCUSED', function(event, annoWinId, annotation) {
         console.log('Annotation window ' + _this.id + ' received annotation_focused event');
-        console.log('Layer: ' + _this.annoMgr.layerId);
         
         if (annoWinId !== _this.id) {
           var targetID = annotation.on.full;
           _this.clearHighlights();
           var annotationsList = _this.canvasWindow.annotationsList;
-          var targeting = _this.annoMgr.findTargetingAnnotations(annotation);
+          var targeting = MR.annoUtil.findTargetingAnnotations(annotationsList, 
+            _this.currentLayerId, annotation);
           console.log('TARGETING: '); console.dir(targeting);
-          var targeted = _this.annoMgr.findTargetAnnotations(annotation);
+          var targeted = MR.annoUtil.findTargetAnnotations(annotationsList, 
+            _this.currentLayerId, annotation);
           console.log('TARGETED: '); console.dir(targeted);
           _this.highlightAnnotations(targeting, 'TARGETING');
           _this.highlightAnnotations(targeted, 'TARGET');
@@ -256,8 +262,6 @@
       
       annoElem.find('.annotate').click(function (event) {
         var dialogElement = jQuery('#mr_annotation_dialog');
-        var dfdOnSave = jQuery.Deferred();
-        var dfdOnCancel = jQuery.Deferred();
         var editor = new Mirador.AnnotationEditor({
           parent: dialogElement,
           canvasWindow: _this.canvasWindow,
@@ -265,30 +269,47 @@
           targetAnnotation: annotation,
           endpoint: _this.endpoint
         });
-        new $.AnnotationDialog({ 
-          element: dialogElement, 
-          editor: editor
+        dialogElement.dialog({
+          title: 'Create annotation',
+          modal: true,
+          draggable: true,
+          dialogClass: 'no_close'
         });
-        dfdOnSave
+        editor.saveCallback = function(annotation) {
+          dialogElement.dialog('close');
+          _this.miradorProxy.publish('annotationCreated.' + _this.canvasWindow.id, [annotation, null]);
+        }
+        editor.cancelCallback = function() {
+          dialogElement.dialog('close');
+        }
+        editor.show();
       });
       
-      annoElem.find('.edit').click(function (event) {
+      annoElem.find('.edit').click(function(event) {
         var editor = new Mirador.AnnotationEditor({
           parent: annoElem,
           canvasWindow: _this.canvasWindow,
           mode: 'update',
           endpoint: _this.endpoint,
           annotation: annotation,
-          closedCallback: function () {
+          saveCallback: function(annotation, content) {
+            var normalView = annoElem.find('.normal_view');
+            normalView.find('.content').html(content);
+            normalView.show();
+            annoElem.data('editing', false);
+          },
+          cancelCallback: function() {
             annoElem.find('.normal_view').show();
+            annoElem.data('editing', false);
           }
         });
         
+        annoElem.data('editing', true);
         annoElem.find('.normal_view').hide();
         editor.show();
       });
       
-      annoElem.find('.delete').click(function (event) {
+      annoElem.find('.delete').click(function(event) {
         if (window.confirm('Do you really want to delete the annotation?')) {
           _this.miradorProxy.publish('annotationDeleted.' + _this.canvasWindow.id, [annotation['@id']]);
         }

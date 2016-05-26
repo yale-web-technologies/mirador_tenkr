@@ -11,9 +11,9 @@
       canvasWindow: null, // reference window that contains the canvas
       mode: null, // "create" or "update"
       endpoint: null,
-      
       targetAnnotation: null, // target annotation (annotation annotated by this annotation)
-      closeCallback: null,
+      saveCallback: null,
+      cancelCallback: null
     }, options);
 
     this.init();
@@ -95,20 +95,35 @@
       var tagText = this.element.find('.tags_editor').val().trim();
       var resourceText = tinymce.activeEditor.getContent();
       var tags = [];
+      var motivation = [];
+      var resource = [];
       
       if (tagText) {
         tags = tagText.split(/\s+/);
       }
+      
+      if (tags && tags.length > 0) {
+        motivation.push("oa:tagging");
+        jQuery.each(tags, function(index, value) {
+          resource.push({
+            "@type": "oa:Tag",
+            "chars": value
+          });
+        });
+      }
+      motivation.push("oa:commenting");
+        resource.push({
+          "@type": "dctypes:Text",
+          "format": "text/html",
+          "chars": resourceText
+        });
+
       var layerId = this.layerSelect.val();
       var annotation = {
         '@context': 'http://iiif.io/api/presentation/2/context.json',
         '@type': 'oa:Annotation',
-        motivation: ['oa:commenting'],
-        resource: [{ 
-          '@type': 'dctypes:Text',
-          format: 'text/html',
-          chars: resourceText
-        }],
+        motivation: motivation,
+        resource: resource,
         layerId: layerId
       };
       if (targetAnnotation) {
@@ -118,7 +133,6 @@
         };
       }
       console.log('AnnotationEditor#createAnnotation anno: ' + JSON.stringify(annotation, null, 2));
-      console.log('AnnotationEditor#createAnnotation layer: ' + layerId);
       return annotation;
     },
 
@@ -157,16 +171,35 @@
           value.chars = resourceText;
         }
       });
+      
+      return oaAnno;
     },
     
     save: function() {
+      var _this = this;
       var annotation = null;
+      
       if (this.mode == 'create') {
         annotation = this.createAnnotation(this.targetAnnotation);
-        this.miradorProxy.publish('annotationCreated.' + this.canvasWindow.id, [annotation, null]);
+        this.endpoint.create(annotation, function(data) {
+          var annotation = data;
+          if (typeof _this.saveCallback === 'function') {
+            _this.saveCallback(annotation);
+          }
+          _this.destroy();
+        }, function() {
+        });
       } else {
         annotation = this.updateAnnotation(this.annotation);
-        this.miradorProxy.publish('annotationUpdated.' + this.canvasWindow.id, [this.annotation]);
+        this.endpoint.update(annotation, function(data) {
+          if (typeof _this.saveCallback === 'function') {
+            var annotation = data;
+            var content = tinymce.activeEditor.getContent().trim();
+            _this.saveCallback(annotation, content);
+          }
+          _this.destroy();
+        }, function() {
+        });
       }
     },
     
@@ -206,17 +239,13 @@
       this.element.find('.save').click(function() {
         if (_this.validate()) {
           _this.save();
-          _this.destroy();
-        }
-        if (typeof _this.closeCallback === 'function') {
-          _this.closeCallback();
         }
       });
       
       this.element.find('.cancel').click(function() {
         _this.destroy();
-        if (typeof _this.closeCallback === 'function') {
-          _this.closeCallback();
+        if (typeof _this.cancelCallback === 'function') {
+          _this.cancelCallback();
         }
       });
       

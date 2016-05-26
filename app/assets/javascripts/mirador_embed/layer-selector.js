@@ -9,7 +9,8 @@
     jQuery.extend(this, {
       selector: null,
       parent: null,
-      endpoint: null
+      endpoint: null,
+      changeCallback: null
     }, options);
   };
   
@@ -19,6 +20,7 @@
       this.selector = new $.Selector({
         appendTo: this.parent
       });
+      this.bindEvents();
       return this.reload(); // return a Deferred object.
     },
     
@@ -44,6 +46,15 @@
     
     val: function(value) {
       return this.selector.val(value);
+    },
+    
+    bindEvents: function() {
+      var _this = this;
+      this.selector.changeCallback = function(value, text) {
+        if (typeof _this.changeCallback === 'function') {
+          _this.changeCallback(value, text);
+        }
+      }
     }
   };
   

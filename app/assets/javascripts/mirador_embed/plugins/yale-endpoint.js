@@ -19,6 +19,7 @@
     },
     
     search: function(options, successCallback, errorCallback) {
+      console.log('YaleEndpoint#search options: ' + JSON.stringify(options));
       var _this = this;
       var dfd = jQuery.Deferred();
       
@@ -39,11 +40,10 @@
     },
 
     _search: function(options, successCallback, errorCallback) {
-      console.log('YaleEndpoint#search options: ' + JSON.stringify(options));
       var _this = this;
-      var canvasID = options.uri;
-      var url = this.prefix + '/getAnnotations?includeTargetingAnnos=true&canvas_id=' + encodeURIComponent(canvasID);
-      console.log('YaleEndpoint#search url: ' + url);
+      var canvasId = options.uri;
+      var url = this.prefix + '/getAnnotations?includeTargetingAnnos=true&canvas_id=' + encodeURIComponent(canvasId);
+      console.log('YaleEndpoint#_search url: ' + url);
       this.annotationsList = [];
 
       jQuery.ajax({
@@ -113,7 +113,7 @@
         error: function (jqXHR, textStatus, errorThrown) {
           alert('Failed to create annotation: ' + textStatus);
           if (typeof errorCallback === 'function') {
-            errorCallback();
+            errorCallback(jqXHR, textStatus, errorThrown);
           }
         }
       });
@@ -137,12 +137,16 @@
         data: JSON.stringify(annotation),
         success: function (data, textStatus, jqXHR) {
           if (typeof successCallback === 'function') {
-            successCallback();
+            successCallback(data);
           }
         },
         error: function (jqXHR, textStatus, errorThrown) {
           console.log('YaleEndpoint#update failed for annotation:');
           console.dir(oaAnnotation);
+          console.log(textStatus);
+          if (typeof errorCallback === 'function') {
+            errorCallback(jqXHR, textSTatus, errorThrown);
+          }
         }
       });
     },
