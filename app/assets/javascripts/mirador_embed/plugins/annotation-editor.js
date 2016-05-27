@@ -26,9 +26,11 @@
       this.miradorProxy = MR.getMiradorProxy();
       this.endpoint = this.endpoint || this.miradorProxy.getEndPoint(this.windowId);
       this.id = this.id || $.genUUID();
+      
+      var tagsStr = this.annotation ? MR.annoUtil.getTags(this.annotation).join(' ') : '';
       this.element = jQuery(this.template({
         miradorDriven: this.miradorDriven,
-        tags: MR.annoUtil.getTags(this.annotation).join(' ')
+        tags: tagsStr
       })).attr('id', this.id);
         
       if (!this.miradorDriven) {
