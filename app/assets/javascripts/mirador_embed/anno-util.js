@@ -3,6 +3,41 @@
   $.annoUtil = {
     
     /**
+     * Returns content of first text (non-tag) resource it finds from the annotation.
+     */
+    getAnnotationText: function(annotation) {
+      var content = null;
+      var resource = annotation.resource;
+      
+      if (!(resource instanceof Array || resource instanceof Object)) {
+        return null;
+      }
+      if (!(resource instanceof Array)) {
+        resource = [resource];
+      }
+      jQuery.each(resource, function(index, value) {
+        if (value['@type'] === 'dctypes:Text') {
+          content = value.chars;
+          return false;
+        }
+      });
+      return content;
+    },
+    
+    getTags: function(annotation) {
+      var tags = [];
+
+      if (jQuery.isArray(annotation.resource)) {
+        jQuery.each(annotation.resource, function(index, value) {
+          if (value['@type'] === "oa:Tag") {
+            tags.push(value.chars);
+          }
+        });
+      }
+      return tags;
+    },
+    
+    /**
      * Find annotations from "annotationsList" which this "annotation" annotates 
      * and which belong to the layer with "layerId".
      */

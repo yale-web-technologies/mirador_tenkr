@@ -26,8 +26,10 @@
       this.miradorProxy = MR.getMiradorProxy();
       this.endpoint = this.endpoint || this.miradorProxy.getEndPoint(this.windowId);
       this.id = this.id || $.genUUID();
-      this.element = jQuery(this.template({miradorDriven: this.miradorDriven}))
-        .attr('id', this.id);
+      this.element = jQuery(this.template({
+        miradorDriven: this.miradorDriven,
+        tags: MR.annoUtil.getTags(this.annotation).join(' ')
+      })).attr('id', this.id);
         
       if (!this.miradorDriven) {
         this.reload(this.parent);
@@ -38,32 +40,31 @@
       parent.prepend(this.element);
       var header = this.element.find('.header');
       var title = header.find('.title');
-      this.linkToTarget = header.find('.anno_target_icon');
       this.textArea = this.element.find('textarea');
-    
+      this.layerSelectContainer = this.element.find('.layer_select');
+      this.layerSelect = new MR.LayerSelector({
+        parent: this.layerSelectContainer,
+        endpoint: this.endpoint
+      });
+      this.layerSelect.init();
+      
       if (this.mode === 'create') {
         title.text('Create Annotation');
-        this.layerSelectContainer = this.element.find('.layer_select');
-        this.layerSelect = new MR.LayerSelector({
-          parent: this.layerSelectContainer,
-          endpoint: this.endpoint
-        });
-        this.layerSelect.init();
       } else { // update
-        this.linkToTarget.hide();
         title.text('');
-        this.textArea.val(this.annotation.resource[0].chars);
-        this.element.find('.layer_select').css('left', -1000);
+        this.textArea.val(MR.annoUtil.getAnnotationText(this.annotation));
       }
 
-      this.textAreaID = '#' + this.id + ' textarea';
+      var textAreaSelector = '#' + this.id + ' textarea';
       
       tinymce.init({
-        selector: this.textAreaID,
+        selector: textAreaSelector,
+        plugins: 'paste',
         menubar: false,
         toolbar: 'bold italic | bullist numlist | link | undo redo | removeformat',
         statusbar: false,
-        toolbar_items_size: 'small'
+        toolbar_items_size: 'small',
+        past_as_text: true // from paste plugin
       });
       
       this.bindEvents();
@@ -230,12 +231,6 @@
     bindEvents: function() {
       var _this = this;
       
-      this.linkToTarget.click(function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        MR.getLinesOverlay().startLine(event.pageX, event.pageY);
-      });
-      
       this.element.find('.save').click(function() {
         if (_this.validate()) {
           _this.save();
@@ -247,14 +242,6 @@
         if (typeof _this.cancelCallback === 'function') {
           _this.cancelCallback();
         }
-      });
-      
-      jQuery.subscribe('target_annotation_selected', function(event, annotation) {
-        _this.targetAnnotation = annotation;
-        _this.linkToTarget
-          .attr('title', annotation['@id'] + ': ' + annotation.resource[0].chars);
-        _this.linkToTarget.removeClass('anno_on_canvas')
-          .addClass('anno_on_anno');
       });
     },
     

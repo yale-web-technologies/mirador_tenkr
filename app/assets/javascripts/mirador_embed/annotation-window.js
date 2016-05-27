@@ -92,7 +92,7 @@
     addAnnotation: function(annotation) {
       //console.log('AnnotationWindow#addAnnotation:');
       //console.dir(annotation);
-      var content = annotation.resource[0].chars;
+      var content = $.annoUtil.getAnnotationText(annotation);
       var annoHtml = this.annotationTemplate({
         content: content,
         isEditor: $.session.isEditor()
@@ -265,7 +265,14 @@
           canvasWindow: _this.canvasWindow,
           mode: 'create',
           targetAnnotation: annotation,
-          endpoint: _this.endpoint
+          endpoint: _this.endpoint,
+          saveCallback: function(annotation) {
+            dialogElement.dialog('close');
+            _this.miradorProxy.publish('annotationCreated.' + _this.canvasWindow.id, [annotation, null]);
+          },
+          cancelCallback: function() {
+            dialogElement.dialog('close');
+          }
         });
         dialogElement.dialog({
           title: 'Create annotation',
@@ -273,13 +280,6 @@
           draggable: true,
           dialogClass: 'no_close'
         });
-        editor.saveCallback = function(annotation) {
-          dialogElement.dialog('close');
-          _this.miradorProxy.publish('annotationCreated.' + _this.canvasWindow.id, [annotation, null]);
-        }
-        editor.cancelCallback = function() {
-          dialogElement.dialog('close');
-        }
         editor.show();
       });
       

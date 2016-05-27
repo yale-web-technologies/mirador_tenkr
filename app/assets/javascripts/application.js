@@ -15,6 +15,7 @@
 //= require jquery-ui
 //= require js.cookie
 //= require semantic_ui/semantic_ui
+//= require tinymce
 //
 //= require main
 //= require session

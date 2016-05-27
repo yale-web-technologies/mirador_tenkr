@@ -224,11 +224,19 @@
 
     // Convert Endpoint annotation to OA
     getAnnotationInOA: function(annotation) {
+      var motivation = annotation.motivation;
+      if (!(motivation instanceof Array)) {
+        if (motivation !== 'oa:commenting') {
+          console.log('ERROR YaleEndpoint#getAnnotationInOA unexpected motivation value: ' + motivation);
+        }
+        motivation = ['oa:commenting'];
+      }
+      
       var oaAnnotation = {
         '@context': 'http://iiif.io/api/presentation/2/context.json',
         '@type': 'oa:Annotation',
         '@id': annotation['@id'],
-        motivation: annotation.motivation,
+        motivation: motivation,
         resource : annotation.resource,
         on: annotation.on,
         //annotatedBy: annotatedBy,
