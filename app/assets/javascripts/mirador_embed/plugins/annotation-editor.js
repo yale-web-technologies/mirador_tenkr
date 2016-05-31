@@ -39,6 +39,8 @@
     },
     
     reload: function(parent) {
+      var _this = this;
+      
       parent.prepend(this.element);
       var header = this.element.find('.header');
       var title = header.find('.title');
@@ -59,17 +61,20 @@
 
       var textAreaSelector = '#' + this.id + ' textarea';
       
-      tinymce.init({
-        selector: textAreaSelector,
-        plugins: 'paste',
-        menubar: false,
-        toolbar: 'bold italic | bullist numlist | link | undo redo | removeformat',
-        statusbar: false,
-        toolbar_items_size: 'small',
-        past_as_text: true // from paste plugin
-      });
-      
-      this.bindEvents();
+      // Sometimes the textarea is not set up with tinymce.
+      // Trying to see if helps to delay the call to tinymce.init.
+      setTimeout(function() {
+        tinymce.init({
+          selector: textAreaSelector,
+          plugins: 'paste',
+          menubar: false,
+          toolbar: 'bold italic | bullist numlist | link | undo redo | removeformat',
+          statusbar: false,
+          toolbar_items_size: 'small',
+          past_as_text: true // from paste plugin
+        });
+        _this.bindEvents();
+      }, 0);
     },
     
     // Called by Mirador core

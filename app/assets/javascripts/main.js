@@ -1,12 +1,10 @@
 window.MR = {};
 
 (function ($) {
+  'use strict';
 
   jQuery(document).ready(function () {
     console.log('document ready');
-    var configId = jQuery('#config_id').text();
-    configId = 1;
-    var url = '/example/config/' + configId + '.json';
     
     var headerElem = jQuery('.mr_header');
     if (headerElem.size() > 0) {
