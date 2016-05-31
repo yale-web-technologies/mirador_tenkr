@@ -68,6 +68,7 @@ Rails.application.routes.draw do
   
   constraints format: 'json' do
     get '/api/session_info', to: 'api#session_info'
+    get '/api/tag_hierarchy', to: 'api#tag_hierarchy'
   end
   
   get '/login', to: 'application#login'
