@@ -57,7 +57,6 @@
 
       dfd.done(function() {
         var layerId = _this.layerSelector.val();
-        _this.currentLayerId = layerId;
         _this.updateList(layerId);
       });
     },
@@ -66,6 +65,7 @@
       var _this = this;
       var annotationsList = this.canvasWindow.annotationsList;
       
+      this.currentLayerId = layerId;
       this.listElem = this.element.find('.annowin_list');
       this.listElem.empty();
       
@@ -227,10 +227,10 @@
         if (annoWinId !== _this.id) {
           _this.clearHighlights();
           var annotationsList = _this.canvasWindow.annotationsList;
-          var targeting = $.annoUtil.findTargetingAnnotations(annotationsList, 
+          var targeting = $.annoUtil.findTargetingAnnotations(annotationsList,
             _this.currentLayerId, annotation);
           console.log('TARGETING: '); console.dir(targeting);
-          var targeted = $.annoUtil.findTargetAnnotations(annotationsList, 
+          var targeted = $.annoUtil.findTargetAnnotations(annotationsList,
             _this.currentLayerId, annotation);
           console.log('TARGETED: '); console.dir(targeted);
           _this.highlightAnnotations(targeting, 'TARGETING');
