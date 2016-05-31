@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160523181121) do
+ActiveRecord::Schema.define(version: 20160531181209) do
 
   create_table "admin_manifests", force: :cascade do |t|
     t.integer  "room_id",    limit: 4
@@ -25,12 +25,13 @@ ActiveRecord::Schema.define(version: 20160523181121) do
   add_index "admin_manifests", ["room_id"], name: "index_admin_manifests_on_room_id", using: :btree
 
   create_table "admin_rooms", force: :cascade do |t|
-    t.string   "machine_name", limit: 255
-    t.string   "title",        limit: 255
-    t.string   "description",  limit: 255
-    t.integer  "weight",       limit: 4
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.string   "machine_name",  limit: 255
+    t.string   "title",         limit: 255
+    t.string   "description",   limit: 255
+    t.integer  "weight",        limit: 4
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.string   "tag_hierarchy", limit: 255
   end
 
   add_index "admin_rooms", ["machine_name"], name: "index_admin_rooms_on_machine_name", unique: true, using: :btree

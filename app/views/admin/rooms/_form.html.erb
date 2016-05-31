@@ -26,13 +26,14 @@
     <%= f.text_field(:description) %>
   </div>
   
-  <% f.fields_for :manifests do |m| %>
-    <%= m.text_field :url %>
-  <% end %>
-  
   <div class="field">
     <%= f.label(:weight) %>
     <%= f.text_field(:weight) %>
+  </div>
+
+  <div class="field">
+    <%= f.label(:tag_hierarchy) %>
+    <%= f.text_area(:tag_hierarchy) %>
   </div>
 
   <div class="actions">
