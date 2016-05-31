@@ -93,8 +93,12 @@
       //console.log('AnnotationWindow#addAnnotation:');
       //console.dir(annotation);
       var content = $.annoUtil.getAnnotationText(annotation);
+      var tags = $.annoUtil.getTags(annotation);
+      var tagsHtml = this.getTagsHtml(tags);
+      
       var annoHtml = this.annotationTemplate({
         content: content,
+        tags: tagsHtml,
         isEditor: $.session.isEditor()
       });
       var annoElem = jQuery(annoHtml);
@@ -204,6 +208,14 @@
         };
       });
       return hasOne;
+    },
+    
+    getTagsHtml: function(tags) {
+      var html = '';
+      jQuery.each(tags, function(index, value) {
+        html += '<span class="tag">' + value + '</span>';
+      });
+      return html;
     },
     
     bindEvents: function() {
@@ -358,6 +370,7 @@
       '      </div>',
       '    {{/if}}',
       '    <div class="content">{{{content}}}</div>',
+      '    <div class="tags">{{{tags}}}</div>',
       '  </div>',
       '</div>'
     ].join('')),
