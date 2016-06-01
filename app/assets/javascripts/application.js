@@ -33,6 +33,7 @@
 //= require mirador_embed/main-menu
 //= require mirador_embed/mirador-window
 //= require mirador_embed/annotation-window
+//= require mirador_embed/parsed-annotations
 //= require mirador_embed/anno-util
 //= require mirador_embed/layer-selector
 //= require mirador_embed/lines-overlay

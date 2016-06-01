@@ -1,4 +1,4 @@
-(function ($) {
+(function ($, MR) {
 
   $.YaleEndpoint = function (options) {
     jQuery.extend(this, {
@@ -56,6 +56,7 @@
         contentType: 'application/json; charset=utf-8',
         success: function (data, textStatus, jqXHR) {
           console.log('YaleEndpoint#search data: ' + JSON.stringify(data, null, 2));
+          _this.parsed = new MR.ParsedAnnotations(data);
           if (typeof successCallback === 'function') {
             successCallback(data);
           } else {
@@ -273,4 +274,4 @@
 
   };
 
-})(Mirador);
+})(Mirador, MR);

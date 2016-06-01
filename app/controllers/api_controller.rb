@@ -1,4 +1,3 @@
-
 class ApiController < ApplicationController
   def tag_hierarchy
     room_id = params[:room_id]

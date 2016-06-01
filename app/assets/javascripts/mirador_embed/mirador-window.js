@@ -2,21 +2,36 @@
 
 (function($) {
   
-  $.MiradorWindow = function(options) {
-    jQuery.extend(this, {
-      mainMenu: null,
-      grid: null
-    }, options);
-    this.init();
+  var MiradorWindow = function() {
   };
   
-  $.MiradorWindow.prototype = {
+  MiradorWindow.prototype = {
     
-    init: function() {
+    init: function(options) {
+      jQuery.extend(this, {
+        mainMenu: null,
+        grid: null
+      }, options);
+      
+      var _this = this;
+      
+      this.miradorViewer = jQuery('#viewer');
       this.miradorProxy = $.getMiradorProxy();
-      this.initHeader();
-      this.initMirador();
-      this.bindEvents();
+      var dfd = this.fetchTagHierarchy();
+      dfd.done(function(data) {
+        console.log('DONE !!!');
+        _this.tagHierarchy = data;
+        console.log('XXX0 ' + JSON.stringify(_this.tagHierarchy, null, 2));
+      });
+      dfd.fail(function() {
+        console.log('ERROR failed to retrieve tag hierarchy');
+        _this.tagHierarchy = [];
+      });
+      dfd.always(function() {
+        _this.initHeader();
+        _this.initMirador();
+        _this.bindEvents();
+      });
     },
     
     initHeader: function() {
@@ -24,9 +39,8 @@
     },
     
     initMirador: function() {
-      var viewer = jQuery('#viewer');
+      var viewer = this.miradorViewer;
       var manifestUri = viewer.attr('manifest_url');
-      var siteName = viewer.attr('site_name');
       var endpointUrl = viewer.attr('endpoint_url');
       var config = this.config;
       
@@ -40,6 +54,25 @@
 
       var mirador = Mirador(config);
       this.miradorProxy.setMirador(mirador);
+    },
+    
+    getTagHierarchy: function() {
+      return this.tagHierarchy;
+    },
+    
+    fetchTagHierarchy: function() {
+      var dfd = jQuery.Deferred();
+      var roomId = jQuery('#viewer').attr('room_id');
+      jQuery.ajax({
+        url: '/api/tag_hierarchy?room_id=' + roomId,
+        success: function(data) {
+          dfd.resolve(data);
+        },
+        error: function() {
+          dfd.reject();
+        }
+      });
+      return dfd;
     },
     
     bindEvents: function() {
@@ -93,5 +126,14 @@
       }
     }
   };
+  
+  var instance = null;
+  
+  $.getMiradorWindow = function() {
+    if (!instance) {
+      instance = new MiradorWindow();
+    }
+    return instance;
+  }
   
 })(MR);
