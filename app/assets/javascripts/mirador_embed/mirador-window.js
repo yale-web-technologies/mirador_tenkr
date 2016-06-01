@@ -17,15 +17,15 @@
       
       this.miradorViewer = jQuery('#viewer');
       this.miradorProxy = $.getMiradorProxy();
+      
       var dfd = this.fetchTagHierarchy();
+      
       dfd.done(function(data) {
-        console.log('DONE !!!');
         _this.tagHierarchy = data;
-        console.log('XXX0 ' + JSON.stringify(_this.tagHierarchy, null, 2));
       });
       dfd.fail(function() {
         console.log('ERROR failed to retrieve tag hierarchy');
-        _this.tagHierarchy = [];
+        _this.tagHierarchy = null;
       });
       dfd.always(function() {
         _this.initHeader();
@@ -51,13 +51,17 @@
       }
       config.annotationEndpoint.options.prefix = endpointUrl;
       config.autoHideControls = false;
+      
+      if (this.tagHierarchy) {
+        config.extension.tagHierarchy = this.tagHierarchy;
+      }
 
       var mirador = Mirador(config);
       this.miradorProxy.setMirador(mirador);
     },
     
-    getTagHierarchy: function() {
-      return this.tagHierarchy;
+    getConfig: function() {
+      return this.config;
     },
     
     fetchTagHierarchy: function() {
@@ -123,7 +127,8 @@
           storeId: '',
           APIKey: ''
          }
-      }
+      },
+      extension: {}
     }
   };
   

@@ -55,8 +55,9 @@
         },
         contentType: 'application/json; charset=utf-8',
         success: function (data, textStatus, jqXHR) {
-          console.log('YaleEndpoint#search data: ' + JSON.stringify(data, null, 2));
-          _this.parsed = new MR.ParsedAnnotations(data);
+          console.log('YaleEndpoint#search data: ');
+          console.dir(data);
+
           if (typeof successCallback === 'function') {
             successCallback(data);
           } else {
@@ -65,8 +66,13 @@
               var oaAnnotation = _this.getAnnotationInOA(value.annotation);
               oaAnnotation.layerId = value.layer_id;
               oaAnnotation.endpoint = _this;
+              
               _this.annotationsList.push(oaAnnotation);
             });
+
+            _this.parsed = new MR.ParsedAnnotations(_this.annotationsList);
+            console.log('PARSED:');
+            console.dir(_this.parsed.annoHierarchy);
             _this.dfd.resolve(true);
           }
         },
@@ -195,7 +201,8 @@
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         success: function (data, textStatus, jqXHR) {
-          console.log('YaleEndpoint#getLayers data: ' + JSON.stringify(data, null, 2));
+          console.log('YaleEndpoint#getLayers data: '); 
+          console.dir(data);
           successCallback(data);
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -228,7 +235,7 @@
       var motivation = annotation.motivation;
       if (!(motivation instanceof Array)) {
         if (motivation !== 'oa:commenting') {
-          console.log('ERROR YaleEndpoint#getAnnotationInOA unexpected motivation value: ' + motivation);
+          //console.log('ERROR YaleEndpoint#getAnnotationInOA unexpected motivation value: ' + motivation + ', id: ' + annotation['@id']);
         }
         motivation = ['oa:commenting'];
       }
