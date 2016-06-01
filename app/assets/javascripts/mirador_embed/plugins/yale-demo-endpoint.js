@@ -1,7 +1,7 @@
 (function ($) {
 
   // Endpoint for FireBase containing dummy data for development/testing
-  $.YaleTestEndpoint = function (options) {
+  $.YaleDemoEndpoint = function (options) {
     jQuery.extend(this, {
       annotationLayers: [],
       annotationsList: [],
@@ -12,14 +12,14 @@
       prefix: null
     }, options);
 
-    console.log('TenkrFbEndpoint dfd: ' + this.dfd);
+    console.log('YaleDemoEndpoint dfd: ' + this.dfd);
     this.init();
   };
 
-  jQuery.extend($.YaleTestEndpoint.prototype, $.YaleEndpoint.prototype, {
+  jQuery.extend($.YaleDemoEndpoint.prototype, $.YaleEndpoint.prototype, {
 
     init: function () {
-      console.log('TenkrFbEndpoint#init');
+      console.log('YaleDemoEndpoint#init');
       var _this = this;
       this.rootUrl = 'https://ydc-annotations.firebaseio.com';
       this.fbKeyMap = {}; // key: annotation['@id], value: firebase key.
@@ -30,16 +30,16 @@
     },
 
     search: function (options, successCallback, errorCallback) {
-      console.log('TenkrFbEndpoint#search options: ' + JSON.stringify(options));
+      console.log('YaleDemoEndpoint#search options: ' + JSON.stringify(options));
       var _this = this;
-      var canvasID = this.parent.currentCanvasID;
+      var canvasID = options.uri;
       this.annotationsList = [];
       
       var ref = new Firebase(this.rootUrl + '/annotations');
 
       ref.once('value', function (snapshot) {
         var data = snapshot.val() || {};
-        console.log('TenkrFbEndpoint#search data:' + JSON.stringify(data, null, 2));
+        console.log('YaleDemoEndpoint#search data:' + JSON.stringify(data, null, 2));
         
         if (typeof successCallback === 'function') {
           successCallback(data);
@@ -62,8 +62,8 @@
     },
 
     create: function (oaAnnotation, layerID, successCallback, errorCallback) {
-      console.log('TenkrFbEndpoint#create layerID: ' + layerID);
-      console.log('TenkrFbEndpoint#create oaAnnotation: ' + JSON.stringify(oaAnnotation));
+      console.log('YaleDemoEndpoint#create layerID: ' + layerID);
+      console.log('YaleDemoEndpoint#create oaAnnotation: ' + JSON.stringify(oaAnnotation));
 
       oaAnnotation.layerID = layerID;
       var annotation = this.getAnnotationInEndpoint(oaAnnotation);
@@ -82,12 +82,12 @@
       if (typeof successCallback === 'function') {
         successCallback(oaAnnotation);
       } else {
-        console.log('TenkrFbEndpoint#create no success callback');
+        console.log('YaleDemoEndpoint#create no success callback');
       }
     },
 
     update: function (oaAnnotation, successCallback, errorCallback) {
-      console.log('TenkrFbEndpoint#update oaAnnotation:');
+      console.log('YaleDemoEndpoint#update oaAnnotation:');
       console.dir(oaAnnotation);
       
       var annotation = this.getAnnotationInEndpoint(oaAnnotation);
@@ -109,7 +109,7 @@
     },
 
     deleteAnnotation: function (annotationID, successCallback, errorCallback) {
-      console.log('TenkrFbEndpoint#delete annotationID: ' + annotationID);
+      console.log('YaleDemoEndpoint#delete annotationID: ' + annotationID);
       var fbKey = this.fbKeyMap[annotationID];
       var ref = new Firebase(this.rootUrl + '/annotations/' + fbKey);
       ref.remove(function (error) {
@@ -128,7 +128,7 @@
     },
 
     getLayers: function (successCallback, errorCallback) {
-      console.log('TenkrFbEndpoint#getLayers');
+      console.log('YaleDemoEndpoint#getLayers');
       var ref = new Firebase(this.rootUrl + '/layers');
       
       ref.once('value', function (snapshot) {

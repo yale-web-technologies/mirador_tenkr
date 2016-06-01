@@ -84,7 +84,7 @@
       annotationLayer: true,
       annotationEndpoint: {
         name: 'Yale Annotations',
-        module: 'YaleEndpoint',
+        module: 'YaleDemoEndpoint',
         options: {
           prefix: null,
           storeId: '',

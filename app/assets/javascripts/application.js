@@ -27,7 +27,7 @@
 //= require views/mirador-view
 //= require mirador_embed/plugins/annotation-editor
 //= require mirador_embed/plugins/yale-endpoint
-//= require mirador_embed/plugins/yale-test-endpoint
+//= require mirador_embed/plugins/yale-demo-endpoint
 //= require mirador_embed/mirador-proxy
 //= require mirador_embed/layout/grid
 //= require mirador_embed/main-menu
