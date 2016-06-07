@@ -50,31 +50,38 @@
         parent: this.layerSelectContainer,
         endpoint: this.endpoint
       });
-      this.layerSelect.init();
+      var dfd = this.layerSelect.init();
       
-      if (this.mode === 'create') {
-        title.text('Create Annotation');
-      } else { // update
-        title.text('');
-        this.textArea.val(MR.annoUtil.getAnnotationText(this.annotation));
-      }
+      dfd.done(function() {
+        if (_this.mode === 'create') {
+          title.text('Create Annotation');
+        } else { // update
+          title.text('');
+          _this.textArea.val(MR.annoUtil.getAnnotationText(_this.annotation));
+        }
+        if (_this.annotation.layerId) {
+          _this.layerSelect.val(_this.annotation.layerId);
+        }
 
-      var textAreaSelector = '#' + this.id + ' textarea';
-      
-      // Sometimes the textarea is not set up with tinymce.
-      // Trying to see if helps to delay the call to tinymce.init.
-      setTimeout(function() {
-        tinymce.init({
-          selector: textAreaSelector,
-          plugins: 'paste',
-          menubar: false,
-          toolbar: 'bold italic | bullist numlist | link | undo redo | removeformat',
-          statusbar: false,
-          toolbar_items_size: 'small',
-          past_as_text: true // from paste plugin
-        });
-        _this.bindEvents();
-      }, 0);
+        // Sometimes the textarea is not set up with tinymce.
+        // Trying to see if helps to delay the call to tinymce.init.
+        setTimeout(function() {
+          _this.initTinyMce();
+          _this.bindEvents();
+        }, 0);
+      });
+    },
+    
+    initTinyMce: function(textAreaSelector) {
+      tinymce.init({
+        selector: '#' + this.id + ' textarea',
+        plugins: 'paste',
+        menubar: false,
+        toolbar: 'bold italic | bullist numlist | link | undo redo | removeformat',
+        statusbar: false,
+        toolbar_items_size: 'small',
+        past_as_text: true // from paste plugin
+      });
     },
     
     // Called by Mirador core

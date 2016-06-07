@@ -27,10 +27,8 @@
       this.element = jQuery(this.template({}));
       this.appendTo.append(this.element);
       
-      this.layerSelector = new $.LayerSelector({
-        parent: this.element.find('.layer_selector_container'),
-        endpoint: this.endpoint
-      });
+      this.initMenuTagSelector();
+      this.initLayerSelector();
       
       this.editorRow = this.element.find('.annowin_creator'); // placeholder for annotation editor for creation
       this.placeholder = this.element.find('.placeholder');
@@ -39,24 +37,48 @@
       this.reload();
       this.bindEvents();
     },
+    
+    initMenuTagSelector: function() {
+      var _this = this;
+      this.menuTagSelector = new $.MenuTagSelector({
+        parent: this.element.find('.menu_tag_selector_container'),
+        endpoint: this.endpoint,
+        changeCallback: function() {
+          
+        }
+      });
+    },
+    
+    initLayerSelector: function() {
+      var _this = this;
+      this.layerSelector = new $.LayerSelector({
+        parent: this.element.find('.layer_selector_container'),
+        endpoint: this.endpoint,
+        changeCallback: function(value, text) {
+          var layerId = value;
+          _this.updateList(layerId);
+        }
+      });
+    },
 
     reload: function(skipLayerLoading) {
       var _this = this;
-      var dfd = null;
-      
+      var layerDfd = null, menuTagDfd = null;
+       
       this.placeholder.hide();
       var canvas = this.getCurrentCanvas();
       this.element.find('.title').text(canvas.label);
       
       if (skipLayerLoading) {
-        dfd = jQuery.Deferred();
-        dfd.resolve();
+        layerDfd = jQuery.Deferred().resolve();
+        menuTagDfd = jQuery.Deferred().resolve();
       } else {
-        dfd = this.layerSelector.init();
+        layerDfd = this.layerSelector.init();
+        menuTagDfd = this.menuTagSelector.init();
       }
-
-      dfd.done(function() {
-        var layerId = _this.layerSelector.val();
+      
+      jQuery.when(layerDfd, menuTagDfd).done(function() {
+        var layerId  = _this.layerSelector.val();
         _this.updateList(layerId);
       });
     },
@@ -105,14 +127,8 @@
       var infoDiv = annoElem.find('.info_view');
       
       annoElem.data('annotationId', annotation['@id']);
-      annoElem.find('.ui.dropdown').dropdown({
-        onChange: function (value, text, $selectedItem) {
-          setTimeout(function () {
-            annoElem.find('ui.dropdown').dropdown('restore defaults');
-          }, 1000);
-        }
-      });
-      if (annotation.on['@type'] == 'oa:Annotation') { // target: annotation
+      annoElem.find('.ui.dropdown').dropdown();
+      if (annotation.on['@type'] == 'oa:Annotation') { // annotation of annotation
         annoElem.find('.menu_bar').addClass('targeting_anno');
       } else {
         annoElem.find('.menu_bar').removeClass('targeting_anno');
@@ -221,13 +237,7 @@
     bindEvents: function() {
       var _this = this;
       
-      // When a new layer is selected
-      this.layerSelector.changeCallback = function(value, text) {
-        var layerId = value;
-        _this.updateList(layerId);
-      };
-      
-      this.miradorProxy.subscribe('ANNOTATIONS_LIST_UPDATED', function(event, windowId, annotationsList) {
+      jQuery.subscribe('MR_READY_TO_RELOAD_ANNO_WIN', function(event) {
         if (! _this.hasOpenEditor()) {
           _this.reload(true);
         }
@@ -235,7 +245,6 @@
       
       jQuery.subscribe('ANNOTATION_FOCUSED', function(event, annoWinId, annotation) {
         console.log('Annotation window ' + _this.id + ' received annotation_focused event');
-        
         if (annoWinId !== _this.id) {
           _this.clearHighlights();
           var annotationsList = _this.canvasWindow.annotationsList;
@@ -340,6 +349,9 @@
     template: Handlebars.compile([
       '<div class="mr_annotation_window">',
       '  <div class="annowin_header">',
+      '    <div class="annowin_menu_tag_row">',
+      '      <span class="menu_tag_selector_container"></span>',
+      '    </div>',
       '    <div class="annowin_layer_row">', 
       '      <span class="layer_selector_container"></span>',
       '    </div>',

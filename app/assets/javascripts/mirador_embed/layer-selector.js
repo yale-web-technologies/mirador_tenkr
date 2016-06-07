@@ -25,6 +25,7 @@
     },
     
     reload: function() {
+      console.log('LayerSelector#reload');
       var _this = this;
       var dfd = jQuery.Deferred();
       var layers = this.endpoint.annotationLayers;
@@ -45,6 +46,7 @@
     },
     
     val: function(value) {
+      console.log('LayerSelector#val value: ' + value);
       return this.selector.val(value);
     },
     

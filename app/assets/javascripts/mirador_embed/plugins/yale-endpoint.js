@@ -70,9 +70,6 @@
               _this.annotationsList.push(oaAnnotation);
             });
 
-            _this.parsed = new MR.ParsedAnnotations(_this.annotationsList);
-            console.log('PARSED:');
-            console.dir(_this.parsed.annoHierarchy);
             _this.dfd.resolve(true);
           }
         },
@@ -277,6 +274,12 @@
         annotation.orderWeight = oaAnnotation.orderWeight;
       }
       return annotation;
+    },
+    
+    parseAnnotations: function() {
+      this.parsed = new MR.ParsedAnnotations(this.annotationsList);
+      console.log('PARSED:');
+      console.dir(this.parsed.annoHierarchy);
     }
 
   };

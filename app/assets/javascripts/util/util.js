@@ -1,4 +1,5 @@
 (function($) {
+  'use strict';
   
   $.util = {
     // Return true if the device is mobile or a tablet.
@@ -10,6 +11,14 @@
           return false;
         }
       })(navigator.userAgent||navigator.vendor||window.opera);
+    },
+    
+    getValues: function(object) {
+      var values = [];
+      jQuery.each(object, function(key, value) {
+        values.push(value);
+      });
+      return values;
     }
   };
   

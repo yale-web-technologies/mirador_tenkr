@@ -85,8 +85,11 @@
       jQuery(window).resize(function() {
         _this.grid.resize();
       });
-      
-      jQuery.subscribe('MR_ADD_WINDOW', function(event) {
+
+      this.miradorProxy.subscribe('ANNOTATIONS_LIST_UPDATED', function(event, params) {
+        console.log('XXX window id: ' + params.windowId);
+        _this.miradorProxy.getEndPoint(params.windowId).parseAnnotations();
+        jQuery.publish('MR_READY_TO_RELOAD_ANNO_WIN');
       });
     },
     

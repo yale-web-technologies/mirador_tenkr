@@ -36,4 +36,5 @@
 //= require mirador_embed/parsed-annotations
 //= require mirador_embed/anno-util
 //= require mirador_embed/layer-selector
+//= require mirador_embed/menu-tag-selector
 //= require mirador_embed/lines-overlay

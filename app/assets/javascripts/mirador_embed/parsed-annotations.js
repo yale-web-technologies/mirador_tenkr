@@ -5,7 +5,7 @@
     this.annotations = annotations;
     this.tagHierarchy = [];  // array of arrays
     this.tagWeights = {}; // for sorting
-    this.annoHierarchy = {};
+    this.annoHierarchy = null;
     this.annoToNodeMap = {}; // key: annotation ID, value: node in annoHierarchy;
     this.init(); 
   };
@@ -14,6 +14,8 @@
     init: function(annotations) {
       this.tagHierarchy = $.getMiradorWindow().getConfig().extension.tagHierarchy;
       console.log('ParsedAnnotations#init tagHierarchy: ' + JSON.stringify(this.tagHierarchy, null, 2));
+      
+      this.annoHierarchy = this.newNode(null, true);
       
       this.initTagWeights();
       this.parse(this.annotations);
@@ -41,7 +43,7 @@
       
       jQuery.each(annotations, function(index, annotation) {
         var tags = $.annoUtil.getTags(annotation);
-        var success = _this.buildNode(annotation, tags, 0, null);
+        var success = _this.buildChildNodes(annotation, tags, 0, _this.annoHierarchy);
         if (!success) {
           remainder.push(annotation);
         }
@@ -66,7 +68,7 @@
     },
     
     // rowIndex: index of this.annoHierarchy
-    buildNode: function(annotation, tags, rowIndex, parent) {
+    buildChildNodes: function(annotation, tags, rowIndex, parent) {
       //console.log('ParsedAnnotations#buildNode rowIndex: ' + rowIndex + ', anno:');
       //console.dir(annotation);
       
@@ -74,43 +76,34 @@
       var currentNode = null;
 
       if (rowIndex >= tagHierarchy.length) {
-        if (parent) {
+        if (parent.isRoot) {
+          return false;
+        } else {
           parent.annotation = annotation;
-          console.log('ADDING0 !!!');
-          console.dir(parent);
           this.annoToNodeMap[annotation['@id']] = parent;
           return true;
-        } else {
-          return false;
         }
       }
       
-      var tag = this.tagInList(tags, this.tagHierarchy[rowIndex]);
-      if (tag) { // one of the tags belongs to the pre-defined tag hierarchy
-        console.log('TAG ' + tag + ', row: ' + rowIndex);
+      var tagObj = this.tagInList(tags, tagHierarchy[rowIndex]);
+      
+      if (tagObj) { // one of the tags belongs to the corresponding level of the pre-defined tag hierarchy
+        var tag = tagObj.tag;
         var annoHierarchy = this.annoHierarchy;
         
-        if (rowIndex === 0) {
-          if (!annoHierarchy[tag]) {
-            annoHierarchy[tag] = this.newNode(tag);
-          }
-          currentNode = annoHierarchy[tag];
-        } else {
-          if (!parent.childNodes[tag]) {
-            parent.childNodes[tag] = this.newNode(tag);
-          }
-          currentNode = parent.childNodes[tag];
+        if (!parent.childNodes[tag]) {
+          parent.childNodes[tag] = this.newNode(tagObj);
         }
-        return this.buildNode(annotation, tags, rowIndex+1, currentNode);
+        currentNode = parent.childNodes[tag];
+        return this.buildChildNodes(annotation, tags, rowIndex+1, currentNode);
       } else {
-        if (parent) {
+        if (parent.isRoot) { // no matching tags so far
+          return false;
+        } else {
           parent.annotation = annotation;
-          console.log('ADDING1!!!');
           console.dir(parent);
           this.annoToNodeMap[annotation['@id']] = parent;
           return true;
-        } else {
-          return false;
         }
       }
     },
@@ -120,7 +113,7 @@
       jQuery.each(tags, function(index, tag) {
         jQuery.each(tagObjectList, function(listIndex, tagObj) {
           if (tag === tagObj.tag) {
-            match = tag;
+            match = tagObj;
             return false;
           }
         });
@@ -131,12 +124,21 @@
       return match;
     },
     
-    newNode: function(tag) {
-      return {
-        weight: this.tagWeights[tag],
-        annotation: null,
-        childNodes: {},
-        childAnnotations: []
+    newNode: function(tagObj, isRoot) {
+      if (isRoot) {
+        return {
+          isRoot: true,
+          childNodes: {}
+        }  
+      } else {
+        return {
+          label: tagObj.label,
+          tag: tagObj.tag,
+          weight: this.tagWeights[tagObj.tag],
+          annotation: null,
+          childNodes: {},
+          childAnnotations: []
+        };
       }
     }
   };

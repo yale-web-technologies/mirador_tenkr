@@ -9,11 +9,6 @@
   background-color: #efefef;
 }
 
-// TODO: Remove this after the icon is removed in Mirador.
-.add-annotation-window {
-  margin-right: 10px;
-}
-
 .annowin_header {
   margin: 0;
   padding: 0;
@@ -37,14 +32,15 @@
   color: red;
 }
 
-.annowin_layer_row {
-  padding: 5px;
+.annowin_menu_tag_row, .annowin_layer_row {
+  padding: 2px @annowin-h-padding;
 }
 
 .annowin_list {
   //position: relative; /* required to make the div "positioned" so the child elements' positions to be obtained and scroll levels adjusted accordingly. */
   position: absolute;
-  top: 35px;
+  //top: 35px;
+  top: 70px;
   bottom: 17px; // XXX a kludge until someone can figure out why the whole div is not showing unless this bottom value is set.
   left: 0;
   right: 0;
