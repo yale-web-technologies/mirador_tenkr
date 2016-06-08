@@ -19,10 +19,16 @@
   $.MenuTagSelector.prototype = {
     
     init: function() {
+      var _this = this;
       this.selector = new $.Selector({
         appendTo: this.parent,
+        changeCallback: function(value, text) {
+          console.log('SELECT value: ' + value + ', text: ' + text);
+          if (typeof _this.changeCallback === 'function') {
+            _this.changeCallback(value, text);
+          }
+        }
       });
-      this.bindEvents();
       return this.reload();
     },
     
@@ -81,15 +87,9 @@
         return item;
       }
     },
-
-    bindEvents: function() {
-      var _this = this;
-      this.selector.changeCallback = function(value, text) {
-        console.log('SELECT value: ' + value + ', text: ' + text);
-        if (typeof _this.changeCallback === 'function') {
-          _this.changeCallback(value, text);
-        }
-      }
+    
+    destroy: function() {
+      this.selector.destroy();
     }
   };
   

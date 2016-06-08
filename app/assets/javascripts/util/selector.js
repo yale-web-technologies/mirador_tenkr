@@ -88,6 +88,10 @@
       }
     },
     
+    destroy: function() {
+      this.element.remove();
+    },
+    
     template: Handlebars.compile([
       '<div class="basic tiny ui button mr_button dropdown">',
       '  <input name="selection" type="hidden" />',

@@ -36,6 +36,9 @@
     
     initMenuTagSelector: function() {
       var _this = this;
+      if (this.menuTagSelector) {
+        this.menuTagSelector.destroy();
+      }
       this.menuTagSelector = new $.MenuTagSelector({
         parent: this.element.find('.menu_tag_selector_container'),
         endpoint: this.endpoint,
@@ -65,7 +68,7 @@
       var canvas = this.getCurrentCanvas();
       this.element.find('.title').text(canvas.label);
       
-      if (this.endpoint.parsed && !this.menuTagSelector) {
+      if (this.endpoint.parsed) {
         this.listElem.css('top', 60);
         this.initMenuTagSelector();
         this.element.find('.annowin_menu_tag_row').show();
