@@ -25,17 +25,7 @@
       this.element = jQuery(this.template({}));
       this.appendTo.append(this.element);
       this.listElem = this.element.find('.annowin_list');
-      
-      if (this.endpoint.parsed) {
-        this.listElem.css('top', 60);
-        this.initMenuTagSelector();
-        this.element.find('.annowin_menu_tag_row').show();
-      } else {
-        this.listElem.css('top', 35);
-        this.element.find('.annowin_menu_tag_row').hide();
-      }
       this.initLayerSelector();
-      
       this.editorRow = this.element.find('.annowin_creator'); // placeholder for annotation editor for creation
       this.placeholder = this.element.find('.placeholder');
       this.placeholder.text('Loading...').show();
@@ -75,6 +65,15 @@
       var canvas = this.getCurrentCanvas();
       this.element.find('.title').text(canvas.label);
       
+      if (this.endpoint.parsed) {
+        this.listElem.css('top', 60);
+        this.initMenuTagSelector();
+        this.element.find('.annowin_menu_tag_row').show();
+      } else {
+        this.listElem.css('top', 35);
+        this.element.find('.annowin_menu_tag_row').hide();
+      }
+
       if (skipLayerLoading) {
         layerDfd = jQuery.Deferred().resolve();
       } else {
