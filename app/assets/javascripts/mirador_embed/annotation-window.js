@@ -61,7 +61,7 @@
 
     reload: function(skipLayerLoading) {
       var _this = this;
-      var layerDfd = null, menuTagDfd = null;
+      var layerDfd = null;
        
       this.placeholder.hide();
       var canvas = this.getCurrentCanvas();
@@ -69,11 +69,10 @@
       
       if (skipLayerLoading) {
         layerDfd = jQuery.Deferred().resolve();
-        menuTagDfd = jQuery.Deferred().resolve();
       } else {
         layerDfd = this.layerSelector.init();
-        menuTagDfd = this.menuTagSelector.init();
       }
+      var menuTagDfd = this.menuTagSelector.reload();
       
       jQuery.when(layerDfd, menuTagDfd).done(function() {
         _this.updateList();

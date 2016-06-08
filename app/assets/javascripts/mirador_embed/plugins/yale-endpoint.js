@@ -7,7 +7,7 @@
       dfd: null,
       imagesList: null,
       prefix: null,
-      windowID: null
+      windowID: null,
     }, options);
     
     this.init();

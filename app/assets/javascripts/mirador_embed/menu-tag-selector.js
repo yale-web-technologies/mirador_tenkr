@@ -12,6 +12,8 @@
       endpoint: null,
       changeCallback: null
     }, options);
+    
+    this.init();
   };
   
   $.MenuTagSelector.prototype = {
@@ -21,13 +23,18 @@
         appendTo: this.parent
       });
       this.bindEvents();
-      return this.reload(); // return a Deferred object.
+      return this.reload();
     },
     
     reload: function() {
       var _this = this;
       var dfd = jQuery.Deferred();
-      var annoHierarchy = this.endpoint.parsed.annoHierarchy;
+      var annoHierarchy = this.endpoint.parsed ? this.endpoint.parsed.annoHierarchy : null;
+      
+      if (!annoHierarchy) {
+        dfd.reject();
+        return dfd;
+      }
       
       this.selector.empty();
       
