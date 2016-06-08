@@ -24,8 +24,16 @@
       this.endpoint = this.canvasWindow.endpoint;
       this.element = jQuery(this.template({}));
       this.appendTo.append(this.element);
+      this.listElem = this.element.find('.annowin_list');
       
-      this.initMenuTagSelector();
+      if (this.endpoint.parsed) {
+        this.listElem.css('top', 60);
+        this.initMenuTagSelector();
+        this.element.find('.annowin_menu_tag_row').show();
+      } else {
+        this.listElem.css('top', 35);
+        this.element.find('.annowin_menu_tag_row').hide();
+      }
       this.initLayerSelector();
       
       this.editorRow = this.element.find('.annowin_creator'); // placeholder for annotation editor for creation
@@ -61,7 +69,7 @@
 
     reload: function(skipLayerLoading) {
       var _this = this;
-      var layerDfd = null;
+      var layerDfd = null, menuTagDfd = null;
        
       this.placeholder.hide();
       var canvas = this.getCurrentCanvas();
@@ -72,7 +80,12 @@
       } else {
         layerDfd = this.layerSelector.init();
       }
-      var menuTagDfd = this.menuTagSelector.reload();
+      
+      if (this.endpoint.parsed) {
+        menuTagDfd = this.menuTagSelector.reload();
+      } else {
+        menuTagDfd = jQuery.Deferred.resolve();
+      }
       
       jQuery.when(layerDfd, menuTagDfd).done(function() {
         _this.updateList();
@@ -83,12 +96,14 @@
       var _this = this;
       var annotationsList = this.canvasWindow.annotationsList;
       
-      var menuTags = this.menuTagSelector.val().split('|');
+      var menuTags = ['all'];
+      if (this.endpoint.parsed) {
+        menuTags = this.menuTagSelector.val().split('|');
+      }
       var layerId  = this.layerSelector.val();
       var parsed = this.endpoint.parsed;
 
       this.currentLayerId = layerId;
-      this.listElem = this.element.find('.annowin_list');
       this.listElem.empty();
       
       var count = 0;

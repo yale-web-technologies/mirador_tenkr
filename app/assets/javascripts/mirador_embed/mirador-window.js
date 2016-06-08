@@ -21,7 +21,11 @@
       var dfd = this.fetchTagHierarchy();
       
       dfd.done(function(data) {
-        _this.tagHierarchy = data;
+        if (data) {
+          _this.tagHierarchy = data;
+        } else {
+          _this.tagHierarchy = null;
+        }
       });
       dfd.fail(function() {
         console.log('ERROR failed to retrieve tag hierarchy');
@@ -87,7 +91,10 @@
       });
 
       this.miradorProxy.subscribe('ANNOTATIONS_LIST_UPDATED', function(event, params) {
-        _this.miradorProxy.getEndPoint(params.windowId).parseAnnotations();
+        if (_this.tagHierarchy) {
+          var endpoint = _this.miradorProxy.getEndPoint(params.windowId);
+          endpoint.parseAnnotations();
+        }
         jQuery.publish('MR_READY_TO_RELOAD_ANNO_WIN');
       });
     },

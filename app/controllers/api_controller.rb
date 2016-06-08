@@ -3,7 +3,7 @@ class ApiController < ApplicationController
     room_id = params[:room_id]
     room = Admin::Room.find(room_id)
     jsonStr = room.tag_hierarchy
-    if jsonStr.strip == ''
+    if !(jsonStr.nil?) && jsonStr.strip == ''
       jsonStr = nil 
     end
     render json: jsonStr

@@ -8,6 +8,7 @@
       imagesList: null,
       prefix: null,
       windowID: null,
+      parsed: null
     }, options);
     
     this.init();
