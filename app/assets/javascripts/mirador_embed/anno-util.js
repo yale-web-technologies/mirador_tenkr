@@ -44,11 +44,15 @@
       var nextAnno = annotation;
       var targetAnno = null;
       
+      if (nextAnno.on['@type'] !== 'oa:Annotation') {
+        return annotation;
+      }
+      
       while(nextAnno) {
         //console.log('nextAnno: ');
         //console.dir(nextAnno);
         
-        if (nextAnno.on['@type'] == 'oa:Annotation') {
+        if (nextAnno.on['@type'] === 'oa:Annotation') {
           nextId = nextAnno.on.full;
           nextAnno = null;
           jQuery.each(annotations, function(index, anno) {
