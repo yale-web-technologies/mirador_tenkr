@@ -39,7 +39,7 @@
       this.selector.setItems(menu);
       
       setTimeout(function() {
-        _this.selector.val('chapter1|scene1');
+        _this.selector.val('all');
         dfd.resolve();
       }, 0);
       return dfd;
@@ -58,9 +58,9 @@
         .sort(function(a, b) {
           return a.weight - b.weight;
         });
+        
       var label = parentItem ? parentItem.label + ', ' + node.label : node.label;
       var value = parentItem ? parentItem.value + '|' + node.tag : node.tag;
-      
       var item = { label: label, value: value, children: [] };
       
       if (children.length > 0) {
@@ -68,8 +68,11 @@
           item.children.push(_this.buildMenu(childNode, node.isRoot ? null : item));
         });
       }
-      console.log('returning ' + JSON.stringify(node.isRoot ? item.children : item));
-      return node.isRoot ? item.children : item;
+      if (node.isRoot) {
+        return [{ label: 'All', value: 'all', children: [] }].concat(item.children);
+      } else {
+        return item;
+      }
     },
 
     bindEvents: function() {

@@ -8,8 +8,6 @@
       canvasWindow: null, // window that contains the canvas for the annotations
       endpoint: null
     }, options);
-    
-    console.log('AnnotationWindow this.appendTo id: ' + this.appendTo.attr('id'));
 
     this.init();
   };
@@ -43,8 +41,8 @@
       this.menuTagSelector = new $.MenuTagSelector({
         parent: this.element.find('.menu_tag_selector_container'),
         endpoint: this.endpoint,
-        changeCallback: function() {
-          
+        changeCallback: function(value, text) {
+          _this.updateList();
         }
       });
     },
@@ -56,7 +54,7 @@
         endpoint: this.endpoint,
         changeCallback: function(value, text) {
           var layerId = value;
-          _this.updateList(layerId);
+          _this.updateList();
         }
       });
     },
@@ -78,15 +76,18 @@
       }
       
       jQuery.when(layerDfd, menuTagDfd).done(function() {
-        var layerId  = _this.layerSelector.val();
-        _this.updateList(layerId);
+        _this.updateList();
       });
     },
     
-    updateList: function(layerId) {
+    updateList: function() {
       var _this = this;
       var annotationsList = this.canvasWindow.annotationsList;
       
+      var menuTags = this.menuTagSelector.val().split('|');
+      var layerId  = this.layerSelector.val();
+      var parsed = this.endpoint.parsed;
+
       this.currentLayerId = layerId;
       this.listElem = this.element.find('.annowin_list');
       this.listElem.empty();
@@ -96,8 +97,10 @@
       jQuery.each(annotationsList, function(index, value) {
         try {
           if (layerId === 'any' || layerId === value.layerId) {
-            ++count;
-            _this.addAnnotation(value);
+            if (menuTags[0] === 'all' || parsed.matchHierarchy(value, menuTags)) {
+              ++count;
+              _this.addAnnotation(value);
+            }
           }
         } catch (e) {
           console.log('ERROR AnnotationWindow#updateList ' + e);
@@ -250,10 +253,8 @@
           var annotationsList = _this.canvasWindow.annotationsList;
           var targeting = $.annoUtil.findTargetingAnnotations(annotationsList,
             _this.currentLayerId, annotation);
-          console.log('TARGETING: '); console.dir(targeting);
           var targeted = $.annoUtil.findTargetAnnotations(annotationsList,
             _this.currentLayerId, annotation);
-          console.log('TARGETED: '); console.dir(targeted);
           _this.highlightAnnotations(targeting, 'TARGETING');
           _this.highlightAnnotations(targeted, 'TARGET');
         }
@@ -267,16 +268,14 @@
     bindAnnotationItemEvents: function(annoElem, annotation) {
       var _this = this;
       var infoElem = annoElem.find('.annowin_info');
+      var finalTargetAnno = $.annoUtil.findFinalTargetAnnotation(annotation, 
+        this.canvasWindow.annotationsList);
       
       annoElem.click(function(event) {
-        if ($.getLinesOverlay().isActive()) {
-          jQuery.publish('target_annotation_selected', annotation);
-        } else {
-          _this.clearHighlights();
-          _this.highlightFocusedAnnotation(annotation);
-          _this.miradorProxy.publish('ANNOTATION_FOCUSED', [_this.id, annotation]);
-          jQuery.publish('ANNOTATION_FOCUSED', [_this.id, annotation]);
-        }
+        _this.clearHighlights();
+        _this.highlightFocusedAnnotation(annotation);
+        _this.miradorProxy.publish('ANNOTATION_FOCUSED', [_this.id, finalTargetAnno]);
+        jQuery.publish('ANNOTATION_FOCUSED', [_this.id, annotation]);
       });
       
       annoElem.find('.annotate').click(function (event) {

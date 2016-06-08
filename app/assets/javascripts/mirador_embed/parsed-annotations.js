@@ -101,6 +101,7 @@
           return false;
         } else {
           parent.annotation = annotation;
+          console.log('INSERT ANNO!');
           console.dir(parent);
           this.annoToNodeMap[annotation['@id']] = parent;
           return true;
@@ -140,6 +141,49 @@
           childAnnotations: []
         };
       }
+    },
+    
+    getNodeFromTags: function(tags) {
+      var node = this.annoHierarchy;
+      
+      jQuery.each(tags, function(index, tag) {
+        node = node.childNodes[tag];
+        if (!node) {
+          return false;
+        }
+      });
+      return node;
+    },
+    
+    matchHierarchy: function(annotation, tags) {
+      console.log('tags: ' + tags);
+      var node = this.getNodeFromTags(tags);
+      return node ? this.matchNode(annotation, node) : false;
+    },
+    
+    matchNode: function(annotation, node) {
+      var _this = this;
+      var matched = false;
+      
+      console.log('Node: ');
+      console.dir(node);
+      
+      if (node.annotation['@id'] === annotation['@id']) {
+        return true;
+      }
+      jQuery.each(node.childAnnotations, function(index, value) {
+        if (value['@id'] === annotation['@id']) {
+          matched = true;
+          return false;
+        }
+      });
+      jQuery.each(node.childNodes, function(index, childNode) {
+        if (_this.matchNode(annotation, childNode)) {
+          matched = true;
+          return false;
+        }
+      });
+      return matched;
     }
   };
   

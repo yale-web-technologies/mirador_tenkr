@@ -57,10 +57,12 @@
           title.text('Create Annotation');
         } else { // update
           title.text('');
-          _this.textArea.val(MR.annoUtil.getAnnotationText(_this.annotation));
         }
-        if (_this.annotation.layerId) {
-          _this.layerSelect.val(_this.annotation.layerId);
+        if (_this.annotation) {
+          _this.textArea.val(MR.annoUtil.getAnnotationText(_this.annotation));
+          if (_this.annotation.layerId) {
+            _this.layerSelect.val(_this.annotation.layerId);
+          }
         }
 
         // Sometimes the textarea is not set up with tinymce.

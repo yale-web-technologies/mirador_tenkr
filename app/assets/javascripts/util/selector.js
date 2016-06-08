@@ -25,8 +25,7 @@
           }
         },
         action: function(text, value) {
-          _this.element.dropdown('set text', text);
-          _this.element.dropdown('set value', value);
+          _this.element.dropdown('set selected', value);
           _this.element.dropdown('hide');
         }
       });
@@ -42,6 +41,7 @@
       var _this = this;
       jQuery.each(itemsConfig, function(index, value) {
         if (value.children.length > 0) {
+          _this.addItem(value.label, value.value, parent);
           var menu = _this.addMenuItem(value.label, value.value, parent);
           _this._setItems(value.children, menu);
         } else {
@@ -57,7 +57,8 @@
         .attr('data-value', value)
         .text(label);
       var menu = jQuery('<div/>')
-        .addClass('menu');
+        .addClass('menu')
+        .css('overflow', 'hidden');
       item.append(jQuery('<i class="dropdown icon"></i>'));
       item.append(menu)
       parent.append(item);
@@ -91,7 +92,7 @@
       '<div class="basic tiny ui button mr_button dropdown">',
       '  <input name="selection" type="hidden" />',
       '  <div class="default text"></div>',
-      '  <i class="fa fa-caret-down"></i>',
+      '  <i class="dropdown icon"></i>',
       '  <div class="menu">',
       '  </div>',
       '</div>'
