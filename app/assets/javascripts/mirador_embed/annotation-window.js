@@ -65,7 +65,7 @@
       var canvas = this.getCurrentCanvas();
       this.element.find('.title').text(canvas.label);
       
-      if (this.endpoint.parsed) {
+      if (this.endpoint.parsed && !this.menuTagSelector) {
         this.listElem.css('top', 60);
         this.initMenuTagSelector();
         this.element.find('.annowin_menu_tag_row').show();

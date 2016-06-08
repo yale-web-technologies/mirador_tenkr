@@ -20,7 +20,7 @@
     
     init: function() {
       this.selector = new $.Selector({
-        appendTo: this.parent
+        appendTo: this.parent,
       });
       this.bindEvents();
       return this.reload();
