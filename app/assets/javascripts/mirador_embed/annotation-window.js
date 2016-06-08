@@ -84,7 +84,7 @@
       if (this.endpoint.parsed) {
         menuTagDfd = this.menuTagSelector.reload();
       } else {
-        menuTagDfd = jQuery.Deferred.resolve();
+        menuTagDfd = jQuery.Deferred().resolve();
       }
       
       jQuery.when(layerDfd, menuTagDfd).done(function() {
