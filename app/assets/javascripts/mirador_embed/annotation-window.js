@@ -305,9 +305,6 @@
           endpoint: _this.endpoint,
           saveCallback: function(annotation) {
             dialogElement.dialog('close');
-            if (_this.currentLayerId !== annotation.layerId) {
-              annoElem.remove();
-            }
             _this.miradorProxy.publish('annotationCreated.' + _this.canvasWindow.id, [annotation, null]);
           },
           cancelCallback: function() {
@@ -331,10 +328,14 @@
           endpoint: _this.endpoint,
           annotation: annotation,
           saveCallback: function(annotation, content) {
-            var normalView = annoElem.find('.normal_view');
-            normalView.find('.content').html(content);
-            normalView.show();
-            annoElem.data('editing', false);
+            if (_this.currentLayerId === annotation.layerId) {
+              var normalView = annoElem.find('.normal_view');
+              normalView.find('.content').html(content);
+              normalView.show();
+              annoElem.data('editing', false);
+            } else {
+              annoElem.remove();
+            }
           },
           cancelCallback: function() {
             annoElem.find('.normal_view').show();
