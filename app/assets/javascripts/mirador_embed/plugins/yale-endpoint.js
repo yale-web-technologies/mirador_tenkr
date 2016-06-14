@@ -123,7 +123,7 @@
       console.log('YaleEndpoint#update url: ' + url);
       
       var data = {
-        layer_id: oaAnnotation.layerId,
+        layer_id: [oaAnnotation.layerId],
         annotation: annotation
       };
       
