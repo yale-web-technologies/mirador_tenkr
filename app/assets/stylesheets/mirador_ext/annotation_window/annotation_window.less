@@ -8,6 +8,15 @@
   height: 100%;
   overflow-y: scroll; // to show the menu-tag selector when it gets too big
   background-color: #efefef;
+  
+  a {
+    &:link, &:visited {
+      color: @blue;
+    }
+    &:hover, &:active {
+      color: @light-blue;
+    }
+  }
 }
 
 .annowin_header {

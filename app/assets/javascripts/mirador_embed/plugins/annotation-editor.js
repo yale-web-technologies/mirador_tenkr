@@ -77,11 +77,12 @@
     initTinyMce: function(textAreaSelector) {
       tinymce.init({
         selector: '#' + this.id + ' textarea',
-        plugins: 'paste',
+        plugins: 'link paste',
         menubar: false,
         toolbar: 'bold italic | bullist numlist | link | undo redo | removeformat',
         statusbar: false,
         toolbar_items_size: 'small',
+        default_link_target: '_blank',
         past_as_text: true // from paste plugin
       });
     },
