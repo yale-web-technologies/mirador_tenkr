@@ -80,7 +80,6 @@
     },
     
     val: function(value) {
-      console.log('Selector#val value: ' + value);
       if (value === undefined) {
         return this.element.dropdown('get value');
       } else {

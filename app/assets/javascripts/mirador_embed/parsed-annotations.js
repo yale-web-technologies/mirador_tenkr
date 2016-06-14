@@ -13,7 +13,8 @@
   $.ParsedAnnotations.prototype = {
     init: function(annotations) {
       this.tagHierarchy = $.getMiradorWindow().getConfig().extension.tagHierarchy;
-      console.log('ParsedAnnotations#init tagHierarchy: ' + JSON.stringify(this.tagHierarchy, null, 2));
+      console.log('ParsedAnnotations#init tagHierarchy: ');
+      console.dir(this.tagHierarchy);
       
       this.annoHierarchy = this.newNode(null, true);
       

@@ -46,7 +46,6 @@
     },
     
     val: function(value) {
-      console.log('LayerSelector#val value: ' + value);
       return this.selector.val(value);
     },
     

@@ -95,6 +95,7 @@
     },
     
     updateList: function() {
+      console.log('AnnotationWindow#updateList');
       var _this = this;
       var annotationsList = this.canvasWindow.annotationsList;
       
@@ -112,7 +113,7 @@
       
       jQuery.each(annotationsList, function(index, value) {
         try {
-          if (layerId === 'any' || layerId === value.layerId) {
+          if (layerId === value.layerId) {
             if (menuTags[0] === 'all' || parsed.matchHierarchy(value, menuTags)) {
               ++count;
               _this.addAnnotation(value);
@@ -304,6 +305,9 @@
           endpoint: _this.endpoint,
           saveCallback: function(annotation) {
             dialogElement.dialog('close');
+            if (_this.currentLayerId !== annotation.layerId) {
+              annoElem.remove();
+            }
             _this.miradorProxy.publish('annotationCreated.' + _this.canvasWindow.id, [annotation, null]);
           },
           cancelCallback: function() {

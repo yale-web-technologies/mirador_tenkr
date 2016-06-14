@@ -45,12 +45,12 @@
       var header = this.element.find('.header');
       var title = header.find('.title');
       this.textArea = this.element.find('textarea');
-      this.layerSelectContainer = this.element.find('.layer_select');
-      this.layerSelect = new MR.LayerSelector({
-        parent: this.layerSelectContainer,
+      this.layerSelectorContainer = this.element.find('.layer_select');
+      this.layerSelector = new MR.LayerSelector({
+        parent: this.layerSelectorContainer,
         endpoint: this.endpoint
       });
-      var dfd = this.layerSelect.init();
+      var dfd = this.layerSelector.init();
       
       dfd.done(function() {
         if (_this.mode === 'create') {
@@ -61,7 +61,7 @@
         if (_this.annotation) {
           _this.textArea.val(MR.annoUtil.getAnnotationText(_this.annotation));
           if (_this.annotation.layerId) {
-            _this.layerSelect.val(_this.annotation.layerId);
+            _this.layerSelector.val(_this.annotation.layerId);
           }
         }
 
@@ -135,7 +135,7 @@
           "chars": resourceText
         });
 
-      var layerId = this.layerSelect.val();
+      var layerId = this.layerSelector.val();
       var annotation = {
         '@context': 'http://iiif.io/api/presentation/2/context.json',
         '@type': 'oa:Annotation',
@@ -162,6 +162,7 @@
       if (tagText) {
         tags = tagText.split(/\s+/);
       }
+      
       var motivation = [],
         resource = [];
 
@@ -188,6 +189,9 @@
           value.chars = resourceText;
         }
       });
+      
+      var layerId = this.layerSelector.val();
+      oaAnno.layerId = layerId;
       
       return oaAnno;
     },
@@ -230,7 +234,7 @@
           msg += 'Target annotation is missing.\n';
         }
       }
-      if (this.mode === 'create' && !this.layerSelect.val()) {
+      if (this.mode === 'create' && !this.layerSelector.val()) {
         msg += 'Layer is not selected.\n';
       }
       if (tinymce.activeEditor.getContent().trim() === '') {
