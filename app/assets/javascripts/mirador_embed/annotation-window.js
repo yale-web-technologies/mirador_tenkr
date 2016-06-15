@@ -77,12 +77,14 @@
         this.element.find('.annowin_menu_tag_row').hide();
       }
 
-      if (this.endpoint.annotationLayers.length > 0 &&
-        !this.layerSelector.isLoaded())
-      {
-        layerDfd = this.layerSelector.init();
+      if (this.endpoint.annotationLayers.length > 0) {
+        if (this.layerSelector.isLoaded()) {
+          layerDfd = jQuery.Deferred().resolve();
+        } else {
+          layerDfd = this.layerSelector.init();
+        }
       } else {
-        layerDfd = jQuery.Deferred().resolve();
+        layerDfd = jQuery.Deferred().reject();
       }
       
       if (this.endpoint.parsed) {
