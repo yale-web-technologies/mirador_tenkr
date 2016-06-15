@@ -17,6 +17,7 @@
   $.LayerSelector.prototype = {
     
     init: function() {
+      this._isLoaded = false;
       this.selector = new $.Selector({
         appendTo: this.parent
       });
@@ -39,6 +40,7 @@
       setTimeout(function() {
         if (layers.length > 0) {
           _this.selector.val(layers[0]['@id']);
+          _this._isLoaded = true;
         }
         dfd.resolve();
       }, 0);
@@ -47,6 +49,10 @@
     
     val: function(value) {
       return this.selector.val(value);
+    },
+    
+    isLoaded: function() {
+      return this._isLoaded;
     },
     
     bindEvents: function() {

@@ -60,7 +60,7 @@
       });
     },
 
-    reload: function(skipLayerLoading) {
+    reload: function() {
       var _this = this;
       var layerDfd = null, menuTagDfd = null;
        
@@ -77,10 +77,12 @@
         this.element.find('.annowin_menu_tag_row').hide();
       }
 
-      if (skipLayerLoading) {
-        layerDfd = jQuery.Deferred().resolve();
-      } else {
+      if (this.endpoint.annotationLayers.length > 0 &&
+        !this.layerSelector.isLoaded())
+      {
         layerDfd = this.layerSelector.init();
+      } else {
+        layerDfd = jQuery.Deferred().resolve();
       }
       
       if (this.endpoint.parsed) {
@@ -259,7 +261,7 @@
       
       jQuery.subscribe('MR_READY_TO_RELOAD_ANNO_WIN', function(event) {
         if (! _this.hasOpenEditor()) {
-          _this.reload(true);
+          _this.reload();
         }
       });
       
