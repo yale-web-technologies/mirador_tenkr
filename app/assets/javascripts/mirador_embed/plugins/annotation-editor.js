@@ -83,7 +83,11 @@
         statusbar: false,
         toolbar_items_size: 'small',
         default_link_target: '_blank',
-        past_as_text: true // from paste plugin
+        past_as_text: true, // from paste plugin
+        resize: true,
+        height: '140',
+        theme_advanced_resizing: true,
+        theme_advanced_statusbar_location: 'bottom'
       });
     },
     
@@ -105,13 +109,18 @@
     
     // Called by Mirador core
     isDirty: function() {
-      return tinymce.activeEditor.isDirty();
+      return this.getEditor().isDirty();
+    },
+    
+    // Get tinymce editor
+    getEditor: function() {
+      return tinymce.get(this.textArea.attr('id'));
     },
     
     // Called by Mirador core
     createAnnotation: function (targetAnnotation) {
       var tagText = this.element.find('.tags_editor').val().trim();
-      var resourceText = tinymce.activeEditor.getContent();
+      var resourceText = this.getEditor().getContent();
       var tags = [];
       var motivation = [];
       var resource = [];
@@ -157,7 +166,7 @@
     // Called by Mirador core
     updateAnnotation: function(oaAnno) {
       var tagText = this.element.find('.tags_editor').val().trim();
-      var resourceText = tinymce.activeEditor.getContent();
+      var resourceText = this.getEditor().getContent();
       var tags = [];
       
       if (tagText) {
@@ -216,7 +225,7 @@
         this.endpoint.update(annotation, function(data) {
           if (typeof _this.saveCallback === 'function') {
             var annotation = data;
-            var content = tinymce.activeEditor.getContent().trim();
+            var content = this.getEditor().getContent().trim();
             _this.saveCallback(annotation, content);
           }
           _this.destroy();
@@ -238,7 +247,7 @@
       if (this.mode === 'create' && !this.layerSelector.val()) {
         msg += 'Layer is not selected.\n';
       }
-      if (tinymce.activeEditor.getContent().trim() === '') {
+      if (this.getEditor().getContent().trim() === '') {
         msg += 'Please enter content.\n';
       }
       if (msg === '') {
@@ -264,6 +273,20 @@
           _this.cancelCallback();
         }
       });
+      
+      this.element.find('.mr_vertical_inc').click(function() {
+        var iframeId = _this.getEditor().id + '_ifr';
+        var element = tinyMCE.DOM.get(iframeId);
+        var height = parseInt(tinyMCE.DOM.getStyle(element, 'height'), 10);
+        tinyMCE.DOM.setStyle(element, 'height', (height + 75) + 'px');
+      });
+      
+      this.element.find('.mr_vertical_dec').click(function() {
+        var iframeId = _this.getEditor().id + '_ifr';
+        var element = tinyMCE.DOM.get(iframeId);
+        var height = parseInt(tinyMCE.DOM.getStyle(element, 'height'), 10);
+        tinyMCE.DOM.setStyle(element, 'height', (height - 75) + 'px');
+      });
     },
     
     template: Handlebars.compile([
@@ -275,9 +298,11 @@
       '  <input class="tags_editor" placeholder="{{t "addTagsHere"}}…" {{#if tags}}value="{{tags}}"{{/if}}/>',
       '  {{#unless miradorDriven}}',
       '    <div class="bottom_row">',
-      '      <div class="to_right">',
       '        <button class="save">Save</button>',
       '        <button class="cancel">Cancel</button>',
+      '      <div class="mr_float_right">',
+      '        <i class="large caret up icon mr_vertical_dec"></i>',
+      '        <i class="large caret down icon mr_vertical_inc"></i>',
       '      </div>',
       '    </div>',
       '  {{/unless}}',

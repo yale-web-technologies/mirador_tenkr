@@ -317,7 +317,8 @@
           title: 'Create annotation',
           modal: true,
           draggable: true,
-          dialogClass: 'no_close'
+          dialogClass: 'no_close',
+          width: 400
         });
         editor.show();
       });
