@@ -5869,18 +5869,11 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
     ],
 
     'drawingToolsSettings': {
-      // Additional tool settings.
-      /**
-       *'Pin': {
-       *},
-       **/
       'doubleClickReactionTime': 300,
       'strokeColor': 'deepSkyBlue',
       'fillColor': 'deepSkyBlue',
       'fillColorAlpha': 0.0
     },
-
-    'availableExternalCommentsPanel': false,
 
     'availableCanvasTools': [
 
@@ -5995,6 +5988,9 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
     this.data = this.state.getStateProperty('data');
     // get initial manifests
     this.element = this.element || jQuery('#' + this.id);
+    if (options.availableAnnotationDrawingTools && options.availableAnnotationDrawingTools.length > 0) {
+      this.availableAnnotationDrawingTools = options.availableAnnotationDrawingTools;
+    }
 
     if (this.data) {
       this.init();
@@ -6424,7 +6420,7 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
         containerId: _this.element.attr('id'),
         layoutDescription: _this.layoutDescription,
         configuration: null,
-        padding: 3
+        padding: 3 
       });
 
       var data = layout.filter( function(d) {
@@ -6465,7 +6461,7 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
       // Exit
       divs.exit()
       .remove("div")
-      .each(function(d) {
+      .each(function(d) { 
         var slotMap = _this.slots.reduce(function(map, temp_slot) {
           if (d.id === temp_slot.slotID) {
             map[d.id] = temp_slot;
@@ -6525,7 +6521,7 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
       }
 
       function mutateAndAdd(node, indexDifference) {
-        // Locally mutate the tree to accomodate a
+        // Locally mutate the tree to accomodate a 
         // sibling of another kind, transforming
         // both the target node and its parent.
         var newParent = _this.newNode(node.type, node.parent);
@@ -6555,17 +6551,17 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
 
       if (node.type === 'column') {
         // Since it is a column:
-        //
+        // 
         // If adding to a side, simply
         // add a sibling.
         // Left means before, right means after.
         if (direction === 'r' || direction === 'l') {
           indexDifference = direction === 'r' ? 1 : 0;
           addSibling(node, indexDifference);
-        }
+        } 
         // If adding above or below, the
         // operation must be changed to mutating
-        // the structure.
+        // the structure. 
         // Up means before, Down means after.
         else {
           indexDifference = direction === 'd' ? 1 : 0;
@@ -6574,16 +6570,16 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
       } else {
         // Since it is a row:
         //
-        // If adding to a side, mutate the
+        // If adding to a side, mutate the 
         // structure.
         // Left means before, right means after.
         if (direction === 'r' || direction === 'l') {
           indexDifference = direction === 'r' ? 1 : 0;
           mutateAndAdd(node, indexDifference);
-        }
+        } 
         // If adding above or below, the
         // operations must be switched to adding
-        // a sibling.
+        // a sibling. 
         // Up means before, Down means after.
         else {
           indexDifference = direction === 'd' ? 1 : 0;
@@ -6593,9 +6589,9 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
 
       // Recalculate the layout.
       // The original hierarchical structure is
-      // accessible from the root node. Passing
-      // it back through the layout code will
-      // recalculate everything else needed for
+      // accessible from the root node. Passing 
+      // it back through the layout code will 
+      // recalculate everything else needed for 
       // the redraw.
       var root = jQuery.grep(_this.layout, function(node) { return !node.parent;})[0];
       _this.layoutDescription = root;
@@ -6634,7 +6630,7 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
 
       if (node.parent.children.length === 2) {
         // de-mutate the tree without destroying
-        // the children of the remaining node,
+        // the children of the remaining node, 
         // which in this case means changing their
         // IDs.
         node.parent.children.splice(nodeIndex,1);
@@ -6642,10 +6638,10 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
 
         remainingNode.parent.id = remainingNode.id;
         delete node.parent;
-      } else if (node.parent.children.length === 1) {
-      } else {
+      } else if (node.parent.children.length === 1) { 
+      } else { 
         // If the node is one of more than 2 siblings,
-        // simply splice it out of the parent's children
+        // simply splice it out of the parent's children 
         // array.
         node.parent.children.splice(nodeIndex, 1);
       }
@@ -6685,15 +6681,15 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
 
     placeWindows: function() {
       // take the windows array and place
-      // as many windows into places as can
+      // as many windows into places as can 
       // fit.
       var _this = this,
       deletedWindows;
 
       if (_this.windows.length > _this.slots.length) {
-        // splice modifies the original array and
-        // returns the deleted items,
-        // so we can just perform a forEach on the
+        // splice modifies the original array and 
+        // returns the deleted items, 
+        // so we can just perform a forEach on the 
         // return value, and have the saveController
         // remove these windows in response to the event
         // (which otherwise it would not do).
@@ -6705,7 +6701,7 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
           _this.eventEmitter.publish('windowRemoved', removedWindow.id);
         });
       }
-
+      
       _this.windows.forEach(function(window) {
         var slot = _this.getAvailableSlot();
         slot.window = window;
@@ -6747,7 +6743,7 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
       // from the manifests panel in image mode,
       // or from the manifests panel in thumbnail mode.
       
-      var isAnno = (windowConfig.windowType === 'annotations');
+      var isAnno = (windowConfig.windowType === 'annotations'); // XXX seong
       
       var _this = this,
           newWindow,
@@ -9516,7 +9512,6 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
         segments: segments,
         name: overlay.getName(_this)
       });
-      shape.dashArray = overlay.dashArray;
       shape.strokeWidth = 1 / overlay.paperScope.view.zoom;
       shape.strokeColor = overlay.strokeColor;
       shape.fillColor = overlay.fillColor;
@@ -9684,7 +9679,6 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
       var _this = this;
       var shape = new overlay.paperScope.Path({
         segments: [initialPoint],
-        dashArray: overlay.dashArray,
         strokeWidth: 1 / overlay.paperScope.view.zoom,
         strokeColor: overlay.strokeColor,
         fullySelected: true,
@@ -9764,11 +9758,11 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
   };
 }(Mirador));
 (function($) {
-  $.getTools = function(options) {
+  $.getTools = function() {
     if (this.svgOverlayTools) {
       return this.svgOverlayTools;
     }
-    this.svgOverlayTools = [new $.Rectangle(options), new $.Freehand(options), new $.Polygon(options), new $.Ellipse(options), new $.Pin(options)];
+    this.svgOverlayTools = [new $.Rectangle(), new $.Freehand(), new $.Polygon(), new $.Ellipse(), new $.Pin()];
     return this.svgOverlayTools;
   };
 
@@ -9779,7 +9773,6 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
   $.Overlay = function(viewer, osdViewerId, windowId, state, eventEmitter) {
     var drawingToolsSettings = state.getStateProperty('drawingToolsSettings'),
     availableAnnotationDrawingTools = state.getStateProperty('availableAnnotationDrawingTools');
-    availableExternalCommentsPanel = state.getStateProperty('availableExternalCommentsPanel'); // XXX Seong
     jQuery.extend(this, {
       disabled: true,
       osdViewerId: osdViewerId,
@@ -9794,9 +9787,9 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
       latestMouseDownTime: -1,
       doubleClickReactionTime: drawingToolsSettings.doubleClickReactionTime,
       availableAnnotationDrawingTools: availableAnnotationDrawingTools,
-      availableExternalCommentsPanel: availableExternalCommentsPanel,
-      fixedShapeSize: 10,
+      pinSize: 10,
       hitOptions: {
+        fill: true,
         stroke: true,
         segments: true,
         tolerance: 5
@@ -9804,7 +9797,7 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
     });
 
     // Initialization of overlay object.
-    this.tools = $.getTools(drawingToolsSettings);
+    this.tools = $.getTools();
     this.currentTool = null;
     // Default colors.
     this.strokeColor = drawingToolsSettings.fillColor;
@@ -10036,13 +10029,10 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
       }
     },
 
-    fitFixedSizeShapes: function(shape) {
-      shape.data.fixedSize = true;
-      if (shape.name.toString().indexOf('pin_') != -1) {
-        var scale = 1 / shape.bounds.width;
-        scale *= this.fixedShapeSize / this.paperScope.view.zoom;
-        shape.scale(scale, shape.segments[0].point);
-      }
+    fitPinSize: function(shape) {
+      var scale = 1 / shape.bounds.width;
+      scale *= this.pinSize / this.paperScope.view.zoom;
+      shape.scale(scale, shape.segments[0].point);
     },
 
     resize: function() {
@@ -10083,26 +10073,27 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
       this.canvas.style.WebkitTransform = transform;
       this.canvas.style.msTransform = transform;
       this.canvas.style.transform = transform;
-      this.canvas.style.marginLeft = "0px";
-      this.canvas.style.marginTop = "0px";
+      this.canvas.style.marginLeft = pointZero.x + "px";
+      this.canvas.style.marginTop = pointZero.y + "px";
       if (this.paperScope && this.paperScope.view) {
         this.paperScope.view.viewSize = new this.paperScope.Size(this.canvas.width, this.canvas.height);
         this.paperScope.view.zoom = this.viewer.viewport.viewportToImageZoom(this.viewer.viewport.getZoom(true));
         this.paperScope.view.center = new this.paperScope.Size(
-          this.viewer.viewport.contentSize.x * viewportBounds.x + this.paperScope.view.bounds.width / 2,
-          this.viewer.viewport.contentSize.x * viewportBounds.y + this.paperScope.view.bounds.height / 2);
+            realSize.offsetX / this.paperScope.view.zoom + this.paperScope.view.bounds.width / 2,
+            realSize.offsetY / this.paperScope.view.zoom + this.paperScope.view.bounds.height / 2);
         this.paperScope.view.update(true);
+        // Fit pins to the current zoom level.
+        var items = this.paperScope.project.getItems({
+          name: /^pin_/
+        });
+        for (var i = 0; i < items.length; i++) {
+          this.fitPinSize(items[i]);
+        }
         var allItems = this.paperScope.project.getItems({
           name: /_/
         });
         for (var j = 0; j < allItems.length; j++) {
-          if (allItems[j].data.fixedSize) {
-            this.fitFixedSizeShapes(allItems[j]);
-          }
           allItems[j].strokeWidth = 1 / this.paperScope.view.zoom;
-          if (allItems[j].style) {
-            allItems[j].style.strokeWidth = 1 / this.paperScope.view.zoom;
-          }
         }
       }
     },
@@ -10161,7 +10152,6 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
       });
       cloned.strokeWidth = 1 / this.paperScope.view.zoom;
       cloned.strokeColor = shape.strokeColor;
-      cloned.dashArray = shape.dashArray;
       if (shape.fillColor) {
         cloned.fillColor = shape.fillColor;
         if (shape.fillColor.alpha) {
@@ -10170,10 +10160,9 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
       }
       cloned.closed = shape.closed;
       cloned.data.rotation = shape.data.rotation;
-      cloned.data.fixedSize = shape.data.fixedSize;
       cloned.data.annotation = annotation;
-      if (cloned.data.fixedSize) {
-        this.fitFixedSizeShapes(cloned);
+      if (cloned.name.toString().indexOf('pin_') != -1) { // pin shapes with fixed size.
+        this.fitPinSize(cloned);
       }
       shape.remove();
       return cloned;
@@ -10251,23 +10240,17 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
             shapeArray[idx].name = this.editedPaths[i].name;
             shapeArray[idx].strokeWidth = 1 / this.paperScope.view.zoom;
             shapeArray[idx].strokeColor = this.editedPaths[i].strokeColor;
-            shapeArray[idx].dashArray = this.editedPaths[i].dashArray;
             if (this.editedPaths[i].fillColor) {
               shapeArray[idx].fillColor = this.editedPaths[i].fillColor;
               if (this.editedPaths[i].fillColor.alpha) {
                 shapeArray[idx].fillColor.alpha = this.editedPaths[i].fillColor.alpha;
               }
             }
-            if (this.editedPaths[i].style) {
-              shapeArray[idx].style = this.editedPaths[i].style;
-              shapeArray[idx].style.strokeWidth = 1 / this.paperScope.view.zoom;
-            }
             shapeArray[idx].closed = this.editedPaths[i].closed;
             shapeArray[idx].data.rotation = this.editedPaths[i].data.rotation;
-            shapeArray[idx].data.fixedSize = this.editedPaths[i].data.fixedSize;
             shapeArray[idx].data.annotation = this.editedPaths[i].data.annotation;
-            if (shapeArray[idx].data.fixedSize) {
-              this.fitFixedSizeShapes(shapeArray[idx]);
+            if (shapeArray[idx].name.toString().indexOf('pin_') != -1) { // pin shapes with fixed size.
+              this.fitPinSize(shapeArray[idx]);
             }
           }
         }
@@ -10334,8 +10317,8 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
       if (shapes.length > 1) {
         svg += "<g>";
         for (var i = 0; i < shapes.length; i++) {
-          if (shapes[i].data.fixedSize) {
-            this.fitFixedSizeShapes(shapes[i]);
+          if (shapes[i].name.toString().indexOf('pin_') != -1) {
+            this.fitPinSize(shapes[i]);
           }
           var anno = shapes[i].data.annotation;
           shapes[i].data.annotation = null;
@@ -10346,8 +10329,8 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
         }
         svg += "</g>";
       } else {
-        if (shapes[0].data.fixedSize) {
-          this.fitFixedSizeShapes(shapes[0]);
+        if (shapes[0].name.toString().indexOf('pin_') != -1) {
+          this.fitPinSize(shapes[0]);
         }
         var annoSingle = shapes[0].data.annotation;
         shapes[0].data.annotation = null;
@@ -10444,7 +10427,7 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
       overlay.mode = 'create';
       var _this = this;
       var pathData = '';
-      var size = overlay.fixedShapeSize;
+      var size = overlay.pinSize;
       pathData += 'M' + initialPoint.x + ',' + initialPoint.y;
       pathData += ' Q' + initialPoint.x + ',' + (initialPoint.y - size);
       pathData += ' ' + (initialPoint.x + size) + ',' + (initialPoint.y - 2 * size);
@@ -10454,14 +10437,13 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
       pathData += ' ' + initialPoint.x + ',' + initialPoint.y;
       var shape = new overlay.paperScope.Path(pathData);
       shape.name = overlay.getName(_this);
-      shape.dashArray = overlay.dashArray;
       shape.strokeWidth = 1 / overlay.paperScope.view.zoom;
       shape.strokeColor = overlay.strokeColor;
       shape.fillColor = overlay.fillColor;
       shape.fillColor.alpha = overlay.fillColorAlpha;
       shape.fullySelected = true;
       shape.closed = true;
-      overlay.fitFixedSizeShapes(shape);
+      overlay.fitPinSize(shape);
       return shape;
     },
 
@@ -10537,7 +10519,6 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
       var _this = this;
       var shape = new overlay.paperScope.Path({
         segments: [initialPoint],
-        dashArray: overlay.dashArray,
         strokeWidth: 1 / overlay.paperScope.view.zoom,
         strokeColor: overlay.strokeColor,
         fullySelected: true,
@@ -10657,7 +10638,6 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
         fullySelected: true,
         name: overlay.getName(_this)
       });
-      shape.dashArray = overlay.dashArray;
       shape.strokeWidth = 1 / overlay.paperScope.view.zoom;
       shape.strokeColor = overlay.strokeColor;
       shape.fillColor = overlay.fillColor;
@@ -11015,11 +10995,11 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
           annoText = _this.annotation.resource.chars;
         }
       }
-      
+
       this.editorMarkup = this.editorTemplate({
         content: annoText,
         tags : tags.join(" "),
-        windowId : _this.windowId,
+        windowId : _this.windowId
       });
     },
 
@@ -11073,7 +11053,6 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
         "format": "text/html",
         "chars": resourceText
       });
-    
       return {
         "@context": "http://iiif.io/api/presentation/2/context.json",
         "@type": "oa:Annotation",
@@ -11117,7 +11096,7 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
         }
       });
     },
-    
+
     editorTemplate: Handlebars.compile([
       '<textarea class="text-editor" placeholder="{{t "comments"}}…">{{#if content}}{{content}}{{/if}}</textarea>',
       '<input id="tags-editor-{{windowId}}" class="tags-editor" placeholder="{{t "addTagsHere"}}…" {{#if tags}}value="{{tags}}"{{/if}}>'
@@ -11474,6 +11453,7 @@ e(a)}n+="}"}else e(t);return Function("str",n)}function r(){this.line=Pt,this.co
 
     this.init();
     this.bindAnnotationEvents();
+
   };
 
   $.Window.prototype = {
@@ -13335,13 +13315,6 @@ bindEvents: function() {
                                    '<a class="hud-control draw-tool">',
                                    '<input type="text" class="fillColorPicker"/>',
                                    '</a>',
-                                   '<a href="javascript:;" class="mirador-btn draw-tool mirador-line-type" role="button" aria-label="Change Line Type"><i class="material-icons solid">create</i>',
-                                   '<ul class="dropdown type-list">',
-                                   '<li><i class="fa solid"></i> solid</li>',
-                                   '<li><i class="fa dashed"></i> dashes</li>',
-                                   '<li><i class="fa dotdashed"></i> dots & dashes</li>',
-                                   '</ul>',
-                                   '</a>',
                                    '<a class="hud-control draw-tool" style="color:#abcdef;">',
                                    '|',
                                    '</a>',
@@ -13638,7 +13611,7 @@ bindEvents: function() {
       this.createOpenSeadragonInstance($.Iiif.getImageUrl(this.currentImg));
       _this.eventEmitter.publish('UPDATE_FOCUS_IMAGES.' + this.windowId, {array: [this.canvasID]});
 
-      var allTools = $.getTools(this.state.getStateProperty('drawingToolsSettings'));
+      var allTools = $.getTools();
       this.availableTools = [];
       for ( var i = 0; i < this.state.getStateProperty('availableAnnotationDrawingTools').length; i++) {
         for ( var j = 0; j < allTools.length; j++) {
@@ -13876,18 +13849,6 @@ bindEvents: function() {
       for (var value in _this.availableTools) {
         this.element.find('.material-icons:contains(\'' + _this.availableTools[value] + '\')').on('click', make_handler(_this.availableTools[value]));
       }
-      _this.element.find('.mirador-line-type').on('mouseenter', function() {
-        _this.element.find('.type-list').stop().slideFadeToggle(300);
-      });
-      _this.element.find('.mirador-line-type').on('mouseleave', function() {
-        _this.element.find('.type-list').stop().slideFadeToggle(300);
-      });
-      _this.element.find('.mirador-line-type').find('ul li').on('click', function() {
-        var className = jQuery(this).find('i').attr('class').replace(/fa/, '').replace(/ /, '');
-        _this.element.find('.mirador-line-type>i').removeClass("solid dashed dotdashed");
-        _this.element.find('.mirador-line-type>i').addClass(className);
-        jQuery.publish('toggleBorderType.' + _this.windowId, className);
-      });
       //related the ContextControls
     },
 
@@ -14137,7 +14098,6 @@ bindEvents: function() {
       console.log('Pan to: ' + p.x + ', ' + p.y);
       viewport.panTo(p);
     }
-    
   };
 
 }(Mirador));
@@ -15193,13 +15153,7 @@ bindEvents: function() {
       }
 
       if (ranges.length < 2) {
-        //ranges = ranges[0].children;
-        /*
-           XXX BH (Bryan Haberberger) edit 
-           A range can exist outside of a parent.  Therefore, even if the length is just one, we still 
-           want to return the array of one range.  The template function checks the one item, realizes it doesn't have
-           children and deems it a leaf, which is what we want. 
-       */
+        ranges = ranges[0].children;
       }
 
       return ranges;
@@ -15795,9 +15749,6 @@ bindEvents: function() {
       config.availableAnnotationDrawingTools = jQuery.grep(config.availableAnnotationDrawingTools, function(element, index) {
         return jQuery.inArray(element, $.DEFAULT_SETTINGS.availableAnnotationDrawingTools) >= 0;
       });
-      if (config.availableAnnotationDrawingTools.length === 0) {
-        config.availableAnnotationDrawingTools = $.DEFAULT_SETTINGS.availableAnnotationDrawingTools;
-      }
     }
 
     // error check on mainMenuSettings
