@@ -309,7 +309,9 @@
           endpoint: _this.endpoint,
           saveCallback: function(annotation) {
             dialogElement.dialog('close');
-            _this.miradorProxy.publish('annotationCreated.' + _this.canvasWindow.id, [annotation, null]);
+            _this.canvasWindow.annotationsList.push(annotation);
+            _this.miradorProxy.publish('ANNOTATIONS_LIST_UPDATED', 
+              { windowId: _this.canvasWindow.id, annotationsList: _this.canvasWindow.annotationsList });
           },
           cancelCallback: function() {
             dialogElement.dialog('close');
