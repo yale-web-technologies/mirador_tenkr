@@ -202,7 +202,7 @@
         var annoId = annoElem.data('annotationId');
         var matched = false;
         var firstMatch = true;
-        
+
         jQuery.each(annotations, function(index, value) {
           var targetAnnotationId = value['@id'];
           if (annoId === targetAnnotationId) {
@@ -222,7 +222,7 @@
     
     scrollToElem: function(annoElem) {
       this.listElem.animate({
-        scrollTop: annoElem.position().top
+        scrollTop: annoElem.position().top + this.listElem.scrollTop()
       }, 250);
     },
     
