@@ -11,14 +11,17 @@
   border: solid 1px #808080;
   background-color: #fafafa;
   padding: 3px;
+  
+  .normal_view p {
+    margin: 10px;
+    &:first-of-type {
+      margin-top: 0;
+    }
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
 }
-
-/*
-.annowin_anno:hover {
-  border-color: @anno-hover-border-color;
-  border-width: @anno-highlight-border-width;
-}
-*/
 
 .annowin_anno .info_view {
   font-size: 0.9em;
