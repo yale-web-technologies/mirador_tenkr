@@ -1,5 +1,5 @@
 module RoomsHelper
-  def mirador_url(manifest_url, manifest_title)
-    "/mirador?manifest=#{CGI.escape(manifest_url)}&title=#{CGI.escape(manifest_title)}"
+  def mirador_url(manifest_id, room_id)
+    "/mirador?manifest=#{manifest_id}&room_id=#{room_id}"
   end
 end

@@ -37,6 +37,38 @@
       return tags;
     },
     
+    // For an annotation of annotation,
+    // follow the "on" relation until the eventual target annotation if found.
+    findFinalTargetAnnotation: function(annotation, annotations) {
+      var nextId = '';
+      var nextAnno = annotation;
+      var targetAnno = null;
+      
+      if (nextAnno.on['@type'] !== 'oa:Annotation') {
+        return annotation;
+      }
+      
+      while(nextAnno) {
+        //console.log('nextAnno: ');
+        //console.dir(nextAnno);
+        
+        if (nextAnno.on['@type'] === 'oa:Annotation') {
+          nextId = nextAnno.on.full;
+          nextAnno = null;
+          jQuery.each(annotations, function(index, anno) {
+            if (anno['@id'] === nextId) {
+              targetAnno = anno;
+              nextAnno = anno;
+              return false;
+            }
+          });
+        } else {
+          nextAnno = null;
+        }
+      }
+      return targetAnno;
+    },
+    
     /**
      * Find annotations from "annotationsList" which this "annotation" annotates 
      * and which belong to the layer with "layerId".

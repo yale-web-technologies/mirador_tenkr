@@ -6,18 +6,29 @@
   padding: 0;
   width: 100%;
   height: 100%;
+  overflow-y: scroll; // to show the menu-tag selector when it gets too big
   background-color: #efefef;
+  
+  a {
+    &:link, &:visited {
+      color: @blue;
+    }
+    &:hover, &:active {
+      color: @light-blue;
+    }
+  }
 }
 
-// TODO: Remove this after the icon is removed in Mirador.
-.add-annotation-window {
-  margin-right: 10px;
+.mr_annotation_window.fixed_height_cells {
+  .annowin_anno > .normal_view {
+    height: 120px;
+    overflow-y: scroll;
+  }
 }
 
 .annowin_header {
   margin: 0;
-  padding: 0;
-  min-height: 35px;
+  padding: 5px 0 0 0;
 }
 
 .mirador-viewer .mirador-icon-window-menu.annowin_window_menu {
@@ -37,14 +48,14 @@
   color: red;
 }
 
-.annowin_layer_row {
-  padding: 5px;
+.annowin_menu_tag_row, .annowin_layer_row {
+  padding: 2px @annowin-h-padding;
 }
 
 .annowin_list {
   //position: relative; /* required to make the div "positioned" so the child elements' positions to be obtained and scroll levels adjusted accordingly. */
   position: absolute;
-  top: 35px;
+  top: @annowin-header-height;
   bottom: 17px; // XXX a kludge until someone can figure out why the whole div is not showing unless this bottom value is set.
   left: 0;
   right: 0;

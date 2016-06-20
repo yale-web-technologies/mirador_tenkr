@@ -45,36 +45,50 @@
       var header = this.element.find('.header');
       var title = header.find('.title');
       this.textArea = this.element.find('textarea');
-      this.layerSelectContainer = this.element.find('.layer_select');
-      this.layerSelect = new MR.LayerSelector({
-        parent: this.layerSelectContainer,
+      this.layerSelectorContainer = this.element.find('.layer_select');
+      this.layerSelector = new MR.LayerSelector({
+        parent: this.layerSelectorContainer,
         endpoint: this.endpoint
       });
-      this.layerSelect.init();
+      var dfd = this.layerSelector.init();
       
-      if (this.mode === 'create') {
-        title.text('Create Annotation');
-      } else { // update
-        title.text('');
-        this.textArea.val(MR.annoUtil.getAnnotationText(this.annotation));
-      }
+      dfd.done(function() {
+        if (_this.mode === 'create') {
+          title.text('Create Annotation');
+        } else { // update
+          title.text('');
+        }
+        if (_this.annotation) {
+          _this.textArea.val(MR.annoUtil.getAnnotationText(_this.annotation));
+          if (_this.annotation.layerId) {
+            _this.layerSelector.val(_this.annotation.layerId);
+          }
+        }
 
-      var textAreaSelector = '#' + this.id + ' textarea';
-      
-      // Sometimes the textarea is not set up with tinymce.
-      // Trying to see if helps to delay the call to tinymce.init.
-      setTimeout(function() {
-        tinymce.init({
-          selector: textAreaSelector,
-          plugins: 'paste',
-          menubar: false,
-          toolbar: 'bold italic | bullist numlist | link | undo redo | removeformat',
-          statusbar: false,
-          toolbar_items_size: 'small',
-          past_as_text: true // from paste plugin
-        });
-        _this.bindEvents();
-      }, 0);
+        // Sometimes the textarea is not set up with tinymce.
+        // Trying to see if helps to delay the call to tinymce.init.
+        setTimeout(function() {
+          _this.initTinyMce();
+          _this.bindEvents();
+        }, 0);
+      });
+    },
+    
+    initTinyMce: function(textAreaSelector) {
+      tinymce.init({
+        selector: '#' + this.id + ' textarea',
+        plugins: 'link paste',
+        menubar: false,
+        toolbar: 'bold italic | bullist numlist | link | undo redo | removeformat',
+        statusbar: false,
+        toolbar_items_size: 'small',
+        default_link_target: '_blank',
+        past_as_text: true, // from paste plugin
+        resize: true,
+        height: '140',
+        theme_advanced_resizing: true,
+        theme_advanced_statusbar_location: 'bottom'
+      });
     },
     
     // Called by Mirador core
@@ -95,13 +109,18 @@
     
     // Called by Mirador core
     isDirty: function() {
-      return tinymce.activeEditor.isDirty();
+      return this.getEditor().isDirty();
+    },
+    
+    // Get tinymce editor
+    getEditor: function() {
+      return tinymce.get(this.textArea.attr('id'));
     },
     
     // Called by Mirador core
     createAnnotation: function (targetAnnotation) {
       var tagText = this.element.find('.tags_editor').val().trim();
-      var resourceText = tinymce.activeEditor.getContent();
+      var resourceText = this.getEditor().getContent();
       var tags = [];
       var motivation = [];
       var resource = [];
@@ -126,7 +145,7 @@
           "chars": resourceText
         });
 
-      var layerId = this.layerSelect.val();
+      var layerId = this.layerSelector.val();
       var annotation = {
         '@context': 'http://iiif.io/api/presentation/2/context.json',
         '@type': 'oa:Annotation',
@@ -147,12 +166,13 @@
     // Called by Mirador core
     updateAnnotation: function(oaAnno) {
       var tagText = this.element.find('.tags_editor').val().trim();
-      var resourceText = tinymce.activeEditor.getContent();
+      var resourceText = this.getEditor().getContent();
       var tags = [];
       
       if (tagText) {
         tags = tagText.split(/\s+/);
       }
+      
       var motivation = [],
         resource = [];
 
@@ -180,6 +200,9 @@
         }
       });
       
+      var layerId = this.layerSelector.val();
+      oaAnno.layerId = layerId;
+      
       return oaAnno;
     },
     
@@ -202,7 +225,7 @@
         this.endpoint.update(annotation, function(data) {
           if (typeof _this.saveCallback === 'function') {
             var annotation = data;
-            var content = tinymce.activeEditor.getContent().trim();
+            var content = _this.getEditor().getContent().trim();
             _this.saveCallback(annotation, content);
           }
           _this.destroy();
@@ -221,10 +244,10 @@
           msg += 'Target annotation is missing.\n';
         }
       }
-      if (this.mode === 'create' && !this.layerSelect.val()) {
+      if (this.mode === 'create' && !this.layerSelector.val()) {
         msg += 'Layer is not selected.\n';
       }
-      if (tinymce.activeEditor.getContent().trim() === '') {
+      if (this.getEditor().getContent().trim() === '') {
         msg += 'Please enter content.\n';
       }
       if (msg === '') {
@@ -250,6 +273,20 @@
           _this.cancelCallback();
         }
       });
+      
+      this.element.find('.mr_vertical_inc').click(function() {
+        var iframeId = _this.getEditor().id + '_ifr';
+        var element = tinyMCE.DOM.get(iframeId);
+        var height = parseInt(tinyMCE.DOM.getStyle(element, 'height'), 10);
+        tinyMCE.DOM.setStyle(element, 'height', (height + 75) + 'px');
+      });
+      
+      this.element.find('.mr_vertical_dec').click(function() {
+        var iframeId = _this.getEditor().id + '_ifr';
+        var element = tinyMCE.DOM.get(iframeId);
+        var height = parseInt(tinyMCE.DOM.getStyle(element, 'height'), 10);
+        tinyMCE.DOM.setStyle(element, 'height', (height - 75) + 'px');
+      });
     },
     
     template: Handlebars.compile([
@@ -261,9 +298,11 @@
       '  <input class="tags_editor" placeholder="{{t "addTagsHere"}}…" {{#if tags}}value="{{tags}}"{{/if}}/>',
       '  {{#unless miradorDriven}}',
       '    <div class="bottom_row">',
-      '      <div class="to_right">',
       '        <button class="save">Save</button>',
       '        <button class="cancel">Cancel</button>',
+      '      <div class="mr_float_right">',
+      '        <i class="large caret up icon mr_vertical_dec"></i>',
+      '        <i class="large caret down icon mr_vertical_inc"></i>',
       '      </div>',
       '    </div>',
       '  {{/unless}}',

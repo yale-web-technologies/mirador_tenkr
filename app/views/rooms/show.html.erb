@@ -14,7 +14,7 @@
         <ul>
           <% @manifests.each do |manifest| %>
             <li>
-              <a target="_blank" href="<%= mirador_url(manifest.url, manifest.title) %>"><%= manifest.title %></a>
+              <a target="_blank" href="<%= mirador_url(manifest.id, @room.id) %>"><%= manifest.title %></a>
             </li>
           <% end %>
         </ul>

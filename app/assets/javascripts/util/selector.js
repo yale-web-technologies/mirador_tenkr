@@ -23,17 +23,56 @@
           if (typeof _this.changeCallback === 'function') {
             _this.changeCallback(value, text);
           }
+        },
+        action: function(text, value) {
+          _this.element.dropdown('set selected', value);
+          _this.element.dropdown('hide');
         }
       });
     },
     
-    addItem: function(label, value) {
+    setItems: function(itemsConfig) {
+      var root = this.element.find('.menu');
+      root.empty();
+      this._setItems(itemsConfig, root);
+    },
+    
+    _setItems: function(itemsConfig, parent) {
+      var _this = this;
+      jQuery.each(itemsConfig, function(index, value) {
+        if (value.children.length > 0) {
+          _this.addItem(value.label, value.value, parent);
+          var menu = _this.addMenuItem(value.label, value.value, parent);
+          _this._setItems(value.children, menu);
+        } else {
+          _this.addItem(value.label, value.value, parent);
+        }
+      });
+    },
+    
+    addMenuItem: function(label, value, parent) {
       var item = jQuery('<div/>')
         .addClass('item')
         .attr('data-text', label)
         .attr('data-value', value)
         .text(label);
-      this.element.find('.menu').append(item);
+      var menu = jQuery('<div/>')
+        .addClass('menu')
+        .css('overflow', 'hidden');
+      item.append(jQuery('<i class="dropdown icon"></i>'));
+      item.append(menu)
+      parent.append(item);
+      return menu;
+    },
+    
+    addItem: function(label, value, parent) {
+      var item = jQuery('<div/>')
+        .addClass('item')
+        .attr('data-text', label)
+        .attr('data-value', value)
+        .text(label);
+      parent = parent || this.element.find('.menu');
+      parent.append(item);
     },
     
     empty: function() {
@@ -48,11 +87,15 @@
       }
     },
     
+    destroy: function() {
+      this.element.remove();
+    },
+    
     template: Handlebars.compile([
-      '<div class="ui selection dropdown">',
+      '<div class="basic tiny ui button mr_button dropdown">',
       '  <input name="selection" type="hidden" />',
       '  <div class="default text"></div>',
-      '  <i class="fa fa-caret-down"></i>',
+      '  <i class="dropdown icon"></i>',
       '  <div class="menu">',
       '  </div>',
       '</div>'

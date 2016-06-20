@@ -3101,6 +3101,10 @@ a {
   margin-right:15px;
   height: 80px;
 }
+.preview-thumb {
+  display: inline-flex;
+  position: absolute;
+}
 .preview-images {
   margin-right:0;
 }
@@ -3872,52 +3876,6 @@ li.highlight {
 /* color picker custom style
 ---------------------------------------------------------------------------- */
 
-.mirador-line-type {
-  border-radius: 5px !important;
-  padding: 0px !important;
-  height: 20px !important;
-  width: 55px !important;
-  opacity: 0.6;
-  border: 1px solid #91765d;
-  background: white none repeat scroll 0 0;
-  margin: 3px 5px 0px 0px !important;
-}
-
-.mirador-line-type ul {
-  color: #333333;
-  margin-top: 0px !important;
-}
-
-.mirador-line-type li {
-  text-shadow: none !important;
-  font-size: 10px !important;
-}
-
-.mirador-line-type>i {
-  padding-left: 35px;
-  margin: 4px 0px 0px 4px !important;
-}
-
-.mirador-line-type i {
-  color: #333333;
-  width: 55px;
-  height: 10px;
-  font-size: 15px !important;
-  background-repeat: no-repeat;
-}
-
-.mirador-line-type .solid {
-  background-image: url('../images/border_type_1.png');
-}
-
-.mirador-line-type .dashed {
-  background-image: url('../images/border_type_2.png');
-}
-
-.mirador-line-type .dotdashed {
-  background-image: url('../images/border_type_3.png');
-}
-
 .sp-button-container a {
   color: #555555 !important;
   text-shadow: none !important;
@@ -4645,9 +4603,11 @@ a.mirador-icon-window-menu, a.mirador-icon-view-type {
   display: inline-block;
 }
 
+/* XXX seong commented out.
 .mce-edit-area iframe {
   height: 75px !important;
 }
+*/
 
 @font-face {
   font-family: 'Material Icons';

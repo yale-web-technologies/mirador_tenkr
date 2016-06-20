@@ -1,9 +1,7 @@
 (function($){
   
   var MiradorProxy = function() {
-    this.state = null; // SaveController
     this.mirador = null // Mirador instance
-    this.eventEmitter = null;
   };
   
   MiradorProxy.prototype = {
@@ -14,17 +12,14 @@
     
     setMirador: function(mirador) {
       this.mirador = mirador;
-      this.state = mirador.viewer.state;
-      this.workspace = mirador.viewer.workspace;
-      this.eventEmitter = mirador.viewer.eventEmitter;
     },
     
     getState: function() {
-      return this.state;
+      return this.mirador.viewer.state;
     },
     
     getFirstWindow: function() {
-      return this.workspace.windows[0];
+      return this.mirador.viewer.workspace.windows[0];
     },
     
     getCurrentCanvasId: function(window) {
@@ -32,16 +27,16 @@
     },
     
     getEndPoint: function(windowId) {
-      var window = this.workspace.getWindowById(windowId);
+      var window = this.mirador.viewer.workspace.getWindowById(windowId);
       return window.endpoint;
     },
     
     publish: function(eventName, arg) {
-      this.eventEmitter.publish(eventName, arg);
+      this.mirador.viewer.eventEmitter.publish(eventName, arg);
     },
     
     subscribe: function(eventName, callback) {
-      this.eventEmitter.subscribe(eventName, callback);
+      this.mirador.viewer.eventEmitter.subscribe(eventName, callback);
     }
   };
   

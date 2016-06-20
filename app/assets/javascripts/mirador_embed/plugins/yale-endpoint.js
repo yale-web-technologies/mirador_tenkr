@@ -1,4 +1,4 @@
-(function ($) {
+(function ($, MR) {
 
   $.YaleEndpoint = function (options) {
     jQuery.extend(this, {
@@ -7,7 +7,8 @@
       dfd: null,
       imagesList: null,
       prefix: null,
-      windowID: null
+      windowID: null,
+      parsed: null
     }, options);
     
     this.init();
@@ -55,26 +56,21 @@
         },
         contentType: 'application/json; charset=utf-8',
         success: function (data, textStatus, jqXHR) {
-          console.log('YaleEndpoint#search data: ' + JSON.stringify(data, null, 2));
-          if (typeof successCallback === 'function') {
-            successCallback(data);
-          } else {
-            var annotations = data;
-            jQuery.each(annotations, function (index, value) {
-              var oaAnnotation = _this.getAnnotationInOA(value.annotation);
-              oaAnnotation.layerId = value.layer_id;
-              oaAnnotation.endpoint = _this;
-              _this.annotationsList.push(oaAnnotation);
-            });
-            _this.dfd.resolve(true);
-          }
+          console.log('YaleEndpoint#search data: ');
+          console.dir(data);
+
+          var annotations = data;
+          jQuery.each(annotations, function (index, value) {
+            var oaAnnotation = _this.getAnnotationInOA(value.annotation);
+            oaAnnotation.layerId = value.layer_id;
+            _this.annotationsList.push(oaAnnotation);
+          });
+
+          _this.dfd.resolve(true);
         },
         error: function (jqXHR, textStatus, errorThrown) {
-          if (typeof errorCallback === 'function') {
-            errorCallback();
-          } else {
-            console.log('YaleEndpoint#search error searching');
-          }
+          console.log('YaleEndpoint#search error searching');
+          _this.dfd.reject();
         }
       });
     },
@@ -120,23 +116,29 @@
     },
 
     update: function (oaAnnotation, successCallback, errorCallback) {
-      console.log('YaleEndpoint#update oaAnnotation:');
-      console.dir(oaAnnotation);
-      
       var _this = this;
       var annotation = this.getAnnotationInEndpoint(oaAnnotation);
       var url = this.prefix + '/annotations';
 
       console.log('YaleEndpoint#update url: ' + url);
+      
+      var data = {
+        layer_id: [oaAnnotation.layerId],
+        annotation: annotation
+      };
+      
+      console.log('YaleEndpoint#update payload: ' + JSON.stringify(data, null, 2));
 
       jQuery.ajax({
         url: url,
         type: 'PUT',
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify(annotation),
+        data: JSON.stringify(data),
         success: function (data, textStatus, jqXHR) {
           if (typeof successCallback === 'function') {
+            console.log('Update was successful: ' + JSON.stringify(data, null, 2));
+            data.layerId = oaAnnotation.layerId;
             successCallback(data);
           }
         },
@@ -194,7 +196,8 @@
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         success: function (data, textStatus, jqXHR) {
-          console.log('YaleEndpoint#getLayers data: ' + JSON.stringify(data, null, 2));
+          console.log('YaleEndpoint#getLayers data: '); 
+          console.dir(data);
           successCallback(data);
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -227,7 +230,7 @@
       var motivation = annotation.motivation;
       if (!(motivation instanceof Array)) {
         if (motivation !== 'oa:commenting') {
-          console.log('ERROR YaleEndpoint#getAnnotationInOA unexpected motivation value: ' + motivation);
+          //console.log('ERROR YaleEndpoint#getAnnotationInOA unexpected motivation value: ' + motivation + ', id: ' + annotation['@id']);
         }
         motivation = ['oa:commenting'];
       }
@@ -239,6 +242,7 @@
         motivation: motivation,
         resource : annotation.resource,
         on: annotation.on,
+        within: annotation.within,
         //annotatedBy: annotatedBy,
         //annotatedAt: annotation.created,
         //serializedAt: annotation.updated,
@@ -260,17 +264,21 @@
         resource: oaAnnotation.resource,
         on: oaAnnotation.on,
       };
-      
       if (oaAnnotation.within) {
         annotation.within = oaAnnotation.within;
       }
-      
       if (oaAnnotation.orderWeight) {
         annotation.orderWeight = oaAnnotation.orderWeight;
       }
       return annotation;
+    },
+    
+    parseAnnotations: function() {
+      this.parsed = new MR.ParsedAnnotations(this.annotationsList);
+      console.log('PARSED:');
+      console.dir(this.parsed.annoHierarchy);
     }
 
   };
 
-})(Mirador);
+})(Mirador, MR);

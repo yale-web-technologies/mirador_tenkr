@@ -1,11 +1,4 @@
-<div id="mirador_header">
-  <div class="ui dropdown item mr_top_menu">
-    Menu <i style="margin-left: 5px" class="fa fa-caret-down"></i>
-    <div class="menu">
-      <div id="mr_menu_add_window" class="item">Add annotation window</div>
-    </div>
-  </div>
-</div>
+<%= render 'header' %>
 
 <div id="mr_grid"></div>
 
@@ -14,6 +7,6 @@
 
 <div id="viewer_template">
   <div id="{{id}}" manifest_url="<%= @manifest_url %>"
-    endpoint_url="<%= @endpoint_url %>" site_name="<%= @site_name %>">
+    endpoint_url="<%= @endpoint_url %>" room_id="<%= @room_id %>">
   </div>
 </div>

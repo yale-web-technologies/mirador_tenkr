@@ -8,8 +8,6 @@
       canvasWindow: null, // window that contains the canvas for the annotations
       endpoint: null
     }, options);
-    
-    console.log('AnnotationWindow this.appendTo id: ' + this.appendTo.attr('id'));
 
     this.init();
   };
@@ -26,12 +24,8 @@
       this.endpoint = this.canvasWindow.endpoint;
       this.element = jQuery(this.template({}));
       this.appendTo.append(this.element);
-      
-      this.layerSelector = new $.LayerSelector({
-        parent: this.element.find('.layer_selector_container'),
-        endpoint: this.endpoint
-      });
-      
+      this.listElem = this.element.find('.annowin_list');
+      this.initLayerSelector();
       this.editorRow = this.element.find('.annowin_creator'); // placeholder for annotation editor for creation
       this.placeholder = this.element.find('.placeholder');
       this.placeholder.text('Loading...').show();
@@ -39,43 +33,102 @@
       this.reload();
       this.bindEvents();
     },
-
-    reload: function(skipLayerLoading) {
+    
+    initMenuTagSelector: function() {
       var _this = this;
-      var dfd = null;
-      
-      this.placeholder.hide();
-      var canvas = this.getCurrentCanvas();
-      this.element.find('.title').text(canvas.label);
-      
-      if (skipLayerLoading) {
-        dfd = jQuery.Deferred();
-        dfd.resolve();
-      } else {
-        dfd = this.layerSelector.init();
+      if (this.menuTagSelector) {
+        this.menuTagSelector.destroy();
       }
-
-      dfd.done(function() {
-        var layerId = _this.layerSelector.val();
-        _this.updateList(layerId);
+      this.menuTagSelector = new $.MenuTagSelector({
+        parent: this.element.find('.menu_tag_selector_container'),
+        endpoint: this.endpoint,
+        changeCallback: function(value, text) {
+          _this.updateList();
+        }
       });
     },
     
-    updateList: function(layerId) {
+    initLayerSelector: function() {
+      var _this = this;
+      this.layerSelector = new $.LayerSelector({
+        parent: this.element.find('.layer_selector_container'),
+        endpoint: this.endpoint,
+        changeCallback: function(value, text) {
+          var layerId = value;
+          _this.updateList();
+        }
+      });
+    },
+
+    reload: function() {
+      var _this = this;
+      var layerDfd = null, menuTagDfd = null;
+
+      this.placeholder.hide();
+
+      if ($.getState().get('ANNO_CELL_FIXED') === 'true') {
+        this.element.addClass('fixed_height_cells');
+      } else {
+        this.element.removeClass('fixed_height_cells');
+      }
+
+      var canvas = this.getCurrentCanvas();
+      this.element.find('.title').text(canvas.label);
+      
+      if (this.endpoint.parsed) {
+        this.listElem.css('top', 60);
+        this.initMenuTagSelector();
+        this.element.find('.annowin_menu_tag_row').show();
+      } else {
+        this.listElem.css('top', 35);
+        this.element.find('.annowin_menu_tag_row').hide();
+      }
+
+      if (this.endpoint.annotationLayers.length > 0) {
+        if (this.layerSelector.isLoaded()) {
+          layerDfd = jQuery.Deferred().resolve();
+        } else {
+          layerDfd = this.layerSelector.init();
+        }
+      } else {
+        layerDfd = jQuery.Deferred().reject();
+      }
+      
+      if (this.endpoint.parsed) {
+        menuTagDfd = this.menuTagSelector.reload();
+      } else {
+        menuTagDfd = jQuery.Deferred().resolve();
+      }
+      
+      jQuery.when(layerDfd, menuTagDfd).done(function() {
+        _this.updateList();
+      });
+    },
+    
+    updateList: function() {
+      console.log('AnnotationWindow#updateList');
       var _this = this;
       var annotationsList = this.canvasWindow.annotationsList;
       
+      var menuTags = ['all'];
+      if (this.endpoint.parsed) {
+        menuTags = this.menuTagSelector.val().split('|');
+      }
+      var layerId  = this.layerSelector.val();
+      var parsed = this.endpoint.parsed;
+
       this.currentLayerId = layerId;
-      this.listElem = this.element.find('.annowin_list');
       this.listElem.empty();
       
       var count = 0;
       
       jQuery.each(annotationsList, function(index, value) {
         try {
-          if (layerId === 'any' || layerId === value.layerId) {
-            ++count;
-            _this.addAnnotation(value);
+          if (layerId === value.layerId) {
+            if (menuTags[0] === 'all' || parsed.matchHierarchy(value, menuTags)) {
+              ++count;
+              _this.addAnnotation(value);
+            }
           }
         } catch (e) {
           console.log('ERROR AnnotationWindow#updateList ' + e);
@@ -105,14 +158,8 @@
       var infoDiv = annoElem.find('.info_view');
       
       annoElem.data('annotationId', annotation['@id']);
-      annoElem.find('.ui.dropdown').dropdown({
-        onChange: function (value, text, $selectedItem) {
-          setTimeout(function () {
-            annoElem.find('ui.dropdown').dropdown('restore defaults');
-          }, 1000);
-        }
-      });
-      if (annotation.on['@type'] == 'oa:Annotation') { // target: annotation
+      annoElem.find('.ui.dropdown').dropdown();
+      if (annotation.on['@type'] == 'oa:Annotation') { // annotation of annotation
         annoElem.find('.menu_bar').addClass('targeting_anno');
       } else {
         annoElem.find('.menu_bar').removeClass('targeting_anno');
@@ -162,7 +209,7 @@
         var annoId = annoElem.data('annotationId');
         var matched = false;
         var firstMatch = true;
-        
+
         jQuery.each(annotations, function(index, value) {
           var targetAnnotationId = value['@id'];
           if (annoId === targetAnnotationId) {
@@ -182,7 +229,7 @@
     
     scrollToElem: function(annoElem) {
       this.listElem.animate({
-        scrollTop: annoElem.position().top
+        scrollTop: annoElem.position().top + this.listElem.scrollTop()
       }, 250);
     },
     
@@ -221,32 +268,31 @@
     bindEvents: function() {
       var _this = this;
       
-      // When a new layer is selected
-      this.layerSelector.changeCallback = function(value, text) {
-        var layerId = value;
-        _this.updateList(layerId);
-      };
-      
-      this.miradorProxy.subscribe('ANNOTATIONS_LIST_UPDATED', function(event, windowId, annotationsList) {
+      jQuery.subscribe('MR_READY_TO_RELOAD_ANNO_WIN', function(event) {
         if (! _this.hasOpenEditor()) {
-          _this.reload(true);
+          _this.reload();
         }
       });
       
       jQuery.subscribe('ANNOTATION_FOCUSED', function(event, annoWinId, annotation) {
         console.log('Annotation window ' + _this.id + ' received annotation_focused event');
-        
         if (annoWinId !== _this.id) {
           _this.clearHighlights();
           var annotationsList = _this.canvasWindow.annotationsList;
           var targeting = $.annoUtil.findTargetingAnnotations(annotationsList,
             _this.currentLayerId, annotation);
-          console.log('TARGETING: '); console.dir(targeting);
           var targeted = $.annoUtil.findTargetAnnotations(annotationsList,
             _this.currentLayerId, annotation);
-          console.log('TARGETED: '); console.dir(targeted);
           _this.highlightAnnotations(targeting, 'TARGETING');
           _this.highlightAnnotations(targeted, 'TARGET');
+        }
+      });
+      
+      jQuery.subscribe('MR_ANNO_HEIGHT_FIXED', function(event, fixedHeight) {
+        if (fixedHeight) {
+          _this.element.addClass('fixed_height_cells');
+        } else {
+          _this.element.removeClass('fixed_height_cells');
         }
       });
       
@@ -258,16 +304,14 @@
     bindAnnotationItemEvents: function(annoElem, annotation) {
       var _this = this;
       var infoElem = annoElem.find('.annowin_info');
+      var finalTargetAnno = $.annoUtil.findFinalTargetAnnotation(annotation, 
+        this.canvasWindow.annotationsList);
       
       annoElem.click(function(event) {
-        if ($.getLinesOverlay().isActive()) {
-          jQuery.publish('target_annotation_selected', annotation);
-        } else {
-          _this.clearHighlights();
-          _this.highlightFocusedAnnotation(annotation);
-          _this.miradorProxy.publish('ANNOTATION_FOCUSED', [_this.id, annotation]);
-          jQuery.publish('ANNOTATION_FOCUSED', [_this.id, annotation]);
-        }
+        _this.clearHighlights();
+        _this.highlightFocusedAnnotation(annotation);
+        _this.miradorProxy.publish('ANNOTATION_FOCUSED', [_this.id, finalTargetAnno]);
+        jQuery.publish('ANNOTATION_FOCUSED', [_this.id, annotation]);
       });
       
       annoElem.find('.annotate').click(function (event) {
@@ -280,7 +324,9 @@
           endpoint: _this.endpoint,
           saveCallback: function(annotation) {
             dialogElement.dialog('close');
-            _this.miradorProxy.publish('annotationCreated.' + _this.canvasWindow.id, [annotation, null]);
+            _this.canvasWindow.annotationsList.push(annotation);
+            _this.miradorProxy.publish('ANNOTATIONS_LIST_UPDATED', 
+              { windowId: _this.canvasWindow.id, annotationsList: _this.canvasWindow.annotationsList });
           },
           cancelCallback: function() {
             dialogElement.dialog('close');
@@ -290,7 +336,8 @@
           title: 'Create annotation',
           modal: true,
           draggable: true,
-          dialogClass: 'no_close'
+          dialogClass: 'no_close',
+          width: 400
         });
         editor.show();
       });
@@ -303,10 +350,14 @@
           endpoint: _this.endpoint,
           annotation: annotation,
           saveCallback: function(annotation, content) {
-            var normalView = annoElem.find('.normal_view');
-            normalView.find('.content').html(content);
-            normalView.show();
-            annoElem.data('editing', false);
+            if (_this.currentLayerId === annotation.layerId) {
+              var normalView = annoElem.find('.normal_view');
+              normalView.find('.content').html(content);
+              normalView.show();
+              annoElem.data('editing', false);
+            } else {
+              annoElem.remove();
+            }
           },
           cancelCallback: function() {
             annoElem.find('.normal_view').show();
@@ -340,6 +391,9 @@
     template: Handlebars.compile([
       '<div class="mr_annotation_window">',
       '  <div class="annowin_header">',
+      '    <div class="annowin_menu_tag_row">',
+      '      <span class="menu_tag_selector_container"></span>',
+      '    </div>',
       '    <div class="annowin_layer_row">', 
       '      <span class="layer_selector_container"></span>',
       '    </div>',

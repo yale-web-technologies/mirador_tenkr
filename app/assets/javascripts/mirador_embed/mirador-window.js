@@ -2,21 +2,40 @@
 
 (function($) {
   
-  $.MiradorWindow = function(options) {
-    jQuery.extend(this, {
-      mainMenu: null,
-      grid: null
-    }, options);
-    this.init();
+  var MiradorWindow = function() {
   };
   
-  $.MiradorWindow.prototype = {
+  MiradorWindow.prototype = {
     
-    init: function() {
+    init: function(options) {
+      jQuery.extend(this, {
+        mainMenu: null,
+        grid: null
+      }, options);
+      
+      var _this = this;
+      
+      this.miradorViewer = jQuery('#viewer');
       this.miradorProxy = $.getMiradorProxy();
-      this.initHeader();
-      this.initMirador();
-      this.bindEvents();
+      
+      var dfd = this.fetchTagHierarchy();
+      
+      dfd.done(function(data) {
+        if (data) {
+          _this.tagHierarchy = data;
+        } else {
+          _this.tagHierarchy = null;
+        }
+      });
+      dfd.fail(function() {
+        console.log('ERROR failed to retrieve tag hierarchy');
+        _this.tagHierarchy = null;
+      });
+      dfd.always(function() {
+        _this.initHeader();
+        _this.initMirador();
+        _this.bindEvents();
+      });
     },
     
     initHeader: function() {
@@ -24,9 +43,8 @@
     },
     
     initMirador: function() {
-      var viewer = jQuery('#viewer');
+      var viewer = this.miradorViewer;
       var manifestUri = viewer.attr('manifest_url');
-      var siteName = viewer.attr('site_name');
       var endpointUrl = viewer.attr('endpoint_url');
       var config = this.config;
       
@@ -37,9 +55,32 @@
       }
       config.annotationEndpoint.options.prefix = endpointUrl;
       config.autoHideControls = false;
+      
+      if (this.tagHierarchy) {
+        config.extension.tagHierarchy = this.tagHierarchy;
+      }
 
       var mirador = Mirador(config);
       this.miradorProxy.setMirador(mirador);
+    },
+    
+    getConfig: function() {
+      return this.config;
+    },
+    
+    fetchTagHierarchy: function() {
+      var dfd = jQuery.Deferred();
+      var roomId = jQuery('#viewer').attr('room_id');
+      jQuery.ajax({
+        url: '/api/tag_hierarchy?room_id=' + roomId,
+        success: function(data) {
+          dfd.resolve(data);
+        },
+        error: function() {
+          dfd.reject();
+        }
+      });
+      return dfd;
     },
     
     bindEvents: function() {
@@ -48,8 +89,13 @@
       jQuery(window).resize(function() {
         _this.grid.resize();
       });
-      
-      jQuery.subscribe('MR_ADD_WINDOW', function(event) {
+
+      this.miradorProxy.subscribe('ANNOTATIONS_LIST_UPDATED', function(event, params) {
+        if (_this.tagHierarchy) {
+          var endpoint = _this.miradorProxy.getEndPoint(params.windowId);
+          endpoint.parseAnnotations();
+        }
+        jQuery.publish('MR_READY_TO_RELOAD_ANNO_WIN');
       });
     },
     
@@ -90,8 +136,18 @@
           storeId: '',
           APIKey: ''
          }
-      }
+      },
+      extension: {}
     }
   };
+  
+  var instance = null;
+  
+  $.getMiradorWindow = function() {
+    if (!instance) {
+      instance = new MiradorWindow();
+    }
+    return instance;
+  }
   
 })(MR);
