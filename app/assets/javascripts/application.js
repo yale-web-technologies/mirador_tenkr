@@ -18,6 +18,7 @@
 //= require tinymce
 //
 //= require main
+//= require state
 //= require session
 //= require util/util
 //= require util/selector

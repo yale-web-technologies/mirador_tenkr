@@ -63,8 +63,15 @@
     reload: function() {
       var _this = this;
       var layerDfd = null, menuTagDfd = null;
-       
+
       this.placeholder.hide();
+
+      if ($.getState().get('ANNO_CELL_FIXED') === 'true') {
+        this.element.addClass('fixed_height_cells');
+      } else {
+        this.element.removeClass('fixed_height_cells');
+      }
+
       var canvas = this.getCurrentCanvas();
       this.element.find('.title').text(canvas.label);
       
@@ -278,6 +285,14 @@
             _this.currentLayerId, annotation);
           _this.highlightAnnotations(targeting, 'TARGETING');
           _this.highlightAnnotations(targeted, 'TARGET');
+        }
+      });
+      
+      jQuery.subscribe('MR_ANNO_HEIGHT_FIXED', function(event, fixedHeight) {
+        if (fixedHeight) {
+          _this.element.addClass('fixed_height_cells');
+        } else {
+          _this.element.removeClass('fixed_height_cells');
         }
       });
       

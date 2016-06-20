@@ -225,7 +225,7 @@
         this.endpoint.update(annotation, function(data) {
           if (typeof _this.saveCallback === 'function') {
             var annotation = data;
-            var content = this.getEditor().getContent().trim();
+            var content = _this.getEditor().getContent().trim();
             _this.saveCallback(annotation, content);
           }
           _this.destroy();

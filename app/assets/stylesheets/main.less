@@ -22,12 +22,11 @@ html, body, div, p {
 .ui.dropdown {
   padding: @annowin-v-padding @annowin-h-padding;
   min-height: 1em;
-  min-width: 125px;
-  white-space: nowrap;
-}
-
-.dropdown.icon {
-  float: right;
+  //min-width: 125px;
+  
+  .menu > .item .dropdown.icon {
+    float: none; // to prevent the dropdown icon from line-wrapping
+  }
 }
 
 /* 
@@ -50,10 +49,6 @@ html, body, div, p {
     display: block;
     clear: both;
   }
-}
-
-.mr_top_menu {
-  margin: 9px 10px 0 10px;
 }
 
 .mr_annotation_dialog {
