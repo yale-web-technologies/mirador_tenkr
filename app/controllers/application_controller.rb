@@ -21,6 +21,8 @@ class ApplicationController < ActionController::Base
     @title = Admin::Setting.first.site_name # default title
     #no_auth = Admin::Setting.first.disable_authentication
     #netid = session[:cas_user]
+    
+    @use_firebase = (ENV['ENDPOINT'] == 'firebase')
 
     if user_signed_in?
       cookies[:loggedIn] = { value: true }

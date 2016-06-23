@@ -1,16 +1,27 @@
-(function ($) {
+(function($) {
   'use strict';
   
   $.session = {
+    
+    serverSettings: null,
+    
     /**
      * Returns true if the user is logged in via CAS.
      */
-    loggedIn: function () {
+    loggedIn: function() {
       return Cookies.get('loggedIn') == 'true';
     },
     
-    isEditor: function () {
+    isEditor: function() {
       return Cookies.get('isEditor') == 'true';
+    },
+    
+    getServerSettings: function() {
+      return this.serverSettings;
+    },
+    
+    setServerSettings: function(settings) {
+      this.serverSettings = settings;
     }
   };
   

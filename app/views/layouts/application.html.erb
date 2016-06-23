@@ -12,14 +12,14 @@
     <%= stylesheet_link_tag '/mirador/css/mirador-combined' %>
   <% end %>
 
-  <%= javascript_include_tag 'https://cdn.firebase.com/js/client/2.2.1/firebase.js' %>
+  <% if defined? @use_firebase %>
+    <%= javascript_include_tag 'https://www.gstatic.com/firebasejs/live/3.0/firebase.js' %>
+  <% end %>
   
   <% if defined? @is_mirador_window %>
     <%= javascript_include_tag '/mirador/mirador' %>
     <%= javascript_include_tag 'goldenlayout.min' %>
   <% else %>
-  <%= javascript_include_tag '/mirador/mirador' %>
-  <%= javascript_include_tag 'goldenlayout.min' %>
     <%= javascript_include_tag 'jquery' %>
   <% end %>
   

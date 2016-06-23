@@ -67,7 +67,7 @@ Rails.application.routes.draw do
   get '/mirador', to: 'mirador#index'
   
   constraints format: 'json' do
-    get '/api/session_info', to: 'api#session_info'
+    get '/api/settings', to: 'api#settings'
     get '/api/tag_hierarchy', to: 'api#tag_hierarchy'
   end
   

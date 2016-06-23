@@ -18,11 +18,12 @@
       this.miradorViewer = jQuery('#viewer');
       this.miradorProxy = $.getMiradorProxy();
       
-      var dfd = this.fetchTagHierarchy();
+      var dfd = this.fetchServerSettings();
       
       dfd.done(function(data) {
-        if (data) {
-          _this.tagHierarchy = data;
+        $.session.setServerSettings(data);
+        if (data.tagHierarchy) {
+          _this.tagHierarchy = data.tagHierarchy;
         } else {
           _this.tagHierarchy = null;
         }
@@ -68,11 +69,11 @@
       return this.config;
     },
     
-    fetchTagHierarchy: function() {
+    fetchServerSettings: function() {
       var dfd = jQuery.Deferred();
       var roomId = jQuery('#viewer').attr('room_id');
       jQuery.ajax({
-        url: '/api/tag_hierarchy?room_id=' + roomId,
+        url: '/api/settings?room_id=' + roomId,
         success: function(data) {
           dfd.resolve(data);
         },

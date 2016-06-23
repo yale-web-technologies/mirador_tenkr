@@ -21,79 +21,72 @@
     init: function () {
       console.log('YaleDemoEndpoint#init');
       var _this = this;
-      this.rootUrl = 'https://ydc-annotations.firebaseio.com';
       this.fbKeyMap = {}; // key: annotation['@id], value: firebase key.
-      
-      this.getLayers(function (layers) {
-        _this.annotationLayers = layers;
-      });
+      this.initFirebase();
     },
-
-    search: function (options, successCallback, errorCallback) {
-      console.log('YaleDemoEndpoint#search options: ' + JSON.stringify(options));
-      var _this = this;
-      var canvasID = options.uri;
-      this.annotationsList = [];
-      
-      var ref = new Firebase(this.rootUrl + '/annotations');
-
-      ref.once('value', function (snapshot) {
-        var data = snapshot.val() || {};
-        console.log('YaleDemoEndpoint#search data:' + JSON.stringify(data, null, 2));
-        
-        if (typeof successCallback === 'function') {
-          successCallback(data);
-        } else {
-          jQuery.each(data, function (key, value) {
-            if (value.canvas_id === canvasID) {
-              var annotation = _this.getAnnotationInOA(value.annotation);
-              annotation.layerID = value.layer_id;
-              annotation.endpoint = _this;
-              //_this.fbKeyMap[annotation.fullId] = key;
-              _this.fbKeyMap[annotation['@id']] = key;
-              _this.annotationsList.push(annotation);
-            }
-          });
-          _this.dfd.resolve(true);
-        }
-      }, function (errorObject) {
-        console.log('Read failed: ' + errorObject.code);
-      });
-    },
-
-    create: function (oaAnnotation, layerID, successCallback, errorCallback) {
-      console.log('YaleDemoEndpoint#create layerID: ' + layerID);
-      console.log('YaleDemoEndpoint#create oaAnnotation: ' + JSON.stringify(oaAnnotation));
-
-      oaAnnotation.layerID = layerID;
-      var annotation = this.getAnnotationInEndpoint(oaAnnotation);
-      annotation['@id'] = String(Date.now());
-
-      var ref = new Firebase(this.rootUrl + '/annotations');
-      var request = {
-        layer_id: layerID,
-        canvas_id: annotation.on.full,
-        annotation: annotation
+    
+    initFirebase: function() {
+      var settings = MR.session.getServerSettings().firebase;
+      var config = {
+        apiKey: settings.apiKey,
+        authDomain: settings.authDomain,
+        databaseURL: settings.databaseUrl,
+        storageBuket: settings.storageBuket
       };
+      firebase.initializeApp(config);
+    },
+    
+    _search: function (options, successCallback, errorCallback) {
+      var _this = this;
+      var canvasId = options.uri;
+      var dfd = this._fbGetAnnosByCanvasId(canvasId);
+      this.annotationsList = [];
+
+      dfd.done(function(annoInfos) {
+        console.log('annoInfos: ');
+        console.dir(annoInfos);
+        jQuery.each(annoInfos, function(index, annoInfo) {
+          var oaAnnotation = _this.getAnnotationInOA(annoInfo.annotation);
+          oaAnnotation.layerId = annoInfo.layerId;
+          oaAnnotation.endpoint = _this;
+          _this.fbKeyMap[oaAnnotation['@id']] = annoInfo.fbKey;
+          _this.annotationsList.push(oaAnnotation);
+        });
+        console.log('_this.annotationsList: ');
+        console.dir(_this.annotationsList);
+        _this.dfd.resolve(true);
+      });
+    },
+
+    create: function (oaAnnotation, successCallback, errorCallback) {
+      console.log('YaleDemoEndpoint#create oaAnnotation:');
+      console.dir(oaAnnotation);
+
+      var layerId = oaAnnotation.layerId;
+      var annotation = this.getAnnotationInEndpoint(oaAnnotation);
+
+      var annoId = $.genUUID();
+      annotation['@id'] = annoId;
       
-      result = ref.push(request);
-      console.log('FireBase push result: ' + result);
-      
+      var fbKey = this._fbAddAnno(annotation, layerId);
+      this.fbKeyMap[annoId] = fbKey;
+
       if (typeof successCallback === 'function') {
+        oaAnnotation['@id'] = annoId;
+        oaAnnotation.endpoint = this;
         successCallback(oaAnnotation);
       } else {
         console.log('YaleDemoEndpoint#create no success callback');
       }
     },
-
+    
     update: function (oaAnnotation, successCallback, errorCallback) {
       console.log('YaleDemoEndpoint#update oaAnnotation:');
       console.dir(oaAnnotation);
       
       var annotation = this.getAnnotationInEndpoint(oaAnnotation);
       var fbKey = this.fbKeyMap[annotation['@id']];
-      var refURL = this.rootUrl + '/annotations/' + fbKey;
-      var ref = new Firebase(refURL);
+      var ref = firebase.database().ref('/annotations/' + fbKey);
       
       ref.update({ annotation: annotation }, function (error) {
         if (error) {
@@ -104,21 +97,23 @@
       });
       
       if (typeof successCallback === 'function') {
-        successCallback();
+        successCallback(oaAnnotation);
       }
     },
 
-    deleteAnnotation: function (annotationID, successCallback, errorCallback) {
-      console.log('YaleDemoEndpoint#delete annotationID: ' + annotationID);
-      var fbKey = this.fbKeyMap[annotationID];
-      var ref = new Firebase(this.rootUrl + '/annotations/' + fbKey);
+    deleteAnnotation: function (annotationId, successCallback, errorCallback) {
+      console.log('YaleDemoEndpoint#delete annotationId: ' + annotationId);
+      var _this = this;
+      var fbKey = this.fbKeyMap[annotationId];
+      var ref = firebase.database().ref('annotations/' + fbKey);
       ref.remove(function (error) {
         if (error) {
-          console.log('ERROR delete failed for annotation id: ' + annotationID);
+          console.log('ERROR delete failed for annotation id: ' + annotationId);
           if (typeof successCallback === 'function') {
             errorCallback();
           }
         } else {
+            _this._fbDeleteAnnoFromList(annotationId);
           if (typeof successCallback === 'function') {
             successCallback();
           }
@@ -129,7 +124,7 @@
 
     getLayers: function (successCallback, errorCallback) {
       console.log('YaleDemoEndpoint#getLayers');
-      var ref = new Firebase(this.rootUrl + '/layers');
+      var ref = firebase.database().ref('layers');
       
       ref.once('value', function (snapshot) {
         var data = snapshot.val();
@@ -146,7 +141,125 @@
           successCallback(layers);
         }
       });
+    },
+    
+    _fbGetAnnosByCanvasId: function(canvasId) {
+      var dfd = jQuery.Deferred();
+      var ref =  firebase.database().ref('annotations');
+      var fbAnnos = {};
+      var annoInfos = [];
+      
+      ref.once('value', function(snapshot) {
+        var data = snapshot.val();
+        jQuery.each(data, function(key, value) {
+          if (value.canvasId === canvasId) {
+            fbAnnos[value.annotation['@id']] = value.annotation;
+          }
+        });
+        var listsRef = firebase.database().ref('lists');
+        listsRef.once('value', function(snapshot) {
+          var listObjs = snapshot.val();
+          jQuery.each(listObjs, function(key, listObj) {
+            if (listObj.canvasId === canvasId) {
+              jQuery.each(listObj.annotationIds, function(index, annotationId) {
+                var anno = fbAnnos[annotationId];
+                if (anno) {
+                  annoInfos.push({
+                    annotation: fbAnnos[annotationId],
+                    layerId: listObj.layerId
+                  });
+                } else {
+                  console.log("ERROR anno in the list doesn't exist: " + annotationId);
+                }
+              });
+            }
+          });
+          dfd.resolve(annoInfos);
+        });
+        
+      });
+      return dfd;
+    },
+    
+    _fbAddAnno: function(annotation, layerId) {
+      var canvasId = this._getTargetCanvasId(annotation);
+      var ref = firebase.database().ref('annotations');
+      var annoObj = { 
+        canvasId: canvasId,
+        layerId: layerId,
+        annotation: annotation
+      };
+      annoObj.id = annotation['@id'];
+      var annoRef = ref.push(annoObj);
+      this._fbAddAnnoToList(annotation, canvasId, layerId);
+      return annoRef.key;
+    },
+    
+    _fbAddAnnoToList: function(annotation, canvasId, layerId) {
+      var dfd = jQuery.Deferred();
+      var annoId = annotation['@id'];
+      var combinedId = canvasId + layerId;
+      var ref = firebase.database().ref('lists');
+      var query = ref.orderByChild('combinedId').equalTo(combinedId);
+      
+      query.once('value', function(snapshot) {
+        if (snapshot.exists()) { // child with combiedId exists
+          dfd.resolve(true);
+        } else {
+          dfd.resolve(false);
+        }
+      });
+        
+      dfd.done(function(matched) {
+        if (matched) {
+          query.once('child_added', function(snapshot, prevChildKey) {
+            var data = snapshot.val();
+            var ref = snapshot.ref;
+            data.annotationIds = data.annotationIds || []
+            if (jQuery.inArray(annoId, data.annotationIds) === -1) {
+              data.annotationIds.push(annoId);
+              console.log('UPD');
+              ref.update({ annotationIds: data.annotationIds});
+            }
+          });
+        } else {
+          ref.push({
+            combinedId: combinedId,
+            canvasId: canvasId,
+            layerId: layerId,
+            annotationIds: [ annoId ]
+          });
+        }
+      });
+    },
+    
+    _fbDeleteAnnoFromList: function(annoId) {
+      var ref = firebase.database().ref('lists');
+      ref.on('child_added', function(snapshot) {
+        var data = snapshot.val();
+        var index = data.annotationIds.indexOf(annoId);
+        if (index > -1) {
+          data.annotationIds.splice(index, 1);
+          snapshot.ref.update({ annotationIds: data.annotationIds });
+        }
+        
+      });
+    },
+    
+    _getTargetCanvasId: function(annotation) {
+      var targetAnno = null;
+      
+      if (annotation['@type'] === 'oa:Annotation') {
+        targetAnno = MR.annoUtil.findFinalTargetAnnotation(annotation, this.annotationsList);
+      } else {
+        targetAnno = annotation;
+      }
+      
+      var canvasId = targetAnno.on.full;
+      console.log('_getTargetCanvasId canvas ID: ' + canvasId);
+      return canvasId;
     }
+    
   });
 
 })(Mirador);
