@@ -12,9 +12,10 @@ class ApiController < ApplicationController
     room = Admin::Room.find(room_id)
     jsonStr = room.tag_hierarchy
     if !(jsonStr.nil?) && jsonStr.strip == ''
-      jsonStr = nil 
+      return nil
+    else
+      return JSON.parse(jsonStr)
     end
-    JSON.parse(jsonStr)
   end
   
   def _firebase_settings
