@@ -18,7 +18,12 @@ class ApplicationController < ActionController::Base
 
   def setup
     #puts "ApplicationController#set_netid_cookie cas_user: #{session[:cas_user]}"
-    @title = Admin::Setting.first.site_name # default title
+    setting = Admin::Setting.first
+    if setting.nil?
+      @title = 'Undefined settings'
+    else
+      @title = setting.site_name # default title
+    end
     #no_auth = Admin::Setting.first.disable_authentication
     #netid = session[:cas_user]
     
