@@ -13,6 +13,5 @@
 /tmp
 
 *~
-/config/database.yml
 /public/assets
 /local_env
