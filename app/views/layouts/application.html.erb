@@ -16,12 +16,8 @@
     <%= javascript_include_tag 'https://www.gstatic.com/firebasejs/live/3.0/firebase.js' %>
   <% end %>
   
-  <% if defined? @is_mirador_window %>
-    <%= javascript_include_tag '/mirador/mirador' %>
-    <%= javascript_include_tag 'goldenlayout.min' %>
-  <% else %>
-    <%= javascript_include_tag 'jquery' %>
-  <% end %>
+  <%= javascript_include_tag '/mirador/mirador' %>
+  <%= javascript_include_tag 'goldenlayout.min' %>
   
   <script>
     $.noConflict();
