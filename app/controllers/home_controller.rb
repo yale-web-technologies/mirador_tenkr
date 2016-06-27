@@ -2,7 +2,7 @@ class HomeController < ApplicationController
   def index
     puts "User: #{session[:cas_user]}"
     setting = Admin::Setting.first
-    @rooms = Admin::Room.all
+    @rooms = Admin::Room.order(:weight).all
     landing_path = setting.landing_path.strip
     unless landing_path.empty?
       redirect_to landing_path

@@ -4,7 +4,7 @@ class Admin::RoomsController < ApplicationController
   # GET /admin/rooms
   # GET /admin/rooms.json
   def index
-    @admin_rooms = Admin::Room.all
+    @admin_rooms = Admin::Room.order(:weight).all
   end
 
   # GET /admin/rooms/1
