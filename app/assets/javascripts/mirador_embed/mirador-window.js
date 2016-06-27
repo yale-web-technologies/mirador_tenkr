@@ -21,7 +21,7 @@
       var dfd = this.fetchServerSettings();
       
       dfd.done(function(data) {
-        $.session.setServerSettings(data);
+        _this.serverSettings = $.session.setServerSettings(data);
         if (data.tagHierarchy) {
           _this.tagHierarchy = data.tagHierarchy;
         } else {
@@ -60,7 +60,15 @@
       if (this.tagHierarchy) {
         config.extension.tagHierarchy = this.tagHierarchy;
       }
-
+      
+      if (this.serverSettings.firebase.endpoint === 'firebase') {
+        config.annotationEndpoint = {
+          name: 'Yale (Firebase) Annotations',
+          module: 'YaleDemoEndpoint',
+          options: {}
+        };
+      }
+      
       var mirador = Mirador(config);
       this.miradorProxy.setMirador(mirador);
     },
@@ -131,11 +139,9 @@
       annotationLayer: true,
       annotationEndpoint: {
         name: 'Yale Annotations',
-        module: 'YaleDemoEndpoint',
+        module: 'YaleEndpoint',
         options: {
-          prefix: null,
-          storeId: '',
-          APIKey: ''
+          prefix: null
          }
       },
       extension: {}

@@ -20,7 +20,7 @@ class ApiController < ApplicationController
   
   def _firebase_settings
     {
-      :endpoint => ENV['ENDPOINT'],
+      :endpoint => Admin::Setting.first.endpoint_url,
       :apiKey => ENV['FIREBASE_API_KEY'],
       :authDomain => ENV['FIREBASE_AUTH_DOMAIN'],
       :databaseUrl => ENV['FIREBASE_DATABASE_URL'],

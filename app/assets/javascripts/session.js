@@ -22,6 +22,7 @@
     
     setServerSettings: function(settings) {
       this.serverSettings = settings;
+      return settings;
     }
   };
   
