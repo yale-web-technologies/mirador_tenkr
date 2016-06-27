@@ -29,7 +29,7 @@
         }
       });
       dfd.fail(function() {
-        console.log('ERROR failed to retrieve tag hierarchy');
+        console.log('ERROR failed to retrieve server settings');
         _this.tagHierarchy = null;
       });
       dfd.always(function() {

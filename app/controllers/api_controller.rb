@@ -11,8 +11,8 @@ class ApiController < ApplicationController
     room_id = params[:room_id]
     room = Admin::Room.find(room_id)
     jsonStr = room.tag_hierarchy
-    if !(jsonStr.nil?) && jsonStr.strip == ''
-      return nil
+    if jsonStr.nil? || jsonStr.strip == ''
+      return nil # JSON.parse wouldn't take nil as argument
     else
       return JSON.parse(jsonStr)
     end
