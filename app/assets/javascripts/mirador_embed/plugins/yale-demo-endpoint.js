@@ -161,7 +161,8 @@
           var listObjs = snapshot.val() || [];
           jQuery.each(listObjs, function(key, listObj) {
             if (listObj.canvasId === canvasId) {
-              jQuery.each(listObj.annotationIds, function(index, annotationId) {
+              var annotationIds = listObj.annotationIds || [];
+              jQuery.each(annotationIds, function(index, annotationId) {
                 var anno = fbAnnos[annotationId];
                 if (anno) {
                   annoInfos.push({
@@ -237,12 +238,11 @@
       var ref = firebase.database().ref('lists');
       ref.on('child_added', function(snapshot) {
         var data = snapshot.val();
-        var index = data.annotationIds.indexOf(annoId);
+        var index = data.annotationIds ? data.annotationIds.indexOf(annoId) : -1;
         if (index > -1) {
           data.annotationIds.splice(index, 1);
           snapshot.ref.update({ annotationIds: data.annotationIds });
         }
-        
       });
     },
     
