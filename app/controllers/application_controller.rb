@@ -17,22 +17,21 @@ class ApplicationController < ActionController::Base
 #  end
 
   def setup
-    #puts "ApplicationController#set_netid_cookie cas_user: #{session[:cas_user]}"
     setting = Admin::Setting.first
     if setting.nil?
       @title = 'Undefined settings'
+      @use_firebase = false
+      no_auth = false
     else
       @title = setting.site_name # default title
+      @use_firebase = (setting.endpoint_url == 'firebase')
+      no_auth = setting.disable_authentication
     end
-    #no_auth = Admin::Setting.first.disable_authentication
-    #netid = session[:cas_user]
-    
-    @use_firebase = (ENV['ENDPOINT'] == 'firebase')
 
     if user_signed_in?
       cookies[:loggedIn] = { value: true }
       user_role = Admin::UserRole.find_by_email(current_user.email)
-      if (user_role && user_role.role == 'editor')
+      if user_role && user_role.role == 'editor'
         cookies[:isEditor] = { value: true }
       else
         cookies[:isEditor] = { value: false }
@@ -44,6 +43,11 @@ class ApplicationController < ActionController::Base
       @userLabel = ''
     end
     
+    puts "no_auth: #{no_auth}"
+    
+    if no_auth
+      cookies[:isEditor] = { value: true }
+    end
   end
 
   def userLabel(user_role)
