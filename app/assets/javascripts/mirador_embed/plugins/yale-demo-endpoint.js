@@ -150,7 +150,7 @@
       var annoInfos = [];
       
       ref.once('value', function(snapshot) {
-        var data = snapshot.val();
+        var data = snapshot.val() || [];
         jQuery.each(data, function(key, value) {
           if (value.canvasId === canvasId) {
             fbAnnos[value.annotation['@id']] = value.annotation;
@@ -158,7 +158,7 @@
         });
         var listsRef = firebase.database().ref('lists');
         listsRef.once('value', function(snapshot) {
-          var listObjs = snapshot.val();
+          var listObjs = snapshot.val() || [];
           jQuery.each(listObjs, function(key, listObj) {
             if (listObj.canvasId === canvasId) {
               jQuery.each(listObj.annotationIds, function(index, annotationId) {
