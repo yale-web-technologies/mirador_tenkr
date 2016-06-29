@@ -24,6 +24,10 @@
   </script>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => false %>
   <%= csrf_meta_tags %>
+  
+  <% if @use_analytics %>
+    <%= render 'analytics' %>
+  <% end %>
 </head>
 <body data-no-turbolink>
   <p class="notice"><%= notice %></p>
@@ -32,4 +36,5 @@
 <%= yield %>
 
 </body>
+
 </html>

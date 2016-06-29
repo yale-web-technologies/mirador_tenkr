@@ -43,10 +43,14 @@ class ApplicationController < ActionController::Base
       @userLabel = ''
     end
     
-    puts "no_auth: #{no_auth}"
-    
     if no_auth
       cookies[:isEditor] = { value: true }
+    end
+    
+    if ENV['USE_ANALYTICS'] == 'yes'
+      @use_analytics = true
+    else
+      @use_analytics = false
     end
   end
 
