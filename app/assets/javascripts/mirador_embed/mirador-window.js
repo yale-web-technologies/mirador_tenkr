@@ -124,7 +124,7 @@
         {
           loadedManifest: null,
           viewType: 'ImageView',
-          displayLayout: true,
+          displayLayout: false,
           bottomPanel: true,
           sidePanel: true
         }
