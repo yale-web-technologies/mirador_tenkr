@@ -220,6 +220,42 @@
       });
       return null;
     },
+    
+    updateOrder: function(canvasId, layerId, annoIds, successCallback, errorCallback) {
+      console.log('canvasId: ' + canvasId);
+      console.log('layerId: ' + layerId);
+      jQuery.each(annoIds, function(index, value) {
+        console.log(value);
+      });
+      
+      var url = this.prefix + '/resequenceList';
+      var data = {
+        canvas_id: canvasId,
+        layer_id: layerId,
+        annotation_ids: annoIds
+      };
+      
+      jQuery.ajax({
+        url: url,
+        type: 'PUT',
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify(data),
+        success: function (data, textStatus, jqXHR) {
+          if (typeof successCallback === 'function') {
+            console.log('Updating order was successful: ' + JSON.stringify(data, null, 2));
+            successCallback(data);
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          console.log('YaleEndpoint#updateOrder failed for request: ' + JSON.stringify(data, null, 2));
+          console.log(textStatus);
+          if (typeof errorCallback === 'function') {
+            errorCallback(jqXHR, textStatus, errorThrown);
+          }
+        }
+      });
+    },
 
     userAuthorize: function (action, annotation) {
       return MR.session.isEditor();

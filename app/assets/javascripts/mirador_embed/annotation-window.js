@@ -26,7 +26,7 @@
       this.appendTo.append(this.element);
       this.listElem = this.element.find('.annowin_list');
       this.initLayerSelector();
-      this.editorRow = this.element.find('.annowin_creator'); // placeholder for annotation editor for creation
+      this.tempMenuRow = this.element.find('.annowin_temp_row');
       this.placeholder = this.element.find('.placeholder');
       this.placeholder.text('Loading...').show();
       
@@ -76,11 +76,11 @@
       this.element.find('.title').text(canvas.label);
       
       if (this.endpoint.parsed) {
-        this.listElem.css('top', 60);
+        //this.listElem.css('top', 60);
         this.initMenuTagSelector();
         this.element.find('.annowin_menu_tag_row').show();
       } else {
-        this.listElem.css('top', 35);
+        //this.listElem.css('top', 35);
         this.element.find('.annowin_menu_tag_row').hide();
       }
 
@@ -265,8 +265,30 @@
       return html;
     },
     
+    saveOrder: function() {
+      var _this = this;
+      var annoElems = this.listElem.find('.annowin_anno');
+      var annoIds = [];
+      jQuery.each(annoElems, function(index, value) {
+        var annoId = jQuery(value).data('annotationId');
+        annoIds.push(annoId);
+      });
+      var canvas = this.getCurrentCanvas();
+      this.endpoint.updateOrder(canvas['@id'], this.currentLayerId, annoIds,
+        function() { // success
+          _this.tempMenuRow.hide();
+        },
+        function() { // error
+          _this.tempMenuRow.hide();
+        });
+    },
+    
     bindEvents: function() {
       var _this = this;
+      
+      this.element.find('.annowin_temp_row .mr_button').click(function(event) {
+        _this.saveOrder();
+      });
       
       jQuery.subscribe('MR_READY_TO_RELOAD_ANNO_WIN', function(event) {
         if (! _this.hasOpenEditor()) {
@@ -376,6 +398,22 @@
         }
       });
       
+      annoElem.find('.up.icon').click(function(event) {
+        var sibling = annoElem.prev();
+        if (sibling.size() > 0) {
+          annoElem.after(sibling);
+        }
+        _this.tempMenuRow.show();
+      });
+      
+      annoElem.find('.down.icon').click(function(event) {
+        var sibling = annoElem.next();
+        if (sibling.size() > 0) {
+          annoElem.before(sibling);
+        }
+        _this.tempMenuRow.show();
+      });
+      
       infoElem.click(function(event) {
         var infoDiv = annoElem.find('.info_view');
         if (infoDiv.css('display') === 'none') {
@@ -397,8 +435,10 @@
       '    <div class="annowin_layer_row">', 
       '      <span class="layer_selector_container"></span>',
       '    </div>',
+      '    <div class="annowin_temp_row">',
+      '      <div class="fluid ui small orange button mr_button">Click to save order</div>',
+      '    </div>',
       '  </div>',
-      '  <div class="annowin_creator"></div>',
       '  <div class="placeholder"></div>',
       '  <div class="annowin_list">',
       '  </div>',
@@ -406,7 +446,7 @@
     ].join('')),
     
     annotationTemplate: Handlebars.compile([
-      '<div class="annowin_anno">',
+      '<div class="annowin_anno" draggable="true">',
       '  <div class="info_view"></div>',
       '  <div class="normal_view">',
       '    {{#if isEditor}}',
@@ -419,6 +459,10 @@
       '              <div class="edit item"><i class="fa fa-edit fa-fw"></i> {{t "edit"}}</div>',
       '              <div class="delete item"><i class="fa fa-times fa-fw"></i> {{t "delete"}}</div>',
       '            </div>',
+      '          </div>',
+      '          <div class="right menu">',
+      '            <i class="caret down icon"></i>',
+      '            <i class="caret up icon"></i>',
       '          </div>',
       '        </div>',
       '      </div>',
