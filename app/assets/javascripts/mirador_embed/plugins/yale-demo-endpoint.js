@@ -143,6 +143,37 @@
       });
     },
     
+    updateOrder: function(canvasId, layerId, annoIds, successCallback, errorCallback) {
+      console.log('canvasId: ' + canvasId);
+      console.log('layerId: ' + layerId);
+      jQuery.each(annoIds, function(index, value) {
+        console.log(value);
+      });
+      
+      var dfd = jQuery.Deferred();
+      var combinedId = canvasId + layerId;
+      var ref = firebase.database().ref('lists');
+      var query = ref.orderByChild('combinedId').equalTo(combinedId);
+      
+      query.once('value', function(snapshot) {
+        if (snapshot.exists()) { // child with combiedId exists
+          dfd.resolve();
+        } else {
+          console.log('ERROR updateOrder: list not found for ' + combinedId);
+          dfd.reject();
+        }
+      });
+        
+      dfd.done(function() {
+        query.once('child_added', function(snapshot, prevChildKey) {
+          snapshot.ref.update({ annotationIds: annoIds});
+        });
+        if (typeof successCallback === 'function') {
+          successCallback();
+        }
+      });
+    },
+    
     _fbGetAnnosByCanvasId: function(canvasId) {
       var dfd = jQuery.Deferred();
       var ref =  firebase.database().ref('annotations');
