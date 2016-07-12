@@ -43,7 +43,8 @@
     _search: function(options, successCallback, errorCallback) {
       var _this = this;
       var canvasId = options.uri;
-      var url = this.prefix + '/getAnnotations?includeTargetingAnnos=true&canvas_id=' + encodeURIComponent(canvasId);
+      //var url = this.prefix + '/getAnnotations?includeTargetingAnnos=true&canvas_id=' + encodeURIComponent(canvasId);
+      var url = this.prefix + '/getAnnotationsViaList?canvas_id=' + encodeURIComponent(canvasId);
       console.log('YaleEndpoint#_search url: ' + url);
       this.annotationsList = [];
 
