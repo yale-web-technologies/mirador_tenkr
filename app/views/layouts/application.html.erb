@@ -9,8 +9,9 @@
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
 
   <% if defined? @is_mirador_window %>
-    <%= stylesheet_link_tag '/mirador/css/mirador-combined' %>
+    <%= stylesheet_link_tag '/mirador/css/mirador-combined.min' %>
   <% end %>
+  <%= stylesheet_link_tag '/yale-mirador/yale-mirador.bundle' %>
 
   <% if defined? @use_firebase %>
     <%= javascript_include_tag 'https://www.gstatic.com/firebasejs/live/3.0/firebase.js' %>
@@ -18,7 +19,8 @@
   
   <%= javascript_include_tag '/mirador/mirador' %>
   <%= javascript_include_tag 'goldenlayout.min' %>
-  
+  <%= javascript_include_tag '/yale-mirador/yale-mirador.bundle' %>
+
   <script>
     $.noConflict();
   </script>

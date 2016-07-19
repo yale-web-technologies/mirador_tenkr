@@ -1,7 +1,9 @@
 class ApiController < ApplicationController
   def settings
     jsonObj = {
+      :buildPath => '/mirador',
       :tagHierarchy => _get_tag_hierarchy,
+      :endpointUrl => Admin::Setting.first.endpoint_url,
       :firebase => _firebase_settings
     }
     render json: jsonObj
@@ -20,7 +22,6 @@ class ApiController < ApplicationController
   
   def _firebase_settings
     {
-      :endpoint => Admin::Setting.first.endpoint_url,
       :apiKey => ENV['FIREBASE_API_KEY'],
       :authDomain => ENV['FIREBASE_AUTH_DOMAIN'],
       :databaseUrl => ENV['FIREBASE_DATABASE_URL'],

@@ -4,7 +4,7 @@ window.MR = {};
   'use strict';
 
   jQuery(document).ready(function () {
-    console.log('document ready');
+    console.log('Mirador Rails document ready');
     
     var headerElem = jQuery('.mr_header');
     if (headerElem.size() > 0) {
@@ -12,12 +12,6 @@ window.MR = {};
         element: headerElem
       });
     }
-    $.roomsView.init();
-    
-    if (jQuery('#viewer_template').size() > 0) {
-      $.mirador.init();
-    }
-
   });
   
 })(MR);

@@ -4,7 +4,6 @@ class MiradorController < ApplicationController
     manifest_id = params[:manifest]
     manifest = Admin::Manifest.find(manifest_id)
     @manifest_url = manifest.url
-    @endpoint_url = Admin::Setting.first.endpoint_url
     @title = "Mirador - #{manifest.title}"
     @room_id = params[:room_id]
   end

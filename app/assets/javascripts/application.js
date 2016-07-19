@@ -18,23 +18,5 @@
 //= require tinymce
 //
 //= require main
-//= require state
-//= require session
-//= require util/util
-//= require util/selector
 //= require widgets/login-widget
 //= require views/header-view
-//= require views/rooms-view
-//= require views/mirador-view
-//= require mirador_embed/plugins/annotation-editor
-//= require mirador_embed/plugins/yale-endpoint
-//= require mirador_embed/plugins/yale-demo-endpoint
-//= require mirador_embed/mirador-proxy
-//= require mirador_embed/layout/grid
-//= require mirador_embed/main-menu
-//= require mirador_embed/mirador-window
-//= require mirador_embed/annotation-window
-//= require mirador_embed/parsed-annotations
-//= require mirador_embed/anno-util
-//= require mirador_embed/layer-selector
-//= require mirador_embed/menu-tag-selector

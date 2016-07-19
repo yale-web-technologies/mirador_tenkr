@@ -6,7 +6,9 @@
 </div>
 
 <div id="viewer_template">
-  <div id="{{id}}" manifest_url="<%= @manifest_url %>"
-    endpoint_url="<%= @endpoint_url %>" room_id="<%= @room_id %>">
+  <div id="{{id}}"
+    data-settings-url="/api/settings"
+    data-manifest-url="<%= @manifest_url %>"
+    data-room-id="<%= @room_id %>">
   </div>
 </div>

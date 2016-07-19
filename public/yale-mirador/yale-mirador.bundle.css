@@ -1,0 +1,226 @@
+.no_close .ui-dialog-titlebar-close {
+  display: none;
+}
+.ui-dialog-titlebar {
+  display: block !important;
+}
+.qtip-content {
+  overflow: visible !important;
+}
+#mirador_header {
+  top: 0px;
+  height: 36px;
+}
+#viewer {
+  display: block !important;
+  position: absolute !important;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+}
+#mr_grid {
+  position: absolute;
+  top: 36px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.col1 {
+  background-color: #009900;
+}
+.col2 {
+  background-color: #005500;
+}
+.annotation_editor .ui.dropdown .menu {
+  max-height: 300px;
+  overflow-y: scroll;
+}
+.mr_vertical_dec,
+.mr_vertical_inc {
+  color: #bbb;
+}
+.mr_vertical_dec:hover,
+.mr_vertical_inc:hover {
+  color: #777;
+}
+.mr_annotation_window {
+  position: absolute;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0 0 5px;
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  background-color: #efefef;
+}
+.mr_annotation_window a:link,
+.mr_annotation_window a:visited {
+  color: #4684cc;
+}
+.mr_annotation_window a:hover,
+.mr_annotation_window a:active {
+  color: #76b4fc;
+}
+.mr_annotation_window.fixed_height_cells .annowin_anno > .normal_view {
+  height: 120px;
+  overflow-y: scroll;
+}
+.annowin_header {
+  margin: 0;
+  padding: 5px 0 5px 0;
+}
+.mirador-viewer .mirador-icon-window-menu.annowin_window_menu {
+  margin: 0 10px 0 0;
+  font-size: 0.8rem;
+}
+.annowin_window_menu .dropdown li {
+  font-size: 0.8rem;
+}
+.annowin_remove_slot {
+  float: right !important;
+}
+.annowin_remove_slot:hover {
+  color: red;
+}
+.annowin_menu_tag_row,
+.annowin_layer_row,
+.annowin_temp_row {
+  padding: 2px 5px;
+}
+.annowin_temp_row {
+  display: none;
+}
+.annowin_list {
+  position: relative;
+  /* required to make the div "positioned" so the child elements' positions to be obtained and scroll levels adjusted accordingly. */
+  left: 0;
+  right: 0;
+  margin: 0;
+  overflow-y: visible;
+}
+.annotation_editor {
+  background-color: white;
+  border: solid 3px #0072c4;
+  padding: 5px;
+}
+/* Icon for link to the annotation target, shown in the annotation editor. */
+.anno_target_icon {
+  color: #b0b0b0;
+}
+/* When the annotation target is set for a canvas segment. */
+.anno_target_icon.anno_on_canvas {
+  color: #4684cc;
+}
+/* When the annotation target is set for another annotation. */
+.anno_target_icon.anno_on_anno {
+  color: #1f995a;
+}
+.annotation_editor .bottom_row {
+  min-height: 25px;
+}
+.placeholder {
+  padding: 5px;
+}
+.item_menu_dropdown {
+  right: 0px;
+}
+.annowin_anno .menu_bar {
+  background-color: #76b4fc;
+}
+.annowin_anno .menu_bar.targeting_anno {
+  background-color: #3fb97a;
+}
+.annowin_anno {
+  border: solid 1px #808080;
+  background-color: #fafafa;
+  padding: 3px;
+}
+.annowin_anno .normal_view p {
+  margin: 10px;
+}
+.annowin_anno .normal_view p:first-of-type {
+  margin-top: 0;
+}
+.annowin_anno .normal_view p:last-of-type {
+  margin-bottom: 0;
+}
+.annowin_anno .info_view {
+  font-size: 0.9em;
+  background-color: #f0f0ff;
+}
+.mr_anno_selected {
+  border-color: #4684cc;
+  border-width: 4px;
+  padding: 0;
+}
+.mr_anno_targeting {
+  border-color: #cc6600;
+  border-width: 4px;
+  padding: 0;
+}
+.mr_anno_targeted {
+  border-color: #fbb917;
+  border-width: 4px;
+  padding: 0;
+}
+.annowin_info {
+  color: #4684cc;
+}
+.annowin_info.anno_on_anno {
+  color: #1f995a;
+}
+.annowin_anno .content {
+  padding: 5px 5px;
+}
+.annowin_anno .tag {
+  font-size: 0.7rem;
+  color: #eee;
+  background-color: #888;
+  margin: 0 2px;
+  padding: 0.1rem 0.2rem;
+  border-radius: 0.2rem;
+}
+html,
+body,
+div,
+p {
+  margin: 0;
+}
+/* 
+ * Overriding Semantic UI
+ */
+.ui.text.menu {
+  margin: 0;
+  min-height: 0;
+}
+.ui.dropdown {
+  padding: 5px 5px;
+  min-height: 1em;
+}
+.ui.dropdown .menu > .item .dropdown.icon {
+  float: none;
+}
+/* 
+ * Overriding GoldenLayout
+ */
+.lm_item_container {
+  position: relative;
+}
+/*
+ *
+ */
+.mr_float_right {
+  float: right;
+}
+.mr_float_right::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+.mr_button.small {
+  padding-top: 0.6em;
+  padding-bottom: 0.6em;
+}
+.mr_annotation_dialog {
+  overflow: visible;
+}
