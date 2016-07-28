@@ -4,7 +4,7 @@ class Admin::ManifestsController < ApplicationController
   # GET /admin/manifests
   # GET /admin/manifests.json
   def index
-    @admin_manifests = Admin::Manifest.all
+    @admin_manifests = Admin::Manifest.order(:weight).all
   end
 
   # GET /admin/manifests/1
