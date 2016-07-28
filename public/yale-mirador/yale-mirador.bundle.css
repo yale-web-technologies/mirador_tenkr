@@ -61,6 +61,14 @@
 .mr_annotation_window a:active {
   color: #76b4fc;
 }
+.mr_annotation_window .caret.icon {
+  color: #000;
+  opacity: 0.6;
+}
+.mr_annotation_window .caret.icon:hover {
+  opacity: 0.95;
+  font-size: 1.5em;
+}
 .mr_annotation_window.fixed_height_cells .annowin_anno > .normal_view {
   height: 120px;
   overflow-y: scroll;
@@ -75,12 +83,6 @@
 }
 .annowin_window_menu .dropdown li {
   font-size: 0.8rem;
-}
-.annowin_remove_slot {
-  float: right !important;
-}
-.annowin_remove_slot:hover {
-  color: red;
 }
 .annowin_menu_tag_row,
 .annowin_layer_row,
