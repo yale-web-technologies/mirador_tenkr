@@ -21885,16 +21885,15 @@ return paper;
       if (!shape._ym_oldStrokeWdth) {
         shape._ym_oldStrokeWidth = shape.strokeWidth;
       }
-      shape.strokeColor = 'orange';
-      shape.strokeWidth = 10;
+      shape.set({ strokeColor: 'red', strokeWidth: 10 });
     },
     
     deHighlightShape: function (shape) {
       if (shape._ym_oldStrokeColor) {
-        shape.strokeColor = shape._ym_oldStrokeColor;
+        shape.set({ strokeColor: shape._ym_oldStrokeColor });
       }
       if (shape._ym_oldStrokeWidth) {
-        shape.strokeWidth = shape._ym_oldStrokeWidth;
+        shape.set({ strokeWidth: shape._ym_oldStrokeWidth });
       }
     },
     
