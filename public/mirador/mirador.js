@@ -21879,16 +21879,14 @@ return paper;
     },
     
     highlightShape: function (shape) {
-      setTimeout(function() {
-        if (!shape._ym_oldStrokeColor) {
-          shape._ym_oldStrokeColor = shape.strokeColor;
-        }
-        if (!shape._ym_oldStrokeWdth) {
-          shape._ym_oldStrokeWidth = shape.strokeWidth;
-        }
-        shape.strokeColor = 'red';
-        shape.strokeWidth = 10;
-      }, 1);
+      if (!shape._ym_oldStrokeColor) {
+        shape._ym_oldStrokeColor = shape.strokeColor;
+      }
+      if (!shape._ym_oldStrokeWdth) {
+        shape._ym_oldStrokeWidth = shape.strokeWidth;
+      }
+      shape.strokeColor = 'orange';
+      shape.strokeWidth = 10;
     },
     
     deHighlightShape: function (shape) {
