@@ -8418,6 +8418,8 @@
 
 	var annotationTemplate = Handlebars.compile(['<div class="annowin_anno" draggable="true">', '  <div class="info_view"></div>', '  <div class="normal_view">', '    {{#if isEditor}}', '      <div class="menu_bar">', '        <div class="ui text menu">', '          <div class="ui dropdown item">', '            Action<i class="dropdown icon"></i>', '            <div class="menu">', '              <div class="annotate item"><i class="fa fa-hand-o-left fa-fw"></i> Annotate</div>', '              <div class="edit item"><i class="fa fa-edit fa-fw"></i> {{t "edit"}}</div>', '              <div class="delete item"><i class="fa fa-times fa-fw"></i> {{t "delete"}}</div>', '            </div>', '          </div>', '          {{#if orderable}}', '            <div class="right menu">', '              <i class="caret down icon"></i>', '              <i class="caret up icon"></i>', '            </div>', '          {{/if}}', '        </div>', '      </div>', '    {{/if}}', '    <div class="content">{{{content}}}</div>', '    <div class="tags">{{{tags}}}</div>', '  </div>', '</div>'].join(''));
 
+	var headerTemplate = Handlebars.compile(['<div class="annowin_group_header">{{text}}', '</div>'].join(''));
+
 	var infoTemplate = Handlebars.compile(['<div class="info_view">', '  <span class="anno_info_label">On:<span>', '  <span class="anno_info_value">{{{on}}}</span>', '</div>'].join(''));
 
 	var _class = function () {
@@ -8540,6 +8542,7 @@
 	      var menuTags = ['all'];
 	      if (this.endpoint.parsed) {
 	        menuTags = this.menuTagSelector.val().split('|');
+	        annotationsList = this.endpoint.parsed.sortedAnnosWithHeaders(annotationsList);
 	      }
 	      var isCompleteList = menuTags[0] === 'all'; // true if current window will show all annotations of a sortable list.
 	      var layerId = this.layerSelector.val();
@@ -10330,6 +10333,14 @@
 	      });
 	      return matched;
 	    }
+	  }, {
+	    key: 'sortedAnnosWithHeaders',
+	    value: function sortedAnnosWithHeaders(annotations) {
+	      console.log('XXXXXXXXX');
+	      console.log('XXXXXXXXX sortedAnnosWithHeaders');
+	      console.log('XXXXXXXXX');
+	      return annotations;
+	    }
 	  }]);
 
 	  return _class;
@@ -10367,7 +10378,6 @@
 	      prefix: null
 	    }, options);
 
-	    console.log('YaleDemoEndpoint dfd: ' + this.dfd);
 	    this.init();
 	  };
 
@@ -10448,12 +10458,11 @@
 	          console.log('Update failed.');
 	        } else {
 	          console.log('Update succeeded.');
+	          if (typeof successCallback === 'function') {
+	            successCallback(oaAnnotation);
+	          }
 	        }
 	      });
-
-	      if (typeof successCallback === 'function') {
-	        successCallback(oaAnnotation);
-	      }
 	    },
 
 	    deleteAnnotation: function deleteAnnotation(annotationId, successCallback, errorCallback) {
@@ -10484,7 +10493,7 @@
 	      ref.once('value', function (snapshot) {
 	        var data = snapshot.val();
 
-	        console.log('DATA: ' + JSON.stringify(data, null, 2));
+	        console.log('Layers: ' + JSON.stringify(data, null, 2));
 
 	        var layers = [];
 
@@ -10499,8 +10508,6 @@
 	    },
 
 	    updateOrder: function updateOrder(canvasId, layerId, annoIds, successCallback, errorCallback) {
-	      console.log('canvasId: ' + canvasId);
-	      console.log('layerId: ' + layerId);
 	      jQuery.each(annoIds, function (index, value) {
 	        console.log(value);
 	      });
@@ -10534,13 +10541,16 @@
 	      var dfd = jQuery.Deferred();
 	      var ref = firebase.database().ref('annotations');
 	      var fbAnnos = {};
+	      var fbKeys = {};
 	      var annoInfos = [];
 
 	      ref.once('value', function (snapshot) {
 	        var data = snapshot.val() || [];
 	        jQuery.each(data, function (key, value) {
 	          if (value.canvasId === canvasId) {
-	            fbAnnos[value.annotation['@id']] = value.annotation;
+	            var annoId = value.annotation['@id'];
+	            fbKeys[annoId] = key;
+	            fbAnnos[annoId] = value.annotation;
 	          }
 	        });
 	        var listsRef = firebase.database().ref('lists');
@@ -10550,10 +10560,12 @@
 	            if (listObj.canvasId === canvasId) {
 	              var annotationIds = listObj.annotationIds || [];
 	              jQuery.each(annotationIds, function (index, annotationId) {
+	                var fbKey = fbKeys[annotationId];
 	                var anno = fbAnnos[annotationId];
 	                if (anno) {
 	                  annoInfos.push({
-	                    annotation: fbAnnos[annotationId],
+	                    fbKey: fbKey,
+	                    annotation: anno,
 	                    layerId: listObj.layerId
 	                  });
 	                } else {
@@ -10606,7 +10618,6 @@
 	            data.annotationIds = data.annotationIds || [];
 	            if (jQuery.inArray(annoId, data.annotationIds) === -1) {
 	              data.annotationIds.push(annoId);
-	              console.log('UPD');
 	              ref.update({ annotationIds: data.annotationIds });
 	            }
 	          });
