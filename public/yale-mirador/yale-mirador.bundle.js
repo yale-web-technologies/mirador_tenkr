@@ -8438,7 +8438,7 @@
 	      jQuery.each(options.annotationsList, function (index, annotation) {
 	        try {
 	          if (options.layerId === annotation.layerId) {
-	            if (options.tocTags[0] === 'all' || options.toc.matchHierarchy(annotation, options.tocTags)) {
+	            if (options.selectedTags[0] === 'all' || options.toc.matchHierarchy(annotation, options.selectedTags)) {
 	              ++count;
 	              var annoElem = _this.createAnnoElem(annotation, options);
 	              options.parentElem.append(annoElem);
@@ -8460,37 +8460,82 @@
 	    key: 'renderWithToc',
 	    value: function renderWithToc(options) {
 	      var _this = this;
-	      var parent = options.parentElem;
-	      var layerId = options.layerId;
-	      var toc = options.toc;
 
-	      toc.walk(function (node) {
+	      options.toc.walk(function (node) {
 	        if (node.isRoot) {
-	          return;
+	          return; // do nothing with root node
 	        }
-	        var headerElem = _this.createHeaderElem(node);
-	        var numChildNodes = Object.keys(node.childNodes).length;
-
-	        if (node.layerIds.has(layerId) && numChildNodes === 0 || numChildNodes > 0 && node.annotation.layerId === layerId) {
-	          parent.append(headerElem);
-	        }
-	        if (layerId === node.annotation.layerId && (options.tocTags[0] === 'all' || toc.matchHierarchy(node.annotation, options.tocTags))) {
-	          parent.append(_this.createAnnoElem(node.annotation, options));
-	        }
-	        jQuery.each(node.childAnnotations, function (index, annotation) {
-	          if (layerId === annotation.layerId && (options.tocTags[0] === 'all' || options.toc.matchHierarchy(annotation, options.tocTags))) {
-	            parent.append(_this.createAnnoElem(annotation, options));
-	          }
-	        });
+	        _this.appendHeader(node, options);
+	        _this.appendAnnotationForTocNode(node, options);
+	        _this.appendAnnotationsForChildNodes(node, options);
 	      });
-	      if (toc.numUnassigned() > 0) {
+	      _this.appendUnattachedAnnotations(options);
+	    }
+	  }, {
+	    key: 'appendHeader',
+	    value: function appendHeader(node, options) {
+	      var layerId = options.layerId;
+	      var numChildNodes = Object.keys(node.childNodes).length;
+
+	      // We are distinguishing between leaf and non-leaf nodes to ensure
+	      // only one header will show over any set of annotations.
+
+	      // True if node is a non-leaf and there are annotations to show under the header
+	      function nonLeafHasAnnotationsToShow() {
+	        return numChildNodes > 0 && ( // non-leaf
+	        node.annotation.layerId === layerId || // the annotation for this node matches the current layer so it will show
+	        node.childAnnotations.length > 0); // there are annotations that target this non-leaf node directly
+	      }
+
+	      // True if node is a leaf and there are annotations to show under the header
+	      function leafHasAnnotationsToShow() {
+	        return numChildNodes === 0 && node.layerIds.has(layerId); // node is a leaf and there are annotations with matching layer
+	      }
+
+	      if (nonLeafHasAnnotationsToShow() || leafHasAnnotationsToShow()) {
+	        var headerElem = this.createHeaderElem(node);
+	        options.parentElem.append(headerElem);
+	      }
+	    }
+	  }, {
+	    key: 'appendAnnotationForTocNode',
+	    value: function appendAnnotationForTocNode(node, options) {
+	      var layerId = options.layerId;
+	      var selectedTags = options.selectedTags;
+	      var showAll = selectedTags[0] === 'all'; // show all chapters/scenes if true
+
+	      if (layerId === node.annotation.layerId && (showAll || options.toc.matchHierarchy(node.annotation, selectedTags))) {
+	        options.parentElem.append(this.createAnnoElem(node.annotation, options));
+	      }
+	    }
+	  }, {
+	    key: 'appendAnnotationsForChildNodes',
+	    value: function appendAnnotationsForChildNodes(node, options) {
+	      var _this = this;
+	      var layerId = options.layerId;
+	      var selectedTags = options.selectedTags;
+	      var showAll = selectedTags[0] === 'all';
+
+	      jQuery.each(node.childAnnotations, function (index, annotation) {
+	        if (layerId === annotation.layerId && (showAll || options.toc.matchHierarchy(annotation, selectedTags))) {
+	          options.parentElem.append(_this.createAnnoElem(annotation, options));
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'appendUnattachedAnnotations',
+	    value: function appendUnattachedAnnotations(options) {
+	      var _this = this;
+	      var layerId = options.layerId;
+
+	      if (options.toc.numUnassigned() > 0) {
 	        (function () {
 	          var unassignedHeader = jQuery(headerTemplate({ text: 'Unassigned' }));
 	          var count = 0;
-	          parent.append(unassignedHeader);
-	          jQuery.each(toc.unassigned(), function (index, annotation) {
+	          options.parentElem.append(unassignedHeader);
+	          jQuery.each(options.toc.unassigned(), function (index, annotation) {
 	            if (layerId === annotation.layerId) {
-	              parent.append(_this.createAnnoElem(annotation, options));
+	              options.parentElem.append(_this.createAnnoElem(annotation, options));
 	              ++count;
 	            }
 	          });
@@ -8945,11 +8990,11 @@
 	      options.isEditor = _session2.default.isEditor();
 	      options.annotationsList = this.canvasWindow.annotationsList;
 	      options.toc = this.endpoint.getCanvasToc();
-	      options.tocTags = ['all'];
+	      options.selectedTags = ['all'];
 	      if (this.endpoint.getCanvasToc()) {
-	        options.tocTags = this.menuTagSelector.val().split('|');
+	        options.selectedTags = this.menuTagSelector.val().split('|');
 	      }
-	      options.isCompleteList = options.tocTags[0] === 'all'; // true if current window will show all annotations of a sortable list.
+	      options.isCompleteList = options.selectedTags[0] === 'all'; // true if current window will show all annotations of a sortable list.
 	      options.layerId = this.layerSelector.val();
 
 	      var count = this.annotationListRenderer.render(options);
@@ -10393,8 +10438,6 @@
 	        var tags = _annoUtil2.default.getTags(annotation);
 	        var success = _this.buildChildNodes(annotation, tags, 0, _this.annoHierarchy);
 	        if (!success) {
-	          console.log('REMAINDER');
-	          console.dir(annotation);
 	          remainder.push(annotation);
 	        }
 	      });
