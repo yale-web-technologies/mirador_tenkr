@@ -8432,6 +8432,7 @@
 	  }, {
 	    key: 'renderDefault',
 	    value: function renderDefault(options) {
+	      console.log('AnnotationListRenderer#renderDefault');
 	      var _this = this;
 	      var count = 0;
 
@@ -8459,6 +8460,7 @@
 	  }, {
 	    key: 'renderWithToc',
 	    value: function renderWithToc(options) {
+	      console.log('AnnotationListRenderer#renderWithToc');
 	      var _this = this;
 
 	      options.toc.walk(function (node) {
@@ -8508,7 +8510,7 @@
 	          return false;
 	        }
 	        return numChildNodes > 0 && ( // non-leaf
-	        node.annotation.layerId === layerId || // the annotation for this node matches the current layer so it will show
+	        node.annotation && node.annotation.layerId === layerId || // the annotation for this node matches the current layer so it will show
 	        hasChildAnnotationsToShow()); // there are annotations that target this non-leaf node directly
 	      }
 
@@ -8529,7 +8531,7 @@
 	      var selectedTags = options.selectedTags;
 	      var showAll = selectedTags[0] === 'all'; // show all chapters/scenes if true
 
-	      if (layerId === node.annotation.layerId && (showAll || options.toc.matchHierarchy(node.annotation, selectedTags))) {
+	      if (node.annotation && layerId === node.annotation.layerId && (showAll || options.toc.matchHierarchy(node.annotation, selectedTags))) {
 	        options.parentElem.append(this.createAnnoElem(node.annotation, options));
 	      }
 	    }
@@ -9906,6 +9908,7 @@
 	      });
 
 	      this.miradorProxy.subscribe('ANNOTATIONS_LIST_UPDATED', function (event, params) {
+	        console.log('MiradorWindow#bindEvents received ANNOTATIONS_LIST_UPDATED');
 	        if (_this.tagHierarchy) {
 	          var endpoint = _this.miradorProxy.getEndPoint(params.windowId);
 	          endpoint.parseAnnotations();
@@ -9981,6 +9984,10 @@
 	var _session = __webpack_require__(308);
 
 	var _session2 = _interopRequireDefault(_session);
+
+	var _miradorProxy = __webpack_require__(300);
+
+	var _miradorProxy2 = _interopRequireDefault(_miradorProxy);
 
 	var _toc = __webpack_require__(314);
 
@@ -10314,6 +10321,7 @@
 	    },
 
 	    parseAnnotations: function parseAnnotations() {
+	      this.annotationsList = (0, _miradorProxy2.default)().getFirstWindow().annotationsList;
 	      var spec = (0, _miradorWindow2.default)().getConfig().extension.tagHierarchy;
 	      this.canvasToc = new _toc2.default(spec, this.annotationsList);
 	      console.log('YaleEndpoint#parseAnnotations canvasToc:');
@@ -10482,11 +10490,11 @@
 	            node.childAnnotations.push(annotation);
 	            _this.registerLayerWithNode(node, annotation.layerId);
 	          } else {
-	            console.log('WARNING ParsedAnnotations#addRemainingAnnotations not covered by ToC');
+	            console.log('WARNING Toc#addRemainingAnnotations not covered by ToC');
 	            _this._unassigned.push(annotation);
 	          }
 	        } else {
-	          console.log('WARNING ParsedAnnotations#addRemainingAnnotations orphan');
+	          console.log('WARNING Toc#addRemainingAnnotations orphan');
 	          console.dir(annotation);
 	          _this._unassigned.push(annotation);
 	        }
@@ -10831,7 +10839,6 @@
 	          }
 	        }
 	      });
-	      successCallback();
 	    },
 
 	    getLayers: function getLayers(successCallback, errorCallback) {
