@@ -8475,16 +8475,41 @@
 	    key: 'appendHeader',
 	    value: function appendHeader(node, options) {
 	      var layerId = options.layerId;
+	      var selectedTags = options.selectedTags;
 	      var numChildNodes = Object.keys(node.childNodes).length;
+	      var showAll = selectedTags[0] === 'all';
+
+	      function arrayContains(a, b) {
+	        if (a.length < b.length) {
+	          return false;
+	        }
+	        for (var i = 0; i < b.length; ++i) {
+	          if (a[i] !== b[i]) {
+	            return false;
+	          }
+	        }
+	        return true;
+	      }
 
 	      // We are distinguishing between leaf and non-leaf nodes to ensure
 	      // only one header will show over any set of annotations.
 
 	      // True if node is a non-leaf and there are annotations to show under the header
 	      function nonLeafHasAnnotationsToShow() {
+	        function hasChildAnnotationsToShow() {
+	          var annos = node.childAnnotations;
+	          var num = annos.length;
+	          for (var i = 0; i < num; ++i) {
+	            var anno = node.childAnnotations[i];
+	            if (anno.layerId === layerId) {
+	              return true;
+	            }
+	          }
+	          return false;
+	        }
 	        return numChildNodes > 0 && ( // non-leaf
 	        node.annotation.layerId === layerId || // the annotation for this node matches the current layer so it will show
-	        node.childAnnotations.length > 0); // there are annotations that target this non-leaf node directly
+	        hasChildAnnotationsToShow()); // there are annotations that target this non-leaf node directly
 	      }
 
 	      // True if node is a leaf and there are annotations to show under the header
@@ -8492,7 +8517,7 @@
 	        return numChildNodes === 0 && node.layerIds.has(layerId); // node is a leaf and there are annotations with matching layer
 	      }
 
-	      if (nonLeafHasAnnotationsToShow() || leafHasAnnotationsToShow()) {
+	      if ((showAll || arrayContains(node.cumulativeTags, selectedTags)) && (nonLeafHasAnnotationsToShow() || leafHasAnnotationsToShow())) {
 	        var headerElem = this.createHeaderElem(node);
 	        options.parentElem.append(headerElem);
 	      }
@@ -8527,8 +8552,9 @@
 	    value: function appendUnattachedAnnotations(options) {
 	      var _this = this;
 	      var layerId = options.layerId;
+	      var showAll = options.selectedTags[0] === 'all';
 
-	      if (options.toc.numUnassigned() > 0) {
+	      if (showAll && options.toc.numUnassigned() > 0) {
 	        (function () {
 	          var unassignedHeader = jQuery(headerTemplate({ text: 'Unassigned' }));
 	          var count = 0;
@@ -10353,6 +10379,7 @@
 	     *   annotation: AN_OBJECT, // annotation
 	     *   layerIds: A_SET, // set of layer IDs for annotations that belong to this node or its children
 	     *   cumulativeLabel: A_STRING, // concatenation of short labels inherited from the parent nodes 
+	     *   cumulativeTags: [], // list of tags for this node and its ancestors
 	     *   childNodes: AN_OBJECT, // child TOC nodes as a hashmap on tags
 	     *   childAnnotations: AN_ARRAY, // non-TOC-node annotations that targets this node
 	     *   isRoot: A_BOOL, // true if the node is the root
@@ -10376,7 +10403,7 @@
 	      console.log('Toc#init spec: ' + this.spec);
 	      console.dir(this.spec);
 
-	      this.annoHierarchy = this.newNode(null, true); // root node
+	      this.annoHierarchy = this.newNode(null, null); // root node
 
 	      this.initTagWeights();
 	      this.parse(this.annotations);
@@ -10409,8 +10436,8 @@
 	    value: function initTagWeights() {
 	      var _this = this;
 	      jQuery.each(this.spec.nodeSpecs, function (rowIndex, row) {
-	        jQuery.each(row, function (tagIndex, tagObj) {
-	          _this.tagWeights[tagObj.tag] = tagIndex;
+	        jQuery.each(row, function (index, nodeSpec) {
+	          _this.tagWeights[nodeSpec.tag] = index;
 	        });
 	      });
 	    }
@@ -10497,15 +10524,15 @@
 	        }
 	      }
 
-	      var tagObj = this.tagInSpecs(tags, this.spec.nodeSpecs[rowIndex]);
+	      var nodeSpec = this.tagInSpecs(tags, this.spec.nodeSpecs[rowIndex]);
 
-	      if (tagObj) {
+	      if (nodeSpec) {
 	        // one of the tags belongs to the corresponding level of the pre-defined tag hierarchy
-	        var tag = tagObj.tag;
+	        var tag = nodeSpec.tag;
 	        var annoHierarchy = this.annoHierarchy;
 
 	        if (!parent.childNodes[tag]) {
-	          parent.childNodes[tag] = this.newNode(tagObj);
+	          parent.childNodes[tag] = this.newNode(nodeSpec, parent);
 	        }
 	        currentNode = parent.childNodes[tag];
 	        if (parent.isRoot) {
@@ -10554,21 +10581,24 @@
 	    }
 	  }, {
 	    key: 'newNode',
-	    value: function newNode(tagObj, isRoot) {
-	      if (isRoot) {
+	    value: function newNode(nodeSpec, parent) {
+	      if (!parent) {
+	        // root node
 	        return {
 	          isRoot: true,
 	          childNodes: {}
 	        };
 	      } else {
+	        var tags = parent.isRoot ? [nodeSpec.tag] : parent.cumulativeTags.concat([nodeSpec.tag]);
 	        return {
-	          spec: tagObj,
+	          spec: nodeSpec,
 	          annotation: null,
 	          layerIds: new Set(),
 	          cumulativeLabel: '',
+	          cumulativeTags: tags,
 	          childNodes: {},
 	          childAnnotations: [],
-	          weight: this.tagWeights[tagObj.tag]
+	          weight: this.tagWeights[nodeSpec.tag]
 	        };
 	      }
 	    }
@@ -10620,11 +10650,7 @@
 	  }, {
 	    key: 'registerLayerWithNode',
 	    value: function registerLayerWithNode(node, layerId) {
-	      var curNode = node;
-	      while (curNode) {
-	        curNode.layerIds.add(layerId);
-	        curNode = node.parentNode;
-	      }
+	      node.layerIds.add(layerId);
 	    }
 	  }, {
 	    key: 'unassigned',
