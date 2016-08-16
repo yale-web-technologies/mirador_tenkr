@@ -8276,7 +8276,7 @@
 	    }
 	  }, {
 	    key: 'addWindow',
-	    value: function addWindow() {
+	    value: function addWindow(options) {
 	      console.log('Grid#addWindow');
 	      var windowId = Mirador.genUUID();
 	      var itemConfig = {
@@ -8285,16 +8285,21 @@
 	        componentState: { windowId: windowId }
 	      };
 	      this.layout.root.contentItems[0].addChild(itemConfig);
+
 	      new _annotationWindow2.default({ appendTo: jQuery('#' + windowId),
-	        annotationListRenderer: this.annotationListRenderer });
+	        annotationListRenderer: this.annotationListRenderer,
+	        initialLayerId: options.layerId || null,
+	        initialTocTags: options.tocTags
+	      });
 	    }
 	  }, {
 	    key: 'bindEvents',
 	    value: function bindEvents() {
 	      var _this = this;
 
-	      jQuery.subscribe('MR_ADD_WINDOW', function (event) {
-	        _this.addWindow();
+	      jQuery.subscribe('MR_ADD_WINDOW', function (event, options) {
+	        console.log('OPTIONS: ' + JSON.stringify(options));
+	        _this.addWindow(options);
 	      });
 	    }
 	  }]);
@@ -8929,7 +8934,9 @@
 	      element: null,
 	      canvasWindow: null, // window that contains the canvas for the annotations
 	      endpoint: null,
-	      annotationListRenderer: null
+	      annotationListRenderer: null,
+	      initialLayerId: null,
+	      initialTocTags: null
 	    }, options);
 
 	    this.init();
@@ -8965,6 +8972,7 @@
 	      this.menuTagSelector = new _menuTagSelector2.default({
 	        parent: this.element.find('.menu_tag_selector_container'),
 	        endpoint: this.endpoint,
+	        initialTags: this.initialTocTags,
 	        changeCallback: function changeCallback(value, text) {
 	          console.log('Change/updateList from TOC selector');
 	          _this.updateList();
@@ -8978,6 +8986,7 @@
 	      this.layerSelector = new _layerSelector2.default({
 	        parent: this.element.find('.layer_selector_container'),
 	        endpoint: this.endpoint,
+	        initialLayerId: this.initialLayerId,
 	        changeCallback: function changeCallback(value, text) {
 	          console.log('Change/updateList from Layer selector');
 	          _this.currentLayerId = value;
@@ -9004,6 +9013,7 @@
 	      var canvas = this.getCurrentCanvas();
 	      this.element.find('.title').text(canvas.label);
 
+	      console.log('XXXX ' + this.endpoint.getCanvasToc());
 	      if (this.endpoint.getCanvasToc()) {
 	        this.initMenuTagSelector();
 	        this.element.find('.annowin_menu_tag_row').show();
@@ -9304,7 +9314,8 @@
 	      this.selector.setItems(menu);
 
 	      setTimeout(function () {
-	        _this.selector.val('all', true);
+	        var value = _this.initialTags && _this.initialTags.length > 0 ? _this.initialTags.join('|') : 'all';
+	        _this.selector.val(value, true);
 	        dfd.resolve();
 	      }, 0);
 	      return dfd;
@@ -9536,7 +9547,8 @@
 	      selector: null,
 	      parent: null,
 	      endpoint: null,
-	      changeCallback: null
+	      changeCallback: null,
+	      initialLayerId: null
 	    }, options);
 	  }
 
@@ -9566,7 +9578,7 @@
 
 	      setTimeout(function () {
 	        if (layers.length > 0) {
-	          _this.selector.val(layers[0]['@id'], true);
+	          _this.selector.val(_this.initialLayerId || layers[0]['@id'], true);
 	          _this._isLoaded = true;
 	        }
 	        dfd.resolve();
@@ -9842,51 +9854,76 @@
 	      }, options);
 
 	      var _this = this;
+	      var miradorProxy = (0, _miradorProxy2.default)();
 
 	      this.viewerElem = jQuery('#viewer');
-	      this.miradorProxy = (0, _miradorProxy2.default)();
 
 	      var dfd = this._fetchServerSettings();
 
 	      dfd.done(function (data) {
-	        _this.serverSettings = _session2.default.setServerSettings(data);
+	        var serverSettings = _session2.default.setServerSettings(data);
+	        var htmlOptions = _this._parseHtmlOptions();
+	        _this._miradorConfig = _this._buildMiradorConfig(serverSettings, htmlOptions);
+	        miradorProxy.setMirador(Mirador(_this._miradorConfig));
+	        _this._handleLoadOptions(htmlOptions);
+	        _this._bindEvents(serverSettings);
 	      });
 	      dfd.fail(function () {
-	        console.log('ERROR failed to retrieve server settings');
-	      });
-	      dfd.always(function () {
-	        _this._initMirador();
-	        _this._bindEvents();
+	        alert('ERROR failed to retrieve server settings');
 	      });
 	    }
 	  }, {
 	    key: 'getConfig',
 	    value: function getConfig() {
-	      return this.config;
+	      return this._miradorConfig;
 	    }
-	  }, {
-	    key: '_initMirador',
-	    value: function _initMirador() {
-	      var _this = this;
-	      var serverSettings = this.serverSettings;
-	      var htmlOptions = this._parseHtmlOptions();
-	      this.config = this._buildMiradorConfig(serverSettings, htmlOptions);
-	      var mirador = Mirador(this.config);
-	      this.miradorProxy.setMirador(mirador);
 
-	      if (htmlOptions.tocTags.length > 0) {
-	        console.log('MiradorWindow#_initMirador has tocTags: ' + htmlOptions.tocTags);
-	        this.miradorProxy.subscribe('ANNOTATIONS_LIST_UPDATED', function (event) {
-	          var endpoint = _this.miradorProxy.getEndPoint();
+	    /**
+	     * Process parameters passed from the server via HTML.
+	     */
+
+	  }, {
+	    key: '_handleLoadOptions',
+	    value: function _handleLoadOptions(htmlOptions) {
+	      var _this = this;
+	      var miradorProxy = (0, _miradorProxy2.default)();
+
+	      jQuery.subscribe('MR_READY_TO_RELOAD_ANNO_WIN', function (event) {
+	        // after annotations have been loaded
+	        if (_this._urlOptionsProcessed) {
+	          return;
+	        } else {
+	          _this._urlOptionsProcessed = true;
+	        }
+	        var addAnnotationWindows = false;
+
+	        if (htmlOptions.tocTags.length > 0) {
+	          console.log('MiradorWindow#_handleLoadOptions has tocTags: ' + htmlOptions.tocTags);
+
+	          var endpoint = miradorProxy.getEndPoint();
+	          var toc = endpoint.getCanvasToc();
+	          var node = toc.getNode.apply(toc, htmlOptions.tocTags);
 	          var annotations = endpoint.annotationsList.filter(function (anno) {
 	            return _annoUtil2.default.hasTags(anno, htmlOptions.tocTags);
 	          });
-	          _this.miradorProxy.publish('YM_DISPLAY_ON'); // display annotations
-	          if (annotations.length > 0) {
-	            _this.miradorProxy.publish('ANNOTATION_FOCUSED', ['', annotations[0]]);
+	          miradorProxy.publish('YM_DISPLAY_ON'); // display annotations
+	          if (node && node.annotation) {
+	            miradorProxy.publish('ANNOTATION_FOCUSED', ['', node.annotation]);
 	          }
-	        });
-	      }
+	          addAnnotationWindows = true;
+	        }
+	        if (htmlOptions.layerIds.length > 0) {
+	          addAnnotationWindows = true;
+	        }
+	        if (addAnnotationWindows) {
+	          for (var i = 0; i < htmlOptions.layerIds.length; ++i) {
+	            jQuery.publish('MR_ADD_WINDOW', {
+	              tocTags: htmlOptions.tocTags,
+	              layerId: htmlOptions.layerIds[i]
+	            });
+	          }
+	        }
+	      });
 	    }
 
 	    /**
@@ -9975,17 +10012,18 @@
 	    }
 	  }, {
 	    key: '_bindEvents',
-	    value: function _bindEvents() {
+	    value: function _bindEvents(serverSettings) {
 	      var _this = this;
+	      var miradorProxy = (0, _miradorProxy2.default)();
 
 	      jQuery(window).resize(function () {
 	        _this.grid.resize();
 	      });
 
-	      this.miradorProxy.subscribe('ANNOTATIONS_LIST_UPDATED', function (event, params) {
+	      miradorProxy.subscribe('ANNOTATIONS_LIST_UPDATED', function (event, params) {
 	        console.log('MiradorWindow#bindEvents received ANNOTATIONS_LIST_UPDATED');
-	        if (_this.tagHierarchy) {
-	          var endpoint = _this.miradorProxy.getEndPoint(params.windowId);
+	        if (serverSettings.tagHierarchy) {
+	          var endpoint = miradorProxy.getEndPoint(params.windowId);
 	          endpoint.parseAnnotations();
 	        }
 	        jQuery.publish('MR_READY_TO_RELOAD_ANNO_WIN');
