@@ -8814,7 +8814,6 @@
 	    for (var i = 0; i < tags.length; ++i) {
 	      var found = false;
 	      for (var j = 0; j < annoTags.length; ++j) {
-	        console.log('COMP ' + tags[i] + ' TO ' + annoTags[j]);
 	        if (tags[i] === annoTags[j]) {
 	          found = true;
 	          break;
