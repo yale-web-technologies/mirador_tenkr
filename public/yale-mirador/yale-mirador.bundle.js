@@ -8289,7 +8289,7 @@
 	      new _annotationWindow2.default({ appendTo: jQuery('#' + windowId),
 	        annotationListRenderer: this.annotationListRenderer,
 	        initialLayerId: options.layerId || null,
-	        initialTocTags: options.tocTags
+	        initialTocTags: options.tocTags || null
 	      });
 	    }
 	  }, {
@@ -8298,8 +8298,7 @@
 	      var _this = this;
 
 	      jQuery.subscribe('MR_ADD_WINDOW', function (event, options) {
-	        console.log('OPTIONS: ' + JSON.stringify(options));
-	        _this.addWindow(options);
+	        _this.addWindow(options || {});
 	      });
 	    }
 	  }]);
@@ -10539,12 +10538,37 @@
 	  }, {
 	    key: 'getNode',
 	    value: function getNode() {
-	      var args = Array.from(arguments);
+	      var tags = Array.from(arguments);
 	      var node = this.annoHierarchy;
-	      for (var i = 0; i < args.length; ++i) {
-	        var tag = args[i];
-	        var node = node.childNodes[tag];
+
+	      var _iteratorNormalCompletion = true;
+	      var _didIteratorError = false;
+	      var _iteratorError = undefined;
+
+	      try {
+	        for (var _iterator = tags[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	          var tag = _step.value;
+
+	          if (!node) {
+	            break;
+	          }
+	          node = node.childNodes[tag];
+	        }
+	      } catch (err) {
+	        _didIteratorError = true;
+	        _iteratorError = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion && _iterator.return) {
+	            _iterator.return();
+	          }
+	        } finally {
+	          if (_didIteratorError) {
+	            throw _iteratorError;
+	          }
+	        }
 	      }
+
 	      return node === this.annoHierarchy ? null : node;
 	    }
 
