@@ -8,5 +8,6 @@ class MiradorController < ApplicationController
     @room_id = params[:room_id]
     @canvas_id = params[:canvas] || ''
     @toc_tags = params[:tocTags] || ''
+    @layer_ids = params[:layers] || ''
   end
 end
