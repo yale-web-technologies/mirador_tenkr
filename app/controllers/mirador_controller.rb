@@ -6,5 +6,7 @@ class MiradorController < ApplicationController
     @manifest_url = manifest.url
     @title = "Mirador - #{manifest.title}"
     @room_id = params[:room_id]
+    @canvas_id = params[:canvas] || ''
+    @toc_tags = params[:tocTags] || ''
   end
 end
