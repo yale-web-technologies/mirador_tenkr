@@ -8360,18 +8360,25 @@
 	  }, {
 	    key: "getEndPoint",
 	    value: function getEndPoint(windowId) {
-	      var window = this.mirador.viewer.workspace.getWindowById(windowId);
+	      var window = windowId ? this.mirador.viewer.workspace.getWindowById(windowId) : this.getFirstWindow();
 	      return window.endpoint;
 	    }
 	  }, {
 	    key: "publish",
-	    value: function publish(eventName, arg) {
-	      this.mirador.viewer.eventEmitter.publish(eventName, arg);
+	    value: function publish() {
+	      var eventEmitter = this.mirador.viewer.eventEmitter;
+	      var args = Array.from(arguments);
+	      eventEmitter.publish.apply(eventEmitter, args);
 	    }
 	  }, {
 	    key: "subscribe",
 	    value: function subscribe(eventName, callback) {
 	      this.mirador.viewer.eventEmitter.subscribe(eventName, callback);
+	    }
+	  }, {
+	    key: "unsubscribe",
+	    value: function unsubscribe(eventName) {
+	      this.mirador.viewer.eventEmitter.unsubscribe(eventName);
 	    }
 	  }]);
 
@@ -8799,6 +8806,25 @@
 	      });
 	    }
 	    return tags;
+	  },
+
+	  hasTags: function hasTags(annotation, tags) {
+	    var annoTags = this.getTags(annotation);
+
+	    for (var i = 0; i < tags.length; ++i) {
+	      var found = false;
+	      for (var j = 0; j < annoTags.length; ++j) {
+	        console.log('COMP ' + tags[i] + ' TO ' + annoTags[j]);
+	        if (tags[i] === annoTags[j]) {
+	          found = true;
+	          break;
+	        }
+	      }
+	      if (!found) {
+	        return false;
+	      }
+	    }
+	    return true;
 	  },
 
 	  // For an annotation of annotation,
@@ -9793,6 +9819,10 @@
 
 	var _miradorProxy2 = _interopRequireDefault(_miradorProxy);
 
+	var _annoUtil = __webpack_require__(302);
+
+	var _annoUtil2 = _interopRequireDefault(_annoUtil);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -9814,63 +9844,21 @@
 
 	      var _this = this;
 
-	      this.miradorViewer = jQuery('#viewer');
+	      this.viewerElem = jQuery('#viewer');
 	      this.miradorProxy = (0, _miradorProxy2.default)();
 
-	      var dfd = this.fetchServerSettings();
+	      var dfd = this._fetchServerSettings();
 
 	      dfd.done(function (data) {
 	        _this.serverSettings = _session2.default.setServerSettings(data);
-	        if (data.tagHierarchy) {
-	          _this.tagHierarchy = data.tagHierarchy;
-	        } else {
-	          _this.tagHierarchy = null;
-	        }
 	      });
 	      dfd.fail(function () {
 	        console.log('ERROR failed to retrieve server settings');
-	        _this.tagHierarchy = null;
 	      });
 	      dfd.always(function () {
-	        _this.initMirador();
-	        _this.bindEvents();
+	        _this._initMirador();
+	        _this._bindEvents();
 	      });
-	    }
-	  }, {
-	    key: 'initMirador',
-	    value: function initMirador() {
-	      var serverSettings = this.serverSettings;
-	      var viewer = this.miradorViewer;
-	      var manifestUri = decodeURIComponent(viewer.attr('data-manifest-url'));
-	      var endpointUrl = serverSettings.endpointUrl;
-
-	      _miradorDefaultSettings2.default.buildPath = serverSettings.buildPath || '/';
-
-	      _miradorDefaultSettings2.default.data = [{ manifestUri: manifestUri }];
-	      _miradorDefaultSettings2.default.windowObjects[0].loadedManifest = manifestUri;
-	      if (!_session2.default.isEditor()) {
-	        _miradorDefaultSettings2.default.windowObjects[0].annotationCreation = false;
-	      }
-	      _miradorDefaultSettings2.default.annotationEndpoint.options.prefix = endpointUrl;
-	      _miradorDefaultSettings2.default.autoHideControls = false;
-
-	      if (this.tagHierarchy) {
-	        _miradorDefaultSettings2.default.extension.tagHierarchy = this.tagHierarchy;
-	      }
-
-	      if (this.serverSettings.endpointUrl === 'firebase') {
-	        _miradorDefaultSettings2.default.annotationEndpoint = {
-	          name: 'Yale (Firebase) Annotations',
-	          module: 'YaleDemoEndpoint',
-	          options: {}
-	        };
-	      }
-
-	      console.log(JSON.stringify(_miradorDefaultSettings2.default, null, 2));
-	      this.config = _miradorDefaultSettings2.default;
-
-	      var mirador = Mirador(_miradorDefaultSettings2.default);
-	      this.miradorProxy.setMirador(mirador);
 	    }
 	  }, {
 	    key: 'getConfig',
@@ -9878,8 +9866,96 @@
 	      return this.config;
 	    }
 	  }, {
-	    key: 'fetchServerSettings',
-	    value: function fetchServerSettings() {
+	    key: '_initMirador',
+	    value: function _initMirador() {
+	      var _this = this;
+	      var serverSettings = this.serverSettings;
+	      var htmlOptions = this._parseHtmlOptions();
+	      this.config = this._buildMiradorConfig(serverSettings, htmlOptions);
+	      var mirador = Mirador(this.config);
+	      this.miradorProxy.setMirador(mirador);
+
+	      if (htmlOptions.tocTags.length > 0) {
+	        console.log('MiradorWindow#_initMirador has tocTags: ' + htmlOptions.tocTags);
+	        this.miradorProxy.subscribe('ANNOTATIONS_LIST_UPDATED', function (event) {
+	          var endpoint = _this.miradorProxy.getEndPoint();
+	          var annotations = endpoint.annotationsList.filter(function (anno) {
+	            return _annoUtil2.default.hasTags(anno, htmlOptions.tocTags);
+	          });
+	          _this.miradorProxy.publish('YM_DISPLAY_ON'); // display annotations
+	          if (annotations.length > 0) {
+	            _this.miradorProxy.publish('ANNOTATION_FOCUSED', ['', annotations[0]]);
+	          }
+	        });
+	      }
+	    }
+
+	    /**
+	     * Sets up configuration parameters to pass to Mirador.
+	     */
+
+	  }, {
+	    key: '_buildMiradorConfig',
+	    value: function _buildMiradorConfig(serverSettings, htmlOptions) {
+	      var config = jQuery.extend(true, {}, _miradorDefaultSettings2.default); // deep copy from defaultConfig
+
+	      config.buildPath = serverSettings.buildPath || '/';
+	      config.data = [{ manifestUri: htmlOptions.manifestUri }];
+
+	      var winObj = config.windowObjects[0];
+
+	      winObj.loadedManifest = htmlOptions.manifestUri;
+
+	      if (htmlOptions.canvasId) {
+	        // if instructed to load a specific canvas
+	        winObj.canvasID = htmlOptions.canvasId;
+	      }
+	      if (!_session2.default.isEditor()) {
+	        winObj.annotationCreation = false;
+	      }
+	      config.annotationEndpoint.options.prefix = serverSettings.endpointUrl;
+	      config.autoHideControls = false; // autoHide is bad for touch-only devices
+
+	      if (serverSettings.tagHierarchy) {
+	        config.extension.tagHierarchy = serverSettings.tagHierarchy;
+	      }
+	      if (serverSettings.endpointUrl === 'firebase') {
+	        config.annotationEndpoint = {
+	          name: 'Yale (Firebase) Annotations',
+	          module: 'YaleDemoEndpoint',
+	          options: {}
+	        };
+	      }
+	      return config;
+	    }
+
+	    /**
+	     * Retrieves parameters passed via HTML attributes.
+	     */
+
+	  }, {
+	    key: '_parseHtmlOptions',
+	    value: function _parseHtmlOptions() {
+	      var viewer = this.viewerElem;
+	      var options = {};
+	      var tocTagsStr = viewer.attr('data-toc-tags') || '';
+	      var layerIdsStr = viewer.attr('data-layer-ids') || '';
+
+	      options.manifestUri = viewer.attr('data-manifest-url');
+	      options.canvasId = viewer.attr('data-canvas-id') || '';
+	      options.tocTags = tocTagsStr ? tocTagsStr.split(',') : [];
+	      options.layerIds = layerIdsStr ? layerIdsStr.split(',') : [];
+
+	      return options;
+	    }
+
+	    /**
+	     * Retrieves settings from the server via a REST API.
+	     */
+
+	  }, {
+	    key: '_fetchServerSettings',
+	    value: function _fetchServerSettings() {
 	      var dfd = jQuery.Deferred();
 	      var viewerElem = jQuery('#viewer');
 	      var settingsUrl = viewerElem.attr('data-settings-url');
@@ -9899,8 +9975,8 @@
 	      return dfd;
 	    }
 	  }, {
-	    key: 'bindEvents',
-	    value: function bindEvents() {
+	    key: '_bindEvents',
+	    value: function _bindEvents() {
 	      var _this = this;
 
 	      jQuery(window).resize(function () {
