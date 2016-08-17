@@ -62,17 +62,17 @@
 
 	var _miradorWindow2 = _interopRequireDefault(_miradorWindow);
 
-	__webpack_require__(313);
-
-	__webpack_require__(315);
+	__webpack_require__(314);
 
 	__webpack_require__(316);
+
+	__webpack_require__(317);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	__webpack_require__(317);
+	__webpack_require__(318);
 
 	var App = function App() {
 	  _classCallCheck(this, App);
@@ -9012,7 +9012,6 @@
 	      var canvas = this.getCurrentCanvas();
 	      this.element.find('.title').text(canvas.label);
 
-	      console.log('XXXX ' + this.endpoint.getCanvasToc());
 	      if (this.endpoint.getCanvasToc()) {
 	        this.initMenuTagSelector();
 	        this.element.find('.annowin_menu_tag_row').show();
@@ -9382,8 +9381,6 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var template = Handlebars.compile(['<div class="basic tiny ui button mr_button dropdown">', '  <input name="selection" type="hidden" />', '  <div class="default text"></div>', '  <i class="ym dropdown icon"></i>', '  <div class="menu">', '  </div>', '</div>'].join(''));
-
 	var _class = function () {
 	  /**
 	   * A selector dropdown implemented with Semantic UI.
@@ -9418,6 +9415,7 @@
 	          _this.element.dropdown('hide');
 	        }
 	      });
+	      this.values = [];
 	    }
 	  }, {
 	    key: 'setItems',
@@ -9448,6 +9446,7 @@
 	      item.append(jQuery('<i class="dropdown icon"></i>'));
 	      item.append(menu);
 	      parent.append(item);
+	      this.values.push(value);
 	      return menu;
 	    }
 	  }, {
@@ -9465,10 +9464,15 @@
 	  }, {
 	    key: 'val',
 	    value: function val(value, skipNotify) {
+	      var dd = this.element;
 	      if (value === undefined) {
-	        return this.element.dropdown('get value');
+	        return dd.dropdown('get value');
 	      } else {
-	        this.element.dropdown('set selected', value);
+	        if (dd.dropdown('get item', value)) {
+	          dd.dropdown('set selected', value);
+	        } else {
+	          dd.dropdown('set selected', this.values[0]);
+	        }
 	      }
 	    }
 	  }, {
@@ -9482,6 +9486,9 @@
 	}();
 
 	exports.default = _class;
+
+
+	var template = Handlebars.compile(['<div class="basic tiny ui button mr_button dropdown">', '  <input name="selection" type="hidden" />', '  <div class="default text"></div>', '  <i class="ym dropdown icon"></i>', '  <div class="menu">', '  </div>', '</div>'].join(''));
 
 /***/ },
 /* 306 */
@@ -9833,6 +9840,10 @@
 
 	var _annoUtil2 = _interopRequireDefault(_annoUtil);
 
+	var _modalAlert = __webpack_require__(313);
+
+	var _modalAlert2 = _interopRequireDefault(_modalAlert);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -10089,6 +10100,57 @@
 
 /***/ },
 /* 313 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	exports.default = getModalAlert;
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function getModalAlert() {
+	  if (!instance) {
+	    instance = new ModalAlert(jQuery('#ym_modal'));
+	  }
+	  return instance;
+	};
+
+	var ModalAlert = function () {
+	  function ModalAlert(elem) {
+	    _classCallCheck(this, ModalAlert);
+
+	    this.elem = elem;
+	    elem.html(template());
+	    elem.modal({ closable: false });
+	  }
+
+	  _createClass(ModalAlert, [{
+	    key: 'show',
+	    value: function show() {
+	      this.elem.modal('show');
+	    }
+	  }, {
+	    key: 'hide',
+	    value: function hide() {
+	      this.elem.modal('hide');
+	    }
+	  }]);
+
+	  return ModalAlert;
+	}();
+
+	var instance = null;
+
+	var template = Handlebars.compile(['Loading annotations ...'].join(''));
+
+/***/ },
+/* 314 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10101,13 +10163,17 @@
 
 	var _miradorProxy2 = _interopRequireDefault(_miradorProxy);
 
-	var _toc = __webpack_require__(314);
+	var _toc = __webpack_require__(315);
 
 	var _toc2 = _interopRequireDefault(_toc);
 
 	var _miradorWindow = __webpack_require__(311);
 
 	var _miradorWindow2 = _interopRequireDefault(_miradorWindow);
+
+	var _modalAlert = __webpack_require__(313);
+
+	var _modalAlert2 = _interopRequireDefault(_modalAlert);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -10138,31 +10204,50 @@
 
 	    search: function search(options, successCallback, errorCallback) {
 	      console.log('YaleEndpoint#search options: ' + JSON.stringify(options));
+	      (0, _modalAlert2.default)().show();
+
 	      var _this = this;
-	      var dfd = jQuery.Deferred();
+	      var layersDfd = jQuery.Deferred();
+	      var annosDfd = jQuery.Deferred();
 
 	      if (this.annotationLayers.length < 1) {
 	        this.getLayers(function (layers) {
 	          // success
 	          _this.annotationLayers = layers;
-	          dfd.resolve();
+	          layersDfd.resolve();
 	        }, function () {
 	          // error
-	          dfd.reject();
+	          layersDfd.reject();
 	        });
 	      } else {
-	        dfd.resolve();
+	        layersDfd.resolve();
 	      }
 
-	      dfd.done(function () {
-	        _this._search(options, successCallback, errorCallback);
+	      layersDfd.done(function () {
+	        _this._search(options, annosDfd);
+	      });
+
+	      annosDfd.done(function () {
+	        _this.dfd.resolve(true);
+	        if (typeof successCallback === 'function') {
+	          successCallback();
+	        }
+	      });
+	      annosDfd.fail(function () {
+	        _this.dfd.reject();
+	        if (typeof errorCallback === 'function') {
+	          errorCallback();
+	        }
+	      });
+	      annosDfd.always(function () {
+	        (0, _modalAlert2.default)().hide();
 	      });
 	    },
 
-	    _search: function _search(options, successCallback, errorCallback) {
+	    _search: function _search(options, dfd) {
 	      var _this = this;
 	      var canvasId = options.uri;
-	      //var url = this.prefix + '/getAnnotations?includeTargetingAnnos=true&canvas_id=' + encodeURIComponent(canvasId);
+	      //const url = this.prefix + '/getAnnotations?includeTargetingAnnos=true&canvas_id=' + encodeURIComponent(canvasId);
 	      var url = this.prefix + '/getAnnotationsViaList?canvas_id=' + encodeURIComponent(canvasId);
 	      console.log('YaleEndpoint#_search url: ' + url);
 	      this.annotationsList = [];
@@ -10185,12 +10270,11 @@
 	            oaAnnotation.layerId = value.layer_id;
 	            _this.annotationsList.push(oaAnnotation);
 	          });
-
-	          _this.dfd.resolve(true);
+	          dfd.resolve();
 	        },
 	        error: function error(jqXHR, textStatus, errorThrown) {
 	          console.log('YaleEndpoint#search error searching');
-	          _this.dfd.reject();
+	          dfd.reject();
 	        }
 	      });
 	    },
@@ -10444,7 +10528,7 @@
 	})(window.Mirador);
 
 /***/ },
-/* 314 */
+/* 315 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10836,7 +10920,7 @@
 	exports.default = Toc;
 
 /***/ },
-/* 315 */
+/* 316 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11177,7 +11261,7 @@
 	})(window.Mirador);
 
 /***/ },
-/* 316 */
+/* 317 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11492,7 +11576,7 @@
 	})(window.Mirador);
 
 /***/ },
-/* 317 */
+/* 318 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

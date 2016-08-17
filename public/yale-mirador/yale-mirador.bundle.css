@@ -233,3 +233,8 @@ p {
 .mr_annotation_dialog {
   overflow: visible;
 }
+.ym_modal {
+  background-color: #bbb;
+  padding: 20px;
+  font-size: 20px;
+}
