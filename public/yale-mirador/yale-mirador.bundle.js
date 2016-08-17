@@ -8977,6 +8977,7 @@
 	          _this.updateList();
 	        }
 	      });
+	      this.initialTocTags = null;
 	    }
 	  }, {
 	    key: 'initLayerSelector',
@@ -8992,6 +8993,7 @@
 	          _this.updateList();
 	        }
 	      });
+	      this.initialLayerId = null;
 	    }
 	  }, {
 	    key: 'reload',
