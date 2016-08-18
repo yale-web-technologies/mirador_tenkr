@@ -64,15 +64,15 @@
 
 	__webpack_require__(314);
 
-	__webpack_require__(316);
-
 	__webpack_require__(317);
+
+	__webpack_require__(318);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	__webpack_require__(318);
+	__webpack_require__(319);
 
 	var App = function App() {
 	  _classCallCheck(this, App);
@@ -10128,8 +10128,15 @@
 	    _classCallCheck(this, ModalAlert);
 
 	    this.elem = elem;
+	    elem.addClass('ui modal ym_modal');
 	    elem.html(template());
-	    elem.modal({ closable: false });
+	    elem.modal({
+	      closable: false,
+	      duration: 0,
+	      dimmerSettings: {
+	        opacity: 0.5
+	      }
+	    });
 	  }
 
 	  _createClass(ModalAlert, [{
@@ -10177,6 +10184,10 @@
 
 	var _modalAlert2 = _interopRequireDefault(_modalAlert);
 
+	var _errorDialog = __webpack_require__(316);
+
+	var _errorDialog2 = _interopRequireDefault(_errorDialog);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	(function ($) {
@@ -10212,21 +10223,21 @@
 	      var layersDfd = jQuery.Deferred();
 	      var annosDfd = jQuery.Deferred();
 
+	      console.dir(this.annotationLayers);
 	      if (this.annotationLayers.length < 1) {
-	        this.getLayers(function (layers) {
-	          // success
-	          _this.annotationLayers = layers;
-	          layersDfd.resolve();
-	        }, function () {
-	          // error
-	          layersDfd.reject();
-	        });
+	        this.getLayers(layersDfd);
 	      } else {
-	        layersDfd.resolve();
+	        layersDfd.resolve(null, true);
 	      }
 
-	      layersDfd.done(function () {
+	      layersDfd.done(function (layers, pass) {
+	        if (!pass) {
+	          _this.annotationLayers = layers;
+	        }
 	        _this._search(options, annosDfd);
+	      });
+	      layersDfd.fail(function (xhr) {
+	        (0, _errorDialog2.default)().show('layers');
 	      });
 
 	      annosDfd.done(function () {
@@ -10236,6 +10247,7 @@
 	        }
 	      });
 	      annosDfd.fail(function () {
+	        (0, _errorDialog2.default)().show('annotations');
 	        _this.dfd.reject();
 	        if (typeof errorCallback === 'function') {
 	          errorCallback();
@@ -10391,7 +10403,7 @@
 	      }
 	    },
 
-	    getLayers: function getLayers(successCallback, errorCallback) {
+	    getLayers: function getLayers(dfd) {
 	      console.log('YaleEndpoint#getLayers');
 	      var _this = this;
 	      var url = this.prefix + '/layers';
@@ -10404,15 +10416,16 @@
 	        success: function success(data, textStatus, jqXHR) {
 	          console.log('YaleEndpoint#getLayers data: ');
 	          console.dir(data);
-	          successCallback(data);
+	          dfd.resolve(data);
 	        },
 	        error: function error(jqXHR, textStatus, errorThrown) {
 	          console.log('YaleEndpoint#search error retrieving layers:');
+	          console.log('status code: ' + jqXHR.status);
 	          console.log('textStatus: ' + textStatus);
 	          console.log('errorThrown: ' + errorThrown);
 	          console.log('URL: ' + url);
 	          if (typeof errorCallback === 'function') {
-	            errorCallback(jqXHR, textStatus, errorThrown);
+	            dfd.reject(jqXHR, textStatus, errorThrown);
 	          }
 	        }
 	      });
@@ -10927,6 +10940,80 @@
 
 /***/ },
 /* 316 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	exports.default = getErrorDialog;
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function getErrorDialog() {
+	  if (!instance) {
+	    instance = new ErrorDialog(jQuery('#ym_error_dialog'));
+	  }
+	  return instance;
+	};
+
+	var ErrorDialog = function () {
+	  function ErrorDialog(elem) {
+	    _classCallCheck(this, ErrorDialog);
+
+	    this.elem = elem;
+	    elem.addClass('ui modal ym_modal');
+	    elem.modal({
+	      onHidden: function onHidden() {
+	        elem.modal('hide dimmer');
+	      }
+	    });
+	  }
+
+	  _createClass(ErrorDialog, [{
+	    key: 'show',
+	    value: function show(errorId) {
+	      var _this = this;
+
+	      switch (errorId) {
+	        case 'layers':
+	          this.elem.html(template({ message: MSG_LAYERS }));
+	          break;
+	        case 'annotations':
+	          this.elem.html(template({ message: MSG_ANNOTATIONS }));
+	          break;
+	        default:
+	          console.log('ErrorDialog#show invalid errorId: ' + errorId);
+	          return;
+	      }
+	      this.elem.modal('show');
+	    }
+	  }, {
+	    key: 'hide',
+	    value: function hide() {
+	      this.elem.modal('hide');
+	    }
+	  }, {
+	    key: '_errorGettingLayers',
+	    value: function _errorGettingLayers() {}
+	  }]);
+
+	  return ErrorDialog;
+	}();
+
+	var instance = null;
+
+	var template = Handlebars.compile(['<div class="header">Error</div>', '<div class="content">', '  <div class="description">', '    <p>{{message}}</p>', '    <p>Please try again a bit later, or if problem persists, create an issue at <a class="ym_link" target="_blank" href="https://github.com/yale-web-technologies/mirador-project/issues">GitHub</a>.</p>', '  </div>', '</div>', '<div class="actions">', '  <div class="ui cancel button">Dismiss</div>', '</div>'].join(''));
+
+	var MSG_LAYERS = 'Sorry, there was a problem retrieving the annotation layers.';
+	var MSG_ANNOTATIONS = 'Sorry, there was a problem retrieving the annotations.';
+
+/***/ },
+/* 317 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11068,7 +11155,7 @@
 	      });
 	    },
 
-	    getLayers: function getLayers(successCallback, errorCallback) {
+	    getLayers: function getLayers(dfd) {
 	      console.log('YaleDemoEndpoint#getLayers');
 	      var ref = firebase.database().ref('layers');
 
@@ -11083,9 +11170,7 @@
 	          layers.push(value);
 	        });
 
-	        if (typeof successCallback === 'function') {
-	          successCallback(layers);
-	        }
+	        dfd.resolve(layers);
 	      });
 	    },
 
@@ -11267,7 +11352,7 @@
 	})(window.Mirador);
 
 /***/ },
-/* 317 */
+/* 318 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11582,7 +11667,7 @@
 	})(window.Mirador);
 
 /***/ },
-/* 318 */
+/* 319 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
