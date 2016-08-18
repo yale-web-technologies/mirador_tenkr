@@ -10247,6 +10247,7 @@
 	        }
 	      });
 	      annosDfd.fail(function () {
+	        console.log('FAIL XXX');
 	        (0, _errorDialog2.default)().show('annotations');
 	        _this.dfd.reject();
 	        if (typeof errorCallback === 'function') {
@@ -10284,7 +10285,8 @@
 	            oaAnnotation.layerId = value.layer_id;
 	            _this.annotationsList.push(oaAnnotation);
 	          });
-	          dfd.resolve();
+	          dfd.reject(); //XXX
+	          //dfd.resolve();
 	        },
 	        error: function error(jqXHR, textStatus, errorThrown) {
 	          console.log('YaleEndpoint#search error searching');
@@ -10977,19 +10979,20 @@
 	  _createClass(ErrorDialog, [{
 	    key: 'show',
 	    value: function show(errorId) {
-	      var _this = this;
-
 	      switch (errorId) {
 	        case 'layers':
+	          console.log('LLL');
 	          this.elem.html(template({ message: MSG_LAYERS }));
 	          break;
 	        case 'annotations':
+	          console.log('AAA');
 	          this.elem.html(template({ message: MSG_ANNOTATIONS }));
 	          break;
 	        default:
 	          console.log('ErrorDialog#show invalid errorId: ' + errorId);
 	          return;
 	      }
+	      alert(this.elem.attr('id'));
 	      this.elem.modal('show');
 	    }
 	  }, {
