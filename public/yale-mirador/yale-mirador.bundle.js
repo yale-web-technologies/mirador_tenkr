@@ -8866,7 +8866,7 @@
 	   * Find annotations from "annotationsList" which this "annotation" annotates 
 	   * and which belong to the layer with "layerId".
 	   */
-	  findTargetAnnotations: function findTargetAnnotations(annotationsList, layerId, annotation) {
+	  findTargetAnnotations: function findTargetAnnotations(annotation, annotationsList, layerId) {
 	    var targetId = annotation.on.full;
 	    return annotationsList.filter(function (currentAnno) {
 	      return currentAnno.layerId === layerId && currentAnno['@id'] === targetId;
@@ -8877,10 +8877,24 @@
 	   * Find annotations from "annotationsList" which annotates this "annotation"
 	   * and which belong to the layer with "layerId".
 	   */
-	  findTargetingAnnotations: function findTargetingAnnotations(annotationsList, layerId, annotation) {
+	  findTargetingAnnotations: function findTargetingAnnotations(annotation, annotationsList, layerId) {
 	    return annotationsList.filter(function (currentAnno) {
 	      var targetId = currentAnno.on.full;
 	      return currentAnno.layerId === layerId && annotation['@id'] === targetId;
+	    });
+	  },
+
+	  /**
+	   * Find annotations from "annotationsList" that belong to the same TOC node
+	   * and which belong to the layer with "layerId".
+	   */
+	  findTocSiblings: function findTocSiblings(annotation, annotationsList, layerId, toc) {
+	    var node = toc.findNodeForAnnotation(annotation);
+	    if (!node) {
+	      return [];
+	    }
+	    return annotationsList.filter(function (currentAnno) {
+	      return currentAnno.layerId === layerId && toc.findNodeForAnnotation(currentAnno) === node;
 	    });
 	  }
 	};
@@ -9122,8 +9136,13 @@
 	  }, {
 	    key: 'scrollToElem',
 	    value: function scrollToElem(annoElem) {
-	      this.listElem.animate({
-	        scrollTop: annoElem.position().top + this.listElem.scrollTop()
+	      console.log('annoElem.position().top: ' + annoElem.position().top);
+	      console.log('element.scrollTop(): ' + this.element.scrollTop());
+
+	      //this.listElem.animate({
+	      this.element.animate({
+	        //scrollTop: annoElem.position().top + this.listElem.scrollTop()
+	        scrollTop: annoElem.position().top + this.listElem.position().top + this.element.scrollTop()
 	      }, 250);
 	    }
 	  }, {
@@ -9205,14 +9224,32 @@
 	      });
 
 	      jQuery.subscribe('ANNOTATION_FOCUSED', function (event, annoWinId, annotation) {
-	        console.log('Annotation window ' + _this.id + ' received annotation_focused event');
-	        if (annoWinId !== _this.id) {
-	          _this.clearHighlights();
-	          var annotationsList = _this.canvasWindow.annotationsList;
-	          var targeting = _annoUtil2.default.findTargetingAnnotations(annotationsList, _this.currentLayerId, annotation);
-	          var targeted = _annoUtil2.default.findTargetAnnotations(annotationsList, _this.currentLayerId, annotation);
+	        console.log('Annotation window ' + _this.id + ' received annotation_focused event from ' + annoWinId);
+	        if (annoWinId === _this.id) {
+	          return;
+	        }
+	        _this.clearHighlights();
+
+	        var annotationsList = _this.canvasWindow.annotationsList;
+	        var layerId = _this.currentLayerId;
+	        var toc = _this.endpoint.getCanvasToc();
+
+	        if (toc) {
+	          var siblings = _annoUtil2.default.findTocSiblings(annotation, annotationsList, layerId, toc);
+	          if (siblings.length > 0) {
+	            _this.highlightAnnotations(siblings, 'SIBLING');
+	            return;
+	          }
+	        }
+	        var targeting = _annoUtil2.default.findTargetingAnnotations(annotation, annotationsList, layerId);
+	        if (targeting.length > 0) {
 	          _this.highlightAnnotations(targeting, 'TARGETING');
+	          return;
+	        }
+	        var targeted = _annoUtil2.default.findTargetAnnotations(annotation, annotationsList, layerId);
+	        if (targeted.length > 0) {
 	          _this.highlightAnnotations(targeted, 'TARGET');
+	          return;
 	        }
 	      });
 
@@ -10669,6 +10706,12 @@
 	      }
 
 	      return node === this.annoHierarchy ? null : node;
+	    }
+	  }, {
+	    key: 'findNodeForAnnotation',
+	    value: function findNodeForAnnotation(annotation) {
+	      var targetAnno = _annoUtil2.default.findFinalTargetAnnotation(annotation, this.annotations);
+	      return targetAnno ? this.annoToNodeMap[targetAnno['@id']] : null;
 	    }
 
 	    /**
