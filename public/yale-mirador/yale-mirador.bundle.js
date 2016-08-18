@@ -9110,12 +9110,12 @@
 	    value: function highlightAnnotations(annotations, flag) {
 	      var _this = this;
 	      var klass = flag == 'TARGETING' ? 'mr_anno_targeting' : 'mr_anno_targeted';
+	      var firstMatch = true;
 
 	      this.listElem.find('.annowin_anno').each(function (index, value) {
 	        var annoElem = jQuery(value);
 	        var annoId = annoElem.data('annotationId');
 	        var matched = false;
-	        var firstMatch = true;
 
 	        jQuery.each(annotations, function (index, value) {
 	          var targetAnnotationId = value['@id'];
