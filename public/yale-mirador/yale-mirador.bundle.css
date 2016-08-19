@@ -177,6 +177,7 @@
 }
 .annowin_anno .content {
   padding: 5px 5px;
+  font-size: 14px;
 }
 .annowin_anno .tag {
   font-size: 0.7rem;
