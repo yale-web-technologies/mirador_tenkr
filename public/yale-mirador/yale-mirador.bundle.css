@@ -1,3 +1,26 @@
+/* 
+ * Overriding Semantic UI
+ */
+.ui.text.menu {
+  margin: 0;
+  min-height: 0;
+}
+.ui.dropdown {
+  padding: 5px 5px;
+  min-height: 1em;
+}
+.ui.dropdown .menu > .item .dropdown.icon {
+  float: none;
+}
+.ui.dropdown .ym.dropdown.icon {
+  margin-left: 0.3em;
+}
+/* 
+ * Overriding GoldenLayout
+ */
+.lm_item_container {
+  position: relative;
+}
 .no_close .ui-dialog-titlebar-close {
   display: none;
 }
@@ -18,29 +41,57 @@
   top: 0;
   bottom: 0;
 }
-#mr_grid {
+html,
+body,
+div,
+p {
+  margin: 0;
+}
+.ym_float_right {
+  float: right;
+}
+.ym_float_right::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+.ym_button.small {
+  padding-top: 0.6em;
+  padding-bottom: 0.6em;
+}
+.ym_modal {
+  background-color: #bbb;
+  padding: 20px;
+  font-size: 20px;
+}
+.ym_modal .ym_link {
+  color: #76b4fc;
+}
+#ym_grid {
   position: absolute;
   top: 36px;
   bottom: 0;
   left: 0;
   right: 0;
 }
-.col1 {
-  background-color: #009900;
+.ym_anno_editor {
+  background-color: white;
+  border: solid 3px #0072c4;
+  padding: 5px;
 }
-.col2 {
-  background-color: #005500;
-}
-.annotation_editor .ui.dropdown .menu {
+.ym_anno_editor .ui.dropdown .menu {
   max-height: 300px;
   overflow-y: scroll;
 }
-.mr_vertical_dec,
-.mr_vertical_inc {
+.ym_anno_editor .bottom_row {
+  min-height: 25px;
+}
+.ym_vertical_dec,
+.ym_vertical_inc {
   color: #bbb;
 }
-.mr_vertical_dec:hover,
-.mr_vertical_inc:hover {
+.ym_vertical_dec:hover,
+.ym_vertical_inc:hover {
   color: #777;
 }
 .ym_annotation_window {
@@ -101,11 +152,6 @@
   font-size: 0.9em;
   padding-left: 5px;
 }
-.annotation_editor {
-  background-color: white;
-  border: solid 3px #0072c4;
-  padding: 5px;
-}
 /* Icon for link to the annotation target, shown in the annotation editor. */
 .anno_target_icon {
   color: #b0b0b0;
@@ -118,14 +164,16 @@
 .anno_target_icon.anno_on_anno {
   color: #1f995a;
 }
-.annotation_editor .bottom_row {
-  min-height: 25px;
-}
 .placeholder {
   padding: 5px;
 }
 .item_menu_dropdown {
   right: 0px;
+}
+.annowin_anno {
+  border: solid 1px #808080;
+  background-color: #fafafa;
+  padding: 3px;
 }
 .annowin_anno .menu_bar {
   background-color: #76b4fc;
@@ -133,14 +181,11 @@
 .annowin_anno .menu_bar.targeting_anno {
   background-color: #3fb97a;
 }
-.annowin_anno {
-  border: solid 1px #808080;
-  background-color: #fafafa;
-  padding: 3px;
+.annowin_anno .normal_view {
+  overflow-y: visible;
 }
 .annowin_anno .normal_view p {
   margin: 10px;
-  overflow-y: visible;
 }
 .annowin_anno .normal_view p:first-of-type {
   margin-top: 0;
@@ -148,30 +193,20 @@
 .annowin_anno .normal_view p:last-of-type {
   margin-bottom: 0;
 }
-.annowin_anno .info_view {
-  font-size: 0.9em;
-  background-color: #f0f0ff;
-}
-.mr_anno_selected {
+.ym_anno_selected {
   border-color: #4684cc;
   border-width: 4px;
   padding: 0;
 }
-.mr_anno_targeting {
+.ym_anno_targeting {
   border-color: #cc6600;
   border-width: 4px;
   padding: 0;
 }
-.mr_anno_targeted {
+.ym_anno_targeted {
   border-color: #fbb917;
   border-width: 4px;
   padding: 0;
-}
-.annowin_info {
-  color: #4684cc;
-}
-.annowin_info.anno_on_anno {
-  color: #1f995a;
 }
 .annowin_anno .content {
   padding: 5px 5px;
@@ -189,58 +224,7 @@
   height: 100px;
   overflow-y: scroll;
 }
-html,
-body,
-div,
-p {
-  margin: 0;
-}
-/* 
- * Overriding Semantic UI
- */
-.ui.text.menu {
-  margin: 0;
-  min-height: 0;
-}
-.ui.dropdown {
-  padding: 5px 5px;
-  min-height: 1em;
-}
-.ui.dropdown .menu > .item .dropdown.icon {
-  float: none;
-}
-.ui.dropdown .ym.dropdown.icon {
-  margin-left: 0.3em;
-}
-/* 
- * Overriding GoldenLayout
- */
-.lm_item_container {
-  position: relative;
-}
-/*
- *
- */
-.mr_float_right {
-  float: right;
-}
-.mr_float_right::after {
-  content: "";
-  display: block;
-  clear: both;
-}
-.mr_button.small {
-  padding-top: 0.6em;
-  padding-bottom: 0.6em;
-}
-.mr_annotation_dialog {
-  overflow: visible;
-}
-.ym_modal {
-  background-color: #bbb;
-  padding: 20px;
-  font-size: 20px;
-}
-.ym_modal .ym_link {
-  color: #76b4fc;
+.ym_annotation_window.fixed_height_cells .annowin_anno > .normal_view .ui.dropdown .menu {
+  max-height: 80px;
+  overflow-y: scroll;
 }

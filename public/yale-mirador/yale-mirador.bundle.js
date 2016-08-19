@@ -48,31 +48,29 @@
 
 	__webpack_require__(1);
 
-	__webpack_require__(298);
-
-	var _grid = __webpack_require__(299);
+	var _grid = __webpack_require__(298);
 
 	var _grid2 = _interopRequireDefault(_grid);
 
-	var _mainMenu = __webpack_require__(310);
+	var _mainMenu = __webpack_require__(309);
 
 	var _mainMenu2 = _interopRequireDefault(_mainMenu);
 
-	var _miradorWindow = __webpack_require__(311);
+	var _miradorWindow = __webpack_require__(310);
 
 	var _miradorWindow2 = _interopRequireDefault(_miradorWindow);
 
-	__webpack_require__(314);
+	__webpack_require__(313);
+
+	__webpack_require__(316);
 
 	__webpack_require__(317);
-
-	__webpack_require__(318);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	__webpack_require__(319);
+	__webpack_require__(318);
 
 	var App = function App() {
 	  _classCallCheck(this, App);
@@ -85,7 +83,7 @@
 
 	jQuery(document).ready(function () {
 	  console.log('Yale Mirador Extension document ready');
-	  if (jQuery('#mr_grid').size() > 0) {
+	  if (jQuery('#ym_grid').size() > 0) {
 	    var app = new App();
 	  }
 	});
@@ -8160,19 +8158,6 @@
 
 /***/ },
 /* 298 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	window.YM = {}; // namespace for Yale Mirador extension
-
-	exports.default = window.YM;
-
-/***/ },
-/* 299 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8183,15 +8168,15 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _miradorProxy = __webpack_require__(300);
+	var _miradorProxy = __webpack_require__(299);
 
 	var _miradorProxy2 = _interopRequireDefault(_miradorProxy);
 
-	var _annotationListRenderer = __webpack_require__(301);
+	var _annotationListRenderer = __webpack_require__(300);
 
 	var _annotationListRenderer2 = _interopRequireDefault(_annotationListRenderer);
 
-	var _annotationWindow = __webpack_require__(303);
+	var _annotationWindow = __webpack_require__(302);
 
 	var _annotationWindow2 = _interopRequireDefault(_annotationWindow);
 
@@ -8210,7 +8195,7 @@
 	    key: 'init',
 	    value: function init() {
 	      console.log('Grid#init');
-	      this.element = jQuery('#mr_grid');
+	      this.element = jQuery('#ym_grid');
 	      this.miradorProxy = (0, _miradorProxy2.default)();
 	      this.annotationListRenderer = new _annotationListRenderer2.default();
 	      this.initLayout();
@@ -8297,7 +8282,7 @@
 	    value: function bindEvents() {
 	      var _this = this;
 
-	      jQuery.subscribe('MR_ADD_WINDOW', function (event, options) {
+	      jQuery.subscribe('YM_ADD_WINDOW', function (event, options) {
 	        _this.addWindow(options || {});
 	      });
 	    }
@@ -8309,7 +8294,7 @@
 	exports.default = _class;
 
 /***/ },
-/* 300 */
+/* 299 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8394,7 +8379,7 @@
 	;
 
 /***/ },
-/* 301 */
+/* 300 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8405,7 +8390,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _annoUtil = __webpack_require__(302);
+	var _annoUtil = __webpack_require__(301);
 
 	var _annoUtil2 = _interopRequireDefault(_annoUtil);
 
@@ -8607,7 +8592,6 @@
 	        orderable: options.isCompleteList
 	      });
 	      var annoElem = jQuery(annoHtml);
-	      var infoDiv = annoElem.find('.info_view');
 
 	      annoElem.data('annotationId', annotation['@id']);
 	      annoElem.find('.ui.dropdown').dropdown();
@@ -8617,8 +8601,6 @@
 	      } else {
 	        annoElem.find('.menu_bar').removeClass('targeting_anno');
 	      }
-	      this.setAnnotationItemInfo(annoElem, annotation);
-	      infoDiv.hide();
 
 	      this.bindAnnotationItemEvents(annoElem, annotation, options);
 	      return annoElem;
@@ -8633,21 +8615,9 @@
 	      return html;
 	    }
 	  }, {
-	    key: 'setAnnotationItemInfo',
-	    value: function setAnnotationItemInfo(annoElem, annotation) {
-	      var infoElem = annoElem.find('.annowin_info');
-	      if (annotation.on['@type'] == 'oa:Annotation') {
-	        // target: annotation
-	        infoElem.addClass('anno_on_anno');
-	      } else {
-	        infoElem.removeClass('anno_on_anno');
-	      }
-	    }
-	  }, {
 	    key: 'bindAnnotationItemEvents',
 	    value: function bindAnnotationItemEvents(annoElem, annotation, options) {
 	      var annoWin = options.annotationWindow;
-	      var infoElem = annoElem.find('.annowin_info');
 	      var finalTargetAnno = _annoUtil2.default.findFinalTargetAnnotation(annotation, options.annotationsList);
 
 	      annoElem.click(function (event) {
@@ -8658,7 +8628,7 @@
 	      });
 
 	      annoElem.find('.annotate').click(function (event) {
-	        var dialogElement = jQuery('#mr_annotation_dialog');
+	        var dialogElement = jQuery('#ym_annotation_dialog');
 	        var editor = new Mirador.AnnotationEditor({
 	          parent: dialogElement,
 	          canvasWindow: annoWin.canvasWindow,
@@ -8741,16 +8711,6 @@
 	          });
 	        }
 	      });
-
-	      infoElem.click(function (event) {
-	        var infoDiv = annoElem.find('.info_view');
-	        if (infoDiv.css('display') === 'none') {
-	          infoDiv.replaceWith(annoWin.createInfoDiv(annotation));
-	          infoDiv.show();
-	        } else {
-	          infoDiv.hide();
-	        }
-	      });
 	    }
 	  }]);
 
@@ -8760,14 +8720,12 @@
 	exports.default = AnnotationListRenderer;
 
 
-	var annotationTemplate = Handlebars.compile(['<div class="annowin_anno" draggable="true">', '  <div class="info_view"></div>', '  <div class="normal_view">', '    {{#if isEditor}}', '      <div class="menu_bar">', '        <div class="ui text menu">', '          <div class="ui dropdown item">', '            Action<i class="dropdown icon"></i>', '            <div class="menu">', '              <div class="annotate item"><i class="fa fa-hand-o-left fa-fw"></i> Annotate</div>', '              <div class="edit item"><i class="fa fa-edit fa-fw"></i> {{t "edit"}}</div>', '              <div class="delete item"><i class="fa fa-times fa-fw"></i> {{t "delete"}}</div>', '            </div>', '          </div>', '          {{#if orderable}}', '            <div class="right menu">', '              <i class="caret down icon"></i>', '              <i class="caret up icon"></i>', '            </div>', '          {{/if}}', '        </div>', '      </div>', '    {{/if}}', '    <div class="content">{{{content}}}</div>', '    <div class="tags">{{{tags}}}</div>', '  </div>', '</div>'].join(''));
+	var annotationTemplate = Handlebars.compile(['<div class="annowin_anno" draggable="true">', '  <div class="normal_view">', '    {{#if isEditor}}', '      <div class="menu_bar">', '        <div class="ui text menu">', '          <div class="ui dropdown item">', '            Action<i class="dropdown icon"></i>', '            <div class="menu">', '              <div class="annotate item"><i class="fa fa-hand-o-left fa-fw"></i> Annotate</div>', '              <div class="edit item"><i class="fa fa-edit fa-fw"></i> {{t "edit"}}</div>', '              <div class="delete item"><i class="fa fa-times fa-fw"></i> {{t "delete"}}</div>', '            </div>', '          </div>', '          {{#if orderable}}', '            <div class="right menu">', '              <i class="caret down icon"></i>', '              <i class="caret up icon"></i>', '            </div>', '          {{/if}}', '        </div>', '      </div>', '    {{/if}}', '    <div class="content">{{{content}}}</div>', '    <div class="tags">{{{tags}}}</div>', '  </div>', '</div>'].join(''));
 
 	var headerTemplate = Handlebars.compile(['<div class="annowin_group_header">{{text}}', '</div>'].join(''));
 
-	var infoTemplate = Handlebars.compile(['<div class="info_view">', '  <span class="anno_info_label">On:<span>', '  <span class="anno_info_value">{{{on}}}</span>', '</div>'].join(''));
-
 /***/ },
-/* 302 */
+/* 301 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8900,7 +8858,7 @@
 	};
 
 /***/ },
-/* 303 */
+/* 302 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8911,27 +8869,27 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _miradorProxy = __webpack_require__(300);
+	var _miradorProxy = __webpack_require__(299);
 
 	var _miradorProxy2 = _interopRequireDefault(_miradorProxy);
 
-	var _menuTagSelector = __webpack_require__(304);
+	var _menuTagSelector = __webpack_require__(303);
 
 	var _menuTagSelector2 = _interopRequireDefault(_menuTagSelector);
 
-	var _layerSelector = __webpack_require__(307);
+	var _layerSelector = __webpack_require__(306);
 
 	var _layerSelector2 = _interopRequireDefault(_layerSelector);
 
-	var _annoUtil = __webpack_require__(302);
+	var _annoUtil = __webpack_require__(301);
 
 	var _annoUtil2 = _interopRequireDefault(_annoUtil);
 
-	var _session = __webpack_require__(308);
+	var _session = __webpack_require__(307);
 
 	var _session2 = _interopRequireDefault(_session);
 
-	var _state = __webpack_require__(309);
+	var _state = __webpack_require__(308);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -9099,9 +9057,9 @@
 	        var annoElem = jQuery(value);
 	        var annoID = annoElem.data('annotationId');
 	        if (annoID === annotation['@id']) {
-	          annoElem.addClass('mr_anno_selected');
+	          annoElem.addClass('ym_anno_selected');
 	        } else {
-	          annoElem.removeClass('mr_anno_selected');
+	          annoElem.removeClass('ym_anno_selected');
 	        }
 	      });
 	    }
@@ -9109,7 +9067,7 @@
 	    key: 'highlightAnnotations',
 	    value: function highlightAnnotations(annotations, flag) {
 	      var _this = this;
-	      var klass = flag == 'TARGETING' ? 'mr_anno_targeting' : 'mr_anno_targeted';
+	      var klass = flag == 'TARGETING' ? 'ym_anno_targeting' : 'ym_anno_targeted';
 	      var firstMatch = true;
 
 	      this.listElem.find('.annowin_anno').each(function (index, value) {
@@ -9149,7 +9107,7 @@
 	    key: 'clearHighlights',
 	    value: function clearHighlights() {
 	      this.listElem.find('.annowin_anno').each(function (index, value) {
-	        jQuery(value).removeClass('annowin_targeted').removeClass('mr_anno_selected mr_anno_targeting mr_anno_targeted');
+	        jQuery(value).removeClass('annowin_targeted').removeClass('ym_anno_selected ym_anno_targeting ym_anno_targeted');
 	      });
 	    }
 	  }, {
@@ -9213,11 +9171,11 @@
 	    value: function bindEvents() {
 	      var _this = this;
 
-	      this.element.find('.annowin_temp_row .mr_button').click(function (event) {
+	      this.element.find('.annowin_temp_row .ym_button').click(function (event) {
 	        _this.saveOrder();
 	      });
 
-	      jQuery.subscribe('MR_READY_TO_RELOAD_ANNO_WIN', function (event) {
+	      jQuery.subscribe('YM_READY_TO_RELOAD_ANNO_WIN', function (event) {
 	        if (!_this.hasOpenEditor()) {
 	          _this.reload();
 	        }
@@ -9253,7 +9211,7 @@
 	        }
 	      });
 
-	      jQuery.subscribe('MR_ANNO_HEIGHT_FIXED', function (event, fixedHeight) {
+	      jQuery.subscribe('YM_ANNO_HEIGHT_FIXED', function (event, fixedHeight) {
 	        if (fixedHeight) {
 	          _this.element.addClass('fixed_height_cells');
 	        } else {
@@ -9273,10 +9231,10 @@
 	exports.default = _class;
 
 
-	var template = Handlebars.compile(['<div class="ym_annotation_window">', '  <div class="annowin_header">', '    <div class="annowin_menu_tag_row">', '      <span class="menu_tag_selector_container"></span>', '    </div>', '    <div class="annowin_layer_row">', '      <span class="layer_selector_container"></span>', '    </div>', '    <div class="annowin_temp_row">', '      <div class="fluid ui small orange button mr_button">Click to save order</div>', '    </div>', '  </div>', '  <div class="placeholder"></div>', '  <div class="annowin_list">', '  </div>', '</div>'].join(''));
+	var template = Handlebars.compile(['<div class="ym_annotation_window">', '  <div class="annowin_header">', '    <div class="annowin_menu_tag_row">', '      <span class="menu_tag_selector_container"></span>', '    </div>', '    <div class="annowin_layer_row">', '      <span class="layer_selector_container"></span>', '    </div>', '    <div class="annowin_temp_row">', '      <div class="fluid ui small orange button ym_button">Click to save order</div>', '    </div>', '  </div>', '  <div class="placeholder"></div>', '  <div class="annowin_list">', '  </div>', '</div>'].join(''));
 
 /***/ },
-/* 304 */
+/* 303 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9287,11 +9245,11 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _selector = __webpack_require__(305);
+	var _selector = __webpack_require__(304);
 
 	var _selector2 = _interopRequireDefault(_selector);
 
-	var _util = __webpack_require__(306);
+	var _util = __webpack_require__(305);
 
 	var _util2 = _interopRequireDefault(_util);
 
@@ -9407,7 +9365,7 @@
 	exports.default = _class;
 
 /***/ },
-/* 305 */
+/* 304 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9527,10 +9485,10 @@
 	exports.default = _class;
 
 
-	var template = Handlebars.compile(['<div class="basic tiny ui button mr_button dropdown">', '  <input name="selection" type="hidden" />', '  <div class="default text"></div>', '  <i class="ym dropdown icon"></i>', '  <div class="menu">', '  </div>', '</div>'].join(''));
+	var template = Handlebars.compile(['<div class="basic tiny ui button ym_button dropdown">', '  <input name="selection" type="hidden" />', '  <div class="default text"></div>', '  <i class="ym dropdown icon"></i>', '  <div class="menu">', '  </div>', '</div>'].join(''));
 
 /***/ },
-/* 306 */
+/* 305 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -9560,7 +9518,7 @@
 	};
 
 /***/ },
-/* 307 */
+/* 306 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9571,7 +9529,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _selector = __webpack_require__(305);
+	var _selector = __webpack_require__(304);
 
 	var _selector2 = _interopRequireDefault(_selector);
 
@@ -9658,7 +9616,7 @@
 	exports.default = _class;
 
 /***/ },
-/* 308 */
+/* 307 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9691,7 +9649,7 @@
 	};
 
 /***/ },
-/* 309 */
+/* 308 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9772,7 +9730,7 @@
 	exports.setState = setState;
 
 /***/ },
-/* 310 */
+/* 309 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9783,7 +9741,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _state = __webpack_require__(309);
+	var _state = __webpack_require__(308);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -9809,7 +9767,7 @@
 	  }, {
 	    key: 'initAnnoHeightMenu',
 	    value: function initAnnoHeightMenu() {
-	      this.annoHeightMenu = jQuery('#mr_menu_anno_height');
+	      this.annoHeightMenu = jQuery('#ym_menu_anno_height');
 	      if ((0, _state.getState)('ANNO_CELL_FIXED') === 'true') {
 	        this.annoHeightMenu.find('.checkmark').show();
 	      } else {
@@ -9821,19 +9779,19 @@
 	    value: function bindEvents() {
 	      var _this = this;
 
-	      jQuery('#mr_menu_add_window').click(function (event) {
-	        jQuery.publish('MR_ADD_WINDOW');
+	      jQuery('#ym_menu_add_window').click(function (event) {
+	        jQuery.publish('YM_ADD_WINDOW');
 	      });
 
-	      jQuery('#mr_menu_anno_height').click(function (event) {
+	      jQuery('#ym_menu_anno_height').click(function (event) {
 	        if ((0, _state.getState)('ANNO_CELL_FIXED') === 'true') {
 	          (0, _state.setState)('ANNO_CELL_FIXED', false);
 	          _this.annoHeightMenu.find('.checkmark').hide();
-	          jQuery.publish('MR_ANNO_HEIGHT_FIXED', false);
+	          jQuery.publish('YM_ANNO_HEIGHT_FIXED', false);
 	        } else {
 	          (0, _state.setState)('ANNO_CELL_FIXED', true);
 	          _this.annoHeightMenu.find('.checkmark').show();
-	          jQuery.publish('MR_ANNO_HEIGHT_FIXED', true);
+	          jQuery.publish('YM_ANNO_HEIGHT_FIXED', true);
 	        }
 	      });
 	    }
@@ -9845,7 +9803,7 @@
 	exports.default = _class;
 
 /***/ },
-/* 311 */
+/* 310 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9863,23 +9821,23 @@
 	  return _instance;
 	};
 
-	var _session = __webpack_require__(308);
+	var _session = __webpack_require__(307);
 
 	var _session2 = _interopRequireDefault(_session);
 
-	var _miradorDefaultSettings = __webpack_require__(312);
+	var _miradorDefaultSettings = __webpack_require__(311);
 
 	var _miradorDefaultSettings2 = _interopRequireDefault(_miradorDefaultSettings);
 
-	var _miradorProxy = __webpack_require__(300);
+	var _miradorProxy = __webpack_require__(299);
 
 	var _miradorProxy2 = _interopRequireDefault(_miradorProxy);
 
-	var _annoUtil = __webpack_require__(302);
+	var _annoUtil = __webpack_require__(301);
 
 	var _annoUtil2 = _interopRequireDefault(_annoUtil);
 
-	var _modalAlert = __webpack_require__(313);
+	var _modalAlert = __webpack_require__(312);
 
 	var _modalAlert2 = _interopRequireDefault(_modalAlert);
 
@@ -9937,7 +9895,7 @@
 	      var _this = this;
 	      var miradorProxy = (0, _miradorProxy2.default)();
 
-	      jQuery.subscribe('MR_READY_TO_RELOAD_ANNO_WIN', function (event) {
+	      jQuery.subscribe('YM_READY_TO_RELOAD_ANNO_WIN', function (event) {
 	        // after annotations have been loaded
 	        if (_this._urlOptionsProcessed) {
 	          return;
@@ -9966,7 +9924,7 @@
 	        }
 	        if (addAnnotationWindows) {
 	          for (var i = 0; i < htmlOptions.layerIds.length; ++i) {
-	            jQuery.publish('MR_ADD_WINDOW', {
+	            jQuery.publish('YM_ADD_WINDOW', {
 	              tocTags: htmlOptions.tocTags,
 	              layerId: htmlOptions.layerIds[i]
 	            });
@@ -10075,7 +10033,7 @@
 	          var endpoint = miradorProxy.getEndPoint(params.windowId);
 	          endpoint.parseAnnotations();
 	        }
-	        jQuery.publish('MR_READY_TO_RELOAD_ANNO_WIN');
+	        jQuery.publish('YM_READY_TO_RELOAD_ANNO_WIN');
 	      });
 	    }
 	  }]);
@@ -10088,7 +10046,7 @@
 	;
 
 /***/ },
-/* 312 */
+/* 311 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -10138,7 +10096,7 @@
 	};
 
 /***/ },
-/* 313 */
+/* 312 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -10196,32 +10154,32 @@
 	var template = Handlebars.compile(['Loading annotations ...'].join(''));
 
 /***/ },
-/* 314 */
+/* 313 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _session = __webpack_require__(308);
+	var _session = __webpack_require__(307);
 
 	var _session2 = _interopRequireDefault(_session);
 
-	var _miradorProxy = __webpack_require__(300);
+	var _miradorProxy = __webpack_require__(299);
 
 	var _miradorProxy2 = _interopRequireDefault(_miradorProxy);
 
-	var _toc = __webpack_require__(315);
+	var _toc = __webpack_require__(314);
 
 	var _toc2 = _interopRequireDefault(_toc);
 
-	var _miradorWindow = __webpack_require__(311);
+	var _miradorWindow = __webpack_require__(310);
 
 	var _miradorWindow2 = _interopRequireDefault(_miradorWindow);
 
-	var _modalAlert = __webpack_require__(313);
+	var _modalAlert = __webpack_require__(312);
 
 	var _modalAlert2 = _interopRequireDefault(_modalAlert);
 
-	var _errorDialog = __webpack_require__(316);
+	var _errorDialog = __webpack_require__(315);
 
 	var _errorDialog2 = _interopRequireDefault(_errorDialog);
 
@@ -10580,7 +10538,7 @@
 	})(window.Mirador);
 
 /***/ },
-/* 315 */
+/* 314 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10591,7 +10549,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _annoUtil = __webpack_require__(302);
+	var _annoUtil = __webpack_require__(301);
 
 	var _annoUtil2 = _interopRequireDefault(_annoUtil);
 
@@ -10982,7 +10940,7 @@
 	exports.default = Toc;
 
 /***/ },
-/* 316 */
+/* 315 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11054,16 +11012,16 @@
 	var MSG_ANNOTATIONS = 'Sorry, there was a problem retrieving the annotations.';
 
 /***/ },
-/* 317 */
+/* 316 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _annoUtil = __webpack_require__(302);
+	var _annoUtil = __webpack_require__(301);
 
 	var _annoUtil2 = _interopRequireDefault(_annoUtil);
 
-	var _session = __webpack_require__(308);
+	var _session = __webpack_require__(307);
 
 	var _session2 = _interopRequireDefault(_session);
 
@@ -11393,20 +11351,20 @@
 	})(window.Mirador);
 
 /***/ },
-/* 318 */
+/* 317 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _layerSelector = __webpack_require__(307);
+	var _layerSelector = __webpack_require__(306);
 
 	var _layerSelector2 = _interopRequireDefault(_layerSelector);
 
-	var _miradorProxy = __webpack_require__(300);
+	var _miradorProxy = __webpack_require__(299);
 
 	var _miradorProxy2 = _interopRequireDefault(_miradorProxy);
 
-	var _annoUtil = __webpack_require__(302);
+	var _annoUtil = __webpack_require__(301);
 
 	var _annoUtil2 = _interopRequireDefault(_annoUtil);
 
@@ -11693,14 +11651,14 @@
 	        }
 	      });
 
-	      this.element.find('.mr_vertical_inc').click(function () {
+	      this.element.find('.ym_vertical_inc').click(function () {
 	        var iframeId = _this.getEditor().id + '_ifr';
 	        var element = tinyMCE.DOM.get(iframeId);
 	        var height = parseInt(tinyMCE.DOM.getStyle(element, 'height'), 10);
 	        tinyMCE.DOM.setStyle(element, 'height', height + 75 + 'px');
 	      });
 
-	      this.element.find('.mr_vertical_dec').click(function () {
+	      this.element.find('.ym_vertical_dec').click(function () {
 	        var iframeId = _this.getEditor().id + '_ifr';
 	        var element = tinyMCE.DOM.get(iframeId);
 	        var height = parseInt(tinyMCE.DOM.getStyle(element, 'height'), 10);
@@ -11708,13 +11666,13 @@
 	      });
 	    },
 
-	    template: Handlebars.compile(['<div class="annotation_editor">', '  <div class="header">', '    <span class="layer_select"></span>', '  </div>', '  <textarea></textarea>', '  <input class="tags_editor" placeholder="{{t "addTagsHere"}}…" {{#if tags}}value="{{tags}}"{{/if}}/>', '  {{#unless miradorDriven}}', '    <div class="bottom_row">', '        <button class="save">Save</button>', '        <button class="cancel">Cancel</button>', '      <div class="mr_float_right">', '        <i class="large caret up icon mr_vertical_dec"></i>', '        <i class="large caret down icon mr_vertical_inc"></i>', '      </div>', '    </div>', '  {{/unless}}', '</div>'].join(''))
+	    template: Handlebars.compile(['<div class="ym_anno_editor">', '  <div class="header">', '    <span class="layer_select"></span>', '  </div>', '  <textarea></textarea>', '  <input class="tags_editor" placeholder="{{t "addTagsHere"}}…" {{#if tags}}value="{{tags}}"{{/if}}/>', '  {{#unless miradorDriven}}', '    <div class="bottom_row">', '        <button class="save">Save</button>', '        <button class="cancel">Cancel</button>', '      <div class="ym_float_right">', '        <i class="large caret up icon ym_vertical_dec"></i>', '        <i class="large caret down icon ym_vertical_inc"></i>', '      </div>', '    </div>', '  {{/unless}}', '</div>'].join(''))
 
 	  };
 	})(window.Mirador);
 
 /***/ },
-/* 319 */
+/* 318 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
