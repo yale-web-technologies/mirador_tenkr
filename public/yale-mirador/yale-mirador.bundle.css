@@ -41,6 +41,12 @@
   top: 0;
   bottom: 0;
 }
+#viewer * {
+  box-sizing: content-box;
+}
+#ym_modal {
+  bottom: auto;
+}
 html,
 body,
 div,

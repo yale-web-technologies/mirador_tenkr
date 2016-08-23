@@ -60,7 +60,9 @@
 
 	var _miradorWindow2 = _interopRequireDefault(_miradorWindow);
 
-	__webpack_require__(313);
+	__webpack_require__(312);
+
+	__webpack_require__(315);
 
 	__webpack_require__(316);
 
@@ -9231,7 +9233,7 @@
 	exports.default = _class;
 
 
-	var template = Handlebars.compile(['<div class="ym_annotation_window">', '  <div class="annowin_header">', '    <div class="annowin_menu_tag_row">', '      <span class="menu_tag_selector_container"></span>', '    </div>', '    <div class="annowin_layer_row">', '      <span class="layer_selector_container"></span>', '    </div>', '    <div class="annowin_temp_row">', '      <div class="fluid ui small orange button ym_button">Click to save order</div>', '    </div>', '  </div>', '  <div class="placeholder"></div>', '  <div class="annowin_list">', '  </div>', '</div>'].join(''));
+	var template = Handlebars.compile(['<div class="ym_annotation_window">', '  <div class="annowin_header">', '    <div class="annowin_layer_row">', '      <span class="layer_selector_container"></span>', '    </div>', '    <div class="annowin_menu_tag_row">', '      <span class="menu_tag_selector_container"></span>', '    </div>', '    <div class="annowin_temp_row">', '      <div class="fluid ui small orange button ym_button">Click to save order</div>', '    </div>', '  </div>', '  <div class="placeholder"></div>', '  <div class="annowin_list">', '  </div>', '</div>'].join(''));
 
 /***/ },
 /* 303 */
@@ -9825,10 +9827,6 @@
 
 	var _session2 = _interopRequireDefault(_session);
 
-	var _miradorDefaultSettings = __webpack_require__(311);
-
-	var _miradorDefaultSettings2 = _interopRequireDefault(_miradorDefaultSettings);
-
 	var _miradorProxy = __webpack_require__(299);
 
 	var _miradorProxy2 = _interopRequireDefault(_miradorProxy);
@@ -9837,7 +9835,7 @@
 
 	var _annoUtil2 = _interopRequireDefault(_annoUtil);
 
-	var _modalAlert = __webpack_require__(312);
+	var _modalAlert = __webpack_require__(311);
 
 	var _modalAlert2 = _interopRequireDefault(_modalAlert);
 
@@ -9940,35 +9938,62 @@
 	  }, {
 	    key: '_buildMiradorConfig',
 	    value: function _buildMiradorConfig(serverSettings, htmlOptions) {
-	      var config = jQuery.extend(true, {}, _miradorDefaultSettings2.default); // deep copy from defaultConfig
+	      var config = jQuery.extend(true, {}, Mirador.DEFAULT_SETTINGS); // deep copy from Mirador.DEFAULT_SETTINGS
+	      var endpointConfig = null;
 
-	      config.buildPath = serverSettings.buildPath || '/';
-	      config.data = [{ manifestUri: htmlOptions.manifestUri }];
-
-	      var winObj = config.windowObjects[0];
-
-	      winObj.loadedManifest = htmlOptions.manifestUri;
-
-	      if (htmlOptions.canvasId) {
-	        // if instructed to load a specific canvas
-	        winObj.canvasID = htmlOptions.canvasId;
-	      }
-	      if (!_session2.default.isEditor()) {
-	        winObj.annotationCreation = false;
-	      }
-	      config.annotationEndpoint.options.prefix = serverSettings.endpointUrl;
-	      config.autoHideControls = false; // autoHide is bad for touch-only devices
-
-	      if (serverSettings.tagHierarchy) {
-	        config.extension.tagHierarchy = serverSettings.tagHierarchy;
-	      }
 	      if (serverSettings.endpointUrl === 'firebase') {
-	        config.annotationEndpoint = {
+	        endpointConfig = {
 	          name: 'Yale (Firebase) Annotations',
 	          module: 'YaleDemoEndpoint',
 	          options: {}
 	        };
+	      } else {
+	        endpointConfig = {
+	          name: 'Yale Annotations',
+	          module: 'YaleEndpoint',
+	          options: { prefix: serverSettings.endpointUrl }
+	        };
 	      }
+
+	      var windowObject = {
+	        loadedManifest: htmlOptions.manifestUri
+	      };
+	      if (htmlOptions.canvasId) {
+	        // if instructed to load a specific canvas
+	        windowObject.canvasID = htmlOptions.canvasId;
+	      }
+
+	      jQuery.extend(config, {
+	        id: 'viewer',
+	        buildPath: serverSettings.buildPath || '/',
+	        i18nPath: '/locales/',
+	        imagesPath: '/images/',
+	        logosPath: '/images/logos/',
+	        mainMenuSettings: { show: false },
+	        data: [{ manifestUri: htmlOptions.manifestUri }],
+	        windowObjects: [windowObject],
+	        autoHideControls: false, // autoHide is bad for touch-only devices
+	        annotationEndpoint: endpointConfig,
+	        annotationBodyEditor: {
+	          module: 'AnnotationEditor',
+	          options: {
+	            miradorDriven: true,
+	            mode: 'create'
+	          }
+	        },
+	        extension: {}
+	      });
+
+	      config.windowSettings.displayLayout = false;
+
+	      if (!_session2.default.isEditor()) {
+	        config.windowSettings.canvasControls.annotations.annotationCreation = false;
+	      }
+
+	      if (serverSettings.tagHierarchy) {
+	        config.extension.tagHierarchy = serverSettings.tagHierarchy;
+	      }
+	      console.log('MiradorWindow config: ' + JSON.stringify(config, null, 2));
 	      return config;
 	    }
 
@@ -10054,56 +10079,6 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	// Settings for IIIF/Mirador core.
-	// See settings.js in IIIF/Mirador core for defaults that
-	// this file overrides.
-
-	exports.default = {
-	  id: 'viewer',
-	  saveSession: false,
-	  layout: '1x1',
-	  data: [],
-	  buildPath: '/',
-	  i18nPath: '/locales/',
-	  imagesPath: '/images/',
-	  logosPath: '/images/logos/',
-	  mainMenuSettings: {
-	    show: false
-	  },
-	  windowObjects: [{
-	    loadedManifest: null,
-	    viewType: 'ImageView',
-	    displayLayout: false,
-	    bottomPanel: true,
-	    sidePanel: true
-	  }],
-	  annotationBodyEditor: {
-	    module: 'AnnotationEditor',
-	    options: {
-	      miradorDriven: true,
-	      mode: 'create'
-	    }
-	  },
-	  annotationLayer: true,
-	  annotationEndpoint: {
-	    name: 'Yale Annotations',
-	    module: 'YaleEndpoint',
-	    options: {
-	      prefix: null
-	    }
-	  },
-	  extension: {}
-	};
-
-/***/ },
-/* 312 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -10154,7 +10129,7 @@
 	var template = Handlebars.compile(['Loading annotations ...'].join(''));
 
 /***/ },
-/* 313 */
+/* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10167,7 +10142,7 @@
 
 	var _miradorProxy2 = _interopRequireDefault(_miradorProxy);
 
-	var _toc = __webpack_require__(314);
+	var _toc = __webpack_require__(313);
 
 	var _toc2 = _interopRequireDefault(_toc);
 
@@ -10175,11 +10150,11 @@
 
 	var _miradorWindow2 = _interopRequireDefault(_miradorWindow);
 
-	var _modalAlert = __webpack_require__(312);
+	var _modalAlert = __webpack_require__(311);
 
 	var _modalAlert2 = _interopRequireDefault(_modalAlert);
 
-	var _errorDialog = __webpack_require__(315);
+	var _errorDialog = __webpack_require__(314);
 
 	var _errorDialog2 = _interopRequireDefault(_errorDialog);
 
@@ -10538,7 +10513,7 @@
 	})(window.Mirador);
 
 /***/ },
-/* 314 */
+/* 313 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10940,7 +10915,7 @@
 	exports.default = Toc;
 
 /***/ },
-/* 315 */
+/* 314 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11012,7 +10987,7 @@
 	var MSG_ANNOTATIONS = 'Sorry, there was a problem retrieving the annotations.';
 
 /***/ },
-/* 316 */
+/* 315 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11351,7 +11326,7 @@
 	})(window.Mirador);
 
 /***/ },
-/* 317 */
+/* 316 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11670,6 +11645,39 @@
 
 	  };
 	})(window.Mirador);
+
+/***/ },
+/* 317 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	/**
+	 * Overrides the same-named file in Mirador core to prevent
+	 * Bootstrap or Bootbox code being called, which collides with Semantic UI.
+	 */
+
+	(function ($) {
+
+	  var template = Handlebars.compile(['<div class="header">Error</div>', '<div class="content">', '  <div class="description">', '    <p>{{message}}</p>', '  </div>', '</div>', '<div class="actions">', '  <div class="ui cancel button">Dismiss</div>', '</div>'].join(''));
+
+	  $.DialogBuilder = function (container) {
+	    this.element = jQuery('#ym_dialog');
+	    this.element.addClass('ui modal ym_modal');
+	  };
+
+	  $.DialogBuilder.prototype = {
+
+	    confirm: function confirm(message, callback) {
+	      var result = window.confirm(message);
+	      callback(result);
+	    },
+
+	    dialog: function dialog(opts) {
+	      console.log('DialogBuilder#dialog');
+	    }
+	  };
+	})(Mirador);
 
 /***/ },
 /* 318 */
