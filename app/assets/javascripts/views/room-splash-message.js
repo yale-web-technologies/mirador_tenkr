@@ -15,7 +15,7 @@
       '  </div>',
       '</div>',
       '<div class="actions">',
-      '  <div class="ui ok button">Ok</div>',
+      '  <div class="ui ok button">OK</div>',
       '</div>'
     ].join(''));
     
