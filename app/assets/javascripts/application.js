@@ -20,3 +20,4 @@
 //= require main
 //= require widgets/login-widget
 //= require views/header-view
+//= require views/room-splash-message
