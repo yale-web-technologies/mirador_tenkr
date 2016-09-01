@@ -33,6 +33,11 @@
 .qtip-content {
   overflow: visible !important;
 }
+.qtip-default,
+.qtip-content {
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.2);
+}
 #mirador_header {
   top: 0px;
   height: 36px;
