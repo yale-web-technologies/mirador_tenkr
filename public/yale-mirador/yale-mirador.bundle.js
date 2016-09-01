@@ -10095,7 +10095,12 @@
 
 	function getModalAlert() {
 	  if (!instance) {
-	    instance = new ModalAlert(jQuery('#ym_modal'));
+	    var id = 'ym_modal_alert';
+	    var elem = jQuery('#' + id);
+	    if (elem.size() === 0) {
+	      elem = jQuery('<div/>').attr('id', id).addClass('ui modal ym_modal').appendTo(jQuery('body'));
+	    }
+	    instance = new ModalAlert(elem);
 	  }
 	  return instance;
 	};
@@ -10105,7 +10110,6 @@
 	    _classCallCheck(this, ModalAlert);
 
 	    this.elem = elem;
-	    elem.addClass('ui modal ym_modal');
 	    elem.html(template());
 	    elem.modal({
 	      closable: false,
@@ -10271,7 +10275,19 @@
 	    },
 
 	    create: function create(oaAnnotation, successCallback, errorCallback) {
-	      console.log('YaleEndpoint#create oaAnnotation:');
+	      if (this.userAuthorize('create', oaAnnotation)) {
+	        this._create(oaAnnotation, successCallback, errorCallback);
+	      } else {
+	        console.log('YaleEndpoint#create user not authorized');
+	        (0, _errorDialog2.default)().show('authz_create');
+	        if (typeof errorCallback === 'function') {
+	          errorCallback();
+	        }
+	      }
+	    },
+
+	    _create: function _create(oaAnnotation, successCallback, errorCallback) {
+	      console.log('YaleEndpoint#_create oaAnnotation:');
 	      console.dir(oaAnnotation);
 
 	      var _this = this;
@@ -10284,7 +10300,7 @@
 	        annotation: annotation
 	      };
 
-	      console.log('Request: ' + JSON.stringify(request, null, 2));
+	      //console.log('YaleEndpoint#_create request: ' + JSON.stringify(request, null, 2));
 
 	      jQuery.ajax({
 	        url: url,
@@ -10311,11 +10327,23 @@
 	    },
 
 	    update: function update(oaAnnotation, successCallback, errorCallback) {
+	      if (this.userAuthorize('update', oaAnnotation)) {
+	        this._update(oaAnnotation, successCallback, errorCallback);
+	      } else {
+	        console.log('YaleEndpoint#update user not authorized');
+	        (0, _errorDialog2.default)().show('authz_update');
+	        if (typeof errorCallback === 'function') {
+	          errorCallback();
+	        }
+	      }
+	    },
+
+	    _update: function _update(oaAnnotation, successCallback, errorCallback) {
 	      var _this = this;
 	      var annotation = this.getAnnotationInEndpoint(oaAnnotation);
 	      var url = this.prefix + '/annotations';
 
-	      console.log('YaleEndpoint#update url: ' + url);
+	      console.log('YaleEndpoint#_update url: ' + url);
 
 	      var data = {
 	        layer_id: [oaAnnotation.layerId],
@@ -10349,6 +10377,18 @@
 	    },
 
 	    deleteAnnotation: function deleteAnnotation(annotationId, successCallback, errorCallback) {
+	      if (this.userAuthorize('delete', null)) {
+	        this._deleteAnnotation(annotationId, successCallback, errorCallback);
+	      } else {
+	        console.log('YaleEndpoint#delete user not authorized');
+	        (0, _errorDialog2.default)().show('authz_update');
+	        if (typeof errorCallback === 'function') {
+	          errorCallback();
+	        }
+	      }
+	    },
+
+	    _deleteAnnotation: function _deleteAnnotation(annotationId, successCallback, errorCallback) {
 	      console.log('YaleEndpoint#delete oa annotationId: ' + annotationId);
 	      var _this = this;
 	      var url = annotationId;
@@ -10418,11 +10458,25 @@
 	    },
 
 	    updateOrder: function updateOrder(canvasId, layerId, annoIds, successCallback, errorCallback) {
+	      if (this.userAuthorize('update', null)) {
+	        this._updateOrder(canvasId, layerId, annoIds, successCallback, errorCallback);
+	      } else {
+	        console.log('YaleEndpoint#update user not authorized');
+	        (0, _errorDialog2.default)().show('authz_update');
+	        if (typeof errorCallback === 'function') {
+	          errorCallback();
+	        }
+	      }
+	    },
+
+	    _updateOrder: function _updateOrder(canvasId, layerId, annoIds, successCallback, errorCallback) {
+	      /*
 	      console.log('canvasId: ' + canvasId);
 	      console.log('layerId: ' + layerId);
-	      jQuery.each(annoIds, function (index, value) {
+	      jQuery.each(annoIds, function(index, value) {
 	        console.log(value);
 	      });
+	      */
 
 	      var url = this.prefix + '/resequenceList';
 	      var data = {
@@ -10430,8 +10484,6 @@
 	        layer_id: layerId,
 	        annotation_ids: annoIds
 	      };
-
-	      console.log('XXX ' + JSON.stringify(data));
 
 	      jQuery.ajax({
 	        url: url,
@@ -10456,7 +10508,11 @@
 	    },
 
 	    userAuthorize: function userAuthorize(action, annotation) {
-	      return _session2.default.isEditor();
+	      if (action === 'create' || action === 'update' || action === 'delete') {
+	        return _session2.default.isEditor();
+	      } else {
+	        return true;
+	      }
 	    },
 
 	    // Convert Endpoint annotation to OA
@@ -10939,7 +10995,12 @@
 
 	function getErrorDialog() {
 	  if (!instance) {
-	    instance = new ErrorDialog(jQuery('#ym_error_dialog'));
+	    var id = 'ym_error_dialog';
+	    var elem = jQuery('#' + id);
+	    if (elem.size() === 0) {
+	      elem = jQuery('<div/>').attr('id', id).addClass('ui modal ym_modal').appendTo(jQuery('body'));
+	    }
+	    instance = new ErrorDialog(elem);
 	  }
 	  return instance;
 	};
@@ -10949,28 +11010,25 @@
 	    _classCallCheck(this, ErrorDialog);
 
 	    this.elem = elem;
-	    elem.addClass('ui modal ym_modal');
 	    elem.modal({
 	      onHidden: function onHidden() {
 	        elem.modal('hide dimmer');
 	      }
 	    });
+	    this.messageMap = {
+	      layers: '<p>Sorry, there was a problem retrieving the annotation layers.</p>' + MSG_TRY_LATER,
+	      annotations: '<p>Sorry, there was a problem retrieving the annotations.</p>' + MSG_TRY_LATER,
+	      authz_create: '<p>Sorry, you are not authorized to create annotations.</p>',
+	      authz_update: '<p>Sorry, you are not authorized to update data.</p>',
+	      authz_delete: '<p>Sorry, you are not authorized to delete data.</p>'
+	    };
 	  }
 
 	  _createClass(ErrorDialog, [{
 	    key: 'show',
 	    value: function show(errorId) {
-	      switch (errorId) {
-	        case 'layers':
-	          this.elem.html(template({ message: MSG_LAYERS }));
-	          break;
-	        case 'annotations':
-	          this.elem.html(template({ message: MSG_ANNOTATIONS }));
-	          break;
-	        default:
-	          console.log('ErrorDialog#show invalid errorId: ' + errorId);
-	          return;
-	      }
+	      var message = this.messageMap[errorId] || 'Undefined error.';
+	      this.elem.html(template({ message: message }));
 	      this.elem.modal('show');
 	    }
 	  }, {
@@ -10978,9 +11036,6 @@
 	    value: function hide() {
 	      this.elem.modal('hide');
 	    }
-	  }, {
-	    key: '_errorGettingLayers',
-	    value: function _errorGettingLayers() {}
 	  }]);
 
 	  return ErrorDialog;
@@ -10988,10 +11043,9 @@
 
 	var instance = null;
 
-	var template = Handlebars.compile(['<div class="header">Error</div>', '<div class="content">', '  <div class="description">', '    <p>{{message}}</p>', '    <p>Please try again a bit later, or if problem persists, create an issue at <a class="ym_link" target="_blank" href="https://github.com/yale-web-technologies/mirador-project/issues">GitHub</a>.</p>', '  </div>', '</div>', '<div class="actions">', '  <div class="ui cancel button">Dismiss</div>', '</div>'].join(''));
+	var template = Handlebars.compile(['<div class="header">Error</div>', '<div class="content">', '  <div class="description">', '    {{{message}}}', '  </div>', '</div>', '<div class="actions">', '  <div class="ui cancel button">Dismiss</div>', '</div>'].join(''));
 
-	var MSG_LAYERS = 'Sorry, there was a problem retrieving the annotation layers.';
-	var MSG_ANNOTATIONS = 'Sorry, there was a problem retrieving the annotations.';
+	var MSG_TRY_LATER = '<p>Please try again a bit later, or if problem persists, create an issue at <a class="ym_link" target="_blank" href="https://github.com/yale-web-technologies/mirador-project/issues">GitHub</a>.</p>';
 
 /***/ },
 /* 315 */
@@ -11068,8 +11122,8 @@
 	      });
 	    },
 
-	    create: function create(oaAnnotation, successCallback, errorCallback) {
-	      console.log('YaleDemoEndpoint#create oaAnnotation:');
+	    _create: function _create(oaAnnotation, successCallback, errorCallback) {
+	      console.log('YaleDemoEndpoint#_create oaAnnotation:');
 	      console.dir(oaAnnotation);
 
 	      var layerId = oaAnnotation.layerId;
@@ -11090,8 +11144,8 @@
 	      }
 	    },
 
-	    update: function update(oaAnnotation, successCallback, errorCallback) {
-	      console.log('YaleDemoEndpoint#update oaAnnotation:');
+	    _update: function _update(oaAnnotation, successCallback, errorCallback) {
+	      console.log('YaleDemoEndpoint#_update oaAnnotation:');
 	      console.dir(oaAnnotation);
 
 	      var _this = this;
@@ -11116,7 +11170,7 @@
 	      });
 	    },
 
-	    deleteAnnotation: function deleteAnnotation(annotationId, successCallback, errorCallback) {
+	    _deleteAnnotation: function _deleteAnnotation(annotationId, successCallback, errorCallback) {
 	      console.log('YaleDemoEndpoint#delete annotationId: ' + annotationId);
 	      var _this = this;
 	      var fbKey = this.fbKeyMap[annotationId];
@@ -11155,7 +11209,7 @@
 	      });
 	    },
 
-	    updateOrder: function updateOrder(canvasId, layerId, annoIds, successCallback, errorCallback) {
+	    _updateOrder: function _updateOrder(canvasId, layerId, annoIds, successCallback, errorCallback) {
 	      jQuery.each(annoIds, function (index, value) {
 	        console.log(value);
 	      });
@@ -11831,11 +11885,15 @@
 
 	(function ($) {
 
-	  var template = Handlebars.compile(['<div class="header">Error</div>', '<div class="content">', '  <div class="description">', '    <p>{{message}}</p>', '  </div>', '</div>', '<div class="actions">', '  <div class="ui cancel button">Dismiss</div>', '</div>'].join(''));
+	  var template = Handlebars.compile(['<div class="header">Error</div>', '<div class="content">', '  <div class="description">', '    <p>{{message}}</p>', '  </div>', '</div>', '<div class="actions">', '  <div class="ui ok button">{{yesLabel}}</div>', '  <div class="ui cancel button">{{noLabel}}</div>', '</div>'].join(''));
 
 	  $.DialogBuilder = function (container) {
-	    this.element = jQuery('#ym_dialog');
-	    this.element.addClass('ui modal ym_modal');
+	    var id = 'ym_dialog';
+	    var elem = jQuery('#' + id);
+	    if (elem.size() === 0) {
+	      elem = jQuery('<div/>').attr('id', id).addClass('ui modal ym_modal').appendTo(jQuery('body'));
+	    }
+	    this.elem = elem;
 	  };
 
 	  $.DialogBuilder.prototype = {
@@ -11847,6 +11905,27 @@
 
 	    dialog: function dialog(opts) {
 	      console.log('DialogBuilder#dialog');
+	      var yes = opts.buttons.yes;
+	      var no = opts.buttons.no;
+
+	      this.elem.html(template({
+	        message: opts.message,
+	        yesLabel: yes.label,
+	        noLabel: no.label
+	      }));
+	      this.elem.modal({
+	        onApprove: function onApprove(elem) {
+	          if (typeof yes.callback === 'function') {
+	            yes.callback();
+	          }
+	        },
+	        onDeny: function onDeny(elem) {
+	          if (typeof no.callback === 'function') {
+	            no.callback();
+	          }
+	        }
+	      });
+	      this.elem.modal('show');
 	    }
 	  };
 	})(Mirador);

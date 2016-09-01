@@ -15,6 +15,9 @@
 .ui.dropdown .ym.dropdown.icon {
   margin-left: 0.3em;
 }
+.ui.dimmer.modals {
+  z-index: 15100;
+}
 /* 
  * Overriding GoldenLayout
  */
@@ -44,7 +47,7 @@
 #viewer * {
   box-sizing: content-box;
 }
-#ym_modal {
+.ym_modal {
   bottom: auto;
 }
 html,
