@@ -44927,9 +44927,6 @@ return paper;
       var _this = this;
       _this.annotationsToShapesMap = {};
       
-      // XXX seong 
-      // Separated out the code into the new function renderAnnotation()
-      // so it is easier to debug.
       var deferreds = jQuery.map(this.list, function(annotation) {
         var deferred = jQuery.Deferred(),
         shapeArray;
@@ -44978,6 +44975,8 @@ return paper;
     },
 
     parseRectangle: function(rectString, annotation) {
+      try { // XXX seong
+        
       var shapeArray = rectString.split('=')[1].split(','),
       shape = {
         'x': parseInt(shapeArray[0]),
@@ -44987,6 +44986,12 @@ return paper;
       };
 
       return this.svgOverlay.createRectangle(shape, annotation);
+      
+      } catch (e) { // XXX seong
+        console.log('OsdRegionDrawTool#parseRectangle caught: ' + e);
+        console.log('rectString: ' + rectString);
+        return [];
+      }
     },
 
     showTooltipsFromMousePosition: function(event, location, absoluteLocation) {
