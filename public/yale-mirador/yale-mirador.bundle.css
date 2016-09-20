@@ -103,7 +103,8 @@ p {
   right: 0;
 }
 .ym_anno_editor {
-  background-color: white;
+  color: #000;
+  background-color: #fff;
   border: solid 3px #0072c4;
   padding: 5px;
 }

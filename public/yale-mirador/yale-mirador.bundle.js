@@ -78,13 +78,13 @@
 
 	__webpack_require__(327);
 
-	__webpack_require__(328);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	__webpack_require__(329);
+	__webpack_require__(328);
+
+	// import './util/override-pubsub';
 
 	var App = function App() {
 	  _classCallCheck(this, App);
@@ -12886,32 +12886,6 @@
 
 /***/ },
 /* 328 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	(function ($) {
-
-	  var o = $({});
-
-	  $.subscribe = function () {
-	    console.log('SUB ' + Array.prototype.slice.call(arguments));
-	    o.on.apply(o, arguments);
-	  };
-
-	  $.unsubscribe = function () {
-	    console.log('UNS ' + Array.prototype.slice.call(arguments));
-	    o.off.apply(o, arguments);
-	  };
-
-	  $.publish = function () {
-	    console.log('PUB ' + Array.prototype.slice.call(arguments));
-	    o.trigger.apply(o, arguments);
-	  };
-	})(jQuery);
-
-/***/ },
-/* 329 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
