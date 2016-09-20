@@ -18,6 +18,12 @@
 .ui.dimmer.modals {
   z-index: 15100;
 }
+@media only screen and (min-width: 1200px) {
+  .ui.modal.ym_large_modal {
+    width: 1000px;
+    margin: -50% 0 0 -450px;
+  }
+}
 /* 
  * Overriding GoldenLayout
  */
@@ -37,6 +43,14 @@
 .qtip-content {
   color: #fff;
   background-color: rgba(0, 0, 0, 0.2);
+}
+.annotation-tooltip .merge,
+.annotation-tooltip .cancel,
+.annotation-tooltip .save {
+  margin-left: 12px;
+  font-size: 12px;
+  text-decoration: underline;
+  color: #fff;
 }
 #mirador_header {
   top: 0px;
@@ -107,6 +121,41 @@ p {
 .ym_vertical_dec:hover,
 .ym_vertical_inc:hover {
   color: #777;
+}
+#ym_annotation_selector .canvases,
+#ym_annotation_selector .layers,
+#ym_annotation_selector .anno {
+  padding: 5px 5px;
+}
+#ym_annotation_selector .canvases,
+#ym_annotation_selector .layers {
+  overflow-y: scroll;
+  border: inset 2px;
+}
+#ym_annotation_selector .canvases .selected,
+#ym_annotation_selector .layers .selected,
+#ym_annotation_selector .canvases .selected a,
+#ym_annotation_selector .layers .selected a {
+  color: #fff;
+  background-color: #4684cc;
+}
+#ym_annotation_selector .canvases a,
+#ym_annotation_selector .layers a {
+  display: inline-block;
+  width: 100%;
+}
+#ym_annotation_selector .canvases {
+  margin-bottom: 10px;
+}
+#ym_annotation_selector .annos {
+  overflow-y: scroll;
+}
+#ym_annotation_selector .anno {
+  border: solid 1px #bbb;
+}
+#ym_annotation_selector .anno.selected {
+  border: solid 4px #4684cc;
+  padding: 2px 2px;
 }
 .ym_annotation_window {
   position: absolute;
