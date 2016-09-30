@@ -7,7 +7,7 @@ window.MR = {};
     console.log('Mirador Rails document ready');
     
     var headerElem = jQuery('.mr_header');
-    if (headerElem.size() > 0) {
+    if (headerElem.length > 0) {
       var headerView = new $.HeaderView({
         element: headerElem
       });
