@@ -97,7 +97,7 @@
 
 	jQuery(document).ready(function () {
 	  console.log('Yale Mirador Extension document ready');
-	  if (jQuery('#ym_grid').size() > 0) {
+	  if (jQuery('#ym_grid').length > 0) {
 	    var app = new App();
 	  }
 	});
@@ -8387,7 +8387,7 @@
 	  $.DialogBuilder = function (container) {
 	    var id = 'ym_dialog';
 	    var elem = jQuery('#' + id);
-	    if (elem.size() === 0) {
+	    if (elem.length === 0) {
 	      elem = jQuery('<div/>').attr('id', id).addClass('ui modal ym_modal').appendTo(jQuery('body'));
 	    }
 	    this.elem = elem;
@@ -10231,7 +10231,7 @@
 	  if (!instance) {
 	    var id = 'ym_modal_alert';
 	    var elem = jQuery('#' + id);
-	    if (elem.size() === 0) {
+	    if (elem.length === 0) {
 	      elem = jQuery('<div/>').attr('id', id).addClass('ui modal ym_modal').appendTo(jQuery('body'));
 	    }
 	    instance = new ModalAlert(elem);
@@ -10295,7 +10295,7 @@
 	  if (!instance) {
 	    var id = 'ym_error_dialog';
 	    var elem = jQuery('#' + id);
-	    if (elem.size() === 0) {
+	    if (elem.length === 0) {
 	      elem = jQuery('<div/>').attr('id', id).addClass('ui modal ym_modal').appendTo(jQuery('body'));
 	    }
 	    instance = new ErrorDialog(elem);
@@ -11604,7 +11604,7 @@
 	      var canvasElems = this.canvasesPanel.find('.canvas');
 	      var scrollTo = null;
 
-	      console.log('scrollToCurrentCanvas ' + canvasElems.size());
+	      console.log('scrollToCurrentCanvas ' + canvasElems.length);
 
 	      canvasElems.each(function (index, canvasElem) {
 	        var elem = $(canvasElem);
@@ -11630,7 +11630,7 @@
 	  if (!instance) {
 	    var id = 'ym_annotation_selector';
 	    var elem = jQuery('#' + id);
-	    if (elem.size() === 0) {
+	    if (elem.length === 0) {
 	      elem = jQuery('<div/>').attr('id', id).addClass('ui modal ym_modal ym_large_modal').appendTo(jQuery('body'));
 	    }
 	    instance = new YmAnnotationSelector(elem);
@@ -12117,7 +12117,7 @@
 
 	      annoElem.find('.up.icon').click(function (event) {
 	        var sibling = annoElem.prev();
-	        if (sibling.size() > 0 && sibling.hasClass('annowin_anno')) {
+	        if (sibling.length > 0 && sibling.hasClass('annowin_anno')) {
 	          annoWin.fadeDown(annoElem, function () {
 	            annoElem.after(sibling);
 	            annoWin.fadeUp(annoElem, function () {
@@ -12129,7 +12129,7 @@
 
 	      annoElem.find('.down.icon').click(function (event) {
 	        var sibling = annoElem.next();
-	        if (sibling.size() > 0 && sibling.hasClass('annowin_anno')) {
+	        if (sibling.length > 0 && sibling.hasClass('annowin_anno')) {
 	          annoWin.fadeUp(annoElem, function () {
 	            annoElem.before(sibling);
 	            annoWin.fadeDown(annoElem, function () {
