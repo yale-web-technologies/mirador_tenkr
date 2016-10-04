@@ -16,6 +16,7 @@
 //= require js.cookie
 //= require semantic_ui/semantic_ui
 //= require tinymce
+//= require dexie
 //
 //= require main
 //= require widgets/login-widget
