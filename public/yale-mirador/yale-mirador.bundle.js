@@ -58,33 +58,33 @@
 
 	__webpack_require__(302);
 
-	__webpack_require__(314);
-
-	__webpack_require__(316);
+	__webpack_require__(317);
 
 	__webpack_require__(319);
 
-	var _grid = __webpack_require__(320);
+	__webpack_require__(322);
+
+	var _grid = __webpack_require__(323);
 
 	var _grid2 = _interopRequireDefault(_grid);
 
-	var _mainMenu = __webpack_require__(326);
+	var _mainMenu = __webpack_require__(328);
 
 	var _mainMenu2 = _interopRequireDefault(_mainMenu);
 
-	var _miradorWindow = __webpack_require__(311);
+	var _miradorWindow = __webpack_require__(307);
 
 	var _miradorWindow2 = _interopRequireDefault(_miradorWindow);
 
-	__webpack_require__(327);
+	__webpack_require__(329);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	__webpack_require__(328);
+	__webpack_require__(330);
 
-	// import './util/override-pubsub';
+	//import './util/override-pubsub'; // import this only for debugging!
 
 	var App = function App() {
 	  _classCallCheck(this, App);
@@ -8439,154 +8439,86 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _session = __webpack_require__(303);
-
-	var _session2 = _interopRequireDefault(_session);
-
-	var _miradorProxyManager = __webpack_require__(304);
+	var _miradorProxyManager = __webpack_require__(303);
 
 	var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
-	var _toc = __webpack_require__(308);
-
-	var _toc2 = _interopRequireDefault(_toc);
-
-	var _miradorWindow = __webpack_require__(311);
+	var _miradorWindow = __webpack_require__(307);
 
 	var _miradorWindow2 = _interopRequireDefault(_miradorWindow);
 
-	var _modalAlert = __webpack_require__(312);
+	var _modalAlert = __webpack_require__(311);
 
 	var _modalAlert2 = _interopRequireDefault(_modalAlert);
 
-	var _errorDialog = __webpack_require__(313);
+	var _errorDialog = __webpack_require__(312);
 
 	var _errorDialog2 = _interopRequireDefault(_errorDialog);
+
+	var _annotationCache = __webpack_require__(313);
+
+	var _annotationCache2 = _interopRequireDefault(_annotationCache);
+
+	var _toc = __webpack_require__(314);
+
+	var _toc2 = _interopRequireDefault(_toc);
+
+	var _yaleEndpointBase = __webpack_require__(315);
+
+	var _yaleEndpointBase2 = _interopRequireDefault(_yaleEndpointBase);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var YaleEndpoint = function () {
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var YaleEndpoint = function (_YaleEndpointBase) {
+	  _inherits(YaleEndpoint, _YaleEndpointBase);
+
 	  function YaleEndpoint(options) {
 	    _classCallCheck(this, YaleEndpoint);
 
-	    jQuery.extend(this, {
-	      annotationLayers: [],
-	      annotationsList: [],
-	      dfd: null,
-	      imagesList: null,
-	      prefix: null,
-	      windowID: null,
-	      canvasToc: null
-	    }, options);
-
-	    this.init();
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(YaleEndpoint).call(this, options));
 	  }
 
 	  _createClass(YaleEndpoint, [{
-	    key: 'init',
-	    value: function init() {
-	      this._layers = [];
-	    }
-	  }, {
-	    key: 'getCanvasToc',
-	    value: function getCanvasToc() {
-	      return this.canvasToc;
-	    }
-	  }, {
-	    key: 'search',
-	    value: function search(options) {
-	      console.log('YaleEndpoint#search options: ' + JSON.stringify(options));
-	      (0, _modalAlert2.default)().show();
-
-	      var _this = this;
-	      var layersDfd = jQuery.Deferred();
-	      var annosDfd = jQuery.Deferred();
-
-	      if (this.annotationLayers.length < 1) {
-	        this.getLayers(layersDfd);
-	      } else {
-	        layersDfd.resolve(null, true);
-	      }
-
-	      layersDfd.done(function (layers, pass) {
-	        if (!pass) {
-	          _this.annotationLayers = layers;
-	        }
-	        _this._search(options, annosDfd);
-	      });
-	      layersDfd.fail(function (xhr) {
-	        (0, _errorDialog2.default)().show('layers');
-	      });
-
-	      annosDfd.done(function () {
-	        _this.dfd.resolve(true);
-	      });
-	      annosDfd.fail(function () {
-	        (0, _errorDialog2.default)().show('annotations');
-	        _this.dfd.reject();
-	      });
-	      annosDfd.always(function () {
-	        console.log('ALWAYS');
-	        (0, _modalAlert2.default)().hide();
-	      });
-	    }
-	  }, {
 	    key: '_search',
-	    value: function _search(options, dfd) {
-	      var _this = this;
-	      var canvasId = options.uri;
-	      //const url = this.prefix + '/getAnnotations?includeTargetingAnnos=true&canvas_id=' + encodeURIComponent(canvasId);
-	      var url = this.prefix + '/getAnnotationsViaList?canvas_id=' + encodeURIComponent(canvasId);
-	      console.log('YaleEndpoint#_search url: ' + url);
-	      this.annotationsList = [];
-
-	      jQuery.ajax({
-	        url: url,
-	        type: 'GET',
-	        dataType: 'json',
-	        headers: {
-	          'bearer-token': this.bearerToken
-	        },
-	        contentType: 'application/json; charset=utf-8',
-	        success: function success(data, textStatus, jqXHR) {
-	          console.log('YaleEndpoint#_search data: ');
-	          console.dir(data);
-
-	          var annotations = data;
-	          jQuery.each(annotations, function (index, value) {
-	            var oaAnnotation = _this.getAnnotationInOA(value.annotation);
-	            oaAnnotation.layerId = value.layer_id;
-	            _this.annotationsList.push(oaAnnotation);
-	          });
-	          dfd.resolve(data);
-	        },
-	        error: function error(jqXHR, textStatus, errorThrown) {
-	          console.log('YaleEndpoint#search error searching');
-	          dfd.reject();
-	        }
-	      });
-	    }
-	  }, {
-	    key: 'create',
-	    value: function create(oaAnnotation, successCallback, errorCallback) {
+	    value: function _search(canvasId) {
 	      var _this = this;
 
-	      if (this.userAuthorize('create', oaAnnotation)) {
-	        this._create(oaAnnotation, function (anno) {
-	          _this.annotationsList.push(anno);
-	          if (typeof successCallback === 'function') {
-	            successCallback(anno);
+	      return new Promise(function (resolve, reject) {
+	        var url = _this.prefix + '/getAnnotationsViaList?canvas_id=' + encodeURIComponent(canvasId);
+	        console.log('YaleEndpoint#_search url: ' + url);
+	        var annotations = [];
+
+	        jQuery.ajax({
+	          url: url,
+	          type: 'GET',
+	          dataType: 'json',
+	          headers: {
+	            'bearer-token': _this.bearerToken
+	          },
+	          contentType: 'application/json; charset=utf-8',
+	          success: function success(data, textStatus, jqXHR) {
+	            console.log('YaleEndpoint#_search data: ');
+	            console.dir(data);
+
+	            jQuery.each(data, function (index, value) {
+	              var oaAnnotation = _this.getAnnotationInOA(value.annotation);
+	              oaAnnotation.layerId = value.layer_id;
+	              annotations.push(oaAnnotation);
+	            });
+	            resolve(annotations);
+	          },
+	          error: function error(jqXHR, textStatus, errorThrown) {
+	            console.log('YaleEndpoint#search error searching');
+	            reject();
 	          }
-	        }, errorCallback);
-	      } else {
-	        console.log('YaleEndpoint#create user not authorized');
-	        (0, _errorDialog2.default)().show('authz_create');
-	        if (typeof errorCallback === 'function') {
-	          errorCallback();
-	        }
-	      }
+	        });
+	      });
 	    }
 	  }, {
 	    key: '_create',
@@ -8630,32 +8562,6 @@
 	      });
 	    }
 	  }, {
-	    key: 'update',
-	    value: function update(oaAnnotation, successCallback, errorCallback) {
-	      var _this = this;
-	      var annotationId = oaAnnotation['@id'];
-
-	      if (this.userAuthorize('update', oaAnnotation)) {
-	        this._update(oaAnnotation, function (anno) {
-	          jQuery.each(_this.annotationsList, function (index, value) {
-	            if (value['@id'] === annotationId) {
-	              _this.annotationsList[index] = anno;
-	              return false;
-	            }
-	          });
-	          if (typeof successCallback === 'function') {
-	            successCallback(anno);
-	          }
-	        }, errorCallback);
-	      } else {
-	        console.log('YaleEndpoint#update user not authorized');
-	        (0, _errorDialog2.default)().show('authz_update');
-	        if (typeof errorCallback === 'function') {
-	          errorCallback();
-	        }
-	      }
-	    }
-	  }, {
 	    key: '_update',
 	    value: function _update(oaAnnotation, successCallback, errorCallback) {
 	      var _this = this;
@@ -8695,28 +8601,6 @@
 	      });
 	    }
 	  }, {
-	    key: 'deleteAnnotation',
-	    value: function deleteAnnotation(annotationId, successCallback, errorCallback) {
-	      var _this = this;
-
-	      if (this.userAuthorize('delete', null)) {
-	        this._deleteAnnotation(annotationId, function () {
-	          _this.annotationsList = jQuery.grep(_this.annotationsList, function (value, index) {
-	            return value['@id'] !== annotationId;
-	          });
-	          if (typeof successCallback === 'function') {
-	            successCallback();
-	          }
-	        }, errorCallback);
-	      } else {
-	        console.log('YaleEndpoint#delete user not authorized');
-	        (0, _errorDialog2.default)().show('authz_update');
-	        if (typeof errorCallback === 'function') {
-	          errorCallback();
-	        }
-	      }
-	    }
-	  }, {
 	    key: '_deleteAnnotation',
 	    value: function _deleteAnnotation(annotationId, successCallback, errorCallback) {
 	      console.log('YaleEndpoint#delete oa annotationId: ' + annotationId);
@@ -8741,73 +8625,35 @@
 	      });
 	    }
 	  }, {
-	    key: 'set',
-	    value: function set(prop, value, options) {
-	      console.log('YaleEndpoint#set prop: ' + prop + ', value: ' + value + ', options: ' + JSON.stringify(options));
-	      if (options) {
-	        this[options.parent][prop] = value;
-	      } else {
-	        this[prop] = value;
-	      }
-	    }
-	  }, {
-	    key: 'getLayers',
-	    value: function getLayers(dfd) {
-	      console.log('YaleEndpoint#getLayers');
-
-	      if (this._layers.length > 0) {
-	        dfd.resolve(this._layers); // return cached data
-	        return;
-	      }
-
+	    key: '_getLayers',
+	    value: function _getLayers() {
+	      console.log('YaleEndpoint#_getLayers');
 	      var _this = this;
-	      var url = this.prefix + '/layers';
+	      return new Promise(function (resolve, reject) {
+	        var url = _this.prefix + '/layers';
 
-	      jQuery.ajax({
-	        url: url,
-	        type: 'GET',
-	        dataType: 'json',
-	        contentType: 'application/json; charset=utf-8',
-	        success: function success(data, textStatus, jqXHR) {
-	          console.log('YaleEndpoint#getLayers data: ');
-	          console.dir(data);
-	          _this._layers = data;
-	          dfd.resolve(data);
-	        },
-	        error: function error(jqXHR, textStatus, errorThrown) {
-	          console.log('YaleEndpoint#search error retrieving layers:');
-	          console.log('status code: ' + jqXHR.status);
-	          console.log('textStatus: ' + textStatus);
-	          console.log('errorThrown: ' + errorThrown);
-	          console.log('URL: ' + url);
-	          if (typeof errorCallback === 'function') {
-	            dfd.reject(jqXHR, textStatus, errorThrown);
+	        jQuery.ajax({
+	          url: url,
+	          type: 'GET',
+	          dataType: 'json',
+	          contentType: 'application/json; charset=utf-8',
+	          success: function success(data, textStatus, jqXHR) {
+	            console.log('YaleEndpoint#getLayers data: ');
+	            console.dir(data);
+	            resolve(data);
+	          },
+	          error: function error(jqXHR, textStatus, errorThrown) {
+	            console.log('YaleEndpoint#search error retrieving layers:');
+	            console.log('status code: ' + jqXHR.status);
+	            console.log('textStatus: ' + textStatus);
+	            console.log('errorThrown: ' + errorThrown);
+	            console.log('URL: ' + url);
+	            if (typeof errorCallback === 'function') {
+	              reject(jqXHR, textStatus, errorThrown);
+	            }
 	          }
-	        }
+	        });
 	      });
-	    }
-	  }, {
-	    key: 'getLayerById',
-	    value: function getLayerById(id) {
-	      jQuery.each(this.annotationLayers, function (index, value) {
-	        if (id === value['@id']) {
-	          return value;
-	        }
-	      });
-	      return null;
-	    }
-	  }, {
-	    key: 'updateOrder',
-	    value: function updateOrder(canvasId, layerId, annoIds, successCallback, errorCallback) {
-	      if (this.userAuthorize('update', null)) {
-	        this._updateOrder(canvasId, layerId, annoIds, successCallback, errorCallback);
-	      } else {
-	        console.log('YaleEndpoint#update user not authorized');
-	        (0, _errorDialog2.default)().show('authz_update');
-	        if (typeof errorCallback === 'function') {
-	          errorCallback();
-	        }
-	      }
 	    }
 	  }, {
 	    key: '_updateOrder',
@@ -8848,121 +8694,15 @@
 	        }
 	      });
 	    }
-	  }, {
-	    key: 'userAuthorize',
-	    value: function userAuthorize(action, annotation) {
-	      if (action === 'create' || action === 'update' || action === 'delete') {
-	        return _session2.default.isEditor();
-	      } else {
-	        return true;
-	      }
-	    }
-
-	    // Convert Endpoint annotation to OA
-
-	  }, {
-	    key: 'getAnnotationInOA',
-	    value: function getAnnotationInOA(annotation) {
-	      var motivation = annotation.motivation;
-	      if (!(motivation instanceof Array)) {
-	        if (motivation !== 'oa:commenting') {
-	          //console.log('ERROR YaleEndpoint#getAnnotationInOA unexpected motivation value: ' + motivation + ', id: ' + annotation['@id']);
-	        }
-	        motivation = ['oa:commenting'];
-	      }
-
-	      var oaAnnotation = {
-	        '@context': 'http://iiif.io/api/presentation/2/context.json',
-	        '@type': 'oa:Annotation',
-	        '@id': annotation['@id'],
-	        motivation: motivation,
-	        resource: annotation.resource,
-	        on: annotation.on,
-	        within: annotation.within,
-	        //annotatedBy: annotatedBy,
-	        //annotatedAt: annotation.created,
-	        //serializedAt: annotation.updated,
-	        //permissions: annotation.permissions,
-	        endpoint: this
-	      };
-
-	      //console.log('YaleEndpoint#getAnnotationInOA oaAnnotation:');
-	      //console.dir(oaAnnotation);
-	      return oaAnnotation;
-	    }
-
-	    // Converts OA Annotation to endpoint format
-
-	  }, {
-	    key: 'getAnnotationInEndpoint',
-	    value: function getAnnotationInEndpoint(oaAnnotation) {
-	      var annotation = {
-	        '@id': oaAnnotation['@id'],
-	        '@type': oaAnnotation['@type'],
-	        '@context': oaAnnotation['@context'],
-	        motivation: oaAnnotation.motivation,
-	        resource: oaAnnotation.resource,
-	        on: oaAnnotation.on
-	      };
-	      if (oaAnnotation.within) {
-	        annotation.within = oaAnnotation.within;
-	      }
-	      if (oaAnnotation.orderWeight) {
-	        annotation.orderWeight = oaAnnotation.orderWeight;
-	      }
-	      return annotation;
-	    }
-	  }, {
-	    key: 'parseAnnotations',
-	    value: function parseAnnotations() {
-	      //this.annotationsList = getMiradorProxyManager().getFirstWindowProxy().getAnnotationsList();
-	      var spec = (0, _miradorWindow2.default)().getConfig().extension.tagHierarchy;
-	      this.canvasToc = new _toc2.default(spec, this.annotationsList);
-	      console.log('YaleEndpoint#parseAnnotations canvasToc:');
-	      console.dir(this.canvasToc.annoHierarchy);
-	    }
 	  }]);
 
 	  return YaleEndpoint;
-	}();
+	}(_yaleEndpointBase2.default);
 
 	exports.default = YaleEndpoint;
 
 /***/ },
 /* 303 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = {
-	  serverSettings: null,
-
-	  /**
-	   * Returns true if the user is logged in via CAS.
-	   */
-	  loggedIn: function loggedIn() {
-	    return Cookies.get('loggedIn') == 'true';
-	  },
-
-	  isEditor: function isEditor() {
-	    return Cookies.get('isEditor') == 'true';
-	  },
-
-	  getServerSettings: function getServerSettings() {
-	    return this.serverSettings;
-	  },
-
-	  setServerSettings: function setServerSettings(settings) {
-	    this.serverSettings = settings;
-	    return settings;
-	  }
-	};
-
-/***/ },
-/* 304 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8973,11 +8713,11 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _miradorProxy = __webpack_require__(305);
+	var _miradorProxy = __webpack_require__(304);
 
 	var _miradorProxy2 = _interopRequireDefault(_miradorProxy);
 
-	var _windowProxy = __webpack_require__(307);
+	var _windowProxy = __webpack_require__(306);
 
 	var _windowProxy2 = _interopRequireDefault(_windowProxy);
 
@@ -9007,6 +8747,50 @@
 	    value: function getMiradorProxy(miradorId) {
 	      return this.miradorProxies[miradorId];
 	    }
+
+	    /**
+	     * @returns {WindowProxy[]} a list of window proxies for all windows in all Mirador instances
+	     */
+
+	  }, {
+	    key: 'getAllWindowProxies',
+	    value: function getAllWindowProxies() {
+	      var windowProxies = [];
+	      var miradorProxies = this.getMiradorProxies();
+
+	      var _iteratorNormalCompletion = true;
+	      var _didIteratorError = false;
+	      var _iteratorError = undefined;
+
+	      try {
+	        for (var _iterator = Object.keys(miradorProxies)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	          var key = _step.value;
+
+	          var miradorProxy = miradorProxies[key];
+	          windowProxies = windowProxies.concat(miradorProxy.getWindowProxies());
+	        }
+	      } catch (err) {
+	        _didIteratorError = true;
+	        _iteratorError = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion && _iterator.return) {
+	            _iterator.return();
+	          }
+	        } finally {
+	          if (_didIteratorError) {
+	            throw _iteratorError;
+	          }
+	        }
+	      }
+
+	      return windowProxies;
+	    }
+	  }, {
+	    key: 'getWindowProxyById',
+	    value: function getWindowProxyById(windowId) {
+	      return new _windowProxy2.default(this.getWindowById(windowId));
+	    }
 	  }, {
 	    key: 'getWindowById',
 	    value: function getWindowById(windowId) {
@@ -9020,9 +8804,14 @@
 	      return window;
 	    }
 	  }, {
-	    key: 'getWindowProxyById',
-	    value: function getWindowProxyById(windowId) {
-	      return new _windowProxy2.default(this.getWindowById(windowId));
+	    key: 'getCurrentCanvasIdByWindowId',
+	    value: function getCurrentCanvasIdByWindowId(windowId) {
+	      var windowProxy = this.getWindowProxyById(windowId);
+	      if (windowProxy) {
+	        return windowProxy.getCurrentCanvasId();
+	      } else {
+	        return null;
+	      }
 	    }
 
 	    // XXX This works because only one Mirador window is assumed. 
@@ -9053,7 +8842,7 @@
 	Mirador.getMiradorProxyManager = getMiradorProxyManager; // to be called from Mirador core.
 
 /***/ },
-/* 305 */
+/* 304 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9064,11 +8853,11 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _workspaceProxy = __webpack_require__(306);
+	var _workspaceProxy = __webpack_require__(305);
 
 	var _workspaceProxy2 = _interopRequireDefault(_workspaceProxy);
 
-	var _windowProxy = __webpack_require__(307);
+	var _windowProxy = __webpack_require__(306);
 
 	var _windowProxy2 = _interopRequireDefault(_windowProxy);
 
@@ -9099,6 +8888,11 @@
 	        this.workspaceProxy = new _workspaceProxy2.default(this.mirador.viewer.workspace);
 	      }
 	      return this.workspaceProxy;
+	    }
+	  }, {
+	    key: 'getWindowProxies',
+	    value: function getWindowProxies() {
+	      return this.getWorkspaceProxy().getWindowProxies();
 	    }
 	  }, {
 	    key: 'getWindowById',
@@ -9140,8 +8934,8 @@
 	exports.default = MiradorProxy;
 
 /***/ },
-/* 306 */
-/***/ function(module, exports) {
+/* 305 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -9150,6 +8944,12 @@
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _windowProxy = __webpack_require__(306);
+
+	var _windowProxy2 = _interopRequireDefault(_windowProxy);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -9164,6 +8964,13 @@
 	    key: 'getWorkspace',
 	    value: function getWorkspace() {
 	      return this.workspace;
+	    }
+	  }, {
+	    key: 'getWindowProxies',
+	    value: function getWindowProxies() {
+	      return this.workspace.windows.map(function (window) {
+	        return new _windowProxy2.default(window);
+	      });
 	    }
 	  }, {
 	    key: 'getWindowById',
@@ -9185,7 +8992,7 @@
 	exports.default = WorkspaceProxy;
 
 /***/ },
-/* 307 */
+/* 306 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -9233,7 +9040,1111 @@
 	exports.default = WindowProxy;
 
 /***/ },
+/* 307 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	exports.default = function () {
+	  if (!_instance) {
+	    _instance = new MiradorWindow();
+	  }
+	  return _instance;
+	};
+
+	var _session = __webpack_require__(308);
+
+	var _session2 = _interopRequireDefault(_session);
+
+	var _miradorProxyManager = __webpack_require__(303);
+
+	var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
+
+	var _windowProxy = __webpack_require__(306);
+
+	var _windowProxy2 = _interopRequireDefault(_windowProxy);
+
+	var _annoUtil = __webpack_require__(309);
+
+	var _annoUtil2 = _interopRequireDefault(_annoUtil);
+
+	var _modalAlert = __webpack_require__(311);
+
+	var _modalAlert2 = _interopRequireDefault(_modalAlert);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	// JavaScript code for the browser window that embeds Mirador.
+
+	var MiradorWindow = function () {
+	  function MiradorWindow() {
+	    _classCallCheck(this, MiradorWindow);
+	  }
+
+	  _createClass(MiradorWindow, [{
+	    key: 'init',
+	    value: function init(options) {
+	      jQuery.extend(this, {
+	        mainMenu: null,
+	        grid: null
+	      }, options);
+
+	      var _this = this;
+	      var miradorProxyManager = (0, _miradorProxyManager2.default)();
+
+	      this.viewerTemplateElem = jQuery('#\\{\\{id\\}\\}');
+
+	      var dfd = this._fetchServerSettings();
+
+	      dfd.done(function (data) {
+	        var serverSettings = _session2.default.setServerSettings(data);
+	        var htmlOptions = _this._parseHtmlOptions();
+	        var miradorInstanceId = Mirador.genUUID();
+
+	        _this._miradorConfig = _this._buildMiradorConfig(serverSettings, htmlOptions, miradorInstanceId);
+
+	        _this.grid.addMiradorWindow(miradorInstanceId);
+	        var mirador = Mirador(_this._miradorConfig);
+	        miradorProxyManager.addMirador(miradorInstanceId, mirador);
+	        _this._handleLoadOptions(htmlOptions, miradorInstanceId);
+	        _this._bindEvents(serverSettings, miradorInstanceId);
+	      });
+	      dfd.fail(function () {
+	        alert('ERROR failed to retrieve server settings');
+	      });
+	    }
+	  }, {
+	    key: 'getConfig',
+	    value: function getConfig() {
+	      return this._miradorConfig;
+	    }
+
+	    /**
+	     * Process parameters passed from the server via HTML.
+	     */
+
+	  }, {
+	    key: '_handleLoadOptions',
+	    value: function _handleLoadOptions(htmlOptions, miradorInstanceId) {
+	      var _this = this;
+	      var miradorProxy = (0, _miradorProxyManager2.default)().getMiradorProxy(miradorInstanceId);
+
+	      jQuery.subscribe('YM_READY_TO_RELOAD_ANNO_WIN', function (event) {
+	        // after annotations have been loaded
+	        if (_this._urlOptionsProcessed) {
+	          return;
+	        } else {
+	          _this._urlOptionsProcessed = true;
+	        }
+	        var addAnnotationWindows = false;
+
+	        if (htmlOptions.tocTags.length > 0) {
+	          console.log('MiradorWindow#_handleLoadOptions has tocTags: ' + htmlOptions.tocTags);
+
+	          var endpoint = miradorProxy.getEndPoint();
+	          var toc = endpoint.getCanvasToc();
+	          var node = toc.getNode.apply(toc, htmlOptions.tocTags);
+	          var annotations = endpoint.annotationsList.filter(function (anno) {
+	            return _annoUtil2.default.hasTags(anno, htmlOptions.tocTags);
+	          });
+	          miradorProxy.publish('YM_DISPLAY_ON'); // display annotations
+	          if (node && node.annotation) {
+	            miradorProxy.publish('ANNOTATION_FOCUSED', ['', node.annotation]);
+	          }
+	          addAnnotationWindows = true;
+	        }
+	        if (htmlOptions.layerIds.length > 0) {
+	          addAnnotationWindows = true;
+	        }
+	        if (addAnnotationWindows) {
+	          for (var i = 0; i < htmlOptions.layerIds.length; ++i) {
+	            jQuery.publish('YM_ADD_WINDOW', {
+	              miradorId: miradorInstanceId,
+	              tocTags: htmlOptions.tocTags,
+	              layerId: htmlOptions.layerIds[i]
+	            });
+	          }
+	        }
+	      });
+	    }
+
+	    /**
+	     * Sets up configuration parameters to pass to Mirador.
+	     */
+
+	  }, {
+	    key: '_buildMiradorConfig',
+	    value: function _buildMiradorConfig(serverSettings, htmlOptions, miradorInstanceId) {
+	      var config = jQuery.extend(true, {}, Mirador.DEFAULT_SETTINGS); // deep copy from Mirador.DEFAULT_SETTINGS
+	      var endpointConfig = null;
+
+	      if (serverSettings.endpointUrl === 'firebase') {
+	        endpointConfig = {
+	          name: 'Yale (Firebase) Annotations',
+	          module: 'YaleDemoEndpoint',
+	          options: {}
+	        };
+	      } else {
+	        endpointConfig = {
+	          name: 'Yale Annotations',
+	          module: 'YaleEndpoint',
+	          options: { prefix: serverSettings.endpointUrl }
+	        };
+	      }
+
+	      var windowObject = {
+	        loadedManifest: htmlOptions.manifestUri
+	      };
+	      if (htmlOptions.canvasId) {
+	        // if instructed to load a specific canvas
+	        windowObject.canvasID = htmlOptions.canvasId;
+	      }
+
+	      jQuery.extend(config, {
+	        id: miradorInstanceId,
+	        buildPath: serverSettings.buildPath || '/',
+	        i18nPath: '/locales/',
+	        imagesPath: '/images/',
+	        logosPath: '/images/logos/',
+	        mainMenuSettings: { show: false },
+	        data: [{ manifestUri: htmlOptions.manifestUri }],
+	        windowObjects: [windowObject],
+	        autoHideControls: false, // autoHide is bad for touch-only devices
+	        annotationEndpoint: endpointConfig,
+	        annotationBodyEditor: {
+	          module: 'AnnotationEditor',
+	          options: {
+	            miradorDriven: true,
+	            mode: 'create'
+	          }
+	        },
+	        extension: {}
+	      });
+
+	      config.windowSettings.displayLayout = false;
+
+	      if (!_session2.default.isEditor()) {
+	        config.windowSettings.canvasControls.annotations.annotationCreation = false;
+	      }
+
+	      if (serverSettings.tagHierarchy) {
+	        config.extension.tagHierarchy = serverSettings.tagHierarchy;
+	      }
+	      //console.log('MiradorWindow config: ' + JSON.stringify(config, null, 2));
+	      return config;
+	    }
+
+	    /**
+	     * Retrieves parameters passed via HTML attributes.
+	     */
+
+	  }, {
+	    key: '_parseHtmlOptions',
+	    value: function _parseHtmlOptions() {
+	      var elem = this.viewerTemplateElem;
+	      var options = {};
+	      var tocTagsStr = elem.attr('data-toc-tags') || '';
+	      var layerIdsStr = elem.attr('data-layer-ids') || '';
+
+	      options.manifestUri = elem.attr('data-manifest-url');
+	      options.canvasId = elem.attr('data-canvas-id') || '';
+	      options.tocTags = tocTagsStr ? tocTagsStr.split(',') : [];
+	      options.layerIds = layerIdsStr ? layerIdsStr.split(',') : [];
+
+	      return options;
+	    }
+
+	    /**
+	     * Retrieves settings from the server via a REST API.
+	     */
+
+	  }, {
+	    key: '_fetchServerSettings',
+	    value: function _fetchServerSettings() {
+	      var dfd = jQuery.Deferred();
+	      var elem = this.viewerTemplateElem;
+	      var settingsUrl = elem.attr('data-settings-url');
+	      var roomId = elem.attr('data-room-id');
+
+	      console.log('settingsUrl: ' + settingsUrl);
+
+	      jQuery.ajax({
+	        url: settingsUrl + '?room_id=' + roomId,
+	        success: function success(data) {
+	          dfd.resolve(data);
+	        },
+	        error: function error() {
+	          dfd.reject();
+	        }
+	      });
+	      return dfd;
+	    }
+	  }, {
+	    key: '_bindEvents',
+	    value: function _bindEvents(serverSettings, miradorInstanceId) {
+	      var _this = this;
+	      var miradorProxy = (0, _miradorProxyManager2.default)().getMiradorProxy(miradorInstanceId);
+
+	      jQuery(window).resize(function () {
+	        _this.grid.resize();
+	      });
+
+	      miradorProxy.subscribe('ANNOTATIONS_LIST_UPDATED', function (event, params) {
+	        console.log('MiradorWindow#bindEvents received ANNOTATIONS_LIST_UPDATED');
+	        if (serverSettings.tagHierarchy) {
+	          var _window = miradorProxy.getWindowById(params.windowId);
+	          var endpoint = new _windowProxy2.default(_window).getEndPoint();
+	          endpoint.parseAnnotations();
+	        }
+	        jQuery.publish('YM_READY_TO_RELOAD_ANNO_WIN');
+	      });
+	    }
+	  }]);
+
+	  return MiradorWindow;
+	}();
+
+	var _instance = null;
+
+	;
+
+/***/ },
 /* 308 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = {
+	  serverSettings: null,
+
+	  /**
+	   * Returns true if the user is logged in via CAS.
+	   */
+	  loggedIn: function loggedIn() {
+	    return Cookies.get('loggedIn') == 'true';
+	  },
+
+	  isEditor: function isEditor() {
+	    return Cookies.get('isEditor') == 'true';
+	  },
+
+	  getServerSettings: function getServerSettings() {
+	    return this.serverSettings;
+	  },
+
+	  setServerSettings: function setServerSettings(settings) {
+	    this.serverSettings = settings;
+	    return settings;
+	  }
+	};
+
+/***/ },
+/* 309 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+	var _svgUtil = __webpack_require__(310);
+
+	var _svgUtil2 = _interopRequireDefault(_svgUtil);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = {
+
+	  /**
+	   * @returns {boolean} true if the annotation targets a canvas fragment, not another annotation.
+	   */
+	  isAnnoOnCanvas: function isAnnoOnCanvas(annotation) {
+	    return annotation.on['@type'] !== 'oa:Annotation';
+	  },
+
+	  /**
+	   * Returns content of first text (non-tag) resource it finds from the annotation.
+	   */
+	  getAnnotationText: function getAnnotationText(annotation) {
+	    var content = null;
+	    var resource = annotation.resource;
+
+	    if (!(resource instanceof Array || (typeof resource === 'undefined' ? 'undefined' : _typeof(resource)) === 'object')) {
+	      return null;
+	    }
+	    if (!(resource instanceof Array)) {
+	      resource = [resource];
+	    }
+	    jQuery.each(resource, function (index, value) {
+	      if (value['@type'] === 'dctypes:Text') {
+	        content = value.chars;
+	        return false;
+	      }
+	    });
+	    return content;
+	  },
+
+	  getTags: function getTags(annotation) {
+	    var tags = [];
+
+	    if (jQuery.isArray(annotation.resource)) {
+	      jQuery.each(annotation.resource, function (index, value) {
+	        if (value['@type'] === "oa:Tag") {
+	          tags.push(value.chars);
+	        }
+	      });
+	    }
+	    return tags;
+	  },
+
+	  hasTags: function hasTags(annotation, tags) {
+	    var annoTags = this.getTags(annotation);
+
+	    for (var i = 0; i < tags.length; ++i) {
+	      var found = false;
+	      for (var j = 0; j < annoTags.length; ++j) {
+	        if (tags[i] === annoTags[j]) {
+	          found = true;
+	          break;
+	        }
+	      }
+	      if (!found) {
+	        return false;
+	      }
+	    }
+	    return true;
+	  },
+
+	  getTargetSelectorValue: function getTargetSelectorValue(annotation) {
+	    var selector = annotation.on.selector;
+	    return selector ? selector.value : null;
+	  },
+
+	  // For an annotation of annotation,
+	  // follow the "on" relation until the eventual target annotation if found.
+	  findFinalTargetAnnotation: function findFinalTargetAnnotation(annotation, annotations) {
+	    var nextId = '';
+	    var nextAnno = annotation;
+	    var targetAnno = null;
+
+	    if (nextAnno.on['@type'] !== 'oa:Annotation') {
+	      return annotation;
+	    }
+
+	    while (nextAnno) {
+	      //console.log('nextAnno: ');
+	      //console.dir(nextAnno);
+
+	      if (nextAnno.on['@type'] === 'oa:Annotation') {
+	        nextId = nextAnno.on.full;
+	        nextAnno = null;
+	        jQuery.each(annotations, function (index, anno) {
+	          if (anno['@id'] === nextId) {
+	            targetAnno = anno;
+	            nextAnno = anno;
+	            return false;
+	          }
+	        });
+	      } else {
+	        nextAnno = null;
+	      }
+	    }
+	    return targetAnno;
+	  },
+
+	  getFinalTargetCanvasIds: function getFinalTargetCanvasIds(annotation) {
+	    var canvasIds = [];
+	    var targetAnno = null;
+
+	    if (annotation['@type'] === 'oa:Annotation') {
+	      targetAnno = this.findFinalTargetAnnotation(annotation, this.annotationsList);
+	    } else {
+	      targetAnno = annotation;
+	    }
+	    if (!targetAnno) {
+	      return [];
+	    }
+	    var targets = targetAnno.on;
+	    if (targets instanceof Array) {
+	      jQuery.each(targets, function (index, target) {
+	        if (target.full) {
+	          canvasIds.push(target.full);
+	        }
+	      });
+	    } else if ((typeof targets === 'undefined' ? 'undefined' : _typeof(targets)) === 'object') {
+	      if (targets.full) {
+	        canvasIds.push(targets.full);
+	      }
+	    } else {
+	      console.log('ERROR annoUtil.getFinalTargetCanvasIds: wrong target type ' + (typeof targets === 'undefined' ? 'undefined' : _typeof(targets)));
+	    }
+	    return canvasIds;
+	  },
+
+
+	  /**
+	   * Find annotations from "annotationsList" which this "annotation" annotates 
+	   * and which belong to the layer with "layerId".
+	   */
+	  findTargetAnnotations: function findTargetAnnotations(annotation, annotationsList, layerId) {
+	    var targetId = annotation.on.full;
+	    return annotationsList.filter(function (currentAnno) {
+	      return currentAnno.layerId === layerId && currentAnno['@id'] === targetId;
+	    });
+	  },
+
+	  /**
+	   * Find annotations from "annotationsList" which annotates this "annotation"
+	   * and which belong to the layer with "layerId".
+	   */
+	  findTargetingAnnotations: function findTargetingAnnotations(annotation, annotationsList, layerId) {
+	    return annotationsList.filter(function (currentAnno) {
+	      var targetId = currentAnno.on.full;
+	      return currentAnno.layerId === layerId && annotation['@id'] === targetId;
+	    });
+	  },
+
+	  /**
+	   * Find annotations from "annotationsList" that belong to the same TOC node
+	   * and which belong to the layer with "layerId".
+	   */
+	  findTocSiblings: function findTocSiblings(annotation, annotationsList, layerId, toc) {
+	    var node = toc.findNodeForAnnotation(annotation);
+	    if (!node) {
+	      return [];
+	    }
+	    return annotationsList.filter(function (currentAnno) {
+	      return currentAnno.layerId === layerId && toc.findNodeForAnnotation(currentAnno) === node;
+	    });
+	  },
+
+	  /**
+	   * Merge annotation's target ("on" attribute) with a new "on" attribute (sourceTarget).
+	   */
+	  mergeTargets: function mergeTargets(annotation, sourceTarget) {
+	    var destTarget = annotation.on;
+	    var destCanvasId = destTarget.full;
+	    var sourceCanvasId = sourceTarget.full;
+
+	    if (destTarget instanceof Array) {
+	      // (destination) annotation has (possibly) multiple targets
+	      var targetsWithSameCanvasId = destTarget.filter(function (on) {
+	        return on.full === sourceCanvasId;
+	      });
+	      if (targetsWithSameCanvasId.length === 1) {
+	        // there's a destination target on the same canvas as the source target
+	        var target = targetsWithSameCanvasId[0];
+	        target.selector.value = _svgUtil2.default.mergeSvgs(target.selector.value, sourceTarget.selector.value);
+	      } else if (targetsWithSameCanvasId.length === 0) {
+	        // there's no existing target on the same canvas
+	        annotation.on.push(sourceTarget);
+	      } else {
+	        throw 'multiple targets on same canvas';
+	      }
+	    } else {
+	      // (destination) annotation has a single target
+	      var destTargetId = destTarget.full;
+	      if (destCanvasId === sourceCanvasId) {
+	        destTarget.selector.value = _svgUtil2.default.mergeSvgs(destTarget.selector.value, sourceTarget.selector.value);
+	      } else {
+	        annotation.on = [destTarget, sourceTarget];
+	      }
+	    }
+	  }
+	};
+
+/***/ },
+/* 310 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = {
+	  mergeSvgs: function mergeSvgs(svg1, svg2) {
+	    var parser = new DOMParser();
+	    var doc1 = parser.parseFromString(svg1, 'application/xml');
+	    var doc2 = parser.parseFromString(svg2, 'application/xml');
+	    var svgNode1 = doc1.documentElement;
+	    var svgNode2 = doc2.documentElement;
+
+	    console.log('SVG ' + svgNode1.tagName);
+	    console.log('SVG ' + svgNode2.tagName);
+	    console.dir(doc1);
+	    console.dir(doc2);
+
+	    if (svgNode1.tagName !== 'svg' || svgNode2.tagName !== 'svg') {
+	      throw '<svg> not found';
+	    }
+
+	    var firstChild1 = svgNode1.childNodes[0];
+	    var pathNodes1 = this.getSvgPathNodes(svgNode1);
+	    var pathNodes2 = this.getSvgPathNodes(svgNode2);
+	    var group = null;
+
+	    if (firstChild1.tagName === 'g') {
+	      group = firstChild1;
+	      jQuery.each(pathNodes2, function (index, pathNode) {
+	        group.appendChild(pathNode);
+	      });
+	    } else if (firstChild1.tagName === 'path') {
+	      group = doc1.createElement('g');
+	      jQuery.each(pathNodes1.concat(pathNodes2), function (index, pathNode) {
+	        group.appendChild(pathNode);
+	      });
+	      while (svgNode1.firstChild) {
+	        svgNode1.removeChild(svgNode1.firstChild);
+	      }
+	      svgNode1.appendChild(group);
+	    } else {
+	      throw '<g> or <path> not found';
+	    }
+	    var svg = new XMLSerializer().serializeToString(doc1.documentElement);
+	    return svg;
+	  },
+
+	  getSvgPathNodes: function getSvgPathNodes(svgNode) {
+	    var topChildren = svgNode.childNodes;
+	    var pathNodes = [];
+
+	    if (topChildren.length !== 1) {
+	      throw '<svg> has more than one children';
+	    }
+
+	    var topChild = topChildren[0];
+
+	    if (topChild.tagName === 'g') {
+	      console.log('toto');
+	      jQuery.each(topChild.childNodes, function (index, childNode) {
+	        if (childNode.tagName === 'path') {
+	          pathNodes.push(childNode);
+	        } else {
+	          console.log('Error svgUtil.getSvgPathNodes expected <svg> but found <' + childNode.tagName + '>');
+	        }
+	      });
+	    } else if (topChild.tagName === 'path') {
+	      pathNodes.push(topChild);
+	    } else {
+	      throw 'Child of <svg> should be <g> or <path> but found <' + topChild.tagName + '>';
+	    }
+
+	    return pathNodes;
+	  }
+
+	};
+
+/***/ },
+/* 311 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	exports.default = getModalAlert;
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function getModalAlert() {
+	  if (!instance) {
+	    var id = 'ym_modal_alert';
+	    var elem = jQuery('#' + id);
+	    if (elem.length === 0) {
+	      elem = jQuery('<div/>').attr('id', id).addClass('ui modal ym_modal').appendTo(jQuery('body'));
+	    }
+	    instance = new ModalAlert(elem);
+	  }
+	  return instance;
+	};
+
+	var ModalAlert = function () {
+	  function ModalAlert(elem) {
+	    _classCallCheck(this, ModalAlert);
+
+	    this.elem = elem;
+	    elem.html(template());
+	    elem.modal({
+	      closable: false,
+	      allowMultiple: true,
+	      duration: 0,
+	      dimmerSettings: {
+	        opacity: 0.5
+	      }
+	    });
+	  }
+
+	  _createClass(ModalAlert, [{
+	    key: 'show',
+	    value: function show() {
+	      this.elem.modal('show');
+	    }
+	  }, {
+	    key: 'hide',
+	    value: function hide() {
+	      this.elem.modal('hide');
+	    }
+	  }]);
+
+	  return ModalAlert;
+	}();
+
+	var instance = null;
+
+	var template = Handlebars.compile(['Loading annotations ...'].join(''));
+
+/***/ },
+/* 312 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	exports.default = getErrorDialog;
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function getErrorDialog() {
+	  if (!instance) {
+	    var id = 'ym_error_dialog';
+	    var elem = jQuery('#' + id);
+	    if (elem.length === 0) {
+	      elem = jQuery('<div/>').attr('id', id).addClass('ui modal ym_modal').appendTo(jQuery('body'));
+	    }
+	    instance = new ErrorDialog(elem);
+	  }
+	  return instance;
+	};
+
+	var ErrorDialog = function () {
+	  function ErrorDialog(elem) {
+	    _classCallCheck(this, ErrorDialog);
+
+	    this.elem = elem;
+	    elem.modal({
+	      onHidden: function onHidden() {
+	        elem.modal('hide dimmer');
+	      }
+	    });
+	    this.messageMap = {
+	      layers: '<p>Sorry, there was a problem retrieving the annotation layers.</p>' + MSG_TRY_LATER,
+	      annotations: '<p>Sorry, there was a problem retrieving the annotations.</p>' + MSG_TRY_LATER,
+	      authz_create: '<p>Sorry, you are not authorized to create annotations.</p>',
+	      authz_update: '<p>Sorry, you are not authorized to update data.</p>',
+	      authz_delete: '<p>Sorry, you are not authorized to delete data.</p>'
+	    };
+	  }
+
+	  _createClass(ErrorDialog, [{
+	    key: 'show',
+	    value: function show(errorId) {
+	      var message = this.messageMap[errorId] || 'Undefined error.';
+	      this.elem.html(template({ message: message }));
+	      this.elem.modal('show');
+	    }
+	  }, {
+	    key: 'hide',
+	    value: function hide() {
+	      this.elem.modal('hide');
+	    }
+	  }]);
+
+	  return ErrorDialog;
+	}();
+
+	var instance = null;
+
+	var template = Handlebars.compile(['<div class="header">Error</div>', '<div class="content">', '  <div class="description">', '    {{{message}}}', '  </div>', '</div>', '<div class="actions">', '  <div class="ui cancel button">Dismiss</div>', '</div>'].join(''));
+
+	var MSG_TRY_LATER = '<p>Please try again a bit later, or if problem persists, create an issue at <a class="ym_link" target="_blank" href="https://github.com/yale-web-technologies/mirador-project/issues">GitHub</a>.</p>';
+
+/***/ },
+/* 313 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	exports.default = getAnnotationCache;
+
+	var _miradorProxyManager = __webpack_require__(303);
+
+	var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
+
+	var _annoUtil = __webpack_require__(309);
+
+	var _annoUtil2 = _interopRequireDefault(_annoUtil);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function getAnnotationCache() {
+	  if (!instance) {
+	    instance = new AnnotationCache();
+	  }
+	  return instance;
+	};
+
+	var instance = null;
+
+	var AnnotationCache = function () {
+	  function AnnotationCache() {
+	    _classCallCheck(this, AnnotationCache);
+
+	    var _this = this;
+	    this._dbName = 'anno_cache';
+	    this._valid = false;
+	    this._expiresInMS = 2 * 60 * 60 * 1000; // milliseconds
+
+	    if (window.indexedDB) {
+	      this.clear().then(function () {
+	        return _this.init();
+	      }).then(function () {
+	        _this._valid = true;
+	      });
+	    } else {
+	      console.log('IndexedDB is not available on this browser.');
+	    }
+	  }
+
+	  /**
+	   * @returns {object} a Promise
+	   */
+
+
+	  _createClass(AnnotationCache, [{
+	    key: 'init',
+	    value: function init() {
+	      var _this = this;
+	      this.db = new Dexie(this._dbName);
+
+	      this.db.version(1).stores({
+	        layers: 'id,jsonData,timestamp',
+	        annosPerCanvas: 'canvasId,jsonData,timestamp'
+	      });
+	      return this.db.open().catch(function (e) {
+	        console.log('ERROR AnnotationCache#setupIndexDb open failed: ' + e);
+	        _this._valid = false;
+	      });
+	    }
+
+	    /**
+	     * @returns {object} a Promise
+	     */
+
+	  }, {
+	    key: 'clear',
+	    value: function clear() {
+	      console.log('AnnotationCache#clear');
+	      return new Dexie(this._dbName).delete().catch(function (e) {
+	        console.log('AnnotationCache#clear exception: ' + e.stack);
+	      });
+	    }
+
+	    /**
+	     * @returns {object} a Promise
+	     */
+
+	  }, {
+	    key: 'emptyTable',
+	    value: function emptyTable(name) {
+	      var table = this.db.table(name);
+	      return this.db.transaction('rw', table, function () {
+	        table.each(function (item, cursor) {
+	          console.log('deleting ' + cursor.key);
+	          table.delete(cursor.key).catch(function (e) {
+	            console.log('ERROR deleting from table ' + name + ': ' + e);
+	          });
+	        });
+	      });
+	    }
+
+	    /**
+	     * @returns {object} a Promise
+	     */
+
+	  }, {
+	    key: 'getLayers',
+	    value: function getLayers() {
+	      return this.db.layers.where('id').equals(1).first(function (row) {
+	        var data = row !== undefined ? row.jsonData : null;
+	        return data instanceof Array ? data : [];
+	      });
+	    }
+
+	    /**
+	     * @returns {object} a Promise
+	     */
+
+	  }, {
+	    key: 'setLayers',
+	    value: function setLayers(layersJson) {
+	      var _this = this;
+	      return this.emptyTable('layers').then(function () {
+	        return _this.db.layers.add({ id: 1, jsonData: layersJson }).catch(function (e) {
+	          console.log('ERROR AnnotatinCache#setLayers update failed: ' + e);
+	          throw e;
+	        });
+	      });
+	    }
+
+	    /**
+	     * @returns {object} a Promise
+	     */
+
+	  }, {
+	    key: 'getAnnotationsPerCanvas',
+	    value: function getAnnotationsPerCanvas(canvasId) {
+	      var _this = this;
+	      var coll = this.db.annosPerCanvas.where('canvasId').equals(canvasId).and(function (rec) {
+	        var nowMS = new Date().valueOf();
+	        console.log('rec.timestamp: ' + rec.timestamp);
+	        console.log('now: ' + nowMS);
+	        console.log('exp: ' + _this._expiresInMS);
+	        console.log('diff: ' + (nowMS - rec.timestamp));
+	        console.log('test: ' + (rec.timestamp > nowMS - _this._expiresInMS));
+	        return rec.timestamp > new Date().valueOf() - _this._expiresInMS;
+	      });
+	      return coll.first(function (row) {
+	        return row ? row.jsonData : null;
+	      });
+	    }
+
+	    /**
+	     * @returns {object} a Promise
+	     */
+
+	  }, {
+	    key: 'setAnnotationsPerCanvas',
+	    value: function setAnnotationsPerCanvas(canvasId, data) {
+	      var table = this.db.annosPerCanvas;
+	      var coll = this.db.annosPerCanvas.where('canvasId').equals(canvasId);
+	      var nowMS = new Date().valueOf();
+
+	      if (coll.count() === 0) {
+	        return table.add({ canvasId: canvasId, jsonData: data, timestamp: nowMS });
+	      } else {
+	        return table.put({ canvasId: canvasId, jsonData: data, timestamp: nowMS });
+	      }
+	    }
+	  }, {
+	    key: 'deleteAnnotationsPerCanvas',
+	    value: function deleteAnnotationsPerCanvas(canvasId) {
+	      var table = this.db.annosPerCanvas;
+	      var coll = table.where('canvasId').equals(canvasId);
+	      return coll.delete().catch(function (e) {
+	        console.log('ERROR AnnotationCache#deleteAnnotationsPerCanvas failed to delete canvasId: ' + canvasId);
+	      });
+	    }
+	  }, {
+	    key: 'isValid',
+	    value: function isValid() {
+	      return this._valid;
+	    }
+	  }, {
+	    key: 'invalidateCanvasId',
+	    value: function invalidateCanvasId(canvasId) {
+	      console.log('CACHE INVALIDATED: ' + canvasId);
+	      return this.deleteAnnotationsPerCanvas(canvasId);
+	    }
+	  }, {
+	    key: 'invalidateAnnotation',
+	    value: function invalidateAnnotation(annotation) {
+	      var canvasIdSet = new Set();
+	      var targetCanvasIds = _annoUtil2.default.getFinalTargetCanvasIds(annotation);
+
+	      var _iteratorNormalCompletion = true;
+	      var _didIteratorError = false;
+	      var _iteratorError = undefined;
+
+	      try {
+	        for (var _iterator = targetCanvasIds[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	          var canvasId = _step.value;
+
+	          canvasIdSet.add(canvasId);
+	        }
+	      } catch (err) {
+	        _didIteratorError = true;
+	        _iteratorError = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion && _iterator.return) {
+	            _iterator.return();
+	          }
+	        } finally {
+	          if (_didIteratorError) {
+	            throw _iteratorError;
+	          }
+	        }
+	      }
+
+	      var _iteratorNormalCompletion2 = true;
+	      var _didIteratorError2 = false;
+	      var _iteratorError2 = undefined;
+
+	      try {
+	        for (var _iterator2 = canvasIdSet[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+	          var _canvasId = _step2.value;
+
+	          this.invalidateCanvasId(_canvasId);
+	        }
+	      } catch (err) {
+	        _didIteratorError2 = true;
+	        _iteratorError2 = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+	            _iterator2.return();
+	          }
+	        } finally {
+	          if (_didIteratorError2) {
+	            throw _iteratorError2;
+	          }
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'invalidateAnnotationId',
+	    value: function invalidateAnnotationId(annotationId) {
+	      console.log('invalidateAnnotationId: ' + annotationId);
+	      var proxyMgr = (0, _miradorProxyManager2.default)();
+	      var canvasIdSet = new Set();
+	      var _iteratorNormalCompletion3 = true;
+	      var _didIteratorError3 = false;
+	      var _iteratorError3 = undefined;
+
+	      try {
+	        for (var _iterator3 = proxyMgr.getAllWindowProxies()[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+	          var windowProxy = _step3.value;
+	          var _iteratorNormalCompletion5 = true;
+	          var _didIteratorError5 = false;
+	          var _iteratorError5 = undefined;
+
+	          try {
+	            for (var _iterator5 = windowProxy.getAnnotationsList()[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+	              var annotation = _step5.value;
+
+	              if (annotation['@id'] === annotationId) {
+	                var targetCanvasIds = _annoUtil2.default.getFinalTargetCanvasIds(annotation);
+	                console.log('targetCanvasIds: ' + targetCanvasIds);
+	                var _iteratorNormalCompletion6 = true;
+	                var _didIteratorError6 = false;
+	                var _iteratorError6 = undefined;
+
+	                try {
+	                  for (var _iterator6 = targetCanvasIds[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+	                    var canvasId = _step6.value;
+
+	                    canvasIdSet.add(canvasId);
+	                  }
+	                } catch (err) {
+	                  _didIteratorError6 = true;
+	                  _iteratorError6 = err;
+	                } finally {
+	                  try {
+	                    if (!_iteratorNormalCompletion6 && _iterator6.return) {
+	                      _iterator6.return();
+	                    }
+	                  } finally {
+	                    if (_didIteratorError6) {
+	                      throw _iteratorError6;
+	                    }
+	                  }
+	                }
+	              }
+	            }
+	          } catch (err) {
+	            _didIteratorError5 = true;
+	            _iteratorError5 = err;
+	          } finally {
+	            try {
+	              if (!_iteratorNormalCompletion5 && _iterator5.return) {
+	                _iterator5.return();
+	              }
+	            } finally {
+	              if (_didIteratorError5) {
+	                throw _iteratorError5;
+	              }
+	            }
+	          }
+	        }
+	      } catch (err) {
+	        _didIteratorError3 = true;
+	        _iteratorError3 = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion3 && _iterator3.return) {
+	            _iterator3.return();
+	          }
+	        } finally {
+	          if (_didIteratorError3) {
+	            throw _iteratorError3;
+	          }
+	        }
+	      }
+
+	      var _iteratorNormalCompletion4 = true;
+	      var _didIteratorError4 = false;
+	      var _iteratorError4 = undefined;
+
+	      try {
+	        for (var _iterator4 = canvasIdSet[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+	          var _canvasId2 = _step4.value;
+
+	          this.invalidateCanvasId(_canvasId2);
+	        }
+	      } catch (err) {
+	        _didIteratorError4 = true;
+	        _iteratorError4 = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion4 && _iterator4.return) {
+	            _iterator4.return();
+	          }
+	        } finally {
+	          if (_didIteratorError4) {
+	            throw _iteratorError4;
+	          }
+	        }
+	      }
+	    }
+	  }]);
+
+	  return AnnotationCache;
+	}();
+
+/***/ },
+/* 314 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9635,307 +10546,7 @@
 	exports.default = Toc;
 
 /***/ },
-/* 309 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
-	var _svgUtil = __webpack_require__(310);
-
-	var _svgUtil2 = _interopRequireDefault(_svgUtil);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	exports.default = {
-
-	  /**
-	   * @returns {boolean} true if the annotation targets a canvas fragment, not another annotation.
-	   */
-	  isAnnoOnCanvas: function isAnnoOnCanvas(annotation) {
-	    return annotation.on['@type'] !== 'oa:Annotation';
-	  },
-
-	  /**
-	   * Returns content of first text (non-tag) resource it finds from the annotation.
-	   */
-	  getAnnotationText: function getAnnotationText(annotation) {
-	    var content = null;
-	    var resource = annotation.resource;
-
-	    if (!(resource instanceof Array || (typeof resource === 'undefined' ? 'undefined' : _typeof(resource)) === 'object')) {
-	      return null;
-	    }
-	    if (!(resource instanceof Array)) {
-	      resource = [resource];
-	    }
-	    jQuery.each(resource, function (index, value) {
-	      if (value['@type'] === 'dctypes:Text') {
-	        content = value.chars;
-	        return false;
-	      }
-	    });
-	    return content;
-	  },
-
-	  getTags: function getTags(annotation) {
-	    var tags = [];
-
-	    if (jQuery.isArray(annotation.resource)) {
-	      jQuery.each(annotation.resource, function (index, value) {
-	        if (value['@type'] === "oa:Tag") {
-	          tags.push(value.chars);
-	        }
-	      });
-	    }
-	    return tags;
-	  },
-
-	  hasTags: function hasTags(annotation, tags) {
-	    var annoTags = this.getTags(annotation);
-
-	    for (var i = 0; i < tags.length; ++i) {
-	      var found = false;
-	      for (var j = 0; j < annoTags.length; ++j) {
-	        if (tags[i] === annoTags[j]) {
-	          found = true;
-	          break;
-	        }
-	      }
-	      if (!found) {
-	        return false;
-	      }
-	    }
-	    return true;
-	  },
-
-	  getTargetSelectorValue: function getTargetSelectorValue(annotation) {
-	    var selector = annotation.on.selector;
-	    return selector ? selector.value : null;
-	  },
-
-	  // For an annotation of annotation,
-	  // follow the "on" relation until the eventual target annotation if found.
-	  findFinalTargetAnnotation: function findFinalTargetAnnotation(annotation, annotations) {
-	    var nextId = '';
-	    var nextAnno = annotation;
-	    var targetAnno = null;
-
-	    if (nextAnno.on['@type'] !== 'oa:Annotation') {
-	      return annotation;
-	    }
-
-	    while (nextAnno) {
-	      //console.log('nextAnno: ');
-	      //console.dir(nextAnno);
-
-	      if (nextAnno.on['@type'] === 'oa:Annotation') {
-	        nextId = nextAnno.on.full;
-	        nextAnno = null;
-	        jQuery.each(annotations, function (index, anno) {
-	          if (anno['@id'] === nextId) {
-	            targetAnno = anno;
-	            nextAnno = anno;
-	            return false;
-	          }
-	        });
-	      } else {
-	        nextAnno = null;
-	      }
-	    }
-	    return targetAnno;
-	  },
-
-	  getFinalTargetCanvasIds: function getFinalTargetCanvasIds(annotation) {
-	    var canvasIds = [];
-	    var targetAnno = null;
-
-	    if (annotation['@type'] === 'oa:Annotation') {
-	      targetAnno = this.findFinalTargetAnnotation(annotation, this.annotationsList);
-	    } else {
-	      targetAnno = annotation;
-	    }
-	    if (!targetAnno) {
-	      return [];
-	    }
-	    var targets = targetAnno.on;
-	    if (targets instanceof Array) {
-	      jQuery.each(targets, function (index, target) {
-	        if (target.full) {
-	          canvasIds.push(target.full);
-	        }
-	      });
-	    } else if ((typeof targets === 'undefined' ? 'undefined' : _typeof(targets)) === 'object') {
-	      if (targets.full) {
-	        canvasIds.push(targets.full);
-	      }
-	    } else {
-	      console.log('ERROR annoUtil.getFinalTargetCanvasIds: wrong target type ' + (typeof targets === 'undefined' ? 'undefined' : _typeof(targets)));
-	    }
-	    return canvasIds;
-	  },
-
-
-	  /**
-	   * Find annotations from "annotationsList" which this "annotation" annotates 
-	   * and which belong to the layer with "layerId".
-	   */
-	  findTargetAnnotations: function findTargetAnnotations(annotation, annotationsList, layerId) {
-	    var targetId = annotation.on.full;
-	    return annotationsList.filter(function (currentAnno) {
-	      return currentAnno.layerId === layerId && currentAnno['@id'] === targetId;
-	    });
-	  },
-
-	  /**
-	   * Find annotations from "annotationsList" which annotates this "annotation"
-	   * and which belong to the layer with "layerId".
-	   */
-	  findTargetingAnnotations: function findTargetingAnnotations(annotation, annotationsList, layerId) {
-	    return annotationsList.filter(function (currentAnno) {
-	      var targetId = currentAnno.on.full;
-	      return currentAnno.layerId === layerId && annotation['@id'] === targetId;
-	    });
-	  },
-
-	  /**
-	   * Find annotations from "annotationsList" that belong to the same TOC node
-	   * and which belong to the layer with "layerId".
-	   */
-	  findTocSiblings: function findTocSiblings(annotation, annotationsList, layerId, toc) {
-	    var node = toc.findNodeForAnnotation(annotation);
-	    if (!node) {
-	      return [];
-	    }
-	    return annotationsList.filter(function (currentAnno) {
-	      return currentAnno.layerId === layerId && toc.findNodeForAnnotation(currentAnno) === node;
-	    });
-	  },
-
-	  /**
-	   * Merge annotation's target ("on" attribute) with a new "on" attribute (sourceTarget).
-	   */
-	  mergeTargets: function mergeTargets(annotation, sourceTarget) {
-	    var destTarget = annotation.on;
-	    var destCanvasId = destTarget.full;
-	    var sourceCanvasId = sourceTarget.full;
-
-	    if (destTarget instanceof Array) {
-	      // (destination) annotation has (possibly) multiple targets
-	      var targetsWithSameCanvasId = destTarget.filter(function (on) {
-	        return on.full === sourceCanvasId;
-	      });
-	      if (targetsWithSameCanvasId.length === 1) {
-	        // there's a destination target on the same canvas as the source target
-	        var target = targetsWithSameCanvasId[0];
-	        target.selector.value = _svgUtil2.default.mergeSvgs(target.selector.value, sourceTarget.selector.value);
-	      } else if (targetsWithSameCanvasId.length === 0) {
-	        // there's no existing target on the same canvas
-	        annotation.on.push(sourceTarget);
-	      } else {
-	        throw 'multiple targets on same canvas';
-	      }
-	    } else {
-	      // (destination) annotation has a single target
-	      var destTargetId = destTarget.full;
-	      if (destCanvasId === sourceCanvasId) {
-	        destTarget.selector.value = _svgUtil2.default.mergeSvgs(destTarget.selector.value, sourceTarget.selector.value);
-	      } else {
-	        annotation.on = [destTarget, sourceTarget];
-	      }
-	    }
-	  }
-	};
-
-/***/ },
-/* 310 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = {
-	  mergeSvgs: function mergeSvgs(svg1, svg2) {
-	    var parser = new DOMParser();
-	    var doc1 = parser.parseFromString(svg1, 'application/xml');
-	    var doc2 = parser.parseFromString(svg2, 'application/xml');
-	    var svgNode1 = doc1.documentElement;
-	    var svgNode2 = doc2.documentElement;
-
-	    console.log('SVG ' + svgNode1.tagName);
-	    console.log('SVG ' + svgNode2.tagName);
-	    console.dir(doc1);
-	    console.dir(doc2);
-
-	    if (svgNode1.tagName !== 'svg' || svgNode2.tagName !== 'svg') {
-	      throw '<svg> not found';
-	    }
-
-	    var firstChild1 = svgNode1.childNodes[0];
-	    var pathNodes1 = this.getSvgPathNodes(svgNode1);
-	    var pathNodes2 = this.getSvgPathNodes(svgNode2);
-	    var group = null;
-
-	    if (firstChild1.tagName === 'g') {
-	      group = firstChild1;
-	      jQuery.each(pathNodes2, function (index, pathNode) {
-	        group.appendChild(pathNode);
-	      });
-	    } else if (firstChild1.tagName === 'path') {
-	      group = doc1.createElement('g');
-	      jQuery.each(pathNodes1.concat(pathNodes2), function (index, pathNode) {
-	        group.appendChild(pathNode);
-	      });
-	      while (svgNode1.firstChild) {
-	        svgNode1.removeChild(svgNode1.firstChild);
-	      }
-	      svgNode1.appendChild(group);
-	    } else {
-	      throw '<g> or <path> not found';
-	    }
-	    var svg = new XMLSerializer().serializeToString(doc1.documentElement);
-	    return svg;
-	  },
-
-	  getSvgPathNodes: function getSvgPathNodes(svgNode) {
-	    var topChildren = svgNode.childNodes;
-	    var pathNodes = [];
-
-	    if (topChildren.length !== 1) {
-	      throw '<svg> has more than one children';
-	    }
-
-	    var topChild = topChildren[0];
-
-	    if (topChild.tagName === 'g') {
-	      console.log('toto');
-	      jQuery.each(topChild.childNodes, function (index, childNode) {
-	        if (childNode.tagName === 'path') {
-	          pathNodes.push(childNode);
-	        } else {
-	          console.log('Error svgUtil.getSvgPathNodes expected <svg> but found <' + childNode.tagName + '>');
-	        }
-	      });
-	    } else if (topChild.tagName === 'path') {
-	      pathNodes.push(topChild);
-	    } else {
-	      throw 'Child of <svg> should be <g> or <path> but found <' + topChild.tagName + '>';
-	    }
-
-	    return pathNodes;
-	  }
-
-	};
-
-/***/ },
-/* 311 */
+/* 315 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9946,273 +10557,383 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	exports.default = function () {
-	  if (!_instance) {
-	    _instance = new MiradorWindow();
-	  }
-	  return _instance;
-	};
-
-	var _session = __webpack_require__(303);
+	var _session = __webpack_require__(308);
 
 	var _session2 = _interopRequireDefault(_session);
 
-	var _miradorProxyManager = __webpack_require__(304);
+	var _util = __webpack_require__(316);
+
+	var _util2 = _interopRequireDefault(_util);
+
+	var _miradorProxyManager = __webpack_require__(303);
 
 	var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
-	var _windowProxy = __webpack_require__(307);
+	var _miradorWindow = __webpack_require__(307);
 
-	var _windowProxy2 = _interopRequireDefault(_windowProxy);
+	var _miradorWindow2 = _interopRequireDefault(_miradorWindow);
 
-	var _annoUtil = __webpack_require__(309);
-
-	var _annoUtil2 = _interopRequireDefault(_annoUtil);
-
-	var _modalAlert = __webpack_require__(312);
+	var _modalAlert = __webpack_require__(311);
 
 	var _modalAlert2 = _interopRequireDefault(_modalAlert);
+
+	var _errorDialog = __webpack_require__(312);
+
+	var _errorDialog2 = _interopRequireDefault(_errorDialog);
+
+	var _annotationCache = __webpack_require__(313);
+
+	var _annotationCache2 = _interopRequireDefault(_annotationCache);
+
+	var _toc = __webpack_require__(314);
+
+	var _toc2 = _interopRequireDefault(_toc);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	// JavaScript code for the browser window that embeds Mirador.
+	var YaleEndpointBase = function () {
+	  function YaleEndpointBase(options) {
+	    _classCallCheck(this, YaleEndpointBase);
 
-	var MiradorWindow = function () {
-	  function MiradorWindow() {
-	    _classCallCheck(this, MiradorWindow);
+	    jQuery.extend(this, {
+	      annotationsList: [],
+	      dfd: null,
+	      imagesList: null,
+	      prefix: null,
+	      windowID: null,
+	      canvasToc: null
+	    }, options);
+
+	    this.init();
 	  }
 
-	  _createClass(MiradorWindow, [{
+	  _createClass(YaleEndpointBase, [{
 	    key: 'init',
-	    value: function init(options) {
-	      jQuery.extend(this, {
-	        mainMenu: null,
-	        grid: null
-	      }, options);
-
-	      var _this = this;
-	      var miradorProxyManager = (0, _miradorProxyManager2.default)();
-
-	      this.viewerTemplateElem = jQuery('#\\{\\{id\\}\\}');
-
-	      var dfd = this._fetchServerSettings();
-
-	      dfd.done(function (data) {
-	        var serverSettings = _session2.default.setServerSettings(data);
-	        var htmlOptions = _this._parseHtmlOptions();
-	        var miradorInstanceId = Mirador.genUUID();
-
-	        _this._miradorConfig = _this._buildMiradorConfig(serverSettings, htmlOptions, miradorInstanceId);
-
-	        _this.grid.addMiradorWindow(miradorInstanceId);
-	        var mirador = Mirador(_this._miradorConfig);
-	        miradorProxyManager.addMirador(miradorInstanceId, mirador);
-	        _this._handleLoadOptions(htmlOptions, miradorInstanceId);
-	        _this._bindEvents(serverSettings, miradorInstanceId);
-	      });
-	      dfd.fail(function () {
-	        alert('ERROR failed to retrieve server settings');
-	      });
+	    value: function init() {
+	      this._cache = (0, _annotationCache2.default)();
 	    }
 	  }, {
-	    key: 'getConfig',
-	    value: function getConfig() {
-	      return this._miradorConfig;
+	    key: 'getCanvasToc',
+	    value: function getCanvasToc() {
+	      return this.canvasToc;
 	    }
-
-	    /**
-	     * Process parameters passed from the server via HTML.
-	     */
-
 	  }, {
-	    key: '_handleLoadOptions',
-	    value: function _handleLoadOptions(htmlOptions, miradorInstanceId) {
+	    key: 'getAnnotationLayers',
+	    value: function getAnnotationLayers() {
+	      return this._annotationLayers;
+	    }
+	  }, {
+	    key: 'search',
+	    value: function search(options) {
+	      console.log('YaleEndpoint#search options: ' + JSON.stringify(options));
 	      var _this = this;
-	      var miradorProxy = (0, _miradorProxyManager2.default)().getMiradorProxy(miradorInstanceId);
+	      var canvasId = options.uri;
+	      var progressPane = (0, _modalAlert2.default)();
+	      var errorPane = (0, _errorDialog2.default)();
 
-	      jQuery.subscribe('YM_READY_TO_RELOAD_ANNO_WIN', function (event) {
-	        // after annotations have been loaded
-	        if (_this._urlOptionsProcessed) {
-	          return;
-	        } else {
-	          _this._urlOptionsProcessed = true;
-	        }
-	        var addAnnotationWindows = false;
+	      progressPane.show();
 
-	        if (htmlOptions.tocTags.length > 0) {
-	          console.log('MiradorWindow#_handleLoadOptions has tocTags: ' + htmlOptions.tocTags);
+	      var p = new Promise(function (resolve, reject) {
+	        _util2.default.waitUntil(function () {
+	          return _this._cache.isValid();
+	        }, function () {
+	          resolve();
+	        }, 250);
+	      });
 
-	          var endpoint = miradorProxy.getEndPoint();
-	          var toc = endpoint.getCanvasToc();
-	          var node = toc.getNode.apply(toc, htmlOptions.tocTags);
-	          var annotations = endpoint.annotationsList.filter(function (anno) {
-	            return _annoUtil2.default.hasTags(anno, htmlOptions.tocTags);
+	      p.then(function () {
+	        return _this.getLayers();
+	      });
+
+	      p.then(function () {
+	        if (_this._cache) {
+	          _this._cache.getAnnotationsPerCanvas(canvasId).then(function (annotations) {
+	            if (annotations !== null) {
+	              // cache hit
+	              console.log('HIT CACHE - annos:');
+	              console.dir(annotations);
+	              progressPane.hide();
+	              _this.annotationsList = annotations;
+	              _this._setEndpoint(annotations);
+	              _this.dfd.resolve(true);
+	            } else {
+	              // cache miss
+	              _this.searchRemote(canvasId).then(function (annotations) {
+	                console.log('MISSED CACHE - annos:');
+	                console.dir(annotations);
+	                progressPane.hide();
+	                _this.annotationsList = annotations;
+	                _this._cache.setAnnotationsPerCanvas(canvasId, annotations);
+	                // Set endpoint after saving to cache, because the db cannot
+	                // serialize the annotations with endpoint in them. 
+	                _this._setEndpoint(annotations);
+	                _this.dfd.resolve(true);
+	              }).catch(function (e) {
+	                console.log('ERROR searchRemote - ' + e.stack);
+	                progressPane.hide();
+	                _this.dfd.reject();
+	              });
+	            }
+	          }).catch(function (e) {
+	            console.log('ERROR cache.getAnnotationsPerCanvas - ' + e.stack);
+	            console.log(e.stack);
+	            progressPane.hide();
+	            _this.dfd.reject();
 	          });
-	          miradorProxy.publish('YM_DISPLAY_ON'); // display annotations
-	          if (node && node.annotation) {
-	            miradorProxy.publish('ANNOTATION_FOCUSED', ['', node.annotation]);
-	          }
-	          addAnnotationWindows = true;
 	        }
-	        if (htmlOptions.layerIds.length > 0) {
-	          addAnnotationWindows = true;
-	        }
-	        if (addAnnotationWindows) {
-	          for (var i = 0; i < htmlOptions.layerIds.length; ++i) {
-	            jQuery.publish('YM_ADD_WINDOW', {
-	              miradorId: miradorInstanceId,
-	              tocTags: htmlOptions.tocTags,
-	              layerId: htmlOptions.layerIds[i]
-	            });
-	          }
-	        }
+	      }).catch(function (e) {
+	        console.log('ERROR getLayers - ' + e.stack);
+	        progressPane.hide();
+	        errorPane.show('layers');
+	        _this.dfd.reject();
 	      });
 	    }
-
-	    /**
-	     * Sets up configuration parameters to pass to Mirador.
-	     */
-
 	  }, {
-	    key: '_buildMiradorConfig',
-	    value: function _buildMiradorConfig(serverSettings, htmlOptions, miradorInstanceId) {
-	      var config = jQuery.extend(true, {}, Mirador.DEFAULT_SETTINGS); // deep copy from Mirador.DEFAULT_SETTINGS
-	      var endpointConfig = null;
-
-	      if (serverSettings.endpointUrl === 'firebase') {
-	        endpointConfig = {
-	          name: 'Yale (Firebase) Annotations',
-	          module: 'YaleDemoEndpoint',
-	          options: {}
-	        };
-	      } else {
-	        endpointConfig = {
-	          name: 'Yale Annotations',
-	          module: 'YaleEndpoint',
-	          options: { prefix: serverSettings.endpointUrl }
-	        };
-	      }
-
-	      var windowObject = {
-	        loadedManifest: htmlOptions.manifestUri
-	      };
-	      if (htmlOptions.canvasId) {
-	        // if instructed to load a specific canvas
-	        windowObject.canvasID = htmlOptions.canvasId;
-	      }
-
-	      jQuery.extend(config, {
-	        id: miradorInstanceId,
-	        buildPath: serverSettings.buildPath || '/',
-	        i18nPath: '/locales/',
-	        imagesPath: '/images/',
-	        logosPath: '/images/logos/',
-	        mainMenuSettings: { show: false },
-	        data: [{ manifestUri: htmlOptions.manifestUri }],
-	        windowObjects: [windowObject],
-	        autoHideControls: false, // autoHide is bad for touch-only devices
-	        annotationEndpoint: endpointConfig,
-	        annotationBodyEditor: {
-	          module: 'AnnotationEditor',
-	          options: {
-	            miradorDriven: true,
-	            mode: 'create'
-	          }
-	        },
-	        extension: {}
-	      });
-
-	      config.windowSettings.displayLayout = false;
-
-	      if (!_session2.default.isEditor()) {
-	        config.windowSettings.canvasControls.annotations.annotationCreation = false;
-	      }
-
-	      if (serverSettings.tagHierarchy) {
-	        config.extension.tagHierarchy = serverSettings.tagHierarchy;
-	      }
-	      //console.log('MiradorWindow config: ' + JSON.stringify(config, null, 2));
-	      return config;
-	    }
-
-	    /**
-	     * Retrieves parameters passed via HTML attributes.
-	     */
-
-	  }, {
-	    key: '_parseHtmlOptions',
-	    value: function _parseHtmlOptions() {
-	      var elem = this.viewerTemplateElem;
-	      var options = {};
-	      var tocTagsStr = elem.attr('data-toc-tags') || '';
-	      var layerIdsStr = elem.attr('data-layer-ids') || '';
-
-	      options.manifestUri = elem.attr('data-manifest-url');
-	      options.canvasId = elem.attr('data-canvas-id') || '';
-	      options.tocTags = tocTagsStr ? tocTagsStr.split(',') : [];
-	      options.layerIds = layerIdsStr ? layerIdsStr.split(',') : [];
-
-	      return options;
-	    }
-
-	    /**
-	     * Retrieves settings from the server via a REST API.
-	     */
-
-	  }, {
-	    key: '_fetchServerSettings',
-	    value: function _fetchServerSettings() {
-	      var dfd = jQuery.Deferred();
-	      var elem = this.viewerTemplateElem;
-	      var settingsUrl = elem.attr('data-settings-url');
-	      var roomId = elem.attr('data-room-id');
-
-	      console.log('settingsUrl: ' + settingsUrl);
-
-	      jQuery.ajax({
-	        url: settingsUrl + '?room_id=' + roomId,
-	        success: function success(data) {
-	          dfd.resolve(data);
-	        },
-	        error: function error() {
-	          dfd.reject();
-	        }
-	      });
-	      return dfd;
-	    }
-	  }, {
-	    key: '_bindEvents',
-	    value: function _bindEvents(serverSettings, miradorInstanceId) {
+	    key: 'searchRemote',
+	    value: function searchRemote(canvasId) {
 	      var _this = this;
-	      var miradorProxy = (0, _miradorProxyManager2.default)().getMiradorProxy(miradorInstanceId);
+	      var progressPane = (0, _modalAlert2.default)();
+	      var errorPane = (0, _errorDialog2.default)();
 
-	      jQuery(window).resize(function () {
-	        _this.grid.resize();
+	      return new Promise(function (resolve, reject) {
+	        _this._search(canvasId).then(function (annotations) {
+	          progressPane.hide();
+	          resolve(annotations);
+	        }).catch(function (e) {
+	          console.log('ERROR _search - ' + e);
+	          progressPane.hide();
+	          errorPane.show('annotations');
+	          reject();
+	        });
 	      });
+	    }
+	  }, {
+	    key: 'create',
+	    value: function create(oaAnnotation, successCallback, errorCallback) {
+	      var _this = this;
 
-	      miradorProxy.subscribe('ANNOTATIONS_LIST_UPDATED', function (event, params) {
-	        console.log('MiradorWindow#bindEvents received ANNOTATIONS_LIST_UPDATED');
-	        if (serverSettings.tagHierarchy) {
-	          var _window = miradorProxy.getWindowById(params.windowId);
-	          var endpoint = new _windowProxy2.default(_window).getEndPoint();
-	          endpoint.parseAnnotations();
+	      if (this.userAuthorize('create', oaAnnotation)) {
+	        this._create(oaAnnotation, function (anno) {
+	          _this.annotationsList.push(anno);
+	          _this._cache.invalidateAnnotation(anno);
+	          if (typeof successCallback === 'function') {
+	            successCallback(anno);
+	          }
+	        }, errorCallback);
+	      } else {
+	        console.log('YaleEndpoint#create user not authorized');
+	        (0, _errorDialog2.default)().show('authz_create');
+	        if (typeof errorCallback === 'function') {
+	          errorCallback();
 	        }
-	        jQuery.publish('YM_READY_TO_RELOAD_ANNO_WIN');
+	      }
+	    }
+	  }, {
+	    key: 'update',
+	    value: function update(oaAnnotation, successCallback, errorCallback) {
+	      var _this = this;
+	      var annotationId = oaAnnotation['@id'];
+
+	      if (this.userAuthorize('update', oaAnnotation)) {
+	        this._update(oaAnnotation, function (anno) {
+	          _this._cache.invalidateAnnotation(anno);
+	          jQuery.each(_this.annotationsList, function (index, value) {
+	            if (value['@id'] === annotationId) {
+	              _this.annotationsList[index] = anno;
+	              return false;
+	            }
+	          });
+	          if (typeof successCallback === 'function') {
+	            successCallback(anno);
+	          }
+	        }, errorCallback);
+	      } else {
+	        console.log('YaleEndpoint#update user not authorized');
+	        (0, _errorDialog2.default)().show('authz_update');
+	        if (typeof errorCallback === 'function') {
+	          errorCallback();
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'deleteAnnotation',
+	    value: function deleteAnnotation(annotationId, successCallback, errorCallback) {
+	      var _this = this;
+
+	      if (this.userAuthorize('delete', null)) {
+	        this._deleteAnnotation(annotationId, function () {
+	          _this._cache.invalidateAnnotationId(annotationId);
+	          _this.annotationsList = jQuery.grep(_this.annotationsList, function (value, index) {
+	            return value['@id'] !== annotationId;
+	          });
+	          if (typeof successCallback === 'function') {
+	            successCallback();
+	          }
+	        }, errorCallback);
+	      } else {
+	        console.log('YaleEndpoint#delete user not authorized');
+	        (0, _errorDialog2.default)().show('authz_update');
+	        if (typeof errorCallback === 'function') {
+	          errorCallback();
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'set',
+	    value: function set(prop, value, options) {
+	      console.log('YaleEndpoint#set prop: ' + prop + ', value: ' + value + ', options: ' + JSON.stringify(options));
+	      if (options) {
+	        this[options.parent][prop] = value;
+	      } else {
+	        this[prop] = value;
+	      }
+	    }
+	  }, {
+	    key: 'getLayers',
+	    value: function getLayers() {
+	      var _this = this;
+
+	      return new Promise(function (resolve, reject) {
+	        var layersCallback = function layersCallback(layers) {
+	          _this._annotationLayers = layers;
+	          _this._cache.setLayers(layers);
+	          resolve(layers);
+	        };
+
+	        if (_this._cache) {
+	          _this._cache.getLayers().then(function (layers) {
+	            if (layers.length > 0) {
+	              console.log('HIT CACHE - layers');
+	              _this._annotationLayers = layers;
+	              resolve(layers);
+	            } else {
+	              console.log('MISSED CACHE - layers empty');
+	              _this._getLayers().then(layersCallback);
+	            }
+	          }).catch(function (e) {
+	            // error getting layers from cache
+	            console.log('MISSED CACHE - layers error');
+	            _this._getLayers().then(layersCallback);
+	          });
+	        } else {
+	          console.log('MISSED CACHE - layers no cache');
+	          _this._getLayers().then(layersCallback);
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'getLayerById',
+	    value: function getLayerById(id) {
+	      jQuery.each(this.getLayers(), function (index, value) {
+	        if (id === value['@id']) {
+	          return value;
+	        }
+	      });
+	      return null;
+	    }
+	  }, {
+	    key: 'updateOrder',
+	    value: function updateOrder(canvasId, layerId, annoIds, successCallback, errorCallback) {
+	      if (this.userAuthorize('update', null)) {
+	        this._updateOrder(canvasId, layerId, annoIds, function () {
+	          _this._cache.invalidateCanvasId(canvasId);
+	          successCallback();
+	        }, errorCallback);
+	      } else {
+	        console.log('YaleEndpoint#update user not authorized');
+	        (0, _errorDialog2.default)().show('authz_update');
+	        if (typeof errorCallback === 'function') {
+	          errorCallback();
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'userAuthorize',
+	    value: function userAuthorize(action, annotation) {
+	      if (action === 'create' || action === 'update' || action === 'delete') {
+	        return _session2.default.isEditor();
+	      } else {
+	        return true;
+	      }
+	    }
+
+	    // Convert Endpoint annotation to OA
+
+	  }, {
+	    key: 'getAnnotationInOA',
+	    value: function getAnnotationInOA(annotation) {
+	      var motivation = annotation.motivation;
+	      if (!(motivation instanceof Array)) {
+	        if (motivation !== 'oa:commenting') {
+	          //console.log('ERROR YaleEndpoint#getAnnotationInOA unexpected motivation value: ' + motivation + ', id: ' + annotation['@id']);
+	        }
+	        motivation = ['oa:commenting'];
+	      }
+
+	      var oaAnnotation = {
+	        '@context': 'http://iiif.io/api/presentation/2/context.json',
+	        '@type': 'oa:Annotation',
+	        '@id': annotation['@id'],
+	        motivation: motivation,
+	        resource: annotation.resource,
+	        on: annotation.on,
+	        within: annotation.within
+	      };
+
+	      //console.log('YaleEndpoint#getAnnotationInOA oaAnnotation:');
+	      //console.dir(oaAnnotation);
+	      return oaAnnotation;
+	    }
+
+	    // Converts OA Annotation to endpoint format
+
+	  }, {
+	    key: 'getAnnotationInEndpoint',
+	    value: function getAnnotationInEndpoint(oaAnnotation) {
+	      var annotation = {
+	        '@id': oaAnnotation['@id'],
+	        '@type': oaAnnotation['@type'],
+	        '@context': oaAnnotation['@context'],
+	        motivation: oaAnnotation.motivation,
+	        resource: oaAnnotation.resource,
+	        on: oaAnnotation.on
+	      };
+	      if (oaAnnotation.within) {
+	        annotation.within = oaAnnotation.within;
+	      }
+	      if (oaAnnotation.orderWeight) {
+	        annotation.orderWeight = oaAnnotation.orderWeight;
+	      }
+	      return annotation;
+	    }
+	  }, {
+	    key: 'parseAnnotations',
+	    value: function parseAnnotations() {
+	      //this.annotationsList = getMiradorProxyManager().getFirstWindowProxy().getAnnotationsList();
+	      var spec = (0, _miradorWindow2.default)().getConfig().extension.tagHierarchy;
+	      this.canvasToc = new _toc2.default(spec, this.annotationsList);
+	      console.log('YaleEndpoint#parseAnnotations canvasToc:');
+	      console.dir(this.canvasToc.annoHierarchy);
+	    }
+	  }, {
+	    key: '_setEndpoint',
+	    value: function _setEndpoint(annotations) {
+	      var _this = this;
+	      jQuery.each(annotations, function (index, anno) {
+	        anno.endpoint = _this;
 	      });
 	    }
 	  }]);
 
-	  return MiradorWindow;
+	  return YaleEndpointBase;
 	}();
 
-	var _instance = null;
-
-	;
+	exports.default = YaleEndpointBase;
 
 /***/ },
-/* 312 */
+/* 316 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -10220,133 +10941,53 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.default = {
+	  // Return true if the device is mobile or a tablet.
+	  isMobileOrTablet: function isMobileOrTablet() {
+	    return function (a) {
+	      if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(a) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0, 4))) {
+	        return true;
+	      } else {
+	        return false;
+	      }
+	    }(navigator.userAgent || navigator.vendor || window.opera);
+	  },
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	  getValues: function getValues(object) {
+	    var values = [];
+	    jQuery.each(object, function (key, value) {
+	      values.push(value);
+	    });
+	    return values;
+	  },
 
-	exports.default = getModalAlert;
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function getModalAlert() {
-	  if (!instance) {
-	    var id = 'ym_modal_alert';
-	    var elem = jQuery('#' + id);
-	    if (elem.length === 0) {
-	      elem = jQuery('<div/>').attr('id', id).addClass('ui modal ym_modal').appendTo(jQuery('body'));
+	  waitUntil: function waitUntil(testFunc, execFunc, ms, count) {
+	    var _this = this;
+	    if (ms === undefined) {
+	      ms = 100;
 	    }
-	    instance = new ModalAlert(elem);
+	    if (count === undefined) {
+	      count = 1;
+	    }
+	    if (count > 5) {
+	      console.log('util.waitUntil max try num exceeded: giving up');
+	      console.log('testFunc: ' + testFunc);
+	      console.log('execFunc: ' + execFunc);
+	      return;
+	    }
+	    if (testFunc()) {
+	      execFunc();
+	    } else {
+	      console.log('util.waitUntil trial ' + count + ' failed. Retrying in ' + ms * 2 + ' ms.');
+	      setTimeout(function () {
+	        _this.waitUntil(testFunc, execFunc, ms * 2, count + 1);
+	      }, ms);
+	    }
 	  }
-	  return instance;
 	};
 
-	var ModalAlert = function () {
-	  function ModalAlert(elem) {
-	    _classCallCheck(this, ModalAlert);
-
-	    this.elem = elem;
-	    elem.html(template());
-	    elem.modal({
-	      closable: false,
-	      allowMultiple: true,
-	      duration: 0,
-	      dimmerSettings: {
-	        opacity: 0.5
-	      }
-	    });
-	  }
-
-	  _createClass(ModalAlert, [{
-	    key: 'show',
-	    value: function show() {
-	      this.elem.modal('show');
-	    }
-	  }, {
-	    key: 'hide',
-	    value: function hide() {
-	      console.log('X ModalAlert HIDE');
-	      this.elem.modal('hide');
-	    }
-	  }]);
-
-	  return ModalAlert;
-	}();
-
-	var instance = null;
-
-	var template = Handlebars.compile(['Loading annotations ...'].join(''));
-
 /***/ },
-/* 313 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	exports.default = getErrorDialog;
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function getErrorDialog() {
-	  if (!instance) {
-	    var id = 'ym_error_dialog';
-	    var elem = jQuery('#' + id);
-	    if (elem.length === 0) {
-	      elem = jQuery('<div/>').attr('id', id).addClass('ui modal ym_modal').appendTo(jQuery('body'));
-	    }
-	    instance = new ErrorDialog(elem);
-	  }
-	  return instance;
-	};
-
-	var ErrorDialog = function () {
-	  function ErrorDialog(elem) {
-	    _classCallCheck(this, ErrorDialog);
-
-	    this.elem = elem;
-	    elem.modal({
-	      onHidden: function onHidden() {
-	        elem.modal('hide dimmer');
-	      }
-	    });
-	    this.messageMap = {
-	      layers: '<p>Sorry, there was a problem retrieving the annotation layers.</p>' + MSG_TRY_LATER,
-	      annotations: '<p>Sorry, there was a problem retrieving the annotations.</p>' + MSG_TRY_LATER,
-	      authz_create: '<p>Sorry, you are not authorized to create annotations.</p>',
-	      authz_update: '<p>Sorry, you are not authorized to update data.</p>',
-	      authz_delete: '<p>Sorry, you are not authorized to delete data.</p>'
-	    };
-	  }
-
-	  _createClass(ErrorDialog, [{
-	    key: 'show',
-	    value: function show(errorId) {
-	      var message = this.messageMap[errorId] || 'Undefined error.';
-	      this.elem.html(template({ message: message }));
-	      this.elem.modal('show');
-	    }
-	  }, {
-	    key: 'hide',
-	    value: function hide() {
-	      this.elem.modal('hide');
-	    }
-	  }]);
-
-	  return ErrorDialog;
-	}();
-
-	var instance = null;
-
-	var template = Handlebars.compile(['<div class="header">Error</div>', '<div class="content">', '  <div class="description">', '    {{{message}}}', '  </div>', '</div>', '<div class="actions">', '  <div class="ui cancel button">Dismiss</div>', '</div>'].join(''));
-
-	var MSG_TRY_LATER = '<p>Please try again a bit later, or if problem persists, create an issue at <a class="ym_link" target="_blank" href="https://github.com/yale-web-technologies/mirador-project/issues">GitHub</a>.</p>';
-
-/***/ },
-/* 314 */
+/* 317 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10357,19 +10998,21 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
 	var _annoUtil = __webpack_require__(309);
 
 	var _annoUtil2 = _interopRequireDefault(_annoUtil);
 
-	var _session = __webpack_require__(303);
+	var _session = __webpack_require__(308);
 
 	var _session2 = _interopRequireDefault(_session);
 
-	var _yaleEndpoint = __webpack_require__(302);
+	var _yaleEndpointBase = __webpack_require__(315);
 
-	var _yaleEndpoint2 = _interopRequireDefault(_yaleEndpoint);
+	var _yaleEndpointBase2 = _interopRequireDefault(_yaleEndpointBase);
 
-	var _firebaseProxy = __webpack_require__(315);
+	var _firebaseProxy = __webpack_require__(318);
 
 	var _firebaseProxy2 = _interopRequireDefault(_firebaseProxy);
 
@@ -10383,8 +11026,8 @@
 
 	// Endpoint for FireBase containing dummy data for development/testing
 
-	var YaleDemoEndpoint = function (_YaleEndpoint) {
-	  _inherits(YaleDemoEndpoint, _YaleEndpoint);
+	var YaleDemoEndpoint = function (_YaleEndpointBase) {
+	  _inherits(YaleDemoEndpoint, _YaleEndpointBase);
 
 	  function YaleDemoEndpoint(options) {
 	    _classCallCheck(this, YaleDemoEndpoint);
@@ -10395,6 +11038,7 @@
 	  _createClass(YaleDemoEndpoint, [{
 	    key: 'init',
 	    value: function init() {
+	      _get(Object.getPrototypeOf(YaleDemoEndpoint.prototype), 'init', this).call(this);
 	      console.log('YaleDemoEndpoint#init');
 	      var _this = this;
 	      this.fbKeyMap = {}; // key: annotation['@id], value: firebase key.
@@ -10404,25 +11048,26 @@
 	    }
 	  }, {
 	    key: '_search',
-	    value: function _search(options, dfd) {
+	    value: function _search(canvasId) {
 	      var _this = this;
-	      var canvasId = options.uri;
-	      var fbDfd = this.fbProxy.getAnnosByCanvasId(canvasId);
-	      this.annotationsList = [];
 
-	      fbDfd.done(function (annoInfos) {
-	        console.log('YaleDemoEndpoint#_search annoInfos: ');
-	        console.dir(annoInfos);
-	        jQuery.each(annoInfos, function (index, annoInfo) {
-	          var oaAnnotation = _this.getAnnotationInOA(annoInfo.annotation);
-	          oaAnnotation.layerId = annoInfo.layerId;
-	          oaAnnotation.endpoint = _this;
-	          _this.fbKeyMap[oaAnnotation['@id']] = annoInfo.fbKey;
-	          _this.annotationsList.push(oaAnnotation);
+	      return new Promise(function (resolve, reject) {
+	        var fbDfd = _this.fbProxy.getAnnosByCanvasId(canvasId);
+	        var annotations = [];
+
+	        fbDfd.done(function (annoInfos) {
+	          console.log('YaleDemoEndpoint#_search annoInfos: ');
+	          console.dir(annoInfos);
+	          jQuery.each(annoInfos, function (index, annoInfo) {
+	            var oaAnnotation = _this.getAnnotationInOA(annoInfo.annotation);
+	            oaAnnotation.layerId = annoInfo.layerId;
+	            _this.fbKeyMap[oaAnnotation['@id']] = annoInfo.fbKey;
+	            annotations.push(oaAnnotation);
+	          });
+	          console.log('_this.annotationsList: ');
+	          console.dir(_this.annotationsList);
+	          resolve(annotations);
 	        });
-	        console.log('_this.annotationsList: ');
-	        console.dir(_this.annotationsList);
-	        dfd.resolve();
 	      });
 	    }
 	  }, {
@@ -10443,6 +11088,8 @@
 	      if (typeof successCallback === 'function') {
 	        oaAnnotation['@id'] = annoId;
 	        oaAnnotation.endpoint = this;
+	        console.log('YaleDemoEndpoint#_create success:');
+	        console.dir(oaAnnotation);
 	        successCallback(oaAnnotation);
 	      } else {
 	        console.log('YaleDemoEndpoint#create no success callback');
@@ -10497,24 +11144,27 @@
 	      });
 	    }
 	  }, {
-	    key: 'getLayers',
-	    value: function getLayers(dfd) {
-	      console.log('YaleDemoEndpoint#getLayers');
-	      var ref = firebase.database().ref('layers');
+	    key: '_getLayers',
+	    value: function _getLayers() {
+	      console.log('YaleDemoEndpoint#_getLayers');
+	      var promise = new Promise(function (resolve, reject) {
+	        var ref = firebase.database().ref('layers');
 
-	      ref.once('value', function (snapshot) {
-	        var data = snapshot.val();
+	        ref.once('value', function (snapshot) {
+	          var data = snapshot.val();
 
-	        console.log('Layers: ' + JSON.stringify(data, null, 2));
+	          console.log('Layers: ' + JSON.stringify(data, null, 2));
 
-	        var layers = [];
+	          var layers = [];
 
-	        jQuery.each(data, function (key, value) {
-	          layers.push(value);
+	          jQuery.each(data, function (key, value) {
+	            layers.push(value);
+	          });
+
+	          resolve(layers);
 	        });
-
-	        dfd.resolve(layers);
 	      });
+	      return promise;
 	    }
 	  }, {
 	    key: '_updateOrder',
@@ -10565,12 +11215,12 @@
 	  }]);
 
 	  return YaleDemoEndpoint;
-	}(_yaleEndpoint2.default);
+	}(_yaleEndpointBase2.default);
 
 	exports.default = YaleDemoEndpoint;
 
 /***/ },
-/* 315 */
+/* 318 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10746,7 +11396,7 @@
 	exports.default = FirebaseProxy;
 
 /***/ },
-/* 316 */
+/* 319 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10757,11 +11407,11 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _layerSelector = __webpack_require__(317);
+	var _layerSelector = __webpack_require__(320);
 
 	var _layerSelector2 = _interopRequireDefault(_layerSelector);
 
-	var _miradorProxyManager = __webpack_require__(304);
+	var _miradorProxyManager = __webpack_require__(303);
 
 	var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
@@ -11133,7 +11783,7 @@
 	var template = Handlebars.compile(['<div class="ym_anno_editor">', '  <div class="header">', '    <span class="layer_select"></span>', '  </div>', '  <textarea></textarea>', '  <input class="tags_editor" placeholder="{{t "addTagsHere"}}…" {{#if tags}}value="{{tags}}"{{/if}}/>', '  {{#unless miradorDriven}}', '    <div class="bottom_row">', '        <button class="save">Save</button>', '        <button class="cancel">Cancel</button>', '      <div class="ym_float_right">', '        <i class="large caret up icon ym_vertical_dec"></i>', '        <i class="large caret down icon ym_vertical_inc"></i>', '      </div>', '    </div>', '  {{/unless}}', '</div>'].join(''));
 
 /***/ },
-/* 317 */
+/* 320 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11144,7 +11794,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _selector = __webpack_require__(318);
+	var _selector = __webpack_require__(321);
 
 	var _selector2 = _interopRequireDefault(_selector);
 
@@ -11186,7 +11836,7 @@
 	      console.log('LayerSelector#reload');
 	      var _this = this;
 	      var dfd = jQuery.Deferred();
-	      var layers = this.endpoint.annotationLayers;
+	      var layers = this.endpoint.getAnnotationLayers();
 
 	      this.selector.empty();
 
@@ -11231,7 +11881,7 @@
 	exports.default = _class;
 
 /***/ },
-/* 318 */
+/* 321 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11355,7 +12005,7 @@
 	var template = Handlebars.compile(['<div class="basic tiny ui button ym_button dropdown">', '  <input name="selection" type="hidden" />', '  <div class="default text"></div>', '  <i class="ym dropdown icon"></i>', '  <div class="menu">', '  </div>', '</div>'].join(''));
 
 /***/ },
-/* 319 */
+/* 322 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11366,7 +12016,7 @@
 
 	var _annoUtil2 = _interopRequireDefault(_annoUtil);
 
-	var _miradorProxyManager = __webpack_require__(304);
+	var _miradorProxyManager = __webpack_require__(303);
 
 	var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
@@ -11647,7 +12297,7 @@
 	var annotationTemplate = Handlebars.compile(['<div>{{{content}}}</div>'].join(''));
 
 /***/ },
-/* 320 */
+/* 323 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11658,15 +12308,15 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _miradorProxyManager = __webpack_require__(304);
+	var _miradorProxyManager = __webpack_require__(303);
 
 	var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
-	var _annotationListRenderer = __webpack_require__(321);
+	var _annotationListRenderer = __webpack_require__(324);
 
 	var _annotationListRenderer2 = _interopRequireDefault(_annotationListRenderer);
 
-	var _annotationWindow = __webpack_require__(322);
+	var _annotationWindow = __webpack_require__(325);
 
 	var _annotationWindow2 = _interopRequireDefault(_annotationWindow);
 
@@ -11802,7 +12452,7 @@
 	exports.default = _class;
 
 /***/ },
-/* 321 */
+/* 324 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11817,7 +12467,7 @@
 
 	var _annoUtil2 = _interopRequireDefault(_annoUtil);
 
-	var _annotationEditor = __webpack_require__(316);
+	var _annotationEditor = __webpack_require__(319);
 
 	var _annotationEditor2 = _interopRequireDefault(_annotationEditor);
 
@@ -12152,7 +12802,7 @@
 	var headerTemplate = Handlebars.compile(['<div class="annowin_group_header">{{text}}', '</div>'].join(''));
 
 /***/ },
-/* 322 */
+/* 325 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12163,15 +12813,15 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _miradorProxyManager = __webpack_require__(304);
+	var _miradorProxyManager = __webpack_require__(303);
 
 	var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
-	var _menuTagSelector = __webpack_require__(323);
+	var _menuTagSelector = __webpack_require__(326);
 
 	var _menuTagSelector2 = _interopRequireDefault(_menuTagSelector);
 
-	var _layerSelector = __webpack_require__(317);
+	var _layerSelector = __webpack_require__(320);
 
 	var _layerSelector2 = _interopRequireDefault(_layerSelector);
 
@@ -12179,11 +12829,11 @@
 
 	var _annoUtil2 = _interopRequireDefault(_annoUtil);
 
-	var _session = __webpack_require__(303);
+	var _session = __webpack_require__(308);
 
 	var _session2 = _interopRequireDefault(_session);
 
-	var _state = __webpack_require__(325);
+	var _state = __webpack_require__(327);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12285,7 +12935,7 @@
 	        this.element.find('.annowin_menu_tag_row').hide();
 	      }
 
-	      if (this.endpoint.annotationLayers.length > 0) {
+	      if (this.endpoint.getAnnotationLayers().length > 0) {
 	        if (this.layerSelector.isLoaded()) {
 	          layerDfd = jQuery.Deferred().resolve();
 	        } else {
@@ -12526,7 +13176,7 @@
 	var template = Handlebars.compile(['<div class="ym_annotation_window">', '  <div class="annowin_header">', '    <div class="annowin_layer_row">', '      <span class="layer_selector_container"></span>', '    </div>', '    <div class="annowin_menu_tag_row">', '      <span class="menu_tag_selector_container"></span>', '    </div>', '    <div class="annowin_temp_row">', '      <div class="fluid ui small orange button ym_button">Click to save order</div>', '    </div>', '  </div>', '  <div class="placeholder"></div>', '  <div class="annowin_list">', '  </div>', '</div>'].join(''));
 
 /***/ },
-/* 323 */
+/* 326 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12537,11 +13187,11 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _selector = __webpack_require__(318);
+	var _selector = __webpack_require__(321);
 
 	var _selector2 = _interopRequireDefault(_selector);
 
-	var _util = __webpack_require__(324);
+	var _util = __webpack_require__(316);
 
 	var _util2 = _interopRequireDefault(_util);
 
@@ -12657,37 +13307,7 @@
 	exports.default = _class;
 
 /***/ },
-/* 324 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = {
-	  // Return true if the device is mobile or a tablet.
-	  isMobileOrTablet: function isMobileOrTablet() {
-	    return function (a) {
-	      if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(a) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0, 4))) {
-	        return true;
-	      } else {
-	        return false;
-	      }
-	    }(navigator.userAgent || navigator.vendor || window.opera);
-	  },
-
-	  getValues: function getValues(object) {
-	    var values = [];
-	    jQuery.each(object, function (key, value) {
-	      values.push(value);
-	    });
-	    return values;
-	  }
-	};
-
-/***/ },
-/* 325 */
+/* 327 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12768,7 +13388,7 @@
 	exports.setState = setState;
 
 /***/ },
-/* 326 */
+/* 328 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12779,11 +13399,11 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _miradorProxyManager = __webpack_require__(304);
+	var _miradorProxyManager = __webpack_require__(303);
 
 	var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
-	var _state = __webpack_require__(325);
+	var _state = __webpack_require__(327);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12851,7 +13471,7 @@
 	var template = Handlebars.compile(['<div class="ui small menu">', '  <div class="ui dropdown item">', '    Window <i style="margin-left: 5px" class="caret down icon"></i>', '    <div class="menu">', '      <div id="ym_menu_add_window" class="item">Add annotation window</div>', '    </div>', '  </div>', '  <div class="ui dropdown item">', '    View <i style="margin-left: 5px" class="caret down icon"></i>', '    <div class="menu">', '      <div id="ym_menu_anno_height" class="item">', '        Annotation cell - fixed height', '        <i class="checkmark icon"></i>', '      </div>', '    </div>', '  </div>', '  <a target="blank" class="item" href="https://github.com/yale-web-technologies/mirador-project/wiki/User-Guide---Mirador-@Yale">Help</a>', '</div>'].join(''));
 
 /***/ },
-/* 327 */
+/* 329 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12864,11 +13484,11 @@
 
 	var _yaleEndpoint2 = _interopRequireDefault(_yaleEndpoint);
 
-	var _yaleDemoEndpoint = __webpack_require__(314);
+	var _yaleDemoEndpoint = __webpack_require__(317);
 
 	var _yaleDemoEndpoint2 = _interopRequireDefault(_yaleDemoEndpoint);
 
-	var _annotationEditor = __webpack_require__(316);
+	var _annotationEditor = __webpack_require__(319);
 
 	var _annotationEditor2 = _interopRequireDefault(_annotationEditor);
 
@@ -12885,7 +13505,7 @@
 	})(Mirador);
 
 /***/ },
-/* 328 */
+/* 330 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
