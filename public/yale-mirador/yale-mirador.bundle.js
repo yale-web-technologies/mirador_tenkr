@@ -12696,13 +12696,29 @@
 	    value: function bindAnnotationItemEvents(annoElem, annotation, options) {
 	      var annoWin = options.annotationWindow;
 	      var finalTargetAnno = _annoUtil2.default.findFinalTargetAnnotation(annotation, options.annotationsList);
-
-	      annoElem.click(function (event) {
+	      annoElem.keydown(function () {
+	        console.log('KEYDOWN');
+	      });
+	      annoElem.keypress(function () {
+	        console.log('KEYPRESS');
+	      });
+	      annoElem.keyup(function () {
+	        console.log('KEYUP');
+	      });
+	      annoElem.focus(function () {
+	        console.log('FOCUS');
+	      });
+	      annoElem.click(function () {
+	        annoElem.focus();
+	        console.log('CLICK');
+	      });
+	      /*
+	      annoElem.click(function(event) {
 	        annoWin.clearHighlights();
 	        annoWin.highlightFocusedAnnotation(annotation);
 	        annoWin.miradorProxy.publish('ANNOTATION_FOCUSED', [annoWin.id, finalTargetAnno]);
 	        jQuery.publish('ANNOTATION_FOCUSED', [annoWin.id, annotation]);
-	      });
+	      });*/
 
 	      annoElem.find('.annotate').click(function (event) {
 	        var dialogElement = jQuery('#ym_annotation_dialog');
@@ -12797,7 +12813,7 @@
 	exports.default = AnnotationListRenderer;
 
 
-	var annotationTemplate = Handlebars.compile(['<div class="annowin_anno" draggable="true">', '  <div class="normal_view">', '    {{#if isEditor}}', '      <div class="menu_bar">', '        <div class="ui text menu">', '          <div class="ui dropdown item">', '            Action<i class="dropdown icon"></i>', '            <div class="menu">', '              <div class="annotate item"><i class="fa fa-hand-o-left fa-fw"></i> Annotate</div>', '              <div class="edit item"><i class="fa fa-edit fa-fw"></i> {{t "edit"}}</div>', '              <div class="delete item"><i class="fa fa-times fa-fw"></i> {{t "delete"}}</div>', '            </div>', '          </div>', '          {{#if orderable}}', '            <div class="right menu">', '              <i class="caret down icon"></i>', '              <i class="caret up icon"></i>', '            </div>', '          {{/if}}', '        </div>', '      </div>', '    {{/if}}', '    <div class="content">{{{content}}}</div>', '    <div class="tags">{{{tags}}}</div>', '  </div>', '</div>'].join(''));
+	var annotationTemplate = Handlebars.compile(['<div class="annowin_anno" tabindex="-1">', '  <div class="normal_view">', '    {{#if isEditor}}', '      <div class="menu_bar">', '        <div class="ui text menu">', '          <div class="ui dropdown item">', '            Action<i class="dropdown icon"></i>', '            <div class="menu">', '              <div class="annotate item"><i class="fa fa-hand-o-left fa-fw"></i> Annotate</div>', '              <div class="edit item"><i class="fa fa-edit fa-fw"></i> {{t "edit"}}</div>', '              <div class="delete item"><i class="fa fa-times fa-fw"></i> {{t "delete"}}</div>', '            </div>', '          </div>', '          {{#if orderable}}', '            <div class="right menu">', '              <i class="caret down icon"></i>', '              <i class="caret up icon"></i>', '            </div>', '          {{/if}}', '        </div>', '      </div>', '    {{/if}}', '    <div class="content">{{{content}}}</div>', '    <div class="tags">{{{tags}}}</div>', '  </div>', '</div>'].join(''));
 
 	var headerTemplate = Handlebars.compile(['<div class="annowin_group_header">{{text}}', '</div>'].join(''));
 
