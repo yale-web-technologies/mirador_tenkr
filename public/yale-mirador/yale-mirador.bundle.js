@@ -9519,11 +9519,7 @@
 	  findFinalTargetAnnotation: function findFinalTargetAnnotation(annotation, annotations) {
 	    var nextId = '';
 	    var nextAnno = annotation;
-	    var targetAnno = null;
-
-	    if (nextAnno.on['@type'] !== 'oa:Annotation') {
-	      return annotation;
-	    }
+	    var targetAnno = annotation;
 
 	    while (nextAnno) {
 	      //console.log('nextAnno: ');
@@ -9546,12 +9542,12 @@
 	    return targetAnno;
 	  },
 
-	  getFinalTargetCanvasIds: function getFinalTargetCanvasIds(annotation) {
+	  getFinalTargetCanvasIds: function getFinalTargetCanvasIds(annotation, annotations) {
 	    var canvasIds = [];
 	    var targetAnno = null;
 
 	    if (annotation['@type'] === 'oa:Annotation') {
-	      targetAnno = this.findFinalTargetAnnotation(annotation, this.annotationsList);
+	      targetAnno = this.findFinalTargetAnnotation(annotation, annotations);
 	    } else {
 	      targetAnno = annotation;
 	    }
@@ -10930,19 +10926,75 @@
 	    }
 	  }, {
 	    key: 'invalidateAnnotation',
-	    value: function invalidateAnnotation(annotation) {
+	    value: function invalidateAnnotation(annotation, annotations) {
+	      this.invalidateAnnotationId(annotation['@id']);
+	    }
+	  }, {
+	    key: 'invalidateAnnotationId',
+	    value: function invalidateAnnotationId(annotationId) {
+	      console.log('invalidateAnnotationId: ' + annotationId);
+	      var proxyMgr = (0, _miradorProxyManager2.default)();
 	      var canvasIdSet = new Set();
-	      var targetCanvasIds = _annoUtil2.default.getFinalTargetCanvasIds(annotation);
-
 	      var _iteratorNormalCompletion = true;
 	      var _didIteratorError = false;
 	      var _iteratorError = undefined;
 
 	      try {
-	        for (var _iterator = targetCanvasIds[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-	          var canvasId = _step.value;
+	        for (var _iterator = proxyMgr.getAllWindowProxies()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	          var windowProxy = _step.value;
 
-	          canvasIdSet.add(canvasId);
+	          var annotations = windowProxy.getAnnotationsList();
+	          var _iteratorNormalCompletion3 = true;
+	          var _didIteratorError3 = false;
+	          var _iteratorError3 = undefined;
+
+	          try {
+	            for (var _iterator3 = annotations[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+	              var annotation = _step3.value;
+
+	              if (annotation['@id'] === annotationId) {
+	                var targetCanvasIds = _annoUtil2.default.getFinalTargetCanvasIds(annotation, annotations);
+	                console.log('targetCanvasIds: ' + targetCanvasIds);
+	                var _iteratorNormalCompletion4 = true;
+	                var _didIteratorError4 = false;
+	                var _iteratorError4 = undefined;
+
+	                try {
+	                  for (var _iterator4 = targetCanvasIds[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+	                    var canvasId = _step4.value;
+
+	                    canvasIdSet.add(canvasId);
+	                  }
+	                } catch (err) {
+	                  _didIteratorError4 = true;
+	                  _iteratorError4 = err;
+	                } finally {
+	                  try {
+	                    if (!_iteratorNormalCompletion4 && _iterator4.return) {
+	                      _iterator4.return();
+	                    }
+	                  } finally {
+	                    if (_didIteratorError4) {
+	                      throw _iteratorError4;
+	                    }
+	                  }
+	                }
+	              }
+	            }
+	          } catch (err) {
+	            _didIteratorError3 = true;
+	            _iteratorError3 = err;
+	          } finally {
+	            try {
+	              if (!_iteratorNormalCompletion3 && _iterator3.return) {
+	                _iterator3.return();
+	              }
+	            } finally {
+	              if (_didIteratorError3) {
+	                throw _iteratorError3;
+	              }
+	            }
+	          }
 	        }
 	      } catch (err) {
 	        _didIteratorError = true;
@@ -10980,111 +11032,6 @@
 	        } finally {
 	          if (_didIteratorError2) {
 	            throw _iteratorError2;
-	          }
-	        }
-	      }
-	    }
-	  }, {
-	    key: 'invalidateAnnotationId',
-	    value: function invalidateAnnotationId(annotationId) {
-	      console.log('invalidateAnnotationId: ' + annotationId);
-	      var proxyMgr = (0, _miradorProxyManager2.default)();
-	      var canvasIdSet = new Set();
-	      var _iteratorNormalCompletion3 = true;
-	      var _didIteratorError3 = false;
-	      var _iteratorError3 = undefined;
-
-	      try {
-	        for (var _iterator3 = proxyMgr.getAllWindowProxies()[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-	          var windowProxy = _step3.value;
-	          var _iteratorNormalCompletion5 = true;
-	          var _didIteratorError5 = false;
-	          var _iteratorError5 = undefined;
-
-	          try {
-	            for (var _iterator5 = windowProxy.getAnnotationsList()[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-	              var annotation = _step5.value;
-
-	              if (annotation['@id'] === annotationId) {
-	                var targetCanvasIds = _annoUtil2.default.getFinalTargetCanvasIds(annotation);
-	                console.log('targetCanvasIds: ' + targetCanvasIds);
-	                var _iteratorNormalCompletion6 = true;
-	                var _didIteratorError6 = false;
-	                var _iteratorError6 = undefined;
-
-	                try {
-	                  for (var _iterator6 = targetCanvasIds[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-	                    var canvasId = _step6.value;
-
-	                    canvasIdSet.add(canvasId);
-	                  }
-	                } catch (err) {
-	                  _didIteratorError6 = true;
-	                  _iteratorError6 = err;
-	                } finally {
-	                  try {
-	                    if (!_iteratorNormalCompletion6 && _iterator6.return) {
-	                      _iterator6.return();
-	                    }
-	                  } finally {
-	                    if (_didIteratorError6) {
-	                      throw _iteratorError6;
-	                    }
-	                  }
-	                }
-	              }
-	            }
-	          } catch (err) {
-	            _didIteratorError5 = true;
-	            _iteratorError5 = err;
-	          } finally {
-	            try {
-	              if (!_iteratorNormalCompletion5 && _iterator5.return) {
-	                _iterator5.return();
-	              }
-	            } finally {
-	              if (_didIteratorError5) {
-	                throw _iteratorError5;
-	              }
-	            }
-	          }
-	        }
-	      } catch (err) {
-	        _didIteratorError3 = true;
-	        _iteratorError3 = err;
-	      } finally {
-	        try {
-	          if (!_iteratorNormalCompletion3 && _iterator3.return) {
-	            _iterator3.return();
-	          }
-	        } finally {
-	          if (_didIteratorError3) {
-	            throw _iteratorError3;
-	          }
-	        }
-	      }
-
-	      var _iteratorNormalCompletion4 = true;
-	      var _didIteratorError4 = false;
-	      var _iteratorError4 = undefined;
-
-	      try {
-	        for (var _iterator4 = canvasIdSet[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-	          var _canvasId2 = _step4.value;
-
-	          this.invalidateCanvasId(_canvasId2);
-	        }
-	      } catch (err) {
-	        _didIteratorError4 = true;
-	        _iteratorError4 = err;
-	      } finally {
-	        try {
-	          if (!_iteratorNormalCompletion4 && _iterator4.return) {
-	            _iterator4.return();
-	          }
-	        } finally {
-	          if (_didIteratorError4) {
-	            throw _iteratorError4;
 	          }
 	        }
 	      }
@@ -11189,7 +11136,10 @@
 	      var annoId = Mirador.genUUID();
 	      annotation['@id'] = annoId;
 
-	      var fbKey = this.fbProxy.addAnno(annotation, layerId);
+	      var canvasIds = _annoUtil2.default.getFinalTargetCanvasIds(annotation, this.annotationsList);
+	      var canvasId = canvasIds[0];
+
+	      var fbKey = this.fbProxy.addAnno(annotation, canvasId, layerId);
 	      this.fbKeyMap[annoId] = fbKey;
 
 	      if (typeof successCallback === 'function') {
@@ -11405,9 +11355,7 @@
 	    }
 	  }, {
 	    key: 'addAnno',
-	    value: function addAnno(annotation, layerId) {
-	      var canvasIds = _annoUtil2.default.getFinalTargetCanvasIds(annotation);
-	      var canvasId = canvasIds[0];
+	    value: function addAnno(annotation, canvasId, layerId) {
 	      var ref = firebase.database().ref('annotations');
 	      var annoObj = {
 	        canvasId: canvasId,
@@ -11547,6 +11495,8 @@
 	      cancelCallback: null
 	    }, options);
 
+	    this._mode = options.mode; // "create", "update", or "merge"
+
 	    this.init();
 	    this.hide();
 	  }
@@ -11554,7 +11504,6 @@
 	  _createClass(AnnotationEditor, [{
 	    key: 'init',
 	    value: function init() {
-	      this._mode = null; // "create", "update", or "merge"
 	      this.miradorProxyManager = (0, _miradorProxyManager2.default)();
 	      this.endpoint = this.endpoint || this.miradorProxyManager.getWindowProxyById(this.windowId).getEndPoint();
 	      this.id = this.id || Mirador.genUUID();
@@ -11852,13 +11801,13 @@
 	    value: function bindEvents() {
 	      var _this = this;
 
-	      this.element.find('.save').click(function () {
+	      this.element.find('.ym_save').click(function () {
 	        if (_this.validate()) {
 	          _this.save();
 	        }
 	      });
 
-	      this.element.find('.cancel').click(function () {
+	      this.element.find('.ym_cancel').click(function () {
 	        _this.destroy();
 	        if (typeof _this.cancelCallback === 'function') {
 	          _this.cancelCallback();
@@ -11887,7 +11836,7 @@
 	exports.default = AnnotationEditor;
 
 
-	var template = Handlebars.compile(['<div class="ym_anno_editor">', '  <div class="header">', '    <span class="layer_select"></span>', '  </div>', '  <textarea></textarea>', '  <input class="tags_editor" placeholder="{{t "addTagsHere"}}…" {{#if tags}}value="{{tags}}"{{/if}}/>', '  {{#unless miradorDriven}}', '    <div class="bottom_row">', '        <button class="save">Save</button>', '        <button class="cancel">Cancel</button>', '      <div class="ym_float_right">', '        <i class="large caret up icon ym_vertical_dec"></i>', '        <i class="large caret down icon ym_vertical_inc"></i>', '      </div>', '    </div>', '  {{/unless}}', '</div>'].join(''));
+	var template = Handlebars.compile(['<div class="ym_anno_editor">', '  <div class="header">', '    <span class="layer_select"></span>', '  </div>', '  <textarea></textarea>', '  <input class="tags_editor" placeholder="{{t "addTagsHere"}}…" {{#if tags}}value="{{tags}}"{{/if}}/>', '  {{#unless miradorDriven}}', '    <div class="bottom_row">', '        <button class="ym_save">Save</button>', '        <button class="ym_cancel">Cancel</button>', '      <div class="ym_float_right">', '        <i class="large caret up icon ym_vertical_dec"></i>', '        <i class="large caret down icon ym_vertical_inc"></i>', '      </div>', '    </div>', '  {{/unless}}', '</div>'].join(''));
 
 /***/ },
 /* 321 */
