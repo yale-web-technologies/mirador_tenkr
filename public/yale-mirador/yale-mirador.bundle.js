@@ -8991,6 +8991,11 @@
 	      return new _windowProxy2.default(this.getFirstWindow());
 	    }
 	  }, {
+	    key: 'getEndPoint',
+	    value: function getEndPoint() {
+	      return this.getFirstWindowProxy().getEndPoint();
+	    }
+	  }, {
 	    key: 'publish',
 	    value: function publish() {
 	      var eventEmitter = this.mirador.viewer.eventEmitter;
