@@ -106,14 +106,6 @@
 	  var grid = new _grid2.default(element);
 	  (0, _miradorWindow2.default)().init({ mainMenu: mainMenu, grid: grid });
 	};
-	/* XXX
-	jQuery(document).ready(function () {
-	  console.log('Yale Mirador Extension document ready');
-	  if (jQuery('#ym_grid').length > 0) {
-	    const app = new App();
-	  }
-	});*/
-
 
 	exports.default = App;
 
@@ -9194,6 +9186,7 @@
 	        var htmlOptions = _this._parseHtmlOptions();
 	        var miradorInstanceId = Mirador.genUUID();
 
+	        _this._miradorId = miradorInstanceId;
 	        _this._miradorConfig = _this._buildMiradorConfig(serverSettings, htmlOptions, miradorInstanceId);
 
 	        _this.grid.addMiradorWindow(miradorInstanceId);
@@ -9390,6 +9383,11 @@
 	          endpoint.parseAnnotations();
 	        }
 	        jQuery.publish('YM_READY_TO_RELOAD_ANNO_WIN');
+	      });
+
+	      miradorProxy.subscribe('YM_ANNOWIN_ANNO_SHOW', function (event, windowId, annoId) {
+	        console.log('MiradorWindow SUB YM_ANNOWIN_ANNO_SHOW windowId: ' + windowId + ', annoId: ' + annoId);
+	        _this.grid.showAnnotation(_this._miradorId, windowId, annoId);
 	      });
 	    }
 	  }]);
@@ -10657,6 +10655,38 @@
 	      console.dir(this.canvasToc.annoHierarchy);
 	    }
 	  }, {
+	    key: 'findAnnotationById',
+	    value: function findAnnotationById(annoId) {
+	      var _iteratorNormalCompletion = true;
+	      var _didIteratorError = false;
+	      var _iteratorError = undefined;
+
+	      try {
+	        for (var _iterator = this.annotationsList[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	          var anno = _step.value;
+
+	          if (anno['@id'] === annoId) {
+	            return anno;
+	          }
+	        }
+	      } catch (err) {
+	        _didIteratorError = true;
+	        _iteratorError = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion && _iterator.return) {
+	            _iterator.return();
+	          }
+	        } finally {
+	          if (_didIteratorError) {
+	            throw _iteratorError;
+	          }
+	        }
+	      }
+
+	      return null;
+	    }
+	  }, {
 	    key: '_setEndpoint',
 	    value: function _setEndpoint(annotations) {
 	      var _this = this;
@@ -11537,9 +11567,8 @@
 	        parent: this.layerSelectorContainer,
 	        endpoint: this.endpoint
 	      });
-	      var dfd = this.layerSelector.init();
 
-	      dfd.done(function () {
+	      this.layerSelector.init().then(function () {
 	        if (_this._mode === 'create') {
 	          title.text('Create Annotation');
 	        } else {
@@ -11880,6 +11909,11 @@
 	    }, options);
 	  }
 
+	  /**
+	   * @returns {Promise}
+	   */
+
+
 	  _createClass(_class, [{
 	    key: 'init',
 	    value: function init() {
@@ -11888,14 +11922,18 @@
 	        appendTo: this.parent
 	      });
 	      this.bindEvents();
-	      return this.reload(); // return a Deferred object.
+	      return this.reload();
 	    }
+
+	    /**
+	     * @returns {Promise}
+	     */
+
 	  }, {
 	    key: 'reload',
 	    value: function reload() {
 	      console.log('LayerSelector#reload');
 	      var _this = this;
-	      var dfd = jQuery.Deferred();
 	      var layers = this.endpoint.getAnnotationLayers();
 
 	      this.selector.empty();
@@ -11904,14 +11942,15 @@
 	        _this.selector.addItem(value.label, value['@id']);
 	      });
 
-	      setTimeout(function () {
-	        if (layers.length > 0) {
-	          _this.selector.val(_this.initialLayerId || layers[0]['@id'], true);
-	          _this._isLoaded = true;
-	        }
-	        dfd.resolve();
-	      }, 0);
-	      return dfd;
+	      return new Promise(function (resolve, reject) {
+	        setTimeout(function () {
+	          if (layers.length > 0) {
+	            _this.selector.val(_this.initialLayerId || layers[0]['@id'], true);
+	            _this._isLoaded = true;
+	          }
+	          resolve();
+	        }, 0);
+	      });
 	    }
 	  }, {
 	    key: 'val',
@@ -12397,6 +12436,9 @@
 	      this.element = jQuery('#' + rootElementId);
 	      this.miradorProxyManager = (0, _miradorProxyManager2.default)();
 	      this.annotationListRenderer = new _annotationListRenderer2.default();
+
+	      this._annotationWindows = {};
+
 	      this.initLayout();
 	      this.bindEvents();
 	    }
@@ -12431,10 +12473,6 @@
 	      this.layout = new GoldenLayout(config, this.element);
 
 	      this.layout.registerComponent('Mirador', function (container, componentState) {
-	        /*
-	        var template = Handlebars.compile(jQuery('#viewer_template').html());
-	        container.getElement().html(template({ id: 'viewer' }));
-	        */
 	        var id = componentState.miradorId;
 	        var template = Handlebars.compile(jQuery('#viewer_template').html());
 	        container.getElement().html(template({ id: id }));
@@ -12448,6 +12486,12 @@
 
 	      this.layout.on('stateChanged', function (e) {
 	        console.log('GoldenLayout stateChanged');
+	        /*
+	        jQuery.each(arguments, function(index, arg){
+	          console.log('Arg ' + index + ':');
+	          console.dir(arg);
+	        });
+	        */
 	        jQuery.each(_this.miradorProxyManager.getMiradorProxies(), function (key, miradorProxy) {
 	          miradorProxy.publish('resizeMirador');
 	        });
@@ -12479,6 +12523,7 @@
 	    key: 'addWindow',
 	    value: function addWindow(options) {
 	      console.log('Grid#addWindow');
+	      var _this = this;
 	      var windowId = Mirador.genUUID();
 	      var itemConfig = {
 	        type: 'component',
@@ -12487,11 +12532,14 @@
 	      };
 	      this.layout.root.contentItems[0].addChild(itemConfig);
 
-	      new _annotationWindow2.default({ appendTo: jQuery('#' + windowId),
+	      return new _annotationWindow2.default({ appendTo: jQuery('#' + windowId),
 	        annotationListRenderer: this.annotationListRenderer,
 	        miradorId: options.miradorId,
 	        initialLayerId: options.layerId || null,
 	        initialTocTags: options.tocTags || null
+	      }).then(function (window) {
+	        _this._annotationWindows[windowId] = window;
+	        return window;
 	      });
 	    }
 	  }, {
@@ -12499,9 +12547,49 @@
 	    value: function bindEvents() {
 	      var _this = this;
 
+	      this.layout.on('itemDestroyed', function (item) {
+	        console.log('itemDestroyed component: ' + item.componentName);
+	        console.dir(item);
+
+	        if (item.componentName == 'Annotations') {
+	          var windowId = item.config.componentState.windowId;
+	          console.log('Annotatin window ' + windowId);
+	          delete _this._annotationWindows[windowId];
+	        }
+	      });
+
 	      jQuery.subscribe('YM_ADD_WINDOW', function (event, options) {
 	        _this.addWindow(options || {});
 	      });
+	    }
+	  }, {
+	    key: 'showAnnotation',
+	    value: function showAnnotation(miradorId, windowId, annoId) {
+	      console.log('MiradorWindow#showAnnotation miradorId: ' + miradorId + ', windowId: ' + windowId + ', annoId: ' + annoId);
+	      var miradorProxy = this.miradorProxyManager.getMiradorProxy(miradorId);
+	      var endpoint = miradorProxy.getEndPoint();
+	      var annotation = endpoint.findAnnotationById(annoId);
+	      var found = false;
+
+	      jQuery.each(this._annotationWindows, function (key, annoWindow) {
+	        var success = annoWindow.scrollToAnnotation(annoId);
+	        if (success) {
+	          annoWindow.highlightAnnotation(annoId);
+	        }
+	        found = found || success;
+	      });
+	      if (!found) {
+	        if (annotation) {
+	          this.addWindow({
+	            miradorId: miradorId,
+	            layerId: annotation.layerId
+	          }).then(function (annoWindow) {
+	            annoWindow.scrollToAnnotation(annoId);
+	          });
+	        } else {
+	          console.log('ERROR Grid#showAnnotation annotation not found from endpoint, id: ' + annoId);
+	        }
+	      }
 	    }
 	  }]);
 
@@ -12757,7 +12845,7 @@
 
 	      annoElem.click(function (event) {
 	        annoWin.clearHighlights();
-	        annoWin.highlightFocusedAnnotation(annotation);
+	        annoWin.highlightAnnotation(annotation['@id']);
 	        annoWin.miradorProxy.publish('ANNOTATION_FOCUSED', [annoWin.id, finalTargetAnno]);
 	        jQuery.publish('ANNOTATION_FOCUSED', [annoWin.id, annotation]);
 	      });
@@ -12898,8 +12986,14 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var _class = function () {
+
+	  /**
+	   * @returns {Promise}
+	   */
 	  function _class(options) {
 	    _classCallCheck(this, _class);
+
+	    var _this = this;
 
 	    jQuery.extend(this, {
 	      id: null, // annotation window ID
@@ -12910,12 +13004,22 @@
 	      initialTocTags: null
 	    }, options);
 
-	    this.init();
+	    return new Promise(function (resolve, reject) {
+	      _this.init().then(function () {
+	        resolve(_this);
+	      });
+	    });
 	  }
+
+	  /**
+	   * @returns {Promise}
+	   */
+
 
 	  _createClass(_class, [{
 	    key: 'init',
 	    value: function init() {
+	      var _this = this;
 	      this.miradorProxy = (0, _miradorProxyManager2.default)().getMiradorProxy(this.miradorId);
 	      if (!this.id) {
 	        this.id = Mirador.genUUID();
@@ -12930,8 +13034,9 @@
 	      this.placeholder = this.element.find('.placeholder');
 	      this.placeholder.text('Loading...').show();
 
-	      this.reload();
-	      this.bindEvents();
+	      return this.reload().then(function () {
+	        _this.bindEvents();
+	      });
 	    }
 	  }, {
 	    key: 'initMenuTagSelector',
@@ -12972,8 +13077,6 @@
 	    value: function reload() {
 	      console.log('AnnotationWindow#reload');
 	      var _this = this;
-	      var layerDfd = null,
-	          menuTagDfd = null;
 
 	      this.placeholder.hide();
 
@@ -12993,24 +13096,33 @@
 	        this.element.find('.annowin_menu_tag_row').hide();
 	      }
 
-	      if (this.endpoint.getAnnotationLayers().length > 0) {
-	        if (this.layerSelector.isLoaded()) {
-	          layerDfd = jQuery.Deferred().resolve();
+	      var layersPromise = new Promise(function (resolve, reject) {
+	        if (_this.endpoint.getAnnotationLayers().length > 0) {
+	          if (_this.layerSelector.isLoaded()) {
+	            resolve();
+	          } else {
+	            _this.layerSelector.init().then(function () {
+	              resolve();
+	            });
+	          }
 	        } else {
-	          layerDfd = this.layerSelector.init();
+	          reject();
 	        }
-	      } else {
-	        layerDfd = jQuery.Deferred().reject();
-	      }
+	      });
 
-	      if (this.endpoint.getCanvasToc()) {
-	        menuTagDfd = this.menuTagSelector.reload();
-	      } else {
-	        menuTagDfd = jQuery.Deferred().resolve();
-	      }
+	      var tocPromise = new Promise(function (resolve, reject) {
+	        if (_this.endpoint.getCanvasToc()) {
+	          _this.menuTagSelector.reload().then(function () {
+	            resolve();
+	          });
+	        } else {
+	          reject();
+	        }
+	      });
 
-	      jQuery.when(layerDfd, menuTagDfd).done(function () {
+	      return Promise.all([layersPromise, tocPromise]).then(function () {
 	        _this.updateList();
+	        return _this;
 	      });
 	    }
 	  }, {
@@ -13051,12 +13163,12 @@
 	      })[0];
 	    }
 	  }, {
-	    key: 'highlightFocusedAnnotation',
-	    value: function highlightFocusedAnnotation(annotation) {
+	    key: 'highlightAnnotation',
+	    value: function highlightAnnotation(annoId) {
 	      this.listElem.find('.annowin_anno').each(function (index, value) {
 	        var annoElem = jQuery(value);
-	        var annoID = annoElem.data('annotationId');
-	        if (annoID === annotation['@id']) {
+	        var curAnnoId = annoElem.data('annotationId');
+	        if (curAnnoId === annoId) {
 	          annoElem.addClass('ym_anno_selected');
 	        } else {
 	          annoElem.removeClass('ym_anno_selected');
@@ -13102,6 +13214,23 @@
 	        //scrollTop: annoElem.position().top + this.listElem.scrollTop()
 	        scrollTop: annoElem.position().top + this.listElem.position().top + this.element.scrollTop()
 	      }, 250);
+	    }
+	  }, {
+	    key: 'scrollToAnnotation',
+	    value: function scrollToAnnotation(annoId) {
+	      console.log('AnnotationWindow#scrollToAnnotation annoId: ' + annoId);
+	      var _this = this;
+	      var found = false;
+
+	      this.listElem.find('.annowin_anno').each(function (index, value) {
+	        var elem = $(value);
+	        if (elem.data('annotationId') === annoId) {
+	          found = true;
+	          _this.scrollToElem(elem);
+	          return false;
+	        }
+	      });
+	      return found;
 	    }
 	  }, {
 	    key: 'clearHighlights',
@@ -13290,30 +13419,27 @@
 	    key: 'reload',
 	    value: function reload() {
 	      var _this = this;
-	      var dfd = jQuery.Deferred();
 	      var toc = this.endpoint.getCanvasToc();
 	      var annoHierarchy = toc ? toc.annoHierarchy : null;
 
-	      if (!annoHierarchy) {
-	        dfd.reject();
-	        return dfd;
-	      }
+	      return new Promise(function (resolve, reject) {
+	        if (!annoHierarchy) {
+	          reject();
+	        }
+	        _this.selector.empty();
 
-	      this.selector.empty();
+	        var layers = [];
+	        var menu = _this.buildMenu(annoHierarchy);
+	        //console.log('MenuTagSelector menu: ' + JSON.stringify(menu, null, 2));
 
-	      var layers = [];
+	        _this.selector.setItems(menu);
 
-	      var menu = this.buildMenu(annoHierarchy);
-	      //console.log('MenuTagSelector menu: ' + JSON.stringify(menu, null, 2));
-
-	      this.selector.setItems(menu);
-
-	      setTimeout(function () {
-	        var value = _this.initialTags && _this.initialTags.length > 0 ? _this.initialTags.join('|') : 'all';
-	        _this.selector.val(value, true);
-	        dfd.resolve();
-	      }, 0);
-	      return dfd;
+	        setTimeout(function () {
+	          var value = _this.initialTags && _this.initialTags.length > 0 ? _this.initialTags.join('|') : 'all';
+	          _this.selector.val(value, true);
+	          resolve();
+	        }, 0);
+	      });
 	    }
 	  }, {
 	    key: 'val',
@@ -13579,6 +13705,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	// Separated this code out to its own file because it shouldn't run with the test.
 	jQuery(document).ready(function () {
 	  console.log('Yale Mirador Extension document ready');
 	  if (jQuery('#ym_grid').length > 0) {
