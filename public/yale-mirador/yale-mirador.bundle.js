@@ -10349,6 +10349,8 @@
 	      var _this = this;
 	      (0, _annotationCache2.default)().then(function (instance) {
 	        _this._cache = instance;
+	      }).catch(function (reason) {
+	        console.log('ERROR YaleEndpointBase#init getAnnotationCache failed');
 	      });
 	    }
 	  }, {
@@ -10438,11 +10440,11 @@
 	        _this._search(canvasId).then(function (annotations) {
 	          progressPane.hide();
 	          resolve(annotations);
-	        }).catch(function (e) {
-	          console.log('ERROR _search - ' + e);
+	        }).catch(function (reason) {
+	          console.log('ERROR _search - ' + reason);
 	          progressPane.hide();
 	          errorPane.show('annotations');
-	          reject();
+	          reject('_search failed - ' + reason);
 	        });
 	      });
 	    }
@@ -10533,10 +10535,13 @@
 	      var _this = this;
 
 	      return new Promise(function (resolve, reject) {
-	        var layersCallback = function layersCallback(layers) {
+	        var successCallback = function successCallback(layers) {
 	          _this._annotationLayers = layers;
 	          _this._cache.setLayers(layers);
 	          resolve(layers);
+	        };
+	        var errorCallback = function errorCallback(reason) {
+	          reject('_getLayers failed - ' + reason);
 	        };
 
 	        if (_this._cache) {
@@ -10547,16 +10552,16 @@
 	              resolve(layers);
 	            } else {
 	              console.log('MISSED CACHE - layers empty');
-	              _this._getLayers().then(layersCallback);
+	              _this._getLayers().then(successCallback).catch(errorCallback);
 	            }
 	          }).catch(function (e) {
 	            // error getting layers from cache
 	            console.log('MISSED CACHE - layers error');
-	            _this._getLayers().then(layersCallback);
+	            _this._getLayers().then(successCallback).catch(errorCallback);
 	          });
 	        } else {
 	          console.log('MISSED CACHE - layers no cache');
-	          _this._getLayers().then(layersCallback);
+	          _this._getLayers().then(successCallback).catch(errorCallback);
 	        }
 	      });
 	    }
@@ -10809,6 +10814,9 @@
 	        }).then(function () {
 	          _this._valid = true;
 	          resolve(_this);
+	        }).catch(function (reason) {
+	          console.log('ERROR AnnotationCache#constructor promise rejected - ' + reason);
+	          reject(_this);
 	        });
 	      } else {
 	        reject(_this);
@@ -11588,6 +11596,8 @@
 	          _this.initTinyMce();
 	          _this.bindEvents();
 	        }, 0);
+	      }).catch(function (reason) {
+	        console.log('ERROR AnnotationEditor#reload layerSelector.init failed - ' + reason);
 	      });
 	    }
 	  }, {
@@ -12585,6 +12595,8 @@
 	            layerId: annotation.layerId
 	          }).then(function (annoWindow) {
 	            annoWindow.scrollToAnnotation(annoId);
+	          }).catch(function (reason) {
+	            console.log('ERROR Grid#showAnnotation addWindow failed <- ' + reason);
 	          });
 	        } else {
 	          console.log('ERROR Grid#showAnnotation annotation not found from endpoint, id: ' + annoId);
@@ -13007,6 +13019,8 @@
 	    return new Promise(function (resolve, reject) {
 	      _this.init().then(function () {
 	        resolve(_this);
+	      }).catch(function (reason) {
+	        reject('AnnotationWindow#init failed - ' + reason);
 	      });
 	    });
 	  }
@@ -13036,6 +13050,8 @@
 
 	      return this.reload().then(function () {
 	        _this.bindEvents();
+	      }).catch(function (reason) {
+	        throw 'AnnotationWindow#init promise failed - ' + reason;
 	      });
 	    }
 	  }, {
@@ -13103,10 +13119,12 @@
 	          } else {
 	            _this.layerSelector.init().then(function () {
 	              resolve();
+	            }).catch(function (reason) {
+	              reject('layerSelector.init failed - ' + reason);
 	            });
 	          }
 	        } else {
-	          reject();
+	          reject('No layers from endpoint');
 	        }
 	      });
 
@@ -13114,9 +13132,11 @@
 	        if (_this.endpoint.getCanvasToc()) {
 	          _this.menuTagSelector.reload().then(function () {
 	            resolve();
+	          }).catch(function (reason) {
+	            reject('menuTagSelector.reload failed - ' + reason);
 	          });
 	        } else {
-	          reject();
+	          resolve();
 	        }
 	      });
 
@@ -13223,7 +13243,7 @@
 	      var found = false;
 
 	      this.listElem.find('.annowin_anno').each(function (index, value) {
-	        var elem = $(value);
+	        var elem = jQuery(value);
 	        if (elem.data('annotationId') === annoId) {
 	          found = true;
 	          _this.scrollToElem(elem);
