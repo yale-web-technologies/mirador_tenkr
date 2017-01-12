@@ -4,7 +4,8 @@ class ApiController < ApplicationController
       :buildPath => '/mirador',
       :tagHierarchy => _get_tag_hierarchy,
       :endpointUrl => Admin::Setting.first.endpoint_url,
-      :firebase => _firebase_settings
+      :firebase => _firebase_settings,
+      :disableAuthz => true
     }
     render json: jsonObj
   end

@@ -1,4 +1,4 @@
-// Yale-Mirador version 0.3.0 - Thu Jan 12 2017 15:49:18 GMT-0500 (EST)
+// Yale-Mirador version 0.3.0 - Thu Jan 12 2017 16:41:08 GMT-0500 (EST)
 
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -10795,11 +10795,10 @@
 	      console.log('AnnotationSource#getLayers');
 	      var _this = this;
 	      return new Promise(function (resolve, reject) {
-	        var projectId = (0, _miradorWindow2.default)().getConfig().extension.projectId;
+	        var settings = (0, _miradorWindow2.default)().getConfig().extension;
 	        var url = _this.options.prefix + '/layers';
-
-	        if (projectId) {
-	          url += '?group_id=' + projectId;
+	        if (settings.projectId && !settings.disableAuthz) {
+	          url += '?group_id=' + settings.projectId;
 	        }
 	        console.log('AnnotationSource#getLayers url:', url);
 
@@ -11707,6 +11706,7 @@
 	      buildPath: null,
 	      canvasId: null,
 	      defaultSettings: null, // Mirador default settings
+	      disableAuthz: false,
 	      endpointUrl: null,
 	      projectId: null,
 	      isEditor: false,
@@ -11742,7 +11742,8 @@
 	        extension: {
 	          tagHierarchy: this.options.tagHierarchy || null,
 	          projectId: this.options.projectId || null,
-	          firebase: this.options.firebase || null
+	          firebase: this.options.firebase || null,
+	          disableAuthz: this.options.disableAuthz || false
 	        }
 	      });
 
