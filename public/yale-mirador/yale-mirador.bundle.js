@@ -1,4 +1,4 @@
-// Yale-Mirador version 0.3.0 - Thu Jan 12 2017 15:18:35 GMT-0500 (EST)
+// Yale-Mirador version 0.3.0 - Thu Jan 12 2017 15:49:18 GMT-0500 (EST)
 
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -10801,6 +10801,7 @@
 	        if (projectId) {
 	          url += '?group_id=' + projectId;
 	        }
+	        console.log('AnnotationSource#getLayers url:', url);
 
 	        jQuery.ajax({
 	          url: url,
