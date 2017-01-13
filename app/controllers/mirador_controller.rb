@@ -9,5 +9,6 @@ class MiradorController < ApplicationController
     @canvas_id = params[:canvas] || ''
     @toc_tags = params[:tocTags] || ''
     @layer_ids = params[:layers] || ''
+    @annotation_id = params[:annotation] || ''
   end
 end
