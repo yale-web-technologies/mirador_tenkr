@@ -1,4 +1,4 @@
-// Yale-Mirador version 0.3.0 - Fri Jan 13 2017 00:48:04 GMT-0500 (EST)
+// Yale-Mirador version 0.3.0 - Fri Jan 13 2017 10:21:45 GMT-0500 (EST)
 
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -13455,7 +13455,6 @@
 	      this.selector = new _selector2.default({
 	        appendTo: this.parent
 	      });
-	      console.log('XXXX layer selector:', this.selector);
 	      this.bindEvents();
 	      return this.reload(layers);
 	    }
@@ -14209,6 +14208,8 @@
 	      }).then(function (window) {
 	        _this._annotationWindows[windowId] = window;
 	        return window;
+	      }).catch(function (reason) {
+	        throw reason;
 	      });
 	    }
 	  }, {
@@ -14684,7 +14685,8 @@
 	      _this.init().then(function () {
 	        resolve(_this);
 	      }).catch(function (reason) {
-	        reject('AnnotationWindow#init failed - ' + reason);
+	        var msg = 'AnnotationWindow#init failed - ' + reason;
+	        throw msg;
 	      });
 	    });
 	  }
