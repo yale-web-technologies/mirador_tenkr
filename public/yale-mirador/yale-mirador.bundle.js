@@ -1,4 +1,4 @@
-// Yale-Mirador version 0.3.0 - Thu Jan 12 2017 16:41:08 GMT-0500 (EST)
+// Yale-Mirador version 0.3.0 - Fri Jan 13 2017 00:48:04 GMT-0500 (EST)
 
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -8854,10 +8854,13 @@
 	  }, {
 	    key: 'parseAnnotations',
 	    value: function parseAnnotations() {
+	      var explorer = this.getAnnotationExplorer();
 	      var spec = (0, _miradorWindow2.default)().getConfig().extension.tagHierarchy;
-	      this.canvasToc = new _toc2.default(spec, this.annotationsList);
+	      explorer.reloadAnnotationToc(spec, this.annotationsList);
+	      /*const spec = getMiradorWindow().getConfig().extension.tagHierarchy;
+	      this.canvasToc = new CanvasToc(spec, this.annotationsList);
 	      console.log('YaleEndpoint#parseAnnotations canvasToc:');
-	      console.dir(this.canvasToc.annoHierarchy);
+	      console.dir(this.canvasToc.annoHierarchy);*/
 	    }
 	  }]);
 
@@ -8891,7 +8894,7 @@
 /***/ function(module, exports) {
 
 	// Joosugi version 0.1.0
-	// Build: Sat Jan 07 2017 23:56:06 GMT-0500 (EST)
+	// Build: Fri Jan 13 2017 00:25:26 GMT-0500 (EST)
 
 	/******/ (function(modules) { // webpackBootstrap
 	/******/ 	// The module cache
@@ -9658,6 +9661,10 @@
 
 		var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+		var _annotationToc = __webpack_require__(1);
+
+		var _annotationToc2 = _interopRequireDefault(_annotationToc);
+
 		var _annotationUtil = __webpack_require__(2);
 
 		var _annotationUtil2 = _interopRequireDefault(_annotationUtil);
@@ -9712,6 +9719,12 @@
 		    key: 'getAnnotationToc',
 		    value: function getAnnotationToc() {
 		      return this.annotationToc;
+		    }
+		  }, {
+		    key: 'reloadAnnotationToc',
+		    value: function reloadAnnotationToc(spec, annotations) {
+		      this.annotationToc = new _annotationToc2.default(spec, annotations);
+		      console.log('AnnotationExplorer#reloadAnnotationToc toc:', this.annotationToc.annoHierarchy);
 		    }
 		  }]);
 
@@ -13442,6 +13455,7 @@
 	      this.selector = new _selector2.default({
 	        appendTo: this.parent
 	      });
+	      console.log('XXXX layer selector:', this.selector);
 	      this.bindEvents();
 	      return this.reload(layers);
 	    }
@@ -13493,8 +13507,8 @@
 	    }
 	  }, {
 	    key: 'val',
-	    value: function val(value) {
-	      return this.selector.val(value);
+	    value: function val(value, skipNotify) {
+	      return this.selector.val(value, skipNotify);
 	    }
 	  }, {
 	    key: 'isLoaded',
@@ -13556,10 +13570,10 @@
 	      this.element.dropdown({
 	        direction: 'downward',
 	        onChange: function onChange(value, text) {
-	          if (typeof _this.changeCallback === 'function' && !_this.skipNotify) {
+	          if (typeof _this.changeCallback === 'function' && !_this._skipNotify) {
 	            _this.changeCallback(value, text);
 	          }
-	          this.skipNotify = false;
+	          this._skipNotify = false;
 	        },
 	        action: function action(text, value) {
 	          _this.element.dropdown('set selected', value);
@@ -13616,6 +13630,7 @@
 	    key: 'val',
 	    value: function val(value, skipNotify) {
 	      var dd = this.element;
+	      this._skipNotify = skipNotify || false;
 	      dd.dropdown('refresh');
 
 	      if (value === undefined) {
@@ -15158,8 +15173,8 @@
 	    }
 	  }, {
 	    key: 'val',
-	    value: function val(value) {
-	      return this.selector.val(value);
+	    value: function val(value, skipNotify) {
+	      return this.selector.val(value, skipNotify);
 	    }
 
 	    /**
