@@ -1,4 +1,4 @@
-// Yale-Mirador version 0.4.0 - Tue Feb 07 2017 14:55:15 GMT-0500 (EST)
+// Yale-Mirador version 0.4.1 - Tue Feb 07 2017 15:45:18 GMT-0500 (EST)
 
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache

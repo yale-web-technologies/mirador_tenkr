@@ -1,4 +1,4 @@
-/*
+/* 
  * Overriding Semantic UI
  */
 .ui.text.menu {
@@ -23,11 +23,6 @@
     width: 1000px;
     margin: -50% 0 0 -450px;
   }
-}
-.hud-control.hud-dropdown,
-.hud-control.hud-dropdown:before,
-.hud-control.hud-dropdown:after {
-  box-sizing: border-box;
 }
 /* 
  * Overriding GoldenLayout
