@@ -1,4 +1,4 @@
-// Yale-Mirador version 0.3.0 - Fri Jan 13 2017 10:21:45 GMT-0500 (EST)
+// Yale-Mirador version 0.4.0 - Tue Feb 07 2017 14:55:15 GMT-0500 (EST)
 
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -60,11 +60,11 @@
 	  value: true
 	});
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 	__webpack_require__(2);
 
 	__webpack_require__(299);
-
-	__webpack_require__(300);
 
 	__webpack_require__(301);
 
@@ -72,17 +72,21 @@
 
 	__webpack_require__(303);
 
-	__webpack_require__(321);
+	__webpack_require__(304);
 
-	__webpack_require__(322);
+	__webpack_require__(323);
 
-	__webpack_require__(325);
+	__webpack_require__(326);
 
-	var _configFetcher = __webpack_require__(326);
+	var _configFetcher = __webpack_require__(327);
 
 	var _configFetcher2 = _interopRequireDefault(_configFetcher);
 
-	var _grid = __webpack_require__(327);
+	var _logger = __webpack_require__(300);
+
+	var _logger2 = _interopRequireDefault(_logger);
+
+	var _grid = __webpack_require__(328);
 
 	var _grid2 = _interopRequireDefault(_grid);
 
@@ -90,48 +94,82 @@
 
 	var _mainMenu2 = _interopRequireDefault(_mainMenu);
 
-	var _miradorWindow = __webpack_require__(308);
+	var _miradorWindow = __webpack_require__(314);
 
 	var _miradorWindow2 = _interopRequireDefault(_miradorWindow);
 
 	__webpack_require__(333);
+
+	var _stateStore = __webpack_require__(320);
+
+	var _stateStore2 = _interopRequireDefault(_stateStore);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	__webpack_require__(334);
+	//import './util/jquery-tiny-pubsub-trace'; // import this only for debugging!
 
-	//import './util/override-pubsub'; // import this only for debugging!
+	var App = function () {
+	  function App(options) {
+	    _classCallCheck(this, App);
 
-	var App = function App(element) {
-	  _classCallCheck(this, App);
+	    this.logger = this.setupLogger();
+	    this.logger.debug('App#constructor');
+	    this.options = jQuery.extend({
+	      rootElement: null,
+	      dataElement: null
+	    }, options);
+	  }
 
-	  //console.log('App#constructor');
-	  var viewerTemplateElem = jQuery('#\\{\\{id\\}\\}');
-	  var configFetcher = (0, _configFetcher2.default)();
-	  var settingsFromHtml = configFetcher.fetchSettingsFromHtml(viewerTemplateElem);
-	  var apiUrl = settingsFromHtml.apiUrl;
-	  var projectId = settingsFromHtml.projectId;
+	  _createClass(App, [{
+	    key: 'init',
+	    value: function init() {
+	      var _this = this;
+	      var configFetcher = (0, _configFetcher2.default)();
+	      var settingsFromHtml = configFetcher.fetchSettingsFromHtml(this.options.dataElement);
+	      var apiUrl = settingsFromHtml.apiUrl;
+	      var projectId = settingsFromHtml.projectId;
 
 
-	  configFetcher.fetchSettingsFromApi(apiUrl, projectId).catch(function (reason) {
-	    alert('ERROR failed to retrieve server setting - ' + reason);
-	  }).then(function (settingsFromApi) {
-	    console.log('Settings from API:', settingsFromApi);
-	    var mainMenu = new _mainMenu2.default();
-	    var grid = new _grid2.default(element);
-	    var settings = jQuery.extend(settingsFromHtml, settingsFromApi);
+	      (0, _stateStore2.default)().setObject('layerIndexMap', null);
 
-	    (0, _miradorWindow2.default)().init({
-	      mainMenu: mainMenu,
-	      grid: grid,
-	      settings: settings
-	    });
-	  }).catch(function (reason) {
-	    alert('ERROR failed to init Mirador - ' + reason);
-	  });
-	};
+	      configFetcher.fetchSettingsFromApi(apiUrl, projectId).catch(function (reason) {
+	        var msg = 'ERROR failed to retrieve server setting - ' + reason;
+	        throw msg;
+	      }).then(function (settingsFromApi) {
+	        _this.logger.debug('Settings from API:', settingsFromApi);
+	        var mainMenu = new _mainMenu2.default();
+	        var grid = new _grid2.default(_this.options.rootElement);
+	        var settings = jQuery.extend(settingsFromHtml, settingsFromApi);
+
+	        (0, _miradorWindow2.default)().init({
+	          mainMenu: mainMenu,
+	          grid: grid,
+	          settings: settings
+	        });
+	      }).catch(function (reason) {
+	        var msg = 'ERROR failed to init Mirador - ' + reason;
+	        alert(msg);
+	        throw msg;
+	      });
+	    }
+	  }, {
+	    key: 'setupLogger',
+	    value: function setupLogger() {
+	      var logger = (0, _logger2.default)();
+	      if (window.location.hash === '#debug') {
+	        logger.setLogLevel(logger.DEBUG);
+	      } else {
+	        logger.setLogLevel(logger.INFO);
+	      }
+	      return logger;
+	    }
+	  }]);
+
+	  return App;
+	}();
 
 	exports.default = App;
 
@@ -8262,19 +8300,27 @@
 
 /***/ },
 /* 299 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
+
+	var _logger = __webpack_require__(300);
+
+	var _logger2 = _interopRequireDefault(_logger);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	(function ($) {
 
 	  $.yaleExt = $.yaleExt || {};
 
+	  var logger = (0, _logger2.default)();
+
 	  jQuery.extend($.yaleExt, {
 
 	    // Get bounds of multiple paper.js shapes.
 	    getCombinedBounds: function getCombinedBounds(shapes) {
-	      console.log('shapes: ' + shapes);
+	      logger.debug('shapes: ' + shapes);
 	      var bounds = null;
 	      jQuery.each(shapes, function (index, shape) {
 	        if (bounds) {
@@ -8282,7 +8328,7 @@
 	        } else {
 	          bounds = shape.strokeBounds;
 	        }
-	        console.log('index: ' + index + ', bounds: ' + bounds);
+	        logger.debug('index: ' + index + ', bounds: ' + bounds);
 	      });
 	      return bounds;
 	    },
@@ -8317,9 +8363,98 @@
 
 	'use strict';
 
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	exports.default = getLogger;
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function getLogger() {
+	  if (!instance) {
+	    instance = new Logger();
+	  }
+	  return instance;
+	}
+
+	var instance = null;
+
+	var Logger = function () {
+	  function Logger(logLevel, trace) {
+	    _classCallCheck(this, Logger);
+
+	    this.DEBUG = 0;
+	    this.INFO = 1;
+	    this.ERROR = 2;
+
+	    this.logLevel = logLevel || this.INFO;
+	    this.trace = trace || false;
+	  }
+
+	  _createClass(Logger, [{
+	    key: 'setLogLevel',
+	    value: function setLogLevel(logLevel) {
+	      this.logLevel = logLevel;
+	    }
+	  }, {
+	    key: 'log',
+	    value: function log() {
+	      if (this.trace) {
+	        console.trace.apply(console, arguments);
+	      } else {
+	        console.log.apply(console, arguments);
+	      }
+	    }
+	  }, {
+	    key: 'error',
+	    value: function error() {
+	      var args = Array.prototype.slice.call(arguments);
+	      args.unshift('ERROR');
+	      this.log.apply(this, args);
+	    }
+	  }, {
+	    key: 'info',
+	    value: function info() {
+	      if (this.logLevel <= this.INFO) {
+	        var args = Array.prototype.slice.call(arguments);
+	        args.unshift('INFO');
+	        this.log.apply(this, args);
+	      }
+	    }
+	  }, {
+	    key: 'debug',
+	    value: function debug() {
+	      if (this.logLevel <= this.DEBUG) {
+	        var args = Array.prototype.slice.call(arguments);
+	        args.unshift('DEBUG');
+	        this.log.apply(this, args);
+	      }
+	    }
+	  }]);
+
+	  return Logger;
+	}();
+
+/***/ },
+/* 301 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _logger = __webpack_require__(300);
+
+	var _logger2 = _interopRequireDefault(_logger);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	(function ($) {
 
 	  $.yaleExt = $.yaleExt || {};
+
+	  var logger = (0, _logger2.default)();
 
 	  /*
 	   * Functions in this file must be called in the context of an ImageView 
@@ -8330,17 +8465,17 @@
 	    zoomToAnnotation: function zoomToAnnotation(annotation) {
 	      var viewport = this.osd.viewport;
 	      var currentZoom = viewport.getZoom();
-	      console.log('panToAnnotation zoom: ' + currentZoom);
+	      logger.debug('panToAnnotation zoom: ' + currentZoom);
 	      var shapes = $.yaleExt.getShapesForAnnotation.call(this.annotationsLayer.drawTool, annotation);
 	      var shapeBounds = $.yaleExt.getCombinedBounds(shapes); // in image coordinates
 	      var shapeWH = viewport.imageToViewportCoordinates(shapeBounds.width, shapeBounds.height);
 	      var viewportBounds = viewport.getBounds();
 	      var widthRatio = shapeWH.x / viewportBounds.width;
-	      console.log('w ratio: ' + widthRatio);
+	      logger.debug('w ratio: ' + widthRatio);
 	      var heightRatio = shapeWH.y / viewportBounds.height;
-	      console.log('h ratio: ' + heightRatio);
+	      logger.debug('h ratio: ' + heightRatio);
 	      var zoomFactor = 1.0 / Math.max(widthRatio, heightRatio) * 0.75;
-	      console.log('zoomFactor: ' + zoomFactor);
+	      logger.debug('zoomFactor: ' + zoomFactor);
 
 	      viewport.zoomBy(zoomFactor);
 	    },
@@ -8421,7 +8556,7 @@
 	})(Mirador);
 
 /***/ },
-/* 301 */
+/* 302 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8473,10 +8608,16 @@
 	})(Mirador);
 
 /***/ },
-/* 302 */
-/***/ function(module, exports) {
+/* 303 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
+
+	var _logger = __webpack_require__(300);
+
+	var _logger2 = _interopRequireDefault(_logger);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	/**
 	 * Overrides the same-named file in Mirador core to prevent
@@ -8488,6 +8629,7 @@
 	  var template = Handlebars.compile(['<div class="header"></div>', '<div class="content">', '  <div class="description">', '    <p>{{message}}</p>', '  </div>', '</div>', '<div class="actions">', '  <div class="ui ok button">{{yesLabel}}</div>', '  <div class="ui cancel button">{{noLabel}}</div>', '</div>'].join(''));
 
 	  $.DialogBuilder = function (container) {
+	    this.logger = (0, _logger2.default)();
 	    var id = 'ym_dialog';
 	    var elem = jQuery('#' + id);
 	    if (elem.length === 0) {
@@ -8504,7 +8646,7 @@
 	    },
 
 	    dialog: function dialog(opts) {
-	      console.log('DialogBuilder#dialog');
+	      this.logger.debug('DialogBuilder#dialog opts:', opts);
 	      var yes = opts.buttons.yes;
 	      var no = opts.buttons.no;
 
@@ -8531,7 +8673,7 @@
 	})(Mirador);
 
 /***/ },
-/* 303 */
+/* 304 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8542,41 +8684,43 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _import = __webpack_require__(304);
+	var _import = __webpack_require__(305);
 
-	var _annotationSource = __webpack_require__(307);
+	var _annotationSource = __webpack_require__(308);
 
 	var _annotationSource2 = _interopRequireDefault(_annotationSource);
 
-	var _toc = __webpack_require__(318);
-
-	var _toc2 = _interopRequireDefault(_toc);
-
-	var _miradorProxyManager = __webpack_require__(309);
-
-	var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
-
-	var _miradorWindow = __webpack_require__(308);
-
-	var _miradorWindow2 = _interopRequireDefault(_miradorWindow);
-
-	var _modalAlert = __webpack_require__(313);
-
-	var _modalAlert2 = _interopRequireDefault(_modalAlert);
-
-	var _errorDialog = __webpack_require__(319);
+	var _errorDialog = __webpack_require__(321);
 
 	var _errorDialog2 = _interopRequireDefault(_errorDialog);
 
-	var _session = __webpack_require__(317);
+	var _logger = __webpack_require__(300);
+
+	var _logger2 = _interopRequireDefault(_logger);
+
+	var _miradorProxyManager = __webpack_require__(310);
+
+	var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
+
+	var _miradorWindow = __webpack_require__(314);
+
+	var _miradorWindow2 = _interopRequireDefault(_miradorWindow);
+
+	var _modalAlert = __webpack_require__(315);
+
+	var _modalAlert2 = _interopRequireDefault(_modalAlert);
+
+	var _session = __webpack_require__(319);
 
 	var _session2 = _interopRequireDefault(_session);
 
-	var _util = __webpack_require__(320);
+	var _util = __webpack_require__(322);
 
 	var _util2 = _interopRequireDefault(_util);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8591,14 +8735,13 @@
 	      prefix: null,
 	      dfd: null
 	    }, options);
-
-	    var _this = this;
+	    this.logger = (0, _logger2.default)();
 	  }
 
 	  _createClass(YaleEndpoint, [{
 	    key: 'search',
 	    value: function search(options) {
-	      console.log('YaleEndpoint#search options: ', options);
+	      this.logger.debug('YaleEndpoint#search', options);
 	      var _this = this;
 	      var canvasId = options.uri;
 	      var progressPane = (0, _modalAlert2.default)();
@@ -8606,12 +8749,11 @@
 	      var explorer = this.getAnnotationExplorer();
 
 	      progressPane.show();
-	      explorer.getAnnotations(canvasId).catch(function (reason) {
+	      explorer.getAnnotations({ canvasId: canvasId }).catch(function (reason) {
 	        var msg = 'ERROR YaleEndpoint#search getAnnotations - ' + reason;
-	        console.log(msg);
 	        throw msg;
 	      }).then(function (annotations) {
-	        console.log('YaleEndpoint#search annotations: ', annotations);
+	        _this.logger.debug('YaleEndpoint#search annotations: ', annotations);
 	        progressPane.hide();
 	        var _iteratorNormalCompletion = true;
 	        var _didIteratorError = false;
@@ -8641,7 +8783,7 @@
 	        _this.annotationsList = annotations;
 	        _this.dfd.resolve(true);
 	      }).catch(function (reason) {
-	        console.log('ERROR YaleEndpoint#search failed - ', reason);
+	        _this.logger.error('YaleEndpoint#search failed - ', reason);
 	        progressPane.hide();
 	        errorPane.show('annotations');
 	      });
@@ -8654,16 +8796,15 @@
 	      if (this.userAuthorize('create', oaAnnotation)) {
 	        this._create(oaAnnotation).catch(function (reason) {
 	          var msg = 'YaleEndpoint#create _create failed - ' + reason;
-	          console.log(msg);
 	          throw msg;
 	        }).then(function (anno) {
-	          console.log('YaleEndpoint#create successful with anno: ', anno);
+	          _this.logger.debug('YaleEndpoint#create successful with anno: ', anno);
 	          anno.endpoint = _this;
 	          if (typeof successCallback === 'function') {
 	            successCallback(anno);
 	          }
 	        }).catch(function (reason) {
-	          console.log('ERROR YaleEndpoint#create successCallback failed');
+	          _this.logger.error('ERROR YaleEndpoint#create successCallback failed');
 	          errorCallback();
 	        });
 	      } else {
@@ -8676,13 +8817,12 @@
 	  }, {
 	    key: '_create',
 	    value: function _create(oaAnnotation) {
-	      console.log('YaleEndpoint#_create oaAnnotation:', oaAnnotation);
+	      this.logger.debug('YaleEndpoint#_create oaAnnotation:', oaAnnotation);
 	      var _this = this;
 	      var explorer = this.getAnnotationExplorer();
 
 	      return explorer.createAnnotation(oaAnnotation).catch(function (reason) {
 	        var msg = 'YaleEndpoint#_create createAnnotation failed - ' + reason;
-	        console.log(msg);
 	        throw msg;
 	      }).then(function (anno) {
 	        _this.annotationsList.push(anno);
@@ -8692,12 +8832,13 @@
 	  }, {
 	    key: 'update',
 	    value: function update(oaAnnotation, successCallback, errorCallback) {
+	      var _this = this;
 	      var annotationId = oaAnnotation['@id'];
 
 	      if (this.userAuthorize('update', oaAnnotation)) {
 	        this._update(oaAnnotation).catch(function (reason) {
 	          var msg = 'ERROR YaleEndpoint#update _update failed - ' + reason;
-	          console.log(msg);
+	          _this.logger.error(msg);
 	          errorCallback();
 	        }).then(function (anno) {
 	          if (typeof successCallback === 'function') {
@@ -8714,7 +8855,7 @@
 	  }, {
 	    key: '_update',
 	    value: function _update(oaAnnotation) {
-	      console.log('YaleEndpoint#_update oaAnnotation:', oaAnnotation);
+	      this.logger.debug('YaleEndpoint#_update oaAnnotation:', oaAnnotation);
 	      var _this = this;
 	      var explorer = this.getAnnotationExplorer();
 	      var annotationId = oaAnnotation['@id'];
@@ -8723,7 +8864,6 @@
 	        return explorer.updateAnnotation(oaAnnotation);
 	      }).catch(function (reason) {
 	        var msg = 'ERROR YaleEndpoint#_update updateAnnotation - ' + reason;
-	        console.log(msg);
 	        throw msg;
 	      }).then(function (anno) {
 	        jQuery.each(_this.annotationsList, function (index, value) {
@@ -8739,7 +8879,7 @@
 	  }, {
 	    key: 'deleteAnnotation',
 	    value: function deleteAnnotation(annotationId, successCallback, errorCallback) {
-	      console.log('YaleEndpoint#deleteAnnotation annotationId: ' + annotationId);
+	      this.logger.debug('YaleEndpoint#deleteAnnotation annotationId: ' + annotationId);
 	      var _this = this;
 
 	      if (this.userAuthorize('delete', null)) {
@@ -8751,7 +8891,7 @@
 	          errorCallback();
 	        });
 	      } else {
-	        console.log('YaleEndpoint#delete user not authorized');
+	        this.logger.info('YaleEndpoint#delete user not authorized');
 	        (0, _errorDialog2.default)().show('authz_update');
 	        if (typeof errorCallback === 'function') {
 	          errorCallback();
@@ -8761,13 +8901,12 @@
 	  }, {
 	    key: '_deleteAnnotation',
 	    value: function _deleteAnnotation(annotationId) {
-	      console.log('YaleEndpoint#_deleteAnnotation annotationId:', annotationId);
+	      this.logger.debug('YaleEndpoint#_deleteAnnotation annotationId:', annotationId);
 	      var _this = this;
 	      var explorer = this.getAnnotationExplorer();
 
 	      var promise = explorer.deleteAnnotation(annotationId).catch(function (reason) {
 	        var msg = 'ERROR YaleEndpoint#_deleteAnnotation explorer.deleteAnnotation - ' + reason;
-	        console.log(msg);
 	        throw msg;
 	      }).then(function (anno) {
 	        _this.annotationsList = jQuery.grep(_this.annotationsList, function (value, index) {
@@ -8779,29 +8918,51 @@
 	    }
 	  }, {
 	    key: 'getLayers',
-	    value: function getLayers() {
-	      console.log('YaleEndpoint#getLayers');
-	      var explorer = this.getAnnotationExplorer();
-	      return explorer.getLayers();
-	    }
+	    value: function () {
+	      var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
+	        var explorer;
+	        return regeneratorRuntime.wrap(function _callee$(_context) {
+	          while (1) {
+	            switch (_context.prev = _context.next) {
+	              case 0:
+	                this.logger.debug('YaleEndpoint#getLayers');
+	                explorer = this.getAnnotationExplorer();
+	                return _context.abrupt('return', explorer.getLayers());
+
+	              case 3:
+	              case 'end':
+	                return _context.stop();
+	            }
+	          }
+	        }, _callee, this);
+	      }));
+
+	      function getLayers() {
+	        return _ref.apply(this, arguments);
+	      }
+
+	      return getLayers;
+	    }()
 	  }, {
 	    key: 'updateOrder',
 	    value: function updateOrder(canvasId, layerId, annoIds, successCallback, errorCallback) {
-	      console.log('YaleEndpoint#updateOrder canvasId:', canvasId, 'layerId:', layerId, 'annoIds:', annoIds);
+	      this.logger.debug('YaleEndpoint#updateOrder canvasId:', canvasId, 'layerId:', layerId, 'annoIds:', annoIds);
 	      var _this = this;
 
 	      if (this.userAuthorize('update', null)) {
 	        this._updateOrder(canvasId, layerId, annoIds).catch(function (reason) {
-	          console.log('ERROR _upadteOrder failed: ', reason);
+	          var msg = 'YaleEndpoint#updateOrder _upadteOrder failed: ' + reason;
+	          throw msg;
 	        }).then(function () {
 	          if (typeof successCallback === 'function') {
 	            successCallback();
 	          }
 	        }).catch(function (reason) {
+	          _this.logger.error('YaleEndpoint#updateOrder', reason);
 	          errorCallback();
 	        });
 	      } else {
-	        console.log('YaleEndpoint#updateOrder user not authorized');
+	        this.logger.info('YaleEndpoint#updateOrder user not authorized');
 	        (0, _errorDialog2.default)().show('authz_update');
 	        if (typeof errorCallback === 'function') {
 	          errorCallback();
@@ -8811,7 +8972,6 @@
 	  }, {
 	    key: '_updateOrder',
 	    value: function _updateOrder(canvasId, layerId, annoIds) {
-	      console.log('_updateOrder');
 	      var explorer = this.getAnnotationExplorer();
 	      return explorer.updateAnnotationListOrder(canvasId, layerId, annoIds);
 	    }
@@ -8827,7 +8987,7 @@
 	  }, {
 	    key: 'set',
 	    value: function set(prop, value, options) {
-	      console.log('YaleEndpoint#set prop:', prop, ', value:', value, ', options:', options);
+	      this.logger.debug('YaleEndpoint#set prop:', prop, ', value:', value, ', options:', options);
 	      if (options) {
 	        this[options.parent][prop] = value;
 	      } else {
@@ -8848,7 +9008,7 @@
 	    key: 'createAnnotationSource',
 	    value: function createAnnotationSource() {
 	      var source = (0, _miradorWindow2.default)().getConfig().annotationEndpoint.dataSource;
-	      console.log('source: ', source);
+	      this.logger.debug('YaleEndpoint#createAnnotationSource', source);
 	      return new source({ prefix: this.prefix });
 	    }
 	  }, {
@@ -8857,10 +9017,6 @@
 	      var explorer = this.getAnnotationExplorer();
 	      var spec = (0, _miradorWindow2.default)().getConfig().extension.tagHierarchy;
 	      explorer.reloadAnnotationToc(spec, this.annotationsList);
-	      /*const spec = getMiradorWindow().getConfig().extension.tagHierarchy;
-	      this.canvasToc = new CanvasToc(spec, this.annotationsList);
-	      console.log('YaleEndpoint#parseAnnotations canvasToc:');
-	      console.dir(this.canvasToc.annoHierarchy);*/
 	    }
 	  }]);
 
@@ -8870,7 +9026,7 @@
 	exports.default = YaleEndpoint;
 
 /***/ },
-/* 304 */
+/* 305 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8878,8 +9034,8 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	__webpack_require__(305);
 	__webpack_require__(306);
+	__webpack_require__(307);
 
 	var annoUtil = joosugi.annotationUtil;
 	var AnnotationExplorer = joosugi.AnnotationExplorer;
@@ -8890,11 +9046,11 @@
 	exports.AnnotationExplorerDialog = AnnotationExplorerDialog;
 
 /***/ },
-/* 305 */
+/* 306 */
 /***/ function(module, exports) {
 
 	// Joosugi version 0.1.0
-	// Build: Fri Jan 13 2017 00:25:26 GMT-0500 (EST)
+	// Build: Tue Jan 24 2017 13:02:49 GMT-0500 (EST)
 
 	/******/ (function(modules) { // webpackBootstrap
 	/******/ 	// The module cache
@@ -9690,9 +9846,9 @@
 		    }
 		  }, {
 		    key: 'getAnnotations',
-		    value: function getAnnotations(canvasId) {
-		      console.log('AnnotationExplorer#getAnnotations canvasId:', canvasId);
-		      return this.options.dataSource.getAnnotations(canvasId);
+		    value: function getAnnotations(options) {
+		      console.log('AnnotationExplorer#getAnnotations options:', options);
+		      return this.options.dataSource.getAnnotations(options);
 		    }
 		  }, {
 		    key: 'createAnnotation',
@@ -9740,11 +9896,11 @@
 	module.exports = joosugi;
 
 /***/ },
-/* 306 */
+/* 307 */
 /***/ function(module, exports) {
 
 	// joosugi-semantic-ui DEV version 0.1.0
-	// Build: Mon Dec 05 2016 11:01:42 GMT-0500 (EST)
+	// Build: Tue Jan 24 2017 13:03:03 GMT-0500 (EST)
 
 	/******/ (function(modules) { // webpackBootstrap
 	/******/ 	// The module cache
@@ -10773,7 +10929,7 @@
 	module.exports = joosugiUI;
 
 /***/ },
-/* 307 */
+/* 308 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10784,11 +10940,25 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _miradorWindow = __webpack_require__(308);
+	var _annotationCache = __webpack_require__(309);
+
+	var _annotationCache2 = _interopRequireDefault(_annotationCache);
+
+	var _logger = __webpack_require__(300);
+
+	var _logger2 = _interopRequireDefault(_logger);
+
+	var _miradorWindow = __webpack_require__(314);
 
 	var _miradorWindow2 = _interopRequireDefault(_miradorWindow);
 
+	var _stateStore = __webpack_require__(320);
+
+	var _stateStore2 = _interopRequireDefault(_stateStore);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -10800,20 +10970,70 @@
 	    this.options = jQuery.extend({
 	      prefix: null
 	    }, options);
+	    this.logger = (0, _logger2.default)();
+	    this.layers = null;
 	  }
 
 	  _createClass(AnnotationSource, [{
 	    key: 'getLayers',
-	    value: function getLayers() {
-	      console.log('AnnotationSource#getLayers');
+	    value: function () {
+	      var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
+	        var layers;
+	        return regeneratorRuntime.wrap(function _callee$(_context) {
+	          while (1) {
+	            switch (_context.prev = _context.next) {
+	              case 0:
+	                this.logger.debug('AnnotationSource#getLayers');
+	                layers = null;
+
+	                if (!this.layers) {
+	                  _context.next = 7;
+	                  break;
+	                }
+
+	                this.logger.debug('AnnotationSource#getLayers hit cache', this.layers);
+	                layers = this.layers;
+	                _context.next = 11;
+	                break;
+
+	              case 7:
+	                _context.next = 9;
+	                return this._getRemoteLayers();
+
+	              case 9:
+	                layers = _context.sent;
+
+	                this._updateLayerIndex(layers);
+
+	              case 11:
+	                return _context.abrupt('return', layers);
+
+	              case 12:
+	              case 'end':
+	                return _context.stop();
+	            }
+	          }
+	        }, _callee, this);
+	      }));
+
+	      function getLayers() {
+	        return _ref.apply(this, arguments);
+	      }
+
+	      return getLayers;
+	    }()
+	  }, {
+	    key: '_getRemoteLayers',
+	    value: function _getRemoteLayers() {
 	      var _this = this;
+
 	      return new Promise(function (resolve, reject) {
 	        var settings = (0, _miradorWindow2.default)().getConfig().extension;
 	        var url = _this.options.prefix + '/layers';
 	        if (settings.projectId && !settings.disableAuthz) {
 	          url += '?group_id=' + settings.projectId;
 	        }
-	        console.log('AnnotationSource#getLayers url:', url);
+	        _this.logger.debug('AnnotationSource#getLayers url:', url);
 
 	        jQuery.ajax({
 	          url: url,
@@ -10821,25 +11041,118 @@
 	          dataType: 'json',
 	          contentType: 'application/json; charset=utf-8',
 	          success: function success(data, textStatus, jqXHR) {
-	            console.log('AnnotationSource#getLayers layers: ', data);
+	            _this.logger.debug('AnnotationSource#getLayers layers: ', data);
+	            _this.layers = data;
 	            resolve(data);
 	          },
 	          error: function error(jqXHR, textStatus, errorThrown) {
 	            var msg = 'AnnotationSource#getLayers error status code: ' + jqXHR.status + ', textStatus: ' + textStatus + ', errorThrown: ' + errorThrown + ', URL: ' + url;
-	            console.log(msg);
+	            _this.logger.error(msg);
 	            reject(msg);
 	          }
 	        });
 	      });
 	    }
 	  }, {
+	    key: '_updateLayerIndex',
+	    value: function _updateLayerIndex(layers) {
+	      this.logger.debug('AnnotationSource#_updateLayerIndex');
+	      var state = (0, _stateStore2.default)();
+
+	      if (!state.getObject('layerIndexMap')) {
+	        (function () {
+	          var map = {};
+	          var count = 0;
+	          layers.forEach(function (layer) {
+	            map[layer['@id']] = count;
+	            ++count;
+	          });
+	          state.setObject('layerIndexMap', count > 0 ? map : null);
+	        })();
+	      }
+	      return layers;
+	    }
+	  }, {
 	    key: 'getAnnotations',
-	    value: function getAnnotations(canvasId) {
-	      console.log('AnnotationSource#getAnnotation canvas: ' + canvasId);
+	    value: function () {
+	      var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(options) {
+	        var _this, canvasId, layerId, cache, annotations;
+
+	        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+	          while (1) {
+	            switch (_context2.prev = _context2.next) {
+	              case 0:
+	                _this = this;
+	                canvasId = options.canvasId;
+	                layerId = options.layerId;
+	                _context2.next = 5;
+	                return (0, _annotationCache2.default)();
+
+	              case 5:
+	                cache = _context2.sent;
+	                annotations = null;
+
+	                if (!cache) {
+	                  _context2.next = 12;
+	                  break;
+	                }
+
+	                _context2.next = 10;
+	                return cache.getAnnotationsPerCanvas(canvasId);
+
+	              case 10:
+	                annotations = _context2.sent;
+
+	                this.logger.debug('AnnotationSource#getAnnotations from cache:', annotations);
+
+	              case 12:
+	                if (annotations) {
+	                  _context2.next = 16;
+	                  break;
+	                }
+
+	                _context2.next = 15;
+	                return this._getRemoteAnnotations(canvasId).then(function (annotations) {
+	                  if (cache) {
+	                    cache.setAnnotationsPerCanvas(canvasId, annotations);
+	                  }
+	                  return annotations;
+	                });
+
+	              case 15:
+	                annotations = _context2.sent;
+
+	              case 16:
+
+	                if (layerId) {
+	                  annotations.filter(function (anno) {
+	                    return anno.layerId === layerId;
+	                  });
+	                }
+	                return _context2.abrupt('return', annotations);
+
+	              case 18:
+	              case 'end':
+	                return _context2.stop();
+	            }
+	          }
+	        }, _callee2, this);
+	      }));
+
+	      function getAnnotations(_x) {
+	        return _ref2.apply(this, arguments);
+	      }
+
+	      return getAnnotations;
+	    }()
+	  }, {
+	    key: '_getRemoteAnnotations',
+	    value: function _getRemoteAnnotations(canvasId) {
+	      this.logger.debug('AnnotationSource#_getRemoteAnnotation canvas: ' + canvasId);
 	      var _this = this;
 	      return new Promise(function (resolve, reject) {
 	        var url = _this.options.prefix + '/getAnnotationsViaList?canvas_id=' + encodeURIComponent(canvasId);
-	        console.log('AnnotationSource#_getAnnotations url: ', url);
+	        _this.logger.debug('AnnotationSource#_getRemoteAnnotations url: ', url);
 	        var annotations = [];
 
 	        jQuery.ajax({
@@ -10848,7 +11161,7 @@
 	          dataType: 'json',
 	          contentType: 'application/json; charset=utf-8',
 	          success: function success(data, textStatus, jqXHR) {
-	            console.log('AnnotationSource#_getAnnotations data: ', data);
+	            _this.logger.debug('AnnotationSource#_getAnnotations data: ', data);
 	            var _iteratorNormalCompletion = true;
 	            var _didIteratorError = false;
 	            var _iteratorError = undefined;
@@ -10880,7 +11193,6 @@
 	          },
 	          error: function error(jqXHR, textStatus, errorThrown) {
 	            var msg = 'AnnotationSource#getAnnotations failed to get annotations from ' + url;
-	            console.log(msg);
 	            reject(msg);
 	          }
 	        });
@@ -10888,126 +11200,241 @@
 	    }
 	  }, {
 	    key: 'createAnnotation',
-	    value: function createAnnotation(oaAnnotation) {
-	      console.log('AnnotationSource#createAnnotation oaAnnotation:', oaAnnotation);
-	      var _this = this;
-	      var layerId = oaAnnotation.layerId;
-	      var annotation = this._getAnnotationInEndpoint(oaAnnotation);
-	      var url = this.options.prefix + '/annotations';
-	      var request = {
-	        layer_id: layerId,
-	        annotation: annotation
-	      };
+	    value: function () {
+	      var _ref3 = _asyncToGenerator(regeneratorRuntime.mark(function _callee3(oaAnnotation) {
+	        var _this, cache, layerId, annotation, url, request;
 
-	      return new Promise(function (resolve, reject) {
-	        jQuery.ajax({
-	          url: url,
-	          type: 'POST',
-	          dataType: 'json',
-	          data: JSON.stringify(request),
-	          contentType: 'application/json; charset=utf-8',
-	          success: function success(data) {
-	            console.log('Creation was successful on the annotation server:', data);
-	            var annotation = data;
-	            var oaAnnotation = _this._getAnnotationInOA(annotation);
-	            oaAnnotation.layerId = layerId;
-	            if (typeof successCallback === 'function') {
-	              resolve(oaAnnotation);
+	        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+	          while (1) {
+	            switch (_context3.prev = _context3.next) {
+	              case 0:
+	                this.logger.debug('AnnotationSource#createAnnotation oaAnnotation:', oaAnnotation);
+	                _this = this;
+	                _context3.next = 4;
+	                return (0, _annotationCache2.default)();
+
+	              case 4:
+	                cache = _context3.sent;
+	                layerId = oaAnnotation.layerId;
+	                annotation = this._getAnnotationInEndpoint(oaAnnotation);
+	                url = this.options.prefix + '/annotations';
+	                request = {
+	                  layer_id: layerId,
+	                  annotation: annotation
+	                };
+	                return _context3.abrupt('return', new Promise(function (resolve, reject) {
+	                  jQuery.ajax({
+	                    url: url,
+	                    type: 'POST',
+	                    dataType: 'json',
+	                    data: JSON.stringify(request),
+	                    contentType: 'application/json; charset=utf-8',
+	                    success: function success(data) {
+	                      _this.logger.debug('AnnotationSource#createAnnotation creation successful on the annotation server:', data);
+	                      var annotation = data;
+	                      var oaAnnotation = _this._getAnnotationInOA(annotation);
+	                      oaAnnotation.layerId = layerId;
+	                      if (cache) {
+	                        setTimeout(function () {
+	                          cache.invalidateAnnotation(oaAnnotation);
+	                        }, 250);
+	                      }
+	                      resolve(oaAnnotation);
+	                    },
+	                    error: function error(jqXHR, textStatus, errorThrown) {
+	                      var msg = 'Failed to create annotation: ' + textStatus + ' ' + jqXHR.status + ' ' + errorThrown;
+	                      _this.logger.error(msg);
+	                      reject(msg);
+	                    }
+	                  });
+	                }));
+
+	              case 10:
+	              case 'end':
+	                return _context3.stop();
 	            }
-	          },
-	          error: function error(jqXHR, textStatus, errorThrown) {
-	            var msg = 'Failed to create annotation: ' + textStatus + ' ' + jqXHR.status + ' ' + errorThrown;
-	            console.log(msg);
-	            reject(msg);
 	          }
-	        });
-	      });
-	    }
+	        }, _callee3, this);
+	      }));
+
+	      function createAnnotation(_x2) {
+	        return _ref3.apply(this, arguments);
+	      }
+
+	      return createAnnotation;
+	    }()
 	  }, {
 	    key: 'updateAnnotation',
-	    value: function updateAnnotation(oaAnnotation) {
-	      var _this = this;
-	      var annotation = this._getAnnotationInEndpoint(oaAnnotation);
-	      var url = this.options.prefix + '/annotations';
-	      var data = {
-	        layer_id: [oaAnnotation.layerId],
-	        annotation: annotation
-	      };
+	    value: function () {
+	      var _ref4 = _asyncToGenerator(regeneratorRuntime.mark(function _callee4(oaAnnotation) {
+	        var _this, cache, annotation, url, data;
 
-	      console.log('AnnotationSource#updateAnnotation payload:', data);
+	        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+	          while (1) {
+	            switch (_context4.prev = _context4.next) {
+	              case 0:
+	                _this = this;
+	                _context4.next = 3;
+	                return (0, _annotationCache2.default)();
 
-	      return new Promise(function (resolve, reject) {
-	        jQuery.ajax({
-	          url: url,
-	          type: 'PUT',
-	          dataType: 'json',
-	          contentType: 'application/json; charset=utf-8',
-	          data: JSON.stringify(data),
-	          success: function success(data, textStatus, jqXHR) {
-	            console.log('Update was successful: ', data);
-	            data.layerId = oaAnnotation.layerId;
-	            resolve(data);
-	          },
-	          error: function error(jqXHR, textStatus, errorThrown) {
-	            var msg = 'Failed to update annotation: ' + textStatus + ' ' + jqXHR.status + ' ' + errorThrown;
-	            reject(msg);
+	              case 3:
+	                cache = _context4.sent;
+	                annotation = this._getAnnotationInEndpoint(oaAnnotation);
+	                url = this.options.prefix + '/annotations';
+	                data = {
+	                  layer_id: [oaAnnotation.layerId],
+	                  annotation: annotation
+	                };
+
+
+	                this.logger.debug('AnnotationSource#updateAnnotation payload:', data);
+
+	                return _context4.abrupt('return', new Promise(function (resolve, reject) {
+	                  jQuery.ajax({
+	                    url: url,
+	                    type: 'PUT',
+	                    dataType: 'json',
+	                    contentType: 'application/json; charset=utf-8',
+	                    data: JSON.stringify(data),
+	                    success: function success(data, textStatus, jqXHR) {
+	                      _this.logger.debug('AnnotationSource#updateAnnotation successful', data);
+	                      data.layerId = oaAnnotation.layerId;
+	                      if (cache) {
+	                        cache.invalidateAnnotation(oaAnnotation);
+	                      }
+	                      resolve(data);
+	                    },
+	                    error: function error(jqXHR, textStatus, errorThrown) {
+	                      var msg = 'Failed to update annotation: ' + textStatus + ' ' + jqXHR.status + ' ' + errorThrown;
+	                      reject(msg);
+	                    }
+	                  });
+	                }));
+
+	              case 9:
+	              case 'end':
+	                return _context4.stop();
+	            }
 	          }
-	        });
-	      });
-	    }
+	        }, _callee4, this);
+	      }));
+
+	      function updateAnnotation(_x3) {
+	        return _ref4.apply(this, arguments);
+	      }
+
+	      return updateAnnotation;
+	    }()
 	  }, {
 	    key: 'deleteAnnotation',
-	    value: function deleteAnnotation(annotationId) {
-	      console.log('AnnotationSource#deleteAnnotations annotationId:', annotationId);
-	      var _this = this;
-	      var url = annotationId;
+	    value: function () {
+	      var _ref5 = _asyncToGenerator(regeneratorRuntime.mark(function _callee5(annotationId) {
+	        var _this, cache, url;
 
-	      return new Promise(function (resolve, reject) {
-	        jQuery.ajax({
-	          url: url,
-	          type: 'DELETE',
-	          dataType: 'json',
-	          contentType: 'application/json; charset=utf-8',
-	          success: function success(data, textStatus, jqXHR) {
-	            console.log('AnnotationSource#deleteAnnotation success data:', data);
-	            resolve();
-	          },
-	          error: function error(jqXHR, textStatus, errorThrown) {
-	            var msg = 'AnnotationSource#deleteAnnotation failed for annotationId: ' + annotationId;
-	            reject(msg);
+	        return regeneratorRuntime.wrap(function _callee5$(_context5) {
+	          while (1) {
+	            switch (_context5.prev = _context5.next) {
+	              case 0:
+	                this.log.debug('AnnotationSource#deleteAnnotations annotationId:', annotationId);
+	                _this = this;
+	                _context5.next = 4;
+	                return (0, _annotationCache2.default)();
+
+	              case 4:
+	                cache = _context5.sent;
+	                url = annotationId;
+	                return _context5.abrupt('return', new Promise(function (resolve, reject) {
+	                  jQuery.ajax({
+	                    url: url,
+	                    type: 'DELETE',
+	                    dataType: 'json',
+	                    contentType: 'application/json; charset=utf-8',
+	                    success: function success(data, textStatus, jqXHR) {
+	                      _this.logger.debug('AnnotationSource#deleteAnnotation success data:', data);
+	                      if (cache) {
+	                        cache.invalidateAnnotationId(annotationId);
+	                      }
+	                      resolve();
+	                    },
+	                    error: function error(jqXHR, textStatus, errorThrown) {
+	                      var msg = 'AnnotationSource#deleteAnnotation failed for annotationId: ' + annotationId;
+	                      reject(msg);
+	                    }
+	                  });
+	                }));
+
+	              case 7:
+	              case 'end':
+	                return _context5.stop();
+	            }
 	          }
-	        });
-	      });
-	    }
+	        }, _callee5, this);
+	      }));
+
+	      function deleteAnnotation(_x4) {
+	        return _ref5.apply(this, arguments);
+	      }
+
+	      return deleteAnnotation;
+	    }()
 	  }, {
 	    key: 'updateAnnotationListOrder',
-	    value: function updateAnnotationListOrder(canvasId, layerId, annoIds) {
-	      var url = this.options.prefix + '/resequenceList';
-	      var data = {
-	        canvas_id: canvasId,
-	        layer_id: layerId,
-	        annotation_ids: annoIds
-	      };
+	    value: function () {
+	      var _ref6 = _asyncToGenerator(regeneratorRuntime.mark(function _callee6(canvasId, layerId, annoIds) {
+	        var _this, cache, url, data;
 
-	      return new Promise(function (resolve, reject) {
-	        jQuery.ajax({
-	          url: url,
-	          type: 'PUT',
-	          dataType: 'json',
-	          contentType: 'application/json; charset=utf-8',
-	          data: JSON.stringify(data),
-	          success: function success(data, textStatus, jqXHR) {
-	            console.log('Updating order was successful:', data);
-	            resolve(data);
-	          },
-	          error: function error(jqXHR, textStatus, errorThrown) {
-	            console.log('AnnotationSource#updateAnnotationListOrder failed for request', data);
-	            var msg = 'AnnotationSource#updateAnnotation failed: ' + textStatus + ' ' + jqXHR.status + ' ' + errorThrown;
-	            reject(msg);
+	        return regeneratorRuntime.wrap(function _callee6$(_context6) {
+	          while (1) {
+	            switch (_context6.prev = _context6.next) {
+	              case 0:
+	                _this = this;
+	                _context6.next = 3;
+	                return (0, _annotationCache2.default)();
+
+	              case 3:
+	                cache = _context6.sent;
+	                url = this.options.prefix + '/resequenceList';
+	                data = {
+	                  canvas_id: canvasId,
+	                  layer_id: layerId,
+	                  annotation_ids: annoIds
+	                };
+	                return _context6.abrupt('return', new Promise(function (resolve, reject) {
+	                  jQuery.ajax({
+	                    url: url,
+	                    type: 'PUT',
+	                    dataType: 'json',
+	                    contentType: 'application/json; charset=utf-8',
+	                    data: JSON.stringify(data),
+	                    success: function success(data, textStatus, jqXHR) {
+	                      _this.logger.debug('AnnotationSource#updateAnnotationListOrder successful', data);
+	                      if (cache) {
+	                        cache.invalidateCanvasId(canvasId);
+	                      }
+	                      resolve(data);
+	                    },
+	                    error: function error(jqXHR, textStatus, errorThrown) {
+	                      var msg = 'AnnotationSource#updateAnnotation failed: ' + textStatus + ' ' + jqXHR.status + ' ' + errorThrown;
+	                      _this.logger.error(msg);
+	                      reject(msg);
+	                    }
+	                  });
+	                }));
+
+	              case 7:
+	              case 'end':
+	                return _context6.stop();
+	            }
 	          }
-	        });
-	      });
-	    }
+	        }, _callee6, this);
+	      }));
+
+	      function updateAnnotationListOrder(_x5, _x6, _x7) {
+	        return _ref6.apply(this, arguments);
+	      }
+
+	      return updateAnnotationListOrder;
+	    }()
 
 	    // Convert Endpoint annotation to OA
 
@@ -11017,7 +11444,7 @@
 	      var motivation = annotation.motivation;
 	      if (!(motivation instanceof Array)) {
 	        if (motivation !== 'oa:commenting') {
-	          console.log('ERROR YaleEndpoint#getAnnotationInOA unexpected motivation value: ', motivation, ', id: ' + annotation['@id']);
+	          this.logger.error('ERROR YaleEndpoint#getAnnotationInOA unexpected motivation value: ', motivation, ', id: ' + annotation['@id']);
 	        }
 	        motivation = ['oa:commenting'];
 	      }
@@ -11035,7 +11462,6 @@
 	      oaAnnotation.layerId = annotation.layerId;
 	      oaAnnotation.endpoint = this;
 
-	      //console.log('YaleEndpoint#getAnnotationInOA oaAnnotation:', oaAnnotation);
 	      return oaAnnotation;
 	    }
 
@@ -11068,210 +11494,6 @@
 	exports.default = AnnotationSource;
 
 /***/ },
-/* 308 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	exports.default = getMiradorWindow;
-
-	var _import = __webpack_require__(304);
-
-	var _miradorProxyManager = __webpack_require__(309);
-
-	var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
-
-	var _modalAlert = __webpack_require__(313);
-
-	var _modalAlert2 = _interopRequireDefault(_modalAlert);
-
-	var _miradorConfigBuilder = __webpack_require__(314);
-
-	var _miradorConfigBuilder2 = _interopRequireDefault(_miradorConfigBuilder);
-
-	var _session = __webpack_require__(317);
-
-	var _session2 = _interopRequireDefault(_session);
-
-	var _windowProxy = __webpack_require__(312);
-
-	var _windowProxy2 = _interopRequireDefault(_windowProxy);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function getMiradorWindow() {
-	  if (!_instance) {
-	    _instance = new MiradorWindow();
-	  }
-	  return _instance;
-	};
-
-	var _instance = null;
-
-	// JavaScript code for the browser window that embeds Mirador.
-
-	var MiradorWindow = function () {
-	  function MiradorWindow() {
-	    _classCallCheck(this, MiradorWindow);
-	  }
-
-	  _createClass(MiradorWindow, [{
-	    key: 'init',
-	    value: function init(options) {
-	      this.options = jQuery.extend({
-	        mainMenu: null,
-	        grid: null,
-	        settings: null // settings retrieved from remote API
-	      }, options);
-
-	      var _this = this;
-	      var miradorId = Mirador.genUUID();
-	      var configOptions = jQuery.extend(this.options.settings, {
-	        miradorId: miradorId,
-	        defaultSettings: Mirador.DEFAULT_SETTINGS,
-	        isEditor: _session2.default.isEditor()
-	      });
-	      console.log('MiradorWindow#init configOptions:', configOptions);
-	      _this._miradorConfig = _this._buildMiradorConfig(configOptions);
-	      _this._createMirador(_this._miradorConfig);
-	      _this._bindEvents(configOptions);
-	    }
-	  }, {
-	    key: 'getConfig',
-	    value: function getConfig() {
-	      return this._miradorConfig;
-	    }
-	  }, {
-	    key: '_createMirador',
-	    value: function _createMirador(settings) {
-	      this._miradorId = settings.id;
-	      this.options.grid.addMiradorWindow(this._miradorId);
-
-	      var mirador = Mirador(settings);
-	      (0, _miradorProxyManager2.default)().addMirador(this._miradorId, mirador);
-	    }
-
-	    /**
-	     * Sets up configuration parameters to pass to Mirador.
-	     */
-
-	  }, {
-	    key: '_buildMiradorConfig',
-	    value: function _buildMiradorConfig(options) {
-	      var builder = new _miradorConfigBuilder2.default(options);
-	      return builder.buildConfig();
-	    }
-	  }, {
-	    key: '_createAnnotationWindows',
-	    value: function _createAnnotationWindows(options) {
-	      console.log('MiradorWindow#_createAnnotationWindows options:', options);
-	      var annotationId = options.annotationId;
-	      var layerIds = options.layerIds;
-	      var tocTags = options.tocTags;
-
-	      var config = {
-	        miradorId: options.miradorId,
-	        windows: []
-	      };
-
-	      console.log('tocTags:', tocTags);
-
-	      if (layerIds instanceof Array && layerIds.length > 0) {
-	        var _iteratorNormalCompletion = true;
-	        var _didIteratorError = false;
-	        var _iteratorError = undefined;
-
-	        try {
-	          for (var _iterator = layerIds[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-	            var layerId = _step.value;
-
-	            config.windows.push({
-	              layerId: layerId,
-	              annotationId: annotationId || null,
-	              tocTags: tocTags || []
-	            });
-	          }
-	        } catch (err) {
-	          _didIteratorError = true;
-	          _iteratorError = err;
-	        } finally {
-	          try {
-	            if (!_iteratorNormalCompletion && _iterator.return) {
-	              _iterator.return();
-	            }
-	          } finally {
-	            if (_didIteratorError) {
-	              throw _iteratorError;
-	            }
-	          }
-	        }
-	      } else if (annotationId) {
-	        config.windows.push({ annotationId: annotationId });
-	      }
-
-	      if (config.windows.length > 0) {
-	        options.miradorProxy.publish('YM_DISPLAY_ON');
-	        jQuery.publish('YM_ADD_WINDOWS', config);
-	      }
-	    }
-	  }, {
-	    key: '_bindEvents',
-	    value: function _bindEvents(options) {
-	      var _this = this;
-	      var miradorProxy = (0, _miradorProxyManager2.default)().getMiradorProxy(options.miradorId);
-
-	      jQuery(window).resize(function () {
-	        _this.options.grid.resize();
-	      });
-
-	      miradorProxy.subscribe('ANNOTATIONS_LIST_UPDATED', function (event, params) {
-	        console.log('MiradorWindow#bindEvents received ANNOTATIONS_LIST_UPDATED');
-
-	        if (options.tagHierarchy) {
-	          var windowProxy = miradorProxy.getWindowProxyById(params.windowId);
-	          var endpoint = windowProxy.getEndPoint();
-	          endpoint.parseAnnotations();
-	        }
-
-	        jQuery.publish('YM_READY_TO_RELOAD_ANNO_WIN');
-	      });
-
-	      miradorProxy.subscribe('YM_ANNOWIN_ANNO_SHOW', function (event, windowId, annoId) {
-	        console.log('MiradorWindow SUB YM_ANNOWIN_ANNO_SHOW windowId: ' + windowId + ', annoId: ' + annoId);
-	        _this.options.grid.showAnnotation(_this._miradorId, windowId, annoId);
-	      });
-
-	      jQuery.subscribe('YM_READY_TO_RELOAD_ANNO_WIN', function (event) {
-	        // after annotations have been loaded
-	        if (_this._urlOptionsProcessed) {
-	          // run this function only once
-	          return;
-	        } else {
-	          _this._urlOptionsProcessed = true;
-	          _this._createAnnotationWindows({
-	            miradorId: options.miradorId,
-	            layerIds: options.layerIds,
-	            tocTags: options.tocTags,
-	            annotationId: options.annotationId,
-	            miradorProxy: miradorProxy
-	          });
-	        }
-	      });
-	    }
-	  }]);
-
-	  return MiradorWindow;
-	}();
-
-/***/ },
 /* 309 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -11283,11 +11505,339 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _miradorProxy = __webpack_require__(310);
+	exports.default = getAnnotationCache;
+
+	var _import = __webpack_require__(305);
+
+	var _logger = __webpack_require__(300);
+
+	var _logger2 = _interopRequireDefault(_logger);
+
+	var _miradorProxyManager = __webpack_require__(310);
+
+	var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function getAnnotationCache() {
+	  if (!instance) {
+	    var cache = new AnnotationCache();
+	    return cache.init();
+	  } else {
+	    return new Promise(function (resolve, reject) {
+	      instance.isValid() ? resolve(instance) : resolve(null);
+	    });
+	  }
+	};
+
+	var instance = null;
+
+	var AnnotationCache = function () {
+	  function AnnotationCache() {
+	    _classCallCheck(this, AnnotationCache);
+
+	    this.logger = (0, _logger2.default)();
+	    this._dbName = 'anno_cache';
+	    this._valid = false;
+	    this._expiresInMS = 2 * 60 * 60 * 1000; // milliseconds
+	  }
+
+	  _createClass(AnnotationCache, [{
+	    key: 'init',
+	    value: function init() {
+	      var _this = this;
+	      return new Promise(function (resolve, reject) {
+	        if (window.indexedDB) {
+	          _this._initIndexedDb().then(function () {
+	            _this._valid = true;
+	            resolve(_this);
+	          }).catch(function (reason) {
+	            _this.logger.error('AnnotationCache#constructor promise rejected - ', reason);
+	            reject(_this);
+	          });
+	        } else {
+	          reject(_this);
+	          _this.logger.info('IndexedDB is not available on this browser.');
+	        }
+	      });
+	    }
+
+	    /**
+	     * @returns {object} a Promise
+	     */
+
+	  }, {
+	    key: '_initIndexedDb',
+	    value: function _initIndexedDb() {
+	      var _this = this;
+	      this._db = new Dexie(this._dbName).on('versionchange', function (event) {
+	        _this.logger.debug('versionchange ' + event.newVersion);
+	      });
+
+	      this._db.version(1).stores({
+	        layers: 'id,jsonData,timestamp',
+	        annosPerCanvas: 'canvasId,jsonData,timestamp'
+	      });
+	      return this._db.open().catch(function (e) {
+	        _this.logger.error('AnnotationCache#setupIndexDb open failed: ' + e);
+	        _this._valid = false;
+	      });
+	    }
+
+	    /**
+	     * @returns {object} a Promise
+	     */
+
+	  }, {
+	    key: 'clear',
+	    value: function clear() {
+	      var _this = this;
+	      this.logger.debug('AnnotationCache#clear');
+	      return new Dexie(this._dbName).delete().catch(function (e) {
+	        _this.logger.error('AnnotationCache#clear exception: ' + e.stack);
+	      });
+	    }
+
+	    /**
+	     * @returns {object} a Promise
+	     */
+
+	  }, {
+	    key: 'emptyTable',
+	    value: function emptyTable(name) {
+	      var _this = this;
+	      var table = this._db.table(name);
+	      return this._db.transaction('rw', table, function () {
+	        table.each(function (item, cursor) {
+	          _this.logger.debug('AnnotationCache#emptyTable deleting', cursor.key);
+	          table.delete(cursor.key).catch(function (e) {
+	            _this.logger.error('AnnotationCache#emptyTable deleting from table ' + name + ': ' + e);
+	          });
+	        });
+	      });
+	    }
+
+	    /**
+	     * @returns {object} a Promise
+	     */
+
+	  }, {
+	    key: 'getLayers',
+	    value: function getLayers() {
+	      return this._db.layers.where('id').equals(1).first(function (row) {
+	        var data = row !== undefined ? row.jsonData : null;
+	        return data instanceof Array ? data : [];
+	      });
+	    }
+
+	    /**
+	     * @returns {object} a Promise
+	     */
+
+	  }, {
+	    key: 'setLayers',
+	    value: function setLayers(layersJson) {
+	      var _this = this;
+	      return this.emptyTable('layers').then(function () {
+	        return _this._db.layers.add({ id: 1, jsonData: layersJson }).catch(function (e) {
+	          _this.logger.error('AnnotatinCache#setLayers update failed: ' + e);
+	          throw e;
+	        });
+	      });
+	    }
+
+	    /**
+	     * @returns {object} a Promise
+	     */
+
+	  }, {
+	    key: 'getAnnotationsPerCanvas',
+	    value: function getAnnotationsPerCanvas(canvasId) {
+	      var _this = this;
+	      var coll = this._db.annosPerCanvas.where('canvasId').equals(canvasId).and(function (rec) {
+	        var nowMS = new Date().valueOf();
+	        _this.logger.debug('AnnotationCache#getAnnotationsPerCanvas expiration test: ' + (rec.timestamp > nowMS - _this._expiresInMS));
+	        return rec.timestamp > nowMS - _this._expiresInMS;
+	      });
+	      return coll.first(function (row) {
+	        return row ? row.jsonData : null;
+	      });
+	    }
+
+	    /**
+	     * @returns {object} a Promise
+	     */
+
+	  }, {
+	    key: 'setAnnotationsPerCanvas',
+	    value: function setAnnotationsPerCanvas(canvasId, data) {
+	      var table = this._db.annosPerCanvas;
+	      var coll = this._db.annosPerCanvas.where('canvasId').equals(canvasId);
+	      var nowMS = new Date().valueOf();
+
+	      if (coll.count() === 0) {
+	        return table.add({ canvasId: canvasId, jsonData: data, timestamp: nowMS });
+	      } else {
+	        return table.put({ canvasId: canvasId, jsonData: data, timestamp: nowMS });
+	      }
+	    }
+	  }, {
+	    key: 'deleteAnnotationsPerCanvas',
+	    value: function deleteAnnotationsPerCanvas(canvasId) {
+	      var _this = this;
+	      var table = this._db.annosPerCanvas;
+	      var coll = table.where('canvasId').equals(canvasId);
+	      return coll.delete().catch(function (e) {
+	        _this.logger.error('AnnotationCache#deleteAnnotationsPerCanvas failed to delete canvasId: ' + canvasId);
+	      });
+	    }
+	  }, {
+	    key: 'isValid',
+	    value: function isValid() {
+	      return this._valid;
+	    }
+	  }, {
+	    key: 'invalidateCanvasId',
+	    value: function invalidateCanvasId(canvasId) {
+	      this.logger.debug('CACHE INVALIDATED: ' + canvasId);
+	      return this.deleteAnnotationsPerCanvas(canvasId);
+	    }
+	  }, {
+	    key: 'invalidateAnnotation',
+	    value: function invalidateAnnotation(annotation, annoIsNew) {
+	      this.invalidateAnnotationId(annotation['@id']);
+	    }
+	  }, {
+	    key: 'invalidateAnnotationId',
+	    value: function invalidateAnnotationId(annotationId) {
+	      this.logger.debug('invalidateAnnotationId: ' + annotationId);
+	      var proxyMgr = (0, _miradorProxyManager2.default)();
+	      var canvasIdSet = new Set();
+	      var _iteratorNormalCompletion = true;
+	      var _didIteratorError = false;
+	      var _iteratorError = undefined;
+
+	      try {
+	        for (var _iterator = proxyMgr.getAllWindowProxies()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	          var windowProxy = _step.value;
+
+	          var annotations = windowProxy.getAnnotationsList();
+	          var _iteratorNormalCompletion3 = true;
+	          var _didIteratorError3 = false;
+	          var _iteratorError3 = undefined;
+
+	          try {
+	            for (var _iterator3 = annotations[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+	              var annotation = _step3.value;
+
+	              if (annotation['@id'] === annotationId) {
+	                var targetCanvasIds = _import.annoUtil.getTargetCanvasIds(annotation, {
+	                  annotations: annotations });
+	                var _iteratorNormalCompletion4 = true;
+	                var _didIteratorError4 = false;
+	                var _iteratorError4 = undefined;
+
+	                try {
+	                  for (var _iterator4 = targetCanvasIds[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+	                    var canvasId = _step4.value;
+
+	                    canvasIdSet.add(canvasId);
+	                  }
+	                } catch (err) {
+	                  _didIteratorError4 = true;
+	                  _iteratorError4 = err;
+	                } finally {
+	                  try {
+	                    if (!_iteratorNormalCompletion4 && _iterator4.return) {
+	                      _iterator4.return();
+	                    }
+	                  } finally {
+	                    if (_didIteratorError4) {
+	                      throw _iteratorError4;
+	                    }
+	                  }
+	                }
+	              }
+	            }
+	          } catch (err) {
+	            _didIteratorError3 = true;
+	            _iteratorError3 = err;
+	          } finally {
+	            try {
+	              if (!_iteratorNormalCompletion3 && _iterator3.return) {
+	                _iterator3.return();
+	              }
+	            } finally {
+	              if (_didIteratorError3) {
+	                throw _iteratorError3;
+	              }
+	            }
+	          }
+	        }
+	      } catch (err) {
+	        _didIteratorError = true;
+	        _iteratorError = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion && _iterator.return) {
+	            _iterator.return();
+	          }
+	        } finally {
+	          if (_didIteratorError) {
+	            throw _iteratorError;
+	          }
+	        }
+	      }
+
+	      var _iteratorNormalCompletion2 = true;
+	      var _didIteratorError2 = false;
+	      var _iteratorError2 = undefined;
+
+	      try {
+	        for (var _iterator2 = canvasIdSet[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+	          var _canvasId = _step2.value;
+
+	          this.invalidateCanvasId(_canvasId);
+	        }
+	      } catch (err) {
+	        _didIteratorError2 = true;
+	        _iteratorError2 = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+	            _iterator2.return();
+	          }
+	        } finally {
+	          if (_didIteratorError2) {
+	            throw _iteratorError2;
+	          }
+	        }
+	      }
+	    }
+	  }]);
+
+	  return AnnotationCache;
+	}();
+
+/***/ },
+/* 310 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _miradorProxy = __webpack_require__(311);
 
 	var _miradorProxy2 = _interopRequireDefault(_miradorProxy);
 
-	var _windowProxy = __webpack_require__(312);
+	var _windowProxy = __webpack_require__(313);
 
 	var _windowProxy2 = _interopRequireDefault(_windowProxy);
 
@@ -11412,7 +11962,7 @@
 	Mirador.getMiradorProxyManager = getMiradorProxyManager; // to be called from Mirador core.
 
 /***/ },
-/* 310 */
+/* 311 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11423,11 +11973,11 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _workspaceProxy = __webpack_require__(311);
+	var _workspaceProxy = __webpack_require__(312);
 
 	var _workspaceProxy2 = _interopRequireDefault(_workspaceProxy);
 
-	var _windowProxy = __webpack_require__(312);
+	var _windowProxy = __webpack_require__(313);
 
 	var _windowProxy2 = _interopRequireDefault(_windowProxy);
 
@@ -11514,7 +12064,7 @@
 	exports.default = MiradorProxy;
 
 /***/ },
-/* 311 */
+/* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11525,7 +12075,11 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _windowProxy = __webpack_require__(312);
+	var _logger = __webpack_require__(300);
+
+	var _logger2 = _interopRequireDefault(_logger);
+
+	var _windowProxy = __webpack_require__(313);
 
 	var _windowProxy2 = _interopRequireDefault(_windowProxy);
 
@@ -11537,6 +12091,7 @@
 	  function WorkspaceProxy(workspace) {
 	    _classCallCheck(this, WorkspaceProxy);
 
+	    this.logger = (0, _logger2.default)();
 	    this.workspace = workspace;
 	  }
 
@@ -11560,7 +12115,7 @@
 	      });
 	      var numWindows = windows.length;
 	      if (numWindows > 1) {
-	        console.log('Error MiradorProxy#getWindowById: more than one (' + numWindows + ') found for id: ' + windowId);
+	        this.logger.debug('Error MiradorProxy#getWindowById: more than one (' + numWindows + ') found for id: ' + windowId);
 	      }
 	      return numWindows == 1 ? windows[0] : null;
 	    }
@@ -11572,7 +12127,7 @@
 	exports.default = WorkspaceProxy;
 
 /***/ },
-/* 312 */
+/* 313 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -11625,7 +12180,214 @@
 	exports.default = WindowProxy;
 
 /***/ },
-/* 313 */
+/* 314 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	exports.default = getMiradorWindow;
+
+	var _import = __webpack_require__(305);
+
+	var _logger = __webpack_require__(300);
+
+	var _logger2 = _interopRequireDefault(_logger);
+
+	var _miradorProxyManager = __webpack_require__(310);
+
+	var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
+
+	var _modalAlert = __webpack_require__(315);
+
+	var _modalAlert2 = _interopRequireDefault(_modalAlert);
+
+	var _miradorConfigBuilder = __webpack_require__(316);
+
+	var _miradorConfigBuilder2 = _interopRequireDefault(_miradorConfigBuilder);
+
+	var _session = __webpack_require__(319);
+
+	var _session2 = _interopRequireDefault(_session);
+
+	var _windowProxy = __webpack_require__(313);
+
+	var _windowProxy2 = _interopRequireDefault(_windowProxy);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function getMiradorWindow() {
+	  if (!_instance) {
+	    _instance = new MiradorWindow();
+	  }
+	  return _instance;
+	};
+
+	var _instance = null;
+
+	// JavaScript code for the browser window that embeds Mirador.
+
+	var MiradorWindow = function () {
+	  function MiradorWindow() {
+	    _classCallCheck(this, MiradorWindow);
+	  }
+
+	  _createClass(MiradorWindow, [{
+	    key: 'init',
+	    value: function init(options) {
+	      this.options = jQuery.extend({
+	        mainMenu: null,
+	        grid: null,
+	        settings: null // settings retrieved from remote API
+	      }, options);
+	      this.logger = (0, _logger2.default)();
+	      var miradorId = Mirador.genUUID();
+	      var configOptions = jQuery.extend(this.options.settings, {
+	        miradorId: miradorId,
+	        defaultSettings: Mirador.DEFAULT_SETTINGS,
+	        isEditor: _session2.default.isEditor()
+	      });
+	      this.logger.debug('MiradorWindow#init configOptions:', configOptions);
+	      this._miradorConfig = this._buildMiradorConfig(configOptions);
+	      this._createMirador(this._miradorConfig);
+	      this._bindEvents(configOptions);
+	    }
+	  }, {
+	    key: 'getConfig',
+	    value: function getConfig() {
+	      return this._miradorConfig;
+	    }
+	  }, {
+	    key: '_createMirador',
+	    value: function _createMirador(settings) {
+	      this._miradorId = settings.id;
+	      this.options.grid.addMiradorWindow(this._miradorId);
+
+	      var mirador = Mirador(settings);
+	      (0, _miradorProxyManager2.default)().addMirador(this._miradorId, mirador);
+	    }
+
+	    /**
+	     * Sets up configuration parameters to pass to Mirador.
+	     */
+
+	  }, {
+	    key: '_buildMiradorConfig',
+	    value: function _buildMiradorConfig(options) {
+	      var builder = new _miradorConfigBuilder2.default(options);
+	      return builder.buildConfig();
+	    }
+	  }, {
+	    key: '_createAnnotationWindows',
+	    value: function _createAnnotationWindows(options) {
+	      this.logger.debug('MiradorWindow#_createAnnotationWindows options:', options);
+	      var annotationId = options.annotationId;
+	      var layerIds = options.layerIds;
+	      var tocTags = options.tocTags;
+
+	      var config = {
+	        miradorId: options.miradorId,
+	        windows: []
+	      };
+
+	      this.logger.debug('tocTags:', tocTags);
+
+	      if (layerIds instanceof Array && layerIds.length > 0) {
+	        var _iteratorNormalCompletion = true;
+	        var _didIteratorError = false;
+	        var _iteratorError = undefined;
+
+	        try {
+	          for (var _iterator = layerIds[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	            var layerId = _step.value;
+
+	            config.windows.push({
+	              layerId: layerId,
+	              annotationId: annotationId || null,
+	              tocTags: tocTags || []
+	            });
+	          }
+	        } catch (err) {
+	          _didIteratorError = true;
+	          _iteratorError = err;
+	        } finally {
+	          try {
+	            if (!_iteratorNormalCompletion && _iterator.return) {
+	              _iterator.return();
+	            }
+	          } finally {
+	            if (_didIteratorError) {
+	              throw _iteratorError;
+	            }
+	          }
+	        }
+	      } else if (annotationId) {
+	        config.windows.push({ annotationId: annotationId });
+	      }
+
+	      if (config.windows.length > 0) {
+	        options.miradorProxy.publish('YM_DISPLAY_ON');
+	        jQuery.publish('YM_ADD_WINDOWS', config);
+	      }
+	    }
+	  }, {
+	    key: '_bindEvents',
+	    value: function _bindEvents(options) {
+	      var _this = this;
+	      var miradorProxy = (0, _miradorProxyManager2.default)().getMiradorProxy(options.miradorId);
+
+	      jQuery(window).resize(function () {
+	        _this.options.grid.resize();
+	      });
+
+	      miradorProxy.subscribe('ANNOTATIONS_LIST_UPDATED', function (event, params) {
+	        _this.logger.debug('MiradorWindow#bindEvents received ANNOTATIONS_LIST_UPDATED');
+
+	        if (options.tagHierarchy) {
+	          var windowProxy = miradorProxy.getWindowProxyById(params.windowId);
+	          var endpoint = windowProxy.getEndPoint();
+	          endpoint.parseAnnotations();
+	        }
+
+	        jQuery.publish('YM_READY_TO_RELOAD_ANNO_WIN');
+	      });
+
+	      miradorProxy.subscribe('YM_ANNOWIN_ANNO_SHOW', function (event, windowId, annoId) {
+	        _this.logger.debug('MiradorWindow SUB YM_ANNOWIN_ANNO_SHOW windowId: ' + windowId + ', annoId: ' + annoId);
+	        _this.options.grid.showAnnotation(_this._miradorId, windowId, annoId);
+	      });
+
+	      jQuery.subscribe('YM_READY_TO_RELOAD_ANNO_WIN', function (event) {
+	        // after annotations have been loaded
+	        if (_this._urlOptionsProcessed) {
+	          // run this function only once
+	          return;
+	        } else {
+	          _this._urlOptionsProcessed = true;
+	          _this._createAnnotationWindows({
+	            miradorId: options.miradorId,
+	            layerIds: options.layerIds,
+	            tocTags: options.tocTags,
+	            annotationId: options.annotationId,
+	            miradorProxy: miradorProxy
+	          });
+	        }
+	      });
+	    }
+	  }]);
+
+	  return MiradorWindow;
+	}();
+
+/***/ },
+/* 315 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11688,7 +12450,7 @@
 	var template = Handlebars.compile(['Loading annotations ...'].join(''));
 
 /***/ },
-/* 314 */
+/* 316 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11699,13 +12461,17 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _annotationSource = __webpack_require__(307);
+	var _annotationSource = __webpack_require__(308);
 
 	var _annotationSource2 = _interopRequireDefault(_annotationSource);
 
-	var _annotationSourceFb = __webpack_require__(315);
+	var _annotationSourceFb = __webpack_require__(317);
 
 	var _annotationSourceFb2 = _interopRequireDefault(_annotationSourceFb);
+
+	var _logger = __webpack_require__(300);
+
+	var _logger2 = _interopRequireDefault(_logger);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11727,6 +12493,7 @@
 	      miradorId: null, // ID of Mirador instance
 	      tagHierarchy: null
 	    }, options);
+	    this.logger = (0, _logger2.default)();
 	  }
 
 	  _createClass(MiradorConfigBuilder, [{
@@ -11766,7 +12533,7 @@
 	        config.windowSettings.canvasControls.annotations.annotationCreation = false;
 	      }
 
-	      //console.log('MiradorConfigBuilder#buildConfig config: ' + JSON.stringify(config, null, 2));
+	      this.logger.debug('MiradorConfigBuilder#buildConfig config:', config);
 	      return config;
 	    }
 	  }, {
@@ -11809,7 +12576,7 @@
 	exports.default = MiradorConfigBuilder;
 
 /***/ },
-/* 315 */
+/* 317 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11820,13 +12587,17 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _import = __webpack_require__(304);
+	var _import = __webpack_require__(305);
 
-	var _firebaseProxy = __webpack_require__(316);
+	var _firebaseProxy = __webpack_require__(318);
 
 	var _firebaseProxy2 = _interopRequireDefault(_firebaseProxy);
 
-	var _miradorWindow = __webpack_require__(308);
+	var _logger = __webpack_require__(300);
+
+	var _logger2 = _interopRequireDefault(_logger);
+
+	var _miradorWindow = __webpack_require__(314);
 
 	var _miradorWindow2 = _interopRequireDefault(_miradorWindow);
 
@@ -11839,6 +12610,7 @@
 	  function AnnotationSourceFb() {
 	    _classCallCheck(this, AnnotationSourceFb);
 
+	    this.logger = (0, _logger2.default)();
 	    var fbSettings = (0, _miradorWindow2.default)().getConfig().extension.firebase;
 	    this.fbProxy = new _firebaseProxy2.default(fbSettings);
 	    this.fbKeyMap = {}; // key: annotation['@id], value: firebase key.
@@ -11847,14 +12619,15 @@
 	  _createClass(AnnotationSourceFb, [{
 	    key: 'getLayers',
 	    value: function getLayers() {
-	      console.log('AnnotationSourceFb#getLayers');
+	      var _this = this;
+	      this.logger.debug('AnnotationSourceFb#getLayers');
 	      var promise = new Promise(function (resolve, reject) {
 	        var ref = firebase.database().ref('layers');
 
 	        ref.once('value', function (snapshot) {
 	          var data = snapshot.val();
 	          var layers = [];
-	          console.log('Layers:', data);
+	          _this.logger.debug('Layers:', data);
 	          jQuery.each(data, function (key, value) {
 	            layers.push(value);
 	          });
@@ -11866,7 +12639,7 @@
 	  }, {
 	    key: 'getAnnotations',
 	    value: function getAnnotations(canvasId) {
-	      console.log('AnnotationSourceFb#getAnnotations canvasId: ' + canvasId);
+	      this.logger.debug('AnnotationSourceFb#getAnnotations canvasId:', canvasId);
 	      var _this = this;
 
 	      return new Promise(function (resolve, reject) {
@@ -11874,7 +12647,7 @@
 	        var annotations = [];
 
 	        fbDfd.done(function (annoInfos) {
-	          console.log('AnnotationSourceFb#_search annoInfos: ', annoInfos);
+	          _this.logger.debug('AnnotationSourceFb#_search annoInfos:', annoInfos);
 	          jQuery.each(annoInfos, function (index, annoInfo) {
 	            var oaAnnotation = _this._getAnnotationInOA(annoInfo.annotation);
 	            oaAnnotation.layerId = annoInfo.layerId;
@@ -11888,7 +12661,7 @@
 	  }, {
 	    key: 'createAnnotation',
 	    value: function createAnnotation(oaAnnotation) {
-	      console.log('AnnotationSourceFb#createAnnotation oaAnnotation:', oaAnnotation);
+	      this.logger.debug('AnnotationSourceFb#createAnnotation oaAnnotation:', oaAnnotation);
 	      var _this = this;
 	      var layerId = oaAnnotation.layerId;
 	      var annotation = this._getAnnotationInEndpoint(oaAnnotation);
@@ -11907,8 +12680,7 @@
 	  }, {
 	    key: 'updateAnnotation',
 	    value: function updateAnnotation(oaAnnotation) {
-	      console.log('AnnotationSourceFb#updateAnnotation annotation:', oaAnnotation);
-	      console.dir(oaAnnotation);
+	      this.logger.debug('AnnotationSourceFb#updateAnnotation annotation:', oaAnnotation);
 
 	      var _this = this;
 	      var canvasId = this._getTargetCanvasId(oaAnnotation);
@@ -11926,7 +12698,7 @@
 	            // Delete from all lists except for this canvas/layer.
 	            _this.fbProxy.deleteAnnoFromListExcludeCanvasLayer(annotation, canvasId, layerId);
 	            _this.fbProxy.addAnnoToList(annotation, canvasId, layerId);
-	            console.log('Firbase update succeeded');
+	            _this.logger.debug('Firbase update succeeded');
 	            resolve(oaAnnotation);
 	          }
 	        });
@@ -11935,7 +12707,7 @@
 	  }, {
 	    key: 'deleteAnnotation',
 	    value: function deleteAnnotation(annotationId) {
-	      console.log('YaleDemoEndpoint#delete annotationId: ' + annotationId);
+	      this.logger.debug('YaleDemoEndpoint#delete annotationId:' + annotationId);
 	      var _this = this;
 	      var fbKey = this.fbKeyMap[annotationId];
 	      var ref = firebase.database().ref('annotations/' + fbKey);
@@ -11955,7 +12727,8 @@
 	  }, {
 	    key: 'updateAnnotationListOrder',
 	    value: function updateAnnotationListOrder(canvasId, layerId, annoIds) {
-	      console.log('AnnotationSourceFb#updateAnnotationListOrder');
+	      this.logger.debug('AnnotationSourceFb#updateAnnotationListOrder');
+	      var _this = this;
 	      var combinedId = canvasId + layerId;
 	      var ref = firebase.database().ref('lists');
 	      var query = ref.orderByChild('combinedId').equalTo(combinedId);
@@ -11966,14 +12739,13 @@
 	            // child with combiedId exists
 	            resolve();
 	          } else {
-	            console.log('ERROR updateOrder: list not found for ' + combinedId);
+	            _this.logger.debug('ERROR updateOrder: list not found for', combinedId);
 	            reject();
 	          }
 	        });
 	      }).then(function () {
 	        query.once('child_added', function (snapshot, prevChildKey) {
 	          snapshot.ref.update({ annotationIds: annoIds });
-	          console.log('xxxx 1');
 	        });
 	      });
 	    }
@@ -11989,7 +12761,7 @@
 	      }
 
 	      var canvasId = targetAnno.on.full;
-	      console.log('_getTargetCanvasId canvas ID: ' + canvasId);
+	      this.logger.debug('_getTargetCanvasId canvas ID:', canvasId);
 	      return canvasId;
 	    }
 
@@ -12001,7 +12773,7 @@
 	      var motivation = annotation.motivation;
 	      if (!(motivation instanceof Array)) {
 	        if (motivation !== 'oa:commenting') {
-	          console.log('ERROR YaleEndpoint#getAnnotationInOA unexpected motivation value: ', motivation, ', id: ' + annotation['@id']);
+	          this.logger.error('YaleEndpoint#getAnnotationInOA unexpected motivation value: ', motivation, ', id: ' + annotation['@id']);
 	        }
 	        motivation = ['oa:commenting'];
 	      }
@@ -12016,7 +12788,6 @@
 	        within: annotation.within
 	      };
 	      oaAnnotation.layerId = annotation.layerId;
-	      //console.log('YaleEndpoint#getAnnotationInOA oaAnnotation:', oaAnnotation);
 	      return oaAnnotation;
 	    }
 
@@ -12049,7 +12820,7 @@
 	exports.default = AnnotationSourceFb;
 
 /***/ },
-/* 316 */
+/* 318 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12060,7 +12831,13 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _import = __webpack_require__(304);
+	var _import = __webpack_require__(305);
+
+	var _logger = __webpack_require__(300);
+
+	var _logger2 = _interopRequireDefault(_logger);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -12068,6 +12845,7 @@
 	  function FirebaseProxy(settings) {
 	    _classCallCheck(this, FirebaseProxy);
 
+	    this.logger = (0, _logger2.default)();
 	    var config = {
 	      apiKey: settings.apiKey,
 	      authDomain: settings.authDomain,
@@ -12080,6 +12858,7 @@
 	  _createClass(FirebaseProxy, [{
 	    key: 'getAnnosByCanvasId',
 	    value: function getAnnosByCanvasId(canvasId) {
+	      var _this = this;
 	      var dfd = jQuery.Deferred();
 	      var ref = firebase.database().ref('annotations');
 	      var fbAnnos = {};
@@ -12111,7 +12890,7 @@
 	                    layerId: listObj.layerId
 	                  });
 	                } else {
-	                  console.log("ERROR anno in the list doesn't exist: " + annotationId);
+	                  _this.logger.error("Anno in the list doesn't exist: " + annotationId);
 	                }
 	              });
 	            }
@@ -12190,7 +12969,7 @@
 	  }, {
 	    key: 'deleteAnnoFromListExcludeCanvasLayer',
 	    value: function deleteAnnoFromListExcludeCanvasLayer(annotation, canvasId, layerId) {
-	      console.log('FirebaseProxy#_fbDeleteAnnoFromListExcludeCanvasLayer');
+	      this.logger.debug('FirebaseProxy#_fbDeleteAnnoFromListExcludeCanvasLayer');
 	      var annoId = annotation['@id'];
 	      var combinedId = canvasId + layerId;
 	      var ref = firebase.database().ref('lists');
@@ -12219,7 +12998,7 @@
 	exports.default = FirebaseProxy;
 
 /***/ },
-/* 317 */
+/* 319 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12243,7 +13022,7 @@
 	};
 
 /***/ },
-/* 318 */
+/* 320 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12254,393 +13033,107 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _import = __webpack_require__(304);
+	exports.default = getStateStore;
+
+	var _logger = __webpack_require__(300);
+
+	var _logger2 = _interopRequireDefault(_logger);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	/**
-	 * A tag based table-of-contents structure for annotations.
-	 *
-	 * Builds a structure (annoHiercrchy) of annotations
-	 * so they can be accessed and manipulated
-	 * according to the pre-defined TOC tags hierarchy (spec).
-	 */
-	var Toc = function () {
-	  function Toc(spec, annotations) {
-	    _classCallCheck(this, Toc);
+	var registeredKeys = new Set(['ANNO_CELL_FIXED', 'lastSelectedLayer', 'layerIndexMap']);
 
-	    /*
-	     * Spec is a JSON passed from outside (an array of arrays).
-	     * It defines the tags to be used to define the hiearchy.
-	     * It is different from "ranges" because 
-	     * it is used to define a strucutre of annotations in a single canvas 
-	     * while ranges are used to define a structure of canvases in a sequence.
-	     * For example, the first array could list tags for sections of a story
-	     * and the second one could list tags for sub-sections.
-	     */
-	    this.spec = spec;
+	// Holds states for the app, which will persist if local storgae is available.
 
-	    this.annotations = annotations;
-	    this.tagWeights = {}; // for sorting
+	var StateStore = function () {
+	  function StateStore() {
+	    _classCallCheck(this, StateStore);
 
-	    /**
-	     * This can be considered the output of parse,
-	     * while "this.spec" and "annotations" are the input.
-	     * 
-	     * Each node is an object:
-	     * {
-	     *   spec: AN_OBJECT, // spec object from this.spec, with label, short, tag attributes
-	     *   annotation: AN_OBJECT, // annotation
-	     *   layerIds: A_SET, // set of layer IDs for annotations that belong to this node or its children
-	     *   cumulativeLabel: A_STRING, // concatenation of short labels inherited from the parent nodes 
-	     *   cumulativeTags: [], // list of tags for this node and its ancestors
-	     *   childNodes: AN_OBJECT, // child TOC nodes as a hashmap on tags
-	     *   childAnnotations: AN_ARRAY, // non-TOC-node annotations that targets this node
-	     *   isRoot: A_BOOL, // true if the node is the root
-	     *   weight: A_NUMBER // for sorting
-	     * }
-	     */
-	    this.annoHierarchy = null;
-
-	    /**
-	     * Annotations that do not belong to the ToC structure.
-	     */
-	    this._unassigned = [];
-
-	    this.annoToNodeMap = {}; // key: annotation ID, value: node in annoHierarchy;
-	    this.init();
+	    this.logger = (0, _logger2.default)();
+	    this._settings = {};
+	    this._localStorageAvailable = storageAvailable('localStorage');
 	  }
 
-	  _createClass(Toc, [{
-	    key: 'init',
-	    value: function init(annotations) {
-	      console.log('Toc#init spec: ' + this.spec);
-	      console.dir(this.spec);
-
-	      this.annoHierarchy = this.newNode(null, null); // root node
-
-	      this.initTagWeights();
-	      this.parse(this.annotations);
-	    }
-
-	    /**
-	     * Find the node corresponding to the sequence of tags.
-	     * @param {...string} tags
-	     * @returns {object} a TOC node
-	     */
-
-	  }, {
-	    key: 'getNode',
-	    value: function getNode() {
-	      var tags = Array.from(arguments);
-	      var node = this.annoHierarchy;
-
-	      var _iteratorNormalCompletion = true;
-	      var _didIteratorError = false;
-	      var _iteratorError = undefined;
-
-	      try {
-	        for (var _iterator = tags[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-	          var tag = _step.value;
-
-	          if (!node) {
-	            break;
-	          }
-	          node = node.childNodes[tag];
-	        }
-	      } catch (err) {
-	        _didIteratorError = true;
-	        _iteratorError = err;
-	      } finally {
-	        try {
-	          if (!_iteratorNormalCompletion && _iterator.return) {
-	            _iterator.return();
-	          }
-	        } finally {
-	          if (_didIteratorError) {
-	            throw _iteratorError;
-	          }
-	        }
+	  _createClass(StateStore, [{
+	    key: 'getString',
+	    value: function getString(key) {
+	      this.logger.debug('StateStore#getString', key);
+	      this._checkKey(key);
+	      var value = this._settings[key];
+	      if (!value) {
+	        value = this._localStorageAvailable ? localStorage.getItem(key) : null;
+	        this._settings[key] = value;
 	      }
-
-	      return node === this.annoHierarchy ? null : node;
+	      return value;
 	    }
 	  }, {
-	    key: 'findNodeForAnnotation',
-	    value: function findNodeForAnnotation(annotation) {
-	      var targetAnno = _import.annoUtil.findFinalTargetAnnotation(annotation, this.annotations);
-	      return targetAnno ? this.annoToNodeMap[targetAnno['@id']] : null;
-	    }
-
-	    /**
-	     * Assign weights to tags according to their position in the array.
-	     */
-
-	  }, {
-	    key: 'initTagWeights',
-	    value: function initTagWeights() {
-	      var _this = this;
-	      jQuery.each(this.spec.nodeSpecs, function (rowIndex, row) {
-	        jQuery.each(row, function (index, nodeSpec) {
-	          _this.tagWeights[nodeSpec.tag] = index;
-	        });
-	      });
-	    }
-	  }, {
-	    key: 'parse',
-	    value: function parse() {
-	      // First pass
-	      var remainingAnnotations = this.addTaggedAnnotations(this.annotations);
-	      // Second pass
-	      this.addRemainingAnnotations(remainingAnnotations);
-	    }
-
-	    /**
-	     * Build a TOC structure
-	     * @return An array of annotations that are NOT assigned to a TOC node.
-	     */
-
-	  }, {
-	    key: 'addTaggedAnnotations',
-	    value: function addTaggedAnnotations(annotations) {
-	      var _this = this;
-	      var remainder = [];
-
-	      jQuery.each(annotations, function (index, annotation) {
-	        var tags = _import.annoUtil.getTags(annotation);
-	        var success = _this.buildChildNodes(annotation, tags, 0, _this.annoHierarchy);
-	        if (!success) {
-	          remainder.push(annotation);
-	        }
-	      });
-	      return remainder;
-	    }
-	  }, {
-	    key: 'addRemainingAnnotations',
-	    value: function addRemainingAnnotations(annotations) {
-	      var _this = this;
-	      jQuery.each(annotations, function (index, annotation) {
-	        var targetAnno = _import.annoUtil.findFinalTargetAnnotation(annotation, _this.annotations);
-	        if (targetAnno) {
-	          var node = _this.annoToNodeMap[targetAnno['@id']];
-	          if (targetAnno && node) {
-	            node.childAnnotations.push(annotation);
-	            _this.registerLayerWithNode(node, annotation.layerId);
-	          } else {
-	            console.log('WARNING Toc#addRemainingAnnotations not covered by ToC');
-	            _this._unassigned.push(annotation);
-	          }
-	        } else {
-	          console.log('WARNING Toc#addRemainingAnnotations orphan');
-	          console.dir(annotation);
-	          _this._unassigned.push(annotation);
-	        }
-	      });
-	    }
-
-	    /**
-	     * Recursively builds the TOC structure.
-	     * @param {object} annotation Annotation to be assigned to the parent node
-	     * @param {string[]} tags 
-	     * @param {number} rowIndex Index of this.annoHierarchy
-	     * @param {object} parent Parent node
-	     * @return {boolean} true if the annotation was set to be a TOC node, false if not.
-	     */
-
-	  }, {
-	    key: 'buildChildNodes',
-	    value: function buildChildNodes(annotation, tags, rowIndex, parent) {
-	      //console.log('ParsedAnnotations#buildNode rowIndex: ' + rowIndex + ', anno:');
-	      //console.dir(annotation);
-
-	      var currentNode = null;
-
-	      if (rowIndex >= this.spec.nodeSpecs.length) {
-	        // no more levels to explore in the TOC structure
-	        if (parent.isRoot) {
-	          // The root is not a TOC node
-	          return false;
-	        } else {
-	          // Assign the annotation to parent (a TOC node)
-	          parent.annotation = annotation;
-	          this.annoToNodeMap[annotation['@id']] = parent;
-	          this.registerLayerWithNode(parent, annotation.layerId);
-	          return true;
-	        }
-	      }
-
-	      var nodeSpec = this.tagInSpecs(tags, this.spec.nodeSpecs[rowIndex]);
-
-	      if (nodeSpec) {
-	        // one of the tags belongs to the corresponding level of the pre-defined tag hierarchy
-	        var tag = nodeSpec.tag;
-	        var annoHierarchy = this.annoHierarchy;
-
-	        if (!parent.childNodes[tag]) {
-	          parent.childNodes[tag] = this.newNode(nodeSpec, parent);
-	        }
-	        currentNode = parent.childNodes[tag];
-	        if (parent.isRoot) {
-	          currentNode.cumulativeLabel = currentNode.spec.short;
-	        } else {
-	          currentNode.cumulativeLabel = parent.cumulativeLabel + this.spec.shortLabelSeparator + currentNode.spec.short;
-	        }
-	        return this.buildChildNodes(annotation, tags, rowIndex + 1, currentNode);
-	      } else {
-	        // no matching tags so far
-	        if (parent.isRoot) {
-	          return false;
-	        } else {
-	          parent.annotation = annotation;
-	          this.registerLayerWithNode(parent, annotation.layerId);
-	          this.annoToNodeMap[annotation['@id']] = parent;
-	          return true;
-	        }
-	      }
-	    }
-
-	    /**
-	     * A tag object is an object in this.tagHierarcy that represents a tag.
-	     *
-	     * @param {string[]} tags List of tags
-	     * @param {object[]} nodeSpecs List of node specs
-	     * @return {object} The "node spec" object if one of the objects in nodeSpecs represents one of the tags; null if not.
-	     */
-
-	  }, {
-	    key: 'tagInSpecs',
-	    value: function tagInSpecs(tags, nodeSpecs) {
-	      var match = null;
-	      jQuery.each(tags, function (index, tag) {
-	        jQuery.each(nodeSpecs, function (listIndex, nodeSpec) {
-	          if (tag === nodeSpec.tag) {
-	            match = nodeSpec;
-	            return false;
-	          }
-	        });
-	        if (match) {
-	          return false;
-	        }
-	      });
-	      return match;
-	    }
-	  }, {
-	    key: 'newNode',
-	    value: function newNode(nodeSpec, parent) {
-	      if (!parent) {
-	        // root node
-	        return {
-	          isRoot: true,
-	          childNodes: {}
-	        };
-	      } else {
-	        var tags = parent.isRoot ? [nodeSpec.tag] : parent.cumulativeTags.concat([nodeSpec.tag]);
-	        return {
-	          spec: nodeSpec,
-	          annotation: null,
-	          layerIds: new Set(),
-	          cumulativeLabel: '',
-	          cumulativeTags: tags,
-	          childNodes: {},
-	          childAnnotations: [],
-	          weight: this.tagWeights[nodeSpec.tag]
-	        };
+	    key: 'setString',
+	    value: function setString(key, value) {
+	      this.logger.debug('StateStore#setString', key, value, this._localStorageAvailable);
+	      this._checkKey(key);
+	      this._settings[key] = value;
+	      if (this._localStorageAvailable) {
+	        localStorage.setItem(key, value);
 	      }
 	    }
 	  }, {
-	    key: 'getNodeFromTags',
-	    value: function getNodeFromTags(tags) {
-	      var node = this.annoHierarchy;
-
-	      jQuery.each(tags, function (index, tag) {
-	        node = node.childNodes[tag];
-	        if (!node) {
-	          return false;
-	        }
-	      });
-	      return node;
+	    key: 'getObject',
+	    value: function getObject(key) {
+	      this.logger.debug('StateStore#getObject', key);
+	      this._checkKey(key);
+	      var value = this.getString(key);
+	      return value ? JSON.parse(value) : null;
 	    }
 	  }, {
-	    key: 'matchHierarchy',
-	    value: function matchHierarchy(annotation, tags) {
-	      var node = this.getNodeFromTags(tags);
-	      return node ? this.matchNode(annotation, node) : false;
+	    key: 'setObject',
+	    value: function setObject(key, value) {
+	      this.logger.debug('StateStore#setObject', key, value);
+	      this._checkKey(key);
+	      var stringValue = JSON.stringify(value);
+	      this.setString(key, stringValue);
 	    }
 	  }, {
-	    key: 'matchNode',
-	    value: function matchNode(annotation, node) {
-	      var _this = this;
-	      var matched = false;
-
-	      //console.log('Node: ');
-	      //console.dir(node);
-
-	      if (node.annotation['@id'] === annotation['@id']) {
-	        return true;
+	    key: '_checkKey',
+	    value: function _checkKey(key) {
+	      if (!registeredKeys.has(key)) {
+	        throw 'ERROR Invalid key for StateStore ' + key;
 	      }
-	      jQuery.each(node.childAnnotations, function (index, value) {
-	        if (value['@id'] === annotation['@id']) {
-	          matched = true;
-	          return false;
-	        }
-	      });
-	      jQuery.each(node.childNodes, function (index, childNode) {
-	        if (_this.matchNode(annotation, childNode)) {
-	          matched = true;
-	          return false;
-	        }
-	      });
-	      return matched;
-	    }
-	  }, {
-	    key: 'registerLayerWithNode',
-	    value: function registerLayerWithNode(node, layerId) {
-	      node.layerIds.add(layerId);
-	    }
-	  }, {
-	    key: 'unassigned',
-	    value: function unassigned() {
-	      return this._unassigned;
-	    }
-	  }, {
-	    key: 'numUnassigned',
-	    value: function numUnassigned() {
-	      return this._unassigned.length;
-	    }
-
-	    /**
-	     * Traverses the Toc structure and calls visitCallback() for each node.
-	     * @param {function} visitCallback
-	     */
-
-	  }, {
-	    key: 'walk',
-	    value: function walk(visitCallback) {
-	      this.visit(this.annoHierarchy, visitCallback);
-	    }
-	  }, {
-	    key: 'visit',
-	    value: function visit(node, callback) {
-	      var _this = this;
-	      var sortedTags = Object.keys(node.childNodes).sort(function (a, b) {
-	        return _this.tagWeights[a] - _this.tagWeights[b];
-	      });
-
-	      jQuery.each(sortedTags, function (index, tag) {
-	        var childNode = node.childNodes[tag];
-	        callback(childNode);
-	        _this.visit(childNode, callback);
-	      });
 	    }
 	  }]);
 
-	  return Toc;
+	  return StateStore;
 	}();
 
-	exports.default = Toc;
+	/**
+	 * param {string} type "localStorage" or "sessionStorage"
+	 */
+
+
+	function storageAvailable(type) {
+	  try {
+	    var storage = window[type],
+	        x = '__storage_test__';
+	    storage.setItem(x, x);
+	    storage.removeItem(x);
+	    return true;
+	  } catch (e) {
+	    return false;
+	  }
+	}
+
+	var _instance = null;
+
+	function getStateStore() {
+	  if (!_instance) {
+	    _instance = new StateStore();
+	  }
+	  return _instance;
+	};
 
 /***/ },
-/* 319 */
+/* 321 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12710,14 +13203,21 @@
 	var MSG_TRY_LATER = '<p>Please try again a bit later, or if problem persists, create an issue at <a class="ym_link" target="_blank" href="https://github.com/yale-web-technologies/mirador-project/issues">GitHub</a>.</p>';
 
 /***/ },
-/* 320 */
-/***/ function(module, exports) {
+/* 322 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+
+	var _logger = __webpack_require__(300);
+
+	var _logger2 = _interopRequireDefault(_logger);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	exports.default = {
 	  // Return true if the device is mobile or a tablet.
 	  isMobileOrTablet: function isMobileOrTablet() {
@@ -12747,15 +13247,15 @@
 	      count = 1;
 	    }
 	    if (count > 5) {
-	      console.log('util.waitUntil max try num exceeded: giving up');
-	      console.log('testFunc: ' + testFunc);
-	      console.log('execFunc: ' + execFunc);
+	      this.logger.debug('util.waitUntil max try num exceeded: giving up');
+	      this.logger.debug('testFunc: ' + testFunc);
+	      this.logger.debug('execFunc: ' + execFunc);
 	      return;
 	    }
 	    if (testFunc()) {
 	      execFunc();
 	    } else {
-	      console.log('util.waitUntil trial ' + count + ' failed. Retrying in ' + ms * 2 + ' ms.');
+	      this.logger.debug('util.waitUntil trial ' + count + ' failed. Retrying in ' + ms * 2 + ' ms.');
 	      setTimeout(function () {
 	        _this.waitUntil(testFunc, execFunc, ms * 2, count + 1);
 	      }, ms);
@@ -12764,7 +13264,7 @@
 	};
 
 /***/ },
-/* 321 */
+/* 323 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12775,261 +13275,46 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	var _import = __webpack_require__(305);
 
-	var _import = __webpack_require__(304);
+	var _logger = __webpack_require__(300);
 
-	var _session = __webpack_require__(317);
+	var _logger2 = _interopRequireDefault(_logger);
 
-	var _session2 = _interopRequireDefault(_session);
-
-	var _firebaseProxy = __webpack_require__(316);
-
-	var _firebaseProxy2 = _interopRequireDefault(_firebaseProxy);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	// Endpoint for FireBase containing dummy data for development/testing
-	var YaleDemoEndpoint = function () {
-	  function YaleDemoEndpoint(options) {
-	    _classCallCheck(this, YaleDemoEndpoint);
-	  }
-
-	  _createClass(YaleDemoEndpoint, [{
-	    key: 'init',
-	    value: function init() {
-	      _get(YaleDemoEndpoint.prototype.__proto__ || Object.getPrototypeOf(YaleDemoEndpoint.prototype), 'init', this).call(this);
-	      console.log('YaleDemoEndpoint#init');
-	      var _this = this;
-	      this.fbKeyMap = {}; // key: annotation['@id], value: firebase key.
-
-	      var fbSettings = _session2.default.getServerSettings().firebase;
-	      this.fbProxy = new _firebaseProxy2.default(fbSettings);
-	    }
-	  }, {
-	    key: '_search',
-	    value: function _search(canvasId) {
-	      var _this = this;
-
-	      return new Promise(function (resolve, reject) {
-	        var fbDfd = _this.fbProxy.getAnnosByCanvasId(canvasId);
-	        var annotations = [];
-
-	        fbDfd.done(function (annoInfos) {
-	          console.log('YaleDemoEndpoint#_search annoInfos: ');
-	          console.dir(annoInfos);
-	          jQuery.each(annoInfos, function (index, annoInfo) {
-	            var oaAnnotation = _this.getAnnotationInOA(annoInfo.annotation);
-	            oaAnnotation.layerId = annoInfo.layerId;
-	            _this.fbKeyMap[oaAnnotation['@id']] = annoInfo.fbKey;
-	            annotations.push(oaAnnotation);
-	          });
-	          console.log('_this.annotationsList: ');
-	          console.dir(_this.annotationsList);
-	          resolve(annotations);
-	        });
-	      });
-	    }
-	  }, {
-	    key: '_create',
-	    value: function _create(oaAnnotation, successCallback, errorCallback) {
-	      console.log('YaleDemoEndpoint#_create oaAnnotation:');
-	      console.dir(oaAnnotation);
-
-	      var layerId = oaAnnotation.layerId;
-	      var annotation = this.getAnnotationInEndpoint(oaAnnotation);
-
-	      var annoId = Mirador.genUUID();
-	      annotation['@id'] = annoId;
-
-	      var canvasIds = _import.annoUtil.getFinalTargetCanvasIds(annotation, this.annotationsList);
-	      var canvasId = canvasIds[0];
-
-	      var fbKey = this.fbProxy.addAnno(annotation, canvasId, layerId);
-	      this.fbKeyMap[annoId] = fbKey;
-
-	      if (typeof successCallback === 'function') {
-	        oaAnnotation['@id'] = annoId;
-	        oaAnnotation.endpoint = this;
-	        console.log('YaleDemoEndpoint#_create success:');
-	        console.dir(oaAnnotation);
-	        successCallback(oaAnnotation);
-	      } else {
-	        console.log('YaleDemoEndpoint#create no success callback');
-	      }
-	    }
-	  }, {
-	    key: '_update',
-	    value: function _update(oaAnnotation, successCallback, errorCallback) {
-	      console.log('YaleDemoEndpoint#_update oaAnnotation:');
-	      console.dir(oaAnnotation);
-
-	      var _this = this;
-	      var canvasId = this._getTargetCanvasId(oaAnnotation);
-	      var layerId = oaAnnotation.layerId;
-	      var annotation = this.getAnnotationInEndpoint(oaAnnotation);
-	      var fbKey = this.fbKeyMap[annotation['@id']];
-	      var ref = firebase.database().ref('/annotations/' + fbKey);
-
-	      ref.update({ annotation: annotation, layerId: layerId }, function (error) {
-	        if (error) {
-	          console.log('Update failed.');
-	        } else {
-	          // Delete from all lists except for this canvas/layer.
-	          _this.fbProxy.deleteAnnoFromListExcludeCanvasLayer(annotation, canvasId, layerId);
-	          _this.fbProxy.addAnnoToList(annotation, canvasId, layerId);
-	          console.log('Update succeeded.');
-	          if (typeof successCallback === 'function') {
-	            successCallback(oaAnnotation);
-	          }
-	        }
-	      });
-	    }
-	  }, {
-	    key: '_deleteAnnotation',
-	    value: function _deleteAnnotation(annotationId, successCallback, errorCallback) {
-	      console.log('YaleDemoEndpoint#delete annotationId: ' + annotationId);
-	      var _this = this;
-	      var fbKey = this.fbKeyMap[annotationId];
-	      var ref = firebase.database().ref('annotations/' + fbKey);
-	      ref.remove(function (error) {
-	        if (error) {
-	          console.log('ERROR delete failed for annotation id: ' + annotationId);
-	          if (typeof successCallback === 'function') {
-	            errorCallback();
-	          }
-	        } else {
-	          _this.fbProxy.deleteAnnoFromList(annotationId);
-	          if (typeof successCallback === 'function') {
-	            successCallback();
-	          }
-	        }
-	      });
-	    }
-	  }, {
-	    key: '_getLayers',
-	    value: function _getLayers() {
-	      console.log('YaleDemoEndpoint#_getLayers');
-	      var promise = new Promise(function (resolve, reject) {
-	        var ref = firebase.database().ref('layers');
-
-	        ref.once('value', function (snapshot) {
-	          var data = snapshot.val();
-
-	          console.log('Layers: ' + JSON.stringify(data, null, 2));
-
-	          var layers = [];
-
-	          jQuery.each(data, function (key, value) {
-	            layers.push(value);
-	          });
-
-	          resolve(layers);
-	        });
-	      });
-	      return promise;
-	    }
-	  }, {
-	    key: '_updateOrder',
-	    value: function _updateOrder(canvasId, layerId, annoIds, successCallback, errorCallback) {
-	      jQuery.each(annoIds, function (index, value) {
-	        console.log(value);
-	      });
-
-	      var dfd = jQuery.Deferred();
-	      var combinedId = canvasId + layerId;
-	      var ref = firebase.database().ref('lists');
-	      var query = ref.orderByChild('combinedId').equalTo(combinedId);
-
-	      query.once('value', function (snapshot) {
-	        if (snapshot.exists()) {
-	          // child with combiedId exists
-	          dfd.resolve();
-	        } else {
-	          console.log('ERROR updateOrder: list not found for ' + combinedId);
-	          dfd.reject();
-	        }
-	      });
-
-	      dfd.done(function () {
-	        query.once('child_added', function (snapshot, prevChildKey) {
-	          snapshot.ref.update({ annotationIds: annoIds });
-	        });
-	        if (typeof successCallback === 'function') {
-	          successCallback();
-	        }
-	      });
-	    }
-	  }, {
-	    key: '_getTargetCanvasId',
-	    value: function _getTargetCanvasId(annotation) {
-	      var targetAnno = null;
-
-	      if (annotation['@type'] === 'oa:Annotation') {
-	        targetAnno = _import.annoUtil.findFinalTargetAnnotation(annotation, this.annotationsList);
-	      } else {
-	        targetAnno = annotation;
-	      }
-
-	      var canvasId = targetAnno.on.full;
-	      console.log('_getTargetCanvasId canvas ID: ' + canvasId);
-	      return canvasId;
-	    }
-	  }]);
-
-	  return YaleDemoEndpoint;
-	}();
-
-	exports.default = YaleDemoEndpoint;
-
-/***/ },
-/* 322 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _import = __webpack_require__(304);
-
-	var _layerSelector = __webpack_require__(323);
-
-	var _layerSelector2 = _interopRequireDefault(_layerSelector);
-
-	var _miradorProxyManager = __webpack_require__(309);
+	var _miradorProxyManager = __webpack_require__(310);
 
 	var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
+
+	var _stateStore = __webpack_require__(320);
+
+	var _stateStore2 = _interopRequireDefault(_stateStore);
+
+	var _layerSelector = __webpack_require__(324);
+
+	var _layerSelector2 = _interopRequireDefault(_layerSelector);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var AnnotationEditor = function () {
 	  function AnnotationEditor(options) {
+	    var _jQuery$extend;
+
 	    _classCallCheck(this, AnnotationEditor);
 
-	    jQuery.extend(this, {
-	      miradorDriven: false, // true if created and managed by Mirador core.
+	    this.logger = (0, _logger2.default)();
+	    this.logger.debug('AnnotationEditor#constructor options:', options);
+	    jQuery.extend(this, (_jQuery$extend = {
 	      windowId: null,
-	      annotation: null,
-	      id: null,
-	      parent: null,
-	      canvasWindow: null, // reference window that contains the canvas
-	      endpoint: null,
-	      targetAnnotation: null, // target annotation (annotation annotated by this annotation)
-	      saveCallback: null,
-	      cancelCallback: null
-	    }, options);
+	      miradorDriven: false }, _defineProperty(_jQuery$extend, 'windowId', null), _defineProperty(_jQuery$extend, 'annotation', null), _defineProperty(_jQuery$extend, 'id', null), _defineProperty(_jQuery$extend, 'parent', null), _defineProperty(_jQuery$extend, 'canvasWindow', null), _defineProperty(_jQuery$extend, 'endpoint', null), _defineProperty(_jQuery$extend, 'targetAnnotation', null), _defineProperty(_jQuery$extend, 'saveCallback', null), _defineProperty(_jQuery$extend, 'cancelCallback', null), _jQuery$extend), options);
 
 	    this._mode = options.mode; // "create", "update", or "merge"
+
 	    this.init();
 	    this.hide();
 	  }
@@ -13061,7 +13346,7 @@
 	          while (1) {
 	            switch (_context.prev = _context.next) {
 	              case 0:
-	                console.log('AnnotationEditor#reload parent:', parent);
+	                this.logger.debug('AnnotationEditor#reload parent:', parent);
 	                _this = this;
 
 
@@ -13075,26 +13360,26 @@
 	                  parent: this.layerSelectorContainer
 	                });
 
-	                console.log(1);
-	                _context.next = 11;
+	                _context.next = 10;
 	                return this.endpoint.getLayers();
 
-	              case 11:
+	              case 10:
 	                layers = _context.sent;
 
-	                console.log(layers);
 
 	                this.layerSelector.init(layers).then(function () {
 	                  if (_this._mode === 'create') {
 	                    title.text('Create Annotation');
+	                    var lastLayer = (0, _stateStore2.default)().getString('lastSelectedLayer');
+	                    _this.layerSelector.val(lastLayer);
 	                  } else {
 	                    // update
 	                    title.text('');
-	                  }
-	                  if (_this.annotation) {
-	                    _this.textArea.val(_import.annoUtil.getText(_this.annotation));
-	                    if (_this.annotation.layerId) {
-	                      _this.layerSelector.val(_this.annotation.layerId);
+	                    if (_this.annotation) {
+	                      _this.textArea.val(_import.annoUtil.getText(_this.annotation));
+	                      if (_this.annotation.layerId) {
+	                        _this.layerSelector.val(_this.annotation.layerId);
+	                      }
 	                    }
 	                  }
 
@@ -13105,10 +13390,10 @@
 	                    _this.bindEvents();
 	                  }, 0);
 	                }).catch(function (reason) {
-	                  console.log('ERROR AnnotationEditor#reload layerSelector.init failed - ' + reason);
+	                  _this.logger.error('ERROR AnnotationEditor#reload layerSelector.init failed - ' + reason);
 	                });
 
-	              case 14:
+	              case 12:
 	              case 'end':
 	                return _context.stop();
 	            }
@@ -13152,12 +13437,11 @@
 	  }, {
 	    key: 'show',
 	    value: function show(selector) {
-	      console.log('selector: ', selector);
+	      this.logger.debug('AnnotationEditor#show', selector);
 	      if (selector) {
 	        this.reload(jQuery(selector));
 	      }
 	      this.element.show();
-	      console.log('display: ', this.element.css('display'));
 	    }
 	  }, {
 	    key: 'hide',
@@ -13244,7 +13528,7 @@
 	          full: targetAnnotation['@id']
 	        };
 	      }
-	      console.log('AnnotationEditor#createAnnotation anno: ' + JSON.stringify(annotation, null, 2));
+	      this.logger.debug('AnnotationEditor#createAnnotation anno:', annotation);
 	      return annotation;
 	    }
 	  }, {
@@ -13342,10 +13626,9 @@
 	  }, {
 	    key: 'validate',
 	    value: function validate() {
-	      console.log('AnnotationEditor#validate target anno: ');
-	      console.dir(this.targetAnnotation);
-
+	      this.logger.debug('AnnotationEditor#validate target anno:', this.targetAnnotation);
 	      var msg = '';
+
 	      if (this._mode === 'create') {
 	        if (!this.targetAnnotation) {
 	          msg += 'Target annotation is missing.\n';
@@ -13407,7 +13690,7 @@
 	var template = Handlebars.compile(['<div class="ym_anno_editor">', '  <div class="header">', '    <span class="layer_select"></span>', '  </div>', '  <textarea></textarea>', '  <input class="tags_editor" placeholder="{{t "addTagsHere"}}…" {{#if tags}}value="{{tags}}"{{/if}}/>', '  {{#unless miradorDriven}}', '    <div class="bottom_row">', '        <button class="ym_save">Save</button>', '        <button class="ym_cancel">Cancel</button>', '      <div class="ym_float_right">', '        <i class="large caret up icon ym_vertical_dec"></i>', '        <i class="large caret down icon ym_vertical_inc"></i>', '      </div>', '    </div>', '  {{/unless}}', '</div>'].join(''));
 
 /***/ },
-/* 323 */
+/* 324 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -13418,7 +13701,15 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _selector = __webpack_require__(324);
+	var _logger = __webpack_require__(300);
+
+	var _logger2 = _interopRequireDefault(_logger);
+
+	var _stateStore = __webpack_require__(320);
+
+	var _stateStore2 = _interopRequireDefault(_stateStore);
+
+	var _selector = __webpack_require__(325);
 
 	var _selector2 = _interopRequireDefault(_selector);
 
@@ -13440,6 +13731,8 @@
 	      changeCallback: null,
 	      initialLayerId: null
 	    }, options);
+	    this.logger = (0, _logger2.default)();
+	    this.appState = (0, _stateStore2.default)();
 	  }
 
 	  /**
@@ -13450,7 +13743,7 @@
 	  _createClass(_class, [{
 	    key: 'init',
 	    value: function init(layers) {
-	      console.log('LayerSelector#init layers:', layers);
+	      this.logger.debug('LayerSelector#init layers:', layers);
 	      this._isLoaded = false;
 	      this.selector = new _selector2.default({
 	        appendTo: this.parent
@@ -13466,9 +13759,12 @@
 	  }, {
 	    key: 'reload',
 	    value: function reload(layers) {
-	      console.log('LayerSelector#reload');
+	      this.logger.debug('LayerSelector#reload');
 	      var _this = this;
-
+	      var layerIndexMap = this.appState.getObject('layerIndexMap');
+	      if (!layerIndexMap) {
+	        this.logger.error('LayerSelector#reload cannot retrieve layerIndexMap');
+	      }
 	      this.selector.empty();
 
 	      var _iteratorNormalCompletion = true;
@@ -13479,7 +13775,15 @@
 	        for (var _iterator = layers[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 	          var layer = _step.value;
 
-	          _this.selector.addItem(layer.label, layer['@id']);
+	          var layerId = layer['@id'];
+	          var layerIndex = layerIndexMap ? layerIndexMap[layerId] : 0;
+	          var colorClass = typeof layerIndex === 'number' ? 'layer_' + layerIndex % 10 : undefined;
+
+	          _this.selector.addItem({
+	            label: layer.label,
+	            value: layerId,
+	            colorClass: colorClass
+	          });
 	        }
 	      } catch (err) {
 	        _didIteratorError = true;
@@ -13498,16 +13802,25 @@
 
 	      return new Promise(function (resolve, reject) {
 	        if (layers.length > 0) {
-	          _this.selector.val(_this.initialLayerId || layers[0]['@id'], true);
+	          var layerId = _this.initialLayerId || layers[0]['@id'];
+	          var layerIndex = layerIndexMap ? layerIndexMap[layerId] : 0;
+	          _this.selector.val(layerId, true);
+	          _this.selector.setColorClass('layer_' + layerIndex % 10);
 	          _this._isLoaded = true;
 	        }
-	        resolve();
+	        resolve(_this);
 	      });
 	    }
 	  }, {
 	    key: 'val',
 	    value: function val(value, skipNotify) {
-	      return this.selector.val(value, skipNotify);
+	      this.logger.debug('LayerSelector#val', value, skipNotify);
+	      var retVal = this.selector.val(value, skipNotify);
+	      if (value !== undefined) {
+	        this.logger.debug('val:', value);
+	        (0, _stateStore2.default)().setString('lastSelectedLayer', value);
+	      }
+	      return retVal;
 	    }
 	  }, {
 	    key: 'isLoaded',
@@ -13518,9 +13831,15 @@
 	    key: 'bindEvents',
 	    value: function bindEvents() {
 	      var _this = this;
-	      this.selector.changeCallback = function (value, text) {
+	      this.selector.changeCallback = function (layerId, text) {
+	        _this.logger.debug('LayerSelector#bindEvents changeCallback');
+	        var layerIndexMap = _this.appState.getObject('layerIndexMap');
+	        var layerIndex = layerIndexMap ? layerIndexMap[layerId] : 0;
+
+	        _this.selector.setColorClass('layer_' + layerIndex % 10);
+	        (0, _stateStore2.default)().setString('lastSelectedLayer', layerId);
 	        if (typeof _this.changeCallback === 'function') {
-	          _this.changeCallback(value, text);
+	          _this.changeCallback(layerId, text);
 	        }
 	      };
 	    }
@@ -13532,8 +13851,8 @@
 	exports.default = _class;
 
 /***/ },
-/* 324 */
-/***/ function(module, exports) {
+/* 325 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -13542,6 +13861,12 @@
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _logger = __webpack_require__(300);
+
+	var _logger2 = _interopRequireDefault(_logger);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -13557,6 +13882,7 @@
 	      changeCallback: null
 	    }, options);
 
+	    this.logger = (0, _logger2.default)();
 	    this.init();
 	  }
 
@@ -13569,10 +13895,11 @@
 	      this.element.dropdown({
 	        direction: 'downward',
 	        onChange: function onChange(value, text) {
+	          _this.logger.debug('Selector#init onChange ', value, text, _this._skipNotify);
 	          if (typeof _this.changeCallback === 'function' && !_this._skipNotify) {
 	            _this.changeCallback(value, text);
 	          }
-	          this._skipNotify = false;
+	          _this._skipNotify = false;
 	        },
 	        action: function action(text, value) {
 	          _this.element.dropdown('set selected', value);
@@ -13598,7 +13925,11 @@
 	          var menu = _this.addMenuItem(value.label, value.value, parent);
 	          _this._setItems(value.children, menu);
 	        } else {
-	          _this.addItem(value.label, value.value, parent);
+	          _this.addItem({
+	            label: value.label,
+	            value: value.value,
+	            parent: parent
+	          });
 	        }
 	      });
 	    }
@@ -13615,9 +13946,13 @@
 	    }
 	  }, {
 	    key: 'addItem',
-	    value: function addItem(label, value, parent) {
-	      var item = jQuery('<div/>').addClass('item').attr('data-text', label).attr('data-value', value).text(label);
-	      parent = parent || this.element.find('.menu');
+	    value: function addItem(options) {
+	      var item = jQuery(itemTemplate({
+	        label: options.label,
+	        colorClass: options.colorClass
+	      })).attr('data-text', options.label).attr('data-value', options.value);
+
+	      parent = options.parent || this.element.find('.menu');
 	      parent.append(item);
 	    }
 	  }, {
@@ -13628,6 +13963,7 @@
 	  }, {
 	    key: 'val',
 	    value: function val(value, skipNotify) {
+	      this.logger.debug('Selector#val', value, skipNotify);
 	      var dd = this.element;
 	      this._skipNotify = skipNotify || false;
 	      dd.dropdown('refresh');
@@ -13637,10 +13973,21 @@
 	      } else {
 	        if (dd.dropdown('get item', value)) {
 	          dd.dropdown('set selected', value);
+	          return value;
 	        } else {
 	          dd.dropdown('set selected', this.values[0]);
+	          return this.values[0];
 	        }
 	      }
+	    }
+	  }, {
+	    key: 'setColorClass',
+	    value: function setColorClass(newClass) {
+	      if (this._oldClass) {
+	        this.element.removeClass(this._oldClass);
+	      }
+	      this.element.addClass(newClass);
+	      this._oldClass = newClass;
 	    }
 	  }, {
 	    key: 'destroy',
@@ -13657,17 +14004,23 @@
 
 	var template = Handlebars.compile(['<div class="basic tiny ui button ym_button dropdown">', '  <input name="selection" type="hidden" />', '  <div class="default text"></div>', '  <i class="ym dropdown icon"></i>', '  <div class="menu">', '  </div>', '</div>'].join(''));
 
+	var itemTemplate = Handlebars.compile(['<div class="item">', '  {{#if colorClass}}', '    <span class="icon_span"><i class="circle icon {{colorClass}}"></i></span>', '  {{/if}}', '  <span class="label">{{label}}</span>', '</div>'].join(''));
+
 /***/ },
-/* 325 */
+/* 326 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _import = __webpack_require__(304);
+	var _import = __webpack_require__(305);
 
-	var _miradorProxyManager = __webpack_require__(309);
+	var _logger = __webpack_require__(300);
+
+	var _logger2 = _interopRequireDefault(_logger);
+
+	var _miradorProxyManager = __webpack_require__(310);
 
 	var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
@@ -13681,6 +14034,7 @@
 
 	    var _this = this;
 
+	    this.logger = (0, _logger2.default)();
 	    this.elem = elem;
 	    elem.modal({
 	      onApprove: function onApprove(elem) {
@@ -13905,7 +14259,7 @@
 	      var canvasElems = this.canvasesPanel.find('.canvas');
 	      var scrollTo = null;
 
-	      console.log('scrollToCurrentCanvas ' + canvasElems.length);
+	      this.logger.debug('scrollToCurrentCanvas ' + canvasElems.length);
 
 	      canvasElems.each(function (index, canvasElem) {
 	        var elem = $(canvasElem);
@@ -13948,8 +14302,8 @@
 	var annotationTemplate = Handlebars.compile(['<div>{{{content}}}</div>'].join(''));
 
 /***/ },
-/* 326 */
-/***/ function(module, exports) {
+/* 327 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -13960,6 +14314,12 @@
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	exports.default = getConfigFetcher;
+
+	var _logger = __webpack_require__(300);
+
+	var _logger2 = _interopRequireDefault(_logger);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -13975,15 +14335,17 @@
 	var ConfigFetcher = function () {
 	  function ConfigFetcher() {
 	    _classCallCheck(this, ConfigFetcher);
+
+	    this.logger = (0, _logger2.default)();
 	  }
+
+	  /**
+	   * Retrieves parameters passed via HTML attributes.
+	   */
+
 
 	  _createClass(ConfigFetcher, [{
 	    key: 'fetchSettingsFromHtml',
-
-
-	    /**
-	     * Retrieves parameters passed via HTML attributes.
-	     */
 	    value: function fetchSettingsFromHtml(elem) {
 	      var options = {};
 	      var tocTagsStr = elem.attr('data-toc-tags') || '';
@@ -14011,7 +14373,7 @@
 	    key: 'fetchSettingsFromApi',
 	    value: function fetchSettingsFromApi(baseUrl, roomId) {
 	      var url = baseUrl + '?room_id=' + roomId;
-	      console.log('ConfigFetcher#fetchSettingsFromApi url:', url);
+	      this.logger.debug('ConfigFetcher#fetchSettingsFromApi url:', url);
 
 	      return new Promise(function (resolve, reject) {
 	        var dfd = jQuery.Deferred();
@@ -14032,7 +14394,7 @@
 	}();
 
 /***/ },
-/* 327 */
+/* 328 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -14043,15 +14405,19 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _miradorProxyManager = __webpack_require__(309);
+	var _logger = __webpack_require__(300);
+
+	var _logger2 = _interopRequireDefault(_logger);
+
+	var _miradorProxyManager = __webpack_require__(310);
 
 	var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
-	var _annotationListRenderer = __webpack_require__(328);
+	var _annotationListRenderer = __webpack_require__(329);
 
 	var _annotationListRenderer2 = _interopRequireDefault(_annotationListRenderer);
 
-	var _annotationWindow = __webpack_require__(329);
+	var _annotationWindow = __webpack_require__(330);
 
 	var _annotationWindow2 = _interopRequireDefault(_annotationWindow);
 
@@ -14063,13 +14429,14 @@
 	  function _class(rootElementId) {
 	    _classCallCheck(this, _class);
 
+	    this.logger = (0, _logger2.default)();
 	    this.init(rootElementId);
 	  }
 
 	  _createClass(_class, [{
 	    key: 'init',
 	    value: function init(rootElementId) {
-	      console.log('Grid#init');
+	      this.logger.debug('Grid#init');
 	      this.element = jQuery('#' + rootElementId);
 	      this.miradorProxyManager = (0, _miradorProxyManager2.default)();
 	      this.annotationListRenderer = new _annotationListRenderer2.default();
@@ -14122,13 +14489,7 @@
 	      });
 
 	      this.layout.on('stateChanged', function (e) {
-	        console.log('GoldenLayout stateChanged');
-	        /*
-	        jQuery.each(arguments, function(index, arg){
-	          console.log('Arg ' + index + ':');
-	          console.dir(arg);
-	        });
-	        */
+	        _this.logger.debug('GoldenLayout stateChanged');
 	        jQuery.each(_this.miradorProxyManager.getMiradorProxies(), function (key, miradorProxy) {
 	          miradorProxy.publish('resizeMirador');
 	        });
@@ -14140,14 +14501,14 @@
 	  }, {
 	    key: 'resize',
 	    value: function resize() {
-	      console.log('Grid#resize');
+	      this.logger.debug('Grid#resize');
 	      this.element.css('bottom', 0);
 	      this.layout.updateSize();
 	    }
 	  }, {
 	    key: 'addMiradorWindow',
 	    value: function addMiradorWindow(miradorId) {
-	      console.log('Grid#addMiradorWindow');
+	      this.logger.debug('Grid#addMiradorWindow');
 	      var windowId = Mirador.genUUID();
 	      var itemConfig = {
 	        type: 'component',
@@ -14159,7 +14520,7 @@
 	  }, {
 	    key: 'addWindows',
 	    value: function addWindows(config) {
-	      console.log('Grid#addWindows config:', config);
+	      this.logger.debug('Grid#addWindows config:', config);
 	      var _iteratorNormalCompletion = true;
 	      var _didIteratorError = false;
 	      var _iteratorError = undefined;
@@ -14189,7 +14550,7 @@
 	  }, {
 	    key: 'addWindow',
 	    value: function addWindow(options) {
-	      console.log('Grid#addWindow');
+	      this.logger.debug('Grid#addWindow', options);
 	      var _this = this;
 	      var windowId = Mirador.genUUID();
 	      var itemConfig = {
@@ -14218,12 +14579,11 @@
 	      var _this = this;
 
 	      this.layout.on('itemDestroyed', function (item) {
-	        console.log('itemDestroyed component: ' + item.componentName);
-	        console.dir(item);
+	        _this.logger.debug('itemDestroyed', item);
 
 	        if (item.componentName == 'Annotations') {
 	          var windowId = item.config.componentState.windowId;
-	          console.log('Annotatin window ' + windowId);
+	          _this.logger.debug('Annotatin window ' + windowId);
 	          delete _this._annotationWindows[windowId];
 	        }
 	      });
@@ -14233,17 +14593,20 @@
 	      });
 
 	      jQuery.subscribe('YM_ADD_WINDOWS', function (event, config) {
-	        console.log('Received YM_ADD_WINDOWS config:', config);
+	        _this.logger.debug('Received YM_ADD_WINDOWS config:', config);
 	        _this.addWindows(config);
 	      });
 	    }
 	  }, {
 	    key: 'showAnnotation',
 	    value: function showAnnotation(miradorId, windowId, annoId) {
-	      console.log('MiradorWindow#showAnnotation miradorId: ' + miradorId + ', windowId: ' + windowId + ', annoId: ' + annoId);
+	      _this.logger.debug('Grid#showAnnotation miradorId: ' + miradorId + ', windowId: ' + windowId + ', annoId: ' + annoId);
 	      var miradorProxy = this.miradorProxyManager.getMiradorProxy(miradorId);
-	      var endpoint = miradorProxy.getEndPoint();
-	      var annotation = endpoint.findAnnotationById(annoId);
+	      var windowProxy = miradorProxy.getWindowProxyById(windowId);
+	      var annotations = windowProxy.getAnnotationsList();
+	      var annotation = annotations.filter(function (anno) {
+	        return anno['@id'] === annoId;
+	      })[0];
 	      var found = false;
 
 	      jQuery.each(this._annotationWindows, function (key, annoWindow) {
@@ -14261,10 +14624,10 @@
 	          }).then(function (annoWindow) {
 	            annoWindow.scrollToAnnotation(annoId);
 	          }).catch(function (reason) {
-	            console.log('ERROR Grid#showAnnotation addWindow failed <- ' + reason);
+	            _this.logger.error('Grid#showAnnotation addWindow failed <- ' + reason);
 	          });
 	        } else {
-	          console.log('ERROR Grid#showAnnotation annotation not found from endpoint, id: ' + annoId);
+	          _this.logger.error('Grid#showAnnotation annotation not found from endpoint, id: ' + annoId);
 	        }
 	      }
 	    }
@@ -14276,7 +14639,7 @@
 	exports.default = _class;
 
 /***/ },
-/* 328 */
+/* 329 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -14287,11 +14650,19 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _import = __webpack_require__(304);
+	var _import = __webpack_require__(305);
 
-	var _annotationEditor = __webpack_require__(322);
+	var _annotationEditor = __webpack_require__(323);
 
 	var _annotationEditor2 = _interopRequireDefault(_annotationEditor);
+
+	var _logger = __webpack_require__(300);
+
+	var _logger2 = _interopRequireDefault(_logger);
+
+	var _stateStore = __webpack_require__(320);
+
+	var _stateStore2 = _interopRequireDefault(_stateStore);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -14304,6 +14675,8 @@
 	var AnnotationListRenderer = function () {
 	  function AnnotationListRenderer() {
 	    _classCallCheck(this, AnnotationListRenderer);
+
+	    this.logger = (0, _logger2.default)();
 	  }
 
 	  /*
@@ -14315,7 +14688,7 @@
 	  _createClass(AnnotationListRenderer, [{
 	    key: 'render',
 	    value: function render(options) {
-	      console.log('AnnotationListRenderer#render');
+	      this.logger.debug('AnnotationListRenderer#render options:', options);
 	      options.parentElem.empty();
 	      if (options.toc) {
 	        return this.renderWithToc(options);
@@ -14326,7 +14699,7 @@
 	  }, {
 	    key: 'renderDefault',
 	    value: function renderDefault(options) {
-	      console.log('AnnotationListRenderer#renderDefault');
+	      this.logger.debug('AnnotationListRenderer#renderDefault options:', options);
 	      var _this = this;
 	      var count = 0;
 
@@ -14340,7 +14713,7 @@
 	            }
 	          }
 	        } catch (e) {
-	          console.log('ERROR AnnotationListRenderer#render ' + e);
+	          _this.logger.error('ERROR AnnotationListRenderer#render', e);
 	          throw e;
 	        }
 	      });
@@ -14354,7 +14727,7 @@
 	  }, {
 	    key: 'renderWithToc',
 	    value: function renderWithToc(options) {
-	      console.log('AnnotationListRenderer#renderWithToc');
+	      this.logger.debug('AnnotationListRenderer#renderWithToc options:', options);
 	      var _this = this;
 
 	      options.toc.walk(function (node) {
@@ -14477,11 +14850,11 @@
 	  }, {
 	    key: 'createAnnoElem',
 	    value: function createAnnoElem(annotation, options) {
-	      //console.log('AnnotationWindow#addAnnotation:');
-	      //console.dir(annotation);
+	      this.logger.debug('AnnotationWindow#createAnnoElem anno:', annotation);
 	      var content = _import.annoUtil.getText(annotation);
 	      var tags = _import.annoUtil.getTags(annotation);
 	      var tagsHtml = this.getTagsHtml(tags);
+	      var state = (0, _stateStore2.default)();
 
 	      var annoHtml = annotationTemplate({
 	        content: content,
@@ -14489,15 +14862,19 @@
 	        isEditor: options.isEditor,
 	        orderable: options.isCompleteList
 	      });
+	      var layerIndex = state.getObject('layerIndexMap')[annotation.layerId];
 	      var annoElem = jQuery(annoHtml);
+	      var menuBar = annoElem.find('.menu_bar');
 
 	      annoElem.data('annotationId', annotation['@id']);
 	      annoElem.find('.ui.dropdown').dropdown({ direction: 'downward' });
+
+	      menuBar.addClass('layer_' + layerIndex % 10);
 	      if (annotation.on['@type'] == 'oa:Annotation') {
 	        // annotation of annotation
-	        annoElem.find('.menu_bar').addClass('targeting_anno');
+	        menuBar.addClass('targeting_anno');
 	      } else {
-	        annoElem.find('.menu_bar').removeClass('targeting_anno');
+	        menuBar.removeClass('targeting_anno');
 	      }
 
 	      this.bindAnnotationItemEvents(annoElem, annotation, options);
@@ -14515,11 +14892,12 @@
 	  }, {
 	    key: 'bindAnnotationItemEvents',
 	    value: function bindAnnotationItemEvents(annoElem, annotation, options) {
+	      var _this = this;
 	      var annoWin = options.annotationWindow;
 	      var finalTargetAnno = _import.annoUtil.findFinalTargetAnnotation(annotation, options.annotationsList);
 
 	      annoElem.click(function (event) {
-	        console.log('Clicked: Annotation ' + annotation['@id']);
+	        _this.logger.debug('Clicked annotation:', annotation);
 	        annoWin.clearHighlights();
 	        annoWin.highlightAnnotation(annotation['@id']);
 	        annoWin.miradorProxy.publish('ANNOTATION_FOCUSED', [annoWin.id, finalTargetAnno]);
@@ -14624,7 +15002,7 @@
 	var headerTemplate = Handlebars.compile(['<div class="annowin_group_header">{{text}}', '</div>'].join(''));
 
 /***/ },
-/* 329 */
+/* 330 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -14635,25 +15013,31 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _import = __webpack_require__(304);
+	var _import = __webpack_require__(305);
 
-	var _miradorProxyManager = __webpack_require__(309);
+	var _logger = __webpack_require__(300);
+
+	var _logger2 = _interopRequireDefault(_logger);
+
+	var _miradorProxyManager = __webpack_require__(310);
 
 	var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
-	var _menuTagSelector = __webpack_require__(330);
+	var _stateStore = __webpack_require__(320);
+
+	var _stateStore2 = _interopRequireDefault(_stateStore);
+
+	var _menuTagSelector = __webpack_require__(331);
 
 	var _menuTagSelector2 = _interopRequireDefault(_menuTagSelector);
 
-	var _layerSelector = __webpack_require__(323);
+	var _layerSelector = __webpack_require__(324);
 
 	var _layerSelector2 = _interopRequireDefault(_layerSelector);
 
-	var _session = __webpack_require__(317);
+	var _session = __webpack_require__(319);
 
 	var _session2 = _interopRequireDefault(_session);
-
-	var _state = __webpack_require__(331);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -14680,6 +15064,8 @@
 	      initialTocTags: null,
 	      annotationId: null
 	    }, options);
+
+	    this.logger = (0, _logger2.default)();
 
 	    return new Promise(function (resolve, reject) {
 	      _this.init().then(function () {
@@ -14777,7 +15163,7 @@
 	        annotationExplorer: this.explorer,
 	        initialTags: this.initialTocTags,
 	        changeCallback: function changeCallback(value, text) {
-	          console.log('Change from TOC selector: ', value);
+	          _this.logger.debug('Change from TOC selector: ', value);
 	          _this.updateList();
 	        }
 	      });
@@ -14787,12 +15173,13 @@
 	    key: 'initLayerSelector',
 	    value: function initLayerSelector() {
 	      var _this = this;
+	      this.currentLayerId = this.initialLayerId;
 	      this.layerSelector = new _layerSelector2.default({
 	        parent: this.element.find('.layer_selector_container'),
 	        annotationExplorer: this.explorer,
 	        initialLayerId: this.initialLayerId,
 	        changeCallback: function changeCallback(value, text) {
-	          console.log('Change from Layer selector: ', value);
+	          _this.logger.debug('Change from Layer selector: ', value);
 	          _this.currentLayerId = value;
 	          _this.updateList();
 	        }
@@ -14802,12 +15189,13 @@
 	  }, {
 	    key: 'reload',
 	    value: function reload() {
-	      console.log('AnnotationWindow#reload');
+	      this.logger.debug('AnnotationWindow#reload');
 	      var _this = this;
+	      var state = (0, _stateStore2.default)();
 
 	      this.placeholder.hide();
 
-	      if ((0, _state.getState)('ANNO_CELL_FIXED') === 'true') {
+	      if (state.getString('ANNO_CELL_FIXED') === 'true') {
 	        this.element.addClass('fixed_height_cells');
 	      } else {
 	        this.element.removeClass('fixed_height_cells');
@@ -14860,8 +15248,9 @@
 	  }, {
 	    key: 'updateList',
 	    value: function updateList() {
-	      console.log('AnnotationWindow#updateList');
+	      this.logger.debug('AnnotationWindow#updateList');
 	      var _this = this;
+	      var state = (0, _stateStore2.default)();
 	      var options = {};
 
 	      options.parentElem = this.listElem;
@@ -14938,8 +15327,8 @@
 	  }, {
 	    key: 'scrollToElem',
 	    value: function scrollToElem(annoElem) {
-	      console.log('annoElem.position().top: ' + annoElem.position().top);
-	      console.log('element.scrollTop(): ' + this.element.scrollTop());
+	      this.logger.debug('annoElem.position().top:', annoElem.position().top);
+	      this.logger.debug('element.scrollTop():' + this.element.scrollTop());
 
 	      //this.listElem.animate({
 	      this.element.animate({
@@ -14950,7 +15339,7 @@
 	  }, {
 	    key: 'scrollToAnnotation',
 	    value: function scrollToAnnotation(annoId) {
-	      console.log('AnnotationWindow#scrollToAnnotation annoId: ' + annoId);
+	      this.logger.debug('AnnotationWindow#scrollToAnnotation annoId: ' + annoId);
 	      var _this = this;
 	      var found = false;
 
@@ -15043,7 +15432,7 @@
 	      });
 
 	      jQuery.subscribe('ANNOTATION_FOCUSED', function (event, annoWinId, annotation) {
-	        console.log('Annotation window ' + _this.id + ' received annotation_focused event from ' + annoWinId);
+	        _this.logger.debug('Annotation window ' + _this.id + ' received annotation_focused event from ' + annoWinId);
 	        if (annoWinId === _this.id) {
 	          return;
 	        }
@@ -15095,7 +15484,7 @@
 	var template = Handlebars.compile(['<div class="ym_annotation_window">', '  <div class="annowin_header">', '    <div class="annowin_layer_row">', '      <span class="layer_selector_container"></span>', '    </div>', '    <div class="annowin_menu_tag_row">', '      <span class="menu_tag_selector_container"></span>', '    </div>', '    <div class="annowin_temp_row">', '      <div class="fluid ui small orange button ym_button">Click to save order</div>', '    </div>', '  </div>', '  <div class="placeholder"></div>', '  <div class="annowin_list">', '  </div>', '</div>'].join(''));
 
 /***/ },
-/* 330 */
+/* 331 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15106,11 +15495,15 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _selector = __webpack_require__(324);
+	var _logger = __webpack_require__(300);
+
+	var _logger2 = _interopRequireDefault(_logger);
+
+	var _selector = __webpack_require__(325);
 
 	var _selector2 = _interopRequireDefault(_selector);
 
-	var _util = __webpack_require__(320);
+	var _util = __webpack_require__(322);
 
 	var _util2 = _interopRequireDefault(_util);
 
@@ -15129,6 +15522,7 @@
 	      changeCallback: null
 	    }, options);
 
+	    this.logger = (0, _logger2.default)();
 	    this.init();
 	  }
 
@@ -15139,7 +15533,7 @@
 	      this.selector = new _selector2.default({
 	        appendTo: this.parent,
 	        changeCallback: function changeCallback(value, text) {
-	          console.log('SELECT value: ' + value + ', text: ' + text);
+	          _this.logger.debug('SELECT value: ' + value + ', text: ' + text);
 	          if (typeof _this.changeCallback === 'function') {
 	            _this.changeCallback(value, text);
 	          }
@@ -15162,7 +15556,7 @@
 
 	        var layers = [];
 	        var menu = _this.buildMenu(annoHierarchy);
-	        //console.log('MenuTagSelector menu: ' + JSON.stringify(menu, null, 2));
+	        _this.logger.debug('MenuTagSelector menu:', menu);
 
 	        _this.selector.setItems(menu);
 
@@ -15223,87 +15617,6 @@
 	exports.default = _class;
 
 /***/ },
-/* 331 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	// State variables for the app, which will persist if local storgae is available.
-
-	var State = function () {
-	  function State() {
-	    _classCallCheck(this, State);
-
-	    this.init();
-	  }
-
-	  _createClass(State, [{
-	    key: 'init',
-	    value: function init() {
-	      this.localStorageAvailable = this.checkLocalStorage();
-	      this.store = {
-	        ANNO_CELL_FIXED: true
-	      };
-	    }
-	  }, {
-	    key: 'get',
-	    value: function get(key) {
-	      if (this.localStorageAvailable) {
-	        return localStorage.getItem(key);
-	      } else {
-	        return this.store[key];
-	      }
-	    }
-
-	    // Both key and value must be a string.
-
-	  }, {
-	    key: 'set',
-	    value: function set(key, value) {
-	      if (this.localStorageAvailable) {
-	        localStorage.setItem(key, value);
-	      }
-	      this.store[key] = value;
-	    }
-	  }, {
-	    key: 'checkLocalStorage',
-	    value: function checkLocalStorage() {
-	      return typeof Storage !== 'undefined';
-	    }
-	  }]);
-
-	  return State;
-	}();
-
-	var _instance = null;
-
-	function instance() {
-	  if (!_instance) {
-	    _instance = new State();
-	  }
-	  return _instance;
-	};
-
-	function getState(key) {
-	  return instance().get(key);
-	}
-
-	function setState(key, value) {
-	  instance().set(key, value);
-	}
-
-	exports.getState = getState;
-	exports.setState = setState;
-
-/***/ },
 /* 332 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -15315,11 +15628,13 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _miradorProxyManager = __webpack_require__(309);
+	var _miradorProxyManager = __webpack_require__(310);
 
 	var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
-	var _state = __webpack_require__(331);
+	var _stateStore = __webpack_require__(320);
+
+	var _stateStore2 = _interopRequireDefault(_stateStore);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -15347,8 +15662,10 @@
 	  }, {
 	    key: 'initAnnoHeightMenu',
 	    value: function initAnnoHeightMenu() {
+	      var state = (0, _stateStore2.default)();
+
 	      this.annoHeightMenu = jQuery('#ym_menu_anno_height');
-	      if ((0, _state.getState)('ANNO_CELL_FIXED') === 'true') {
+	      if (state.getString('ANNO_CELL_FIXED') === 'true') {
 	        this.annoHeightMenu.find('.checkmark').show();
 	      } else {
 	        this.annoHeightMenu.find('.checkmark').hide();
@@ -15358,18 +15675,19 @@
 	    key: 'bindEvents',
 	    value: function bindEvents() {
 	      var _this = this;
+	      var state = (0, _stateStore2.default)();
 
 	      jQuery('#ym_menu_add_window').click(function (event) {
 	        jQuery.publish('YM_ADD_WINDOW', { miradorId: (0, _miradorProxyManager2.default)().anyId() });
 	      });
 
 	      jQuery('#ym_menu_anno_height').click(function (event) {
-	        if ((0, _state.getState)('ANNO_CELL_FIXED') === 'true') {
-	          (0, _state.setState)('ANNO_CELL_FIXED', false);
+	        if (state.getString('ANNO_CELL_FIXED') === 'true') {
+	          state.setString('ANNO_CELL_FIXED', false);
 	          _this.annoHeightMenu.find('.checkmark').hide();
 	          jQuery.publish('YM_ANNO_HEIGHT_FIXED', false);
 	        } else {
-	          (0, _state.setState)('ANNO_CELL_FIXED', true);
+	          state.setString('ANNO_CELL_FIXED', true);
 	          _this.annoHeightMenu.find('.checkmark').show();
 	          jQuery.publish('YM_ANNO_HEIGHT_FIXED', true);
 	        }
@@ -15391,25 +15709,21 @@
 
 	'use strict';
 
-	var _import = __webpack_require__(304);
+	var _import = __webpack_require__(305);
 
-	var _yaleEndpoint = __webpack_require__(303);
+	var _yaleEndpoint = __webpack_require__(304);
 
 	var _yaleEndpoint2 = _interopRequireDefault(_yaleEndpoint);
 
-	var _yaleDemoEndpoint = __webpack_require__(321);
-
-	var _yaleDemoEndpoint2 = _interopRequireDefault(_yaleDemoEndpoint);
-
-	var _annotationEditor = __webpack_require__(322);
+	var _annotationEditor = __webpack_require__(323);
 
 	var _annotationEditor2 = _interopRequireDefault(_annotationEditor);
 
-	var _annotationSource = __webpack_require__(307);
+	var _annotationSource = __webpack_require__(308);
 
 	var _annotationSource2 = _interopRequireDefault(_annotationSource);
 
-	var _miradorProxyManager = __webpack_require__(309);
+	var _miradorProxyManager = __webpack_require__(310);
 
 	var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
@@ -15420,7 +15734,6 @@
 	  $.ym = {};
 
 	  $.YaleEndpoint = _yaleEndpoint2.default;
-	  $.YaleDemoEndpoint = _yaleDemoEndpoint2.default;
 	  $.AnnotationEditor = _annotationEditor2.default;
 	  //$.annoUtil = annoUtil;
 
@@ -15462,13 +15775,21 @@
 
 	var _app2 = _interopRequireDefault(_app);
 
+	var _logger = __webpack_require__(300);
+
+	var _logger2 = _interopRequireDefault(_logger);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	// Separated this code out to its own file because it shouldn't run with the test.
 	jQuery(document).ready(function () {
-	  console.log('Yale Mirador Extension document ready');
+	  (0, _logger2.default)().debug('Yale Mirador Extension document ready');
 	  if (jQuery('#ym_grid').length > 0) {
-	    var app = new _app2.default('ym_grid');
+	    var app = new _app2.default({
+	      rootElement: 'ym_grid',
+	      dataElement: jQuery('#\\{\\{id\\}\\}')
+	    });
+	    app.init();
 	  }
 	});
 

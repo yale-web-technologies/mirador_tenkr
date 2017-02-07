@@ -1,4 +1,4 @@
-/* 
+/*
  * Overriding Semantic UI
  */
 .ui.text.menu {
@@ -23,6 +23,11 @@
     width: 1000px;
     margin: -50% 0 0 -450px;
   }
+}
+.hud-control.hud-dropdown,
+.hud-control.hud-dropdown:before,
+.hud-control.hud-dropdown:after {
+  box-sizing: border-box;
 }
 /* 
  * Overriding GoldenLayout
@@ -94,6 +99,66 @@ p {
 }
 .ym_modal .ym_link {
   color: #76b4fc;
+}
+.ui.dropdown.layer_0 {
+  background-color: #9dc673 !important;
+}
+.ui.dropdown.layer_1 {
+  background-color: #dcc17f !important;
+}
+.ui.dropdown.layer_2 {
+  background-color: #a7c2f3 !important;
+}
+.ui.dropdown.layer_3 {
+  background-color: #f5ea72 !important;
+}
+.ui.dropdown.layer_4 {
+  background-color: #bd99d9 !important;
+}
+.ui.dropdown.layer_5 {
+  background-color: #f4a33c !important;
+}
+.ui.dropdown.layer_6 {
+  background-color: #b28867 !important;
+}
+.ui.dropdown.layer_7 {
+  background-color: #ff9395 !important;
+}
+.ui.dropdown.layer_8 {
+  background-color: #a6d0b8 !important;
+}
+.ui.dropdown.layer_9 {
+  background-color: #df7375 !important;
+}
+.circle.icon.layer_0 {
+  color: #9dc673;
+}
+.circle.icon.layer_1 {
+  color: #dcc17f;
+}
+.circle.icon.layer_2 {
+  color: #a7c2f3;
+}
+.circle.icon.layer_3 {
+  color: #f5ea72;
+}
+.circle.icon.layer_4 {
+  color: #bd99d9;
+}
+.circle.icon.layer_5 {
+  color: #f4a33c;
+}
+.circle.icon.layer_6 {
+  color: #b28867;
+}
+.circle.icon.layer_7 {
+  color: #ff9395;
+}
+.circle.icon.layer_8 {
+  color: #a6d0b8;
+}
+.circle.icon.layer_9 {
+  color: #df7375;
 }
 #ym_grid {
   position: absolute;
@@ -241,6 +306,36 @@ p {
 }
 .annowin_anno .menu_bar {
   background-color: #76b4fc;
+}
+.annowin_anno .menu_bar.layer_0 {
+  background-color: #9dc673 !important;
+}
+.annowin_anno .menu_bar.layer_1 {
+  background-color: #dcc17f !important;
+}
+.annowin_anno .menu_bar.layer_2 {
+  background-color: #a7c2f3 !important;
+}
+.annowin_anno .menu_bar.layer_3 {
+  background-color: #f5ea72 !important;
+}
+.annowin_anno .menu_bar.layer_4 {
+  background-color: #bd99d9 !important;
+}
+.annowin_anno .menu_bar.layer_5 {
+  background-color: #f4a33c !important;
+}
+.annowin_anno .menu_bar.layer_6 {
+  background-color: #b28867 !important;
+}
+.annowin_anno .menu_bar.layer_7 {
+  background-color: #ff9395 !important;
+}
+.annowin_anno .menu_bar.layer_8 {
+  background-color: #a6d0b8 !important;
+}
+.annowin_anno .menu_bar.layer_9 {
+  background-color: #df7375 !important;
 }
 .annowin_anno .menu_bar.targeting_anno {
   background-color: #3fb97a;
