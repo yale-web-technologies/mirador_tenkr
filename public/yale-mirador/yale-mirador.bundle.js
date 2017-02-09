@@ -1,4 +1,5 @@
-// Yale-Mirador version 0.4.1 - Tue Feb 07 2017 15:45:18 GMT-0500 (EST)
+// Yale-Mirador version 0.4.2 - Thu Feb 09 2017 17:46:01 GMT-0500 (EST)
+window._YaleMiradorVersion="Yale-Mirador version 0.4.2 - Thu Feb 09 2017 17:46:01 GMT-0500 (EST)";
 
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -9049,8 +9050,8 @@
 /* 306 */
 /***/ function(module, exports) {
 
-	// Joosugi version 0.1.0
-	// Build: Tue Jan 24 2017 13:02:49 GMT-0500 (EST)
+	// Joosugi version 0.1.2
+	// Build: Thu Feb 09 2017 17:34:00 GMT-0500 (EST)
 
 	/******/ (function(modules) { // webpackBootstrap
 	/******/ 	// The module cache
@@ -9130,6 +9131,8 @@
 		  value: true
 		});
 
+		var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 		var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 		var _annotationUtil = __webpack_require__(2);
@@ -9196,8 +9199,7 @@
 		  _createClass(AnnotationToc, [{
 		    key: 'init',
 		    value: function init(annotations) {
-		      console.log('Toc#init spec: ' + this.spec);
-		      console.dir(this.spec);
+		      console.log('Toc#init spec: ', this.spec);
 
 		      this.annoHierarchy = this.newNode(null, null); // root node
 
@@ -9262,11 +9264,57 @@
 		    key: 'initTagWeights',
 		    value: function initTagWeights() {
 		      var _this = this;
-		      jQuery.each(this.spec.nodeSpecs, function (rowIndex, row) {
-		        jQuery.each(row, function (index, nodeSpec) {
-		          _this.tagWeights[nodeSpec.tag] = index;
-		        });
-		      });
+		      //jQuery.each(this.spec.nodeSpecs, function(rowIndex, row) {
+		      var _iteratorNormalCompletion2 = true;
+		      var _didIteratorError2 = false;
+		      var _iteratorError2 = undefined;
+
+		      try {
+		        for (var _iterator2 = this.spec.nodeSpecs[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+		          var row = _step2.value;
+
+		          //jQuery.each(row, function(index, nodeSpec) {
+		          var _iteratorNormalCompletion3 = true;
+		          var _didIteratorError3 = false;
+		          var _iteratorError3 = undefined;
+
+		          try {
+		            for (var _iterator3 = row.entries()[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+		              var _step3$value = _slicedToArray(_step3.value, 2),
+		                  index = _step3$value[0],
+		                  nodeSpec = _step3$value[1];
+
+		              _this.tagWeights[nodeSpec.tag] = index;
+		            }
+		          } catch (err) {
+		            _didIteratorError3 = true;
+		            _iteratorError3 = err;
+		          } finally {
+		            try {
+		              if (!_iteratorNormalCompletion3 && _iterator3.return) {
+		                _iterator3.return();
+		              }
+		            } finally {
+		              if (_didIteratorError3) {
+		                throw _iteratorError3;
+		              }
+		            }
+		          }
+		        }
+		      } catch (err) {
+		        _didIteratorError2 = true;
+		        _iteratorError2 = err;
+		      } finally {
+		        try {
+		          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+		            _iterator2.return();
+		          }
+		        } finally {
+		          if (_didIteratorError2) {
+		            throw _iteratorError2;
+		          }
+		        }
+		      }
 		    }
 		  }, {
 		    key: 'parse',
@@ -9288,36 +9336,79 @@
 		      var _this = this;
 		      var remainder = [];
 
-		      jQuery.each(annotations, function (index, annotation) {
-		        var tags = _annotationUtil2.default.getTags(annotation);
-		        var success = _this.buildChildNodes(annotation, tags, 0, _this.annoHierarchy);
-		        if (!success) {
-		          remainder.push(annotation);
+		      var _iteratorNormalCompletion4 = true;
+		      var _didIteratorError4 = false;
+		      var _iteratorError4 = undefined;
+
+		      try {
+		        for (var _iterator4 = annotations[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+		          var annotation = _step4.value;
+
+		          var tags = _annotationUtil2.default.getTags(annotation);
+		          var success = _this.buildChildNodes(annotation, tags, 0, _this.annoHierarchy);
+
+		          if (!success) {
+		            remainder.push(annotation);
+		          }
 		        }
-		      });
+		      } catch (err) {
+		        _didIteratorError4 = true;
+		        _iteratorError4 = err;
+		      } finally {
+		        try {
+		          if (!_iteratorNormalCompletion4 && _iterator4.return) {
+		            _iterator4.return();
+		          }
+		        } finally {
+		          if (_didIteratorError4) {
+		            throw _iteratorError4;
+		          }
+		        }
+		      }
+
 		      return remainder;
 		    }
 		  }, {
 		    key: 'addRemainingAnnotations',
 		    value: function addRemainingAnnotations(annotations) {
 		      var _this = this;
-		      jQuery.each(annotations, function (index, annotation) {
-		        var targetAnno = _annotationUtil2.default.findFinalTargetAnnotation(annotation, _this.annotations);
-		        if (targetAnno) {
-		          var node = _this.annoToNodeMap[targetAnno['@id']];
-		          if (targetAnno && node) {
-		            node.childAnnotations.push(annotation);
-		            _this.registerLayerWithNode(node, annotation.layerId);
+		      var _iteratorNormalCompletion5 = true;
+		      var _didIteratorError5 = false;
+		      var _iteratorError5 = undefined;
+
+		      try {
+		        for (var _iterator5 = annotations[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+		          var annotation = _step5.value;
+
+		          var targetAnno = _annotationUtil2.default.findFinalTargetAnnotation(annotation, _this.annotations);
+		          if (targetAnno) {
+		            var node = _this.annoToNodeMap[targetAnno['@id']];
+		            if (targetAnno && node) {
+		              node.childAnnotations.push(annotation);
+		              _this.registerLayerWithNode(node, annotation.layerId);
+		            } else {
+		              console.log('WARNING Toc#addRemainingAnnotations not covered by ToC');
+		              _this._unassigned.push(annotation);
+		            }
 		          } else {
-		            console.log('WARNING Toc#addRemainingAnnotations not covered by ToC');
+		            console.log('WARNING Toc#addRemainingAnnotations orphan', annotation);
 		            _this._unassigned.push(annotation);
 		          }
-		        } else {
-		          console.log('WARNING Toc#addRemainingAnnotations orphan');
-		          console.dir(annotation);
-		          _this._unassigned.push(annotation);
 		        }
-		      });
+		      } catch (err) {
+		        _didIteratorError5 = true;
+		        _iteratorError5 = err;
+		      } finally {
+		        try {
+		          if (!_iteratorNormalCompletion5 && _iterator5.return) {
+		            _iterator5.return();
+		          }
+		        } finally {
+		          if (_didIteratorError5) {
+		            throw _iteratorError5;
+		          }
+		        }
+		      }
 		    }
 
 		    /**
@@ -9332,8 +9423,7 @@
 		  }, {
 		    key: 'buildChildNodes',
 		    value: function buildChildNodes(annotation, tags, rowIndex, parent) {
-		      //console.log('ParsedAnnotations#buildNode rowIndex: ' + rowIndex + ', anno:');
-		      //console.dir(annotation);
+		      //console.log('ParsedAnnotations#buildNode rowIndex: ' + rowIndex + ', anno:', annotation);
 
 		      var currentNode = null;
 
@@ -9361,7 +9451,9 @@
 		        if (!parent.childNodes[tag]) {
 		          parent.childNodes[tag] = this.newNode(nodeSpec, parent);
 		        }
+
 		        currentNode = parent.childNodes[tag];
+
 		        if (parent.isRoot) {
 		          currentNode.cumulativeLabel = currentNode.spec.short;
 		        } else {
@@ -9393,17 +9485,60 @@
 		    key: 'tagInSpecs',
 		    value: function tagInSpecs(tags, nodeSpecs) {
 		      var match = null;
-		      jQuery.each(tags, function (index, tag) {
-		        jQuery.each(nodeSpecs, function (listIndex, nodeSpec) {
-		          if (tag === nodeSpec.tag) {
-		            match = nodeSpec;
-		            return false;
+		      var _iteratorNormalCompletion6 = true;
+		      var _didIteratorError6 = false;
+		      var _iteratorError6 = undefined;
+
+		      try {
+		        for (var _iterator6 = tags[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+		          var tag = _step6.value;
+		          var _iteratorNormalCompletion7 = true;
+		          var _didIteratorError7 = false;
+		          var _iteratorError7 = undefined;
+
+		          try {
+		            for (var _iterator7 = nodeSpecs[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+		              var nodeSpec = _step7.value;
+
+		              if (tag === nodeSpec.tag) {
+		                match = nodeSpec;
+		                break;
+		              }
+		            }
+		          } catch (err) {
+		            _didIteratorError7 = true;
+		            _iteratorError7 = err;
+		          } finally {
+		            try {
+		              if (!_iteratorNormalCompletion7 && _iterator7.return) {
+		                _iterator7.return();
+		              }
+		            } finally {
+		              if (_didIteratorError7) {
+		                throw _iteratorError7;
+		              }
+		            }
 		          }
-		        });
-		        if (match) {
-		          return false;
+
+		          if (match) {
+		            break;
+		          }
 		        }
-		      });
+		      } catch (err) {
+		        _didIteratorError6 = true;
+		        _iteratorError6 = err;
+		      } finally {
+		        try {
+		          if (!_iteratorNormalCompletion6 && _iterator6.return) {
+		            _iterator6.return();
+		          }
+		        } finally {
+		          if (_didIteratorError6) {
+		            throw _iteratorError6;
+		          }
+		        }
+		      }
+
 		      return match;
 		    }
 		  }, {
@@ -9434,12 +9569,34 @@
 		    value: function getNodeFromTags(tags) {
 		      var node = this.annoHierarchy;
 
-		      jQuery.each(tags, function (index, tag) {
-		        node = node.childNodes[tag];
-		        if (!node) {
-		          return false;
+		      var _iteratorNormalCompletion8 = true;
+		      var _didIteratorError8 = false;
+		      var _iteratorError8 = undefined;
+
+		      try {
+		        for (var _iterator8 = tags[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
+		          var tag = _step8.value;
+
+		          node = node.childNodes[tag];
+		          if (!node) {
+		            break;
+		          }
 		        }
-		      });
+		      } catch (err) {
+		        _didIteratorError8 = true;
+		        _iteratorError8 = err;
+		      } finally {
+		        try {
+		          if (!_iteratorNormalCompletion8 && _iterator8.return) {
+		            _iterator8.return();
+		          }
+		        } finally {
+		          if (_didIteratorError8) {
+		            throw _iteratorError8;
+		          }
+		        }
+		      }
+
 		      return node;
 		    }
 		  }, {
@@ -9454,24 +9611,65 @@
 		      var _this = this;
 		      var matched = false;
 
-		      //console.log('Node: ');
-		      //console.dir(node);
-
 		      if (node.annotation['@id'] === annotation['@id']) {
 		        return true;
 		      }
-		      jQuery.each(node.childAnnotations, function (index, value) {
-		        if (value['@id'] === annotation['@id']) {
-		          matched = true;
-		          return false;
+		      var _iteratorNormalCompletion9 = true;
+		      var _didIteratorError9 = false;
+		      var _iteratorError9 = undefined;
+
+		      try {
+		        for (var _iterator9 = node.childAnnotations[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
+		          var anno = _step9.value;
+
+		          if (anno['@id'] === annotation['@id']) {
+		            matched = true;
+		            break;
+		          }
 		        }
-		      });
-		      jQuery.each(node.childNodes, function (index, childNode) {
-		        if (_this.matchNode(annotation, childNode)) {
-		          matched = true;
-		          return false;
+		      } catch (err) {
+		        _didIteratorError9 = true;
+		        _iteratorError9 = err;
+		      } finally {
+		        try {
+		          if (!_iteratorNormalCompletion9 && _iterator9.return) {
+		            _iterator9.return();
+		          }
+		        } finally {
+		          if (_didIteratorError9) {
+		            throw _iteratorError9;
+		          }
 		        }
-		      });
+		      }
+
+		      var _iteratorNormalCompletion10 = true;
+		      var _didIteratorError10 = false;
+		      var _iteratorError10 = undefined;
+
+		      try {
+		        for (var _iterator10 = node.childNodes[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
+		          var childNode = _step10.value;
+
+		          if (_this.matchNode(annotation, childNode)) {
+		            matched = true;
+		            break;
+		          }
+		        }
+		      } catch (err) {
+		        _didIteratorError10 = true;
+		        _iteratorError10 = err;
+		      } finally {
+		        try {
+		          if (!_iteratorNormalCompletion10 && _iterator10.return) {
+		            _iterator10.return();
+		          }
+		        } finally {
+		          if (_didIteratorError10) {
+		            throw _iteratorError10;
+		          }
+		        }
+		      }
+
 		      return matched;
 		    }
 		  }, {
@@ -9508,11 +9706,32 @@
 		        return _this.tagWeights[a] - _this.tagWeights[b];
 		      });
 
-		      jQuery.each(sortedTags, function (index, tag) {
-		        var childNode = node.childNodes[tag];
-		        callback(childNode);
-		        _this.visit(childNode, callback);
-		      });
+		      var _iteratorNormalCompletion11 = true;
+		      var _didIteratorError11 = false;
+		      var _iteratorError11 = undefined;
+
+		      try {
+		        for (var _iterator11 = sortedTags[Symbol.iterator](), _step11; !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {
+		          var tag = _step11.value;
+
+		          var childNode = node.childNodes[tag];
+		          callback(childNode);
+		          _this.visit(childNode, callback);
+		        }
+		      } catch (err) {
+		        _didIteratorError11 = true;
+		        _iteratorError11 = err;
+		      } finally {
+		        try {
+		          if (!_iteratorNormalCompletion11 && _iterator11.return) {
+		            _iterator11.return();
+		          }
+		        } finally {
+		          if (_didIteratorError11) {
+		            throw _iteratorError11;
+		          }
+		        }
+		      }
 		    }
 		  }]);
 
@@ -9563,24 +9782,67 @@
 		    if (!(resource instanceof Array)) {
 		      resource = [resource];
 		    }
-		    jQuery.each(resource, function (index, value) {
-		      if (value['@type'] === 'dctypes:Text') {
-		        content = value.chars;
-		        return false;
+		    var _iteratorNormalCompletion = true;
+		    var _didIteratorError = false;
+		    var _iteratorError = undefined;
+
+		    try {
+		      for (var _iterator = resource[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+		        var item = _step.value;
+
+		        if (item['@type'] === 'dctypes:Text') {
+		          content = item.chars;
+		          break;
+		        }
 		      }
-		    });
+		    } catch (err) {
+		      _didIteratorError = true;
+		      _iteratorError = err;
+		    } finally {
+		      try {
+		        if (!_iteratorNormalCompletion && _iterator.return) {
+		          _iterator.return();
+		        }
+		      } finally {
+		        if (_didIteratorError) {
+		          throw _iteratorError;
+		        }
+		      }
+		    }
+
 		    return content;
 		  },
 
 		  getTags: function getTags(annotation) {
 		    var tags = [];
 
-		    if (jQuery.isArray(annotation.resource)) {
-		      jQuery.each(annotation.resource, function (index, value) {
-		        if (value['@type'] === "oa:Tag") {
-		          tags.push(value.chars);
+		    if (annotation.resource instanceof Array) {
+		      var _iteratorNormalCompletion2 = true;
+		      var _didIteratorError2 = false;
+		      var _iteratorError2 = undefined;
+
+		      try {
+		        for (var _iterator2 = annotation.resource[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+		          var item = _step2.value;
+
+		          if (item['@type'] === "oa:Tag") {
+		            tags.push(item.chars);
+		          }
 		        }
-		      });
+		      } catch (err) {
+		        _didIteratorError2 = true;
+		        _iteratorError2 = err;
+		      } finally {
+		        try {
+		          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+		            _iterator2.return();
+		          }
+		        } finally {
+		          if (_didIteratorError2) {
+		            throw _iteratorError2;
+		          }
+		        }
+		      }
 		    }
 		    return tags;
 		  },
@@ -9616,19 +9878,39 @@
 		    var targetAnno = annotation;
 
 		    while (nextAnno) {
-		      //console.log('nextAnno: ');
-		      //console.dir(nextAnno);
+		      //console.log('nextAnno:', nextAnno);
 
 		      if (nextAnno.on['@type'] === 'oa:Annotation') {
 		        nextId = nextAnno.on.full;
 		        nextAnno = null;
-		        jQuery.each(annotations, function (index, anno) {
-		          if (anno['@id'] === nextId) {
-		            targetAnno = anno;
-		            nextAnno = anno;
-		            return false;
+		        var _iteratorNormalCompletion3 = true;
+		        var _didIteratorError3 = false;
+		        var _iteratorError3 = undefined;
+
+		        try {
+		          for (var _iterator3 = annotations[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+		            var anno = _step3.value;
+
+		            if (anno['@id'] === nextId) {
+		              targetAnno = anno;
+		              nextAnno = anno;
+		              break;
+		            }
 		          }
-		        });
+		        } catch (err) {
+		          _didIteratorError3 = true;
+		          _iteratorError3 = err;
+		        } finally {
+		          try {
+		            if (!_iteratorNormalCompletion3 && _iterator3.return) {
+		              _iterator3.return();
+		            }
+		          } finally {
+		            if (_didIteratorError3) {
+		              throw _iteratorError3;
+		            }
+		          }
+		        }
 		      } else {
 		        nextAnno = null;
 		      }
@@ -9648,13 +9930,34 @@
 		      if (nextAnno.on['@type'] === 'oa:Annotation') {
 		        nextId = nextAnno.on.full;
 		        nextAnno = null;
-		        jQuery.each(annotations, function (index, anno) {
-		          if (anno['@id'] === nextId) {
-		            targetAnno = anno;
-		            nextAnno = anno;
-		            return false;
+		        var _iteratorNormalCompletion4 = true;
+		        var _didIteratorError4 = false;
+		        var _iteratorError4 = undefined;
+
+		        try {
+		          for (var _iterator4 = annotations[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+		            var anno = _step4.value;
+
+		            if (anno['@id'] === nextId) {
+		              targetAnno = anno;
+		              nextAnno = anno;
+		              break;
+		            }
 		          }
-		        });
+		        } catch (err) {
+		          _didIteratorError4 = true;
+		          _iteratorError4 = err;
+		        } finally {
+		          try {
+		            if (!_iteratorNormalCompletion4 && _iterator4.return) {
+		              _iterator4.return();
+		            }
+		          } finally {
+		            if (_didIteratorError4) {
+		              throw _iteratorError4;
+		            }
+		          }
+		        }
 		      } else {
 		        nextAnno = null;
 		      }
@@ -9676,29 +9979,29 @@
 		    }
 		    var targets = targetAnno.on;
 		    if (targets instanceof Array) {
-		      var _iteratorNormalCompletion = true;
-		      var _didIteratorError = false;
-		      var _iteratorError = undefined;
+		      var _iteratorNormalCompletion5 = true;
+		      var _didIteratorError5 = false;
+		      var _iteratorError5 = undefined;
 
 		      try {
-		        for (var _iterator = targets[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-		          var target = _step.value;
+		        for (var _iterator5 = targets[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+		          var target = _step5.value;
 
 		          if (target.full) {
 		            canvasIds.push(target.full);
 		          }
 		        }
 		      } catch (err) {
-		        _didIteratorError = true;
-		        _iteratorError = err;
+		        _didIteratorError5 = true;
+		        _iteratorError5 = err;
 		      } finally {
 		        try {
-		          if (!_iteratorNormalCompletion && _iterator.return) {
-		            _iterator.return();
+		          if (!_iteratorNormalCompletion5 && _iterator5.return) {
+		            _iterator5.return();
 		          }
 		        } finally {
-		          if (_didIteratorError) {
-		            throw _iteratorError;
+		          if (_didIteratorError5) {
+		            throw _iteratorError5;
 		          }
 		        }
 		      }
@@ -9714,7 +10017,7 @@
 
 
 		  /**
-		   * Find annotations from "annotationsList" which this "annotation" annotates 
+		   * Find annotations from "annotationsList" which this "annotation" annotates
 		   * and which belong to the layer with "layerId".
 		   */
 		  findTargetAnnotations: function findTargetAnnotations(annotation, annotationsList, layerId) {
@@ -9766,8 +10069,8 @@
 
 		  /**
 		   * XXX this version of mergeTargets will probably have to be removed
-		   * because SVG to SVG merge will likely turn out to be illegal against 
-		   * the IIIF spec. The selector SVG of a target should always contains 
+		   * because SVG to SVG merge will likely turn out to be illegal against
+		   * the IIIF spec. The selector SVG of a target should always contains
 		   * a single path and if multiple targets exist for an annotation,
 		   * the "on" field should be an array of targets.
 		   *
@@ -9837,6 +10140,7 @@
 		      dataSource: null,
 		      tocSpec: null
 		    }, options);
+		    this.AnnotationToc = null;
 		  }
 
 		  _createClass(AnnotationExplorer, [{
@@ -9899,8 +10203,8 @@
 /* 307 */
 /***/ function(module, exports) {
 
-	// joosugi-semantic-ui DEV version 0.1.0
-	// Build: Tue Jan 24 2017 13:03:03 GMT-0500 (EST)
+	// joosugi-semantic-ui DEV version 0.1.1
+	// Build: Thu Feb 09 2017 17:36:28 GMT-0500 (EST)
 
 	/******/ (function(modules) { // webpackBootstrap
 	/******/ 	// The module cache
@@ -10005,6 +10309,7 @@
 		      dataSource: null,
 		      canvases: null, // canvas IDs or ranges
 		      defaultCanvas: null, // ID of default canvas to select
+		      defaultLayer: null, // ID of default layer to select
 		      onSelect: null
 		    }, options);
 
@@ -10047,6 +10352,9 @@
 		      _this.layerSelector = selector;
 		      if (_this.defaultCanvas) {
 		        _this.canvasSelector.setValue(_this.defaultCanvas);
+		      }
+		      if (_this.defaultLayer) {
+		        _this.layerSelector.setValue(_this.defaultLayer);
 		      }
 		    });
 
@@ -14439,7 +14747,6 @@
 	      this.logger.debug('Grid#init');
 	      this.element = jQuery('#' + rootElementId);
 	      this.miradorProxyManager = (0, _miradorProxyManager2.default)();
-	      this.annotationListRenderer = new _annotationListRenderer2.default();
 
 	      this._annotationWindows = {};
 
@@ -14561,7 +14868,7 @@
 	      this.layout.root.contentItems[0].addChild(itemConfig);
 
 	      return new _annotationWindow2.default({ appendTo: jQuery('#' + windowId),
-	        annotationListRenderer: this.annotationListRenderer,
+	        annotationListRenderer: new _annotationListRenderer2.default(),
 	        miradorId: options.miradorId,
 	        initialLayerId: options.layerId || null,
 	        initialTocTags: options.tocTags || null,
@@ -14600,7 +14907,7 @@
 	  }, {
 	    key: 'showAnnotation',
 	    value: function showAnnotation(miradorId, windowId, annoId) {
-	      _this.logger.debug('Grid#showAnnotation miradorId: ' + miradorId + ', windowId: ' + windowId + ', annoId: ' + annoId);
+	      this.logger.debug('Grid#showAnnotation miradorId: ' + miradorId + ', windowId: ' + windowId + ', annoId: ' + annoId);
 	      var miradorProxy = this.miradorProxyManager.getMiradorProxy(miradorId);
 	      var windowProxy = miradorProxy.getWindowProxyById(windowId);
 	      var annotations = windowProxy.getAnnotationsList();
@@ -14677,6 +14984,7 @@
 	    _classCallCheck(this, AnnotationListRenderer);
 
 	    this.logger = (0, _logger2.default)();
+	    this.state = (0, _stateStore2.default)();
 	  }
 
 	  /*
@@ -14689,6 +14997,7 @@
 	    key: 'render',
 	    value: function render(options) {
 	      this.logger.debug('AnnotationListRenderer#render options:', options);
+	      this.layerIndexMap = this.state.getObject('layerIndexMap');
 	      options.parentElem.empty();
 	      if (options.toc) {
 	        return this.renderWithToc(options);
@@ -14862,7 +15171,7 @@
 	        isEditor: options.isEditor,
 	        orderable: options.isCompleteList
 	      });
-	      var layerIndex = state.getObject('layerIndexMap')[annotation.layerId];
+	      var layerIndex = this.layerIndexMap[annotation.layerId];
 	      var annoElem = jQuery(annoHtml);
 	      var menuBar = annoElem.find('.menu_bar');
 
@@ -15173,18 +15482,23 @@
 	    key: 'initLayerSelector',
 	    value: function initLayerSelector() {
 	      var _this = this;
-	      this.currentLayerId = this.initialLayerId;
+	      this._setCurrentLayerId(this.initialLayerId);
 	      this.layerSelector = new _layerSelector2.default({
 	        parent: this.element.find('.layer_selector_container'),
 	        annotationExplorer: this.explorer,
 	        initialLayerId: this.initialLayerId,
 	        changeCallback: function changeCallback(value, text) {
 	          _this.logger.debug('Change from Layer selector: ', value);
-	          _this.currentLayerId = value;
+	          _this._setCurrentLayerId(value);
 	          _this.updateList();
 	        }
 	      });
-	      this.initialLayerId = null;
+	    }
+	  }, {
+	    key: '_setCurrentLayerId',
+	    value: function _setCurrentLayerId(layerId) {
+	      this.logger.debug('AnnotationWindow#_setCurrentLayerId layerId:', layerId);
+	      this.currentLayerId = layerId;
 	    }
 	  }, {
 	    key: 'reload',
@@ -15216,7 +15530,8 @@
 	            if (_this.layerSelector.isLoaded()) {
 	              resolve();
 	            } else {
-	              _this.layerSelector.init(layers).then(function () {
+	              _this.layerSelector.init(layers).then(function (layerSelector) {
+	                _this._setCurrentLayerId(layerSelector.val());
 	                resolve();
 	              }).catch(function (reason) {
 	                reject('layerSelector.init failed - ' + reason);
@@ -15444,6 +15759,7 @@
 
 	        if (toc) {
 	          var siblings = _import.annoUtil.findTocSiblings(annotation, annotationsList, layerId, toc);
+	          _this.logger.debug('AnnotationWindow SUB ANNOTATION_FOCUSED siblings:', siblings);
 	          if (siblings.length > 0) {
 	            _this.highlightAnnotations(siblings, 'SIBLING');
 	            return;
@@ -15783,7 +16099,7 @@
 
 	// Separated this code out to its own file because it shouldn't run with the test.
 	jQuery(document).ready(function () {
-	  (0, _logger2.default)().debug('Yale Mirador Extension document ready');
+	  (0, _logger2.default)().info(window._YaleMiradorVersion);
 	  if (jQuery('#ym_grid').length > 0) {
 	    var app = new _app2.default({
 	      rootElement: 'ym_grid',
