@@ -15,12 +15,12 @@
     <%= f.label :site_name %><br>
     <%= f.text_field :site_name %>
   </div>
-  
+
   <div class="field">
     <%= f.label :landing_path %><br>
     <%= f.text_field :landing_path %>
   </div>
-  
+
   <div class="field">
     <%= f.label :endpoint_url %><br>
     <%= f.text_field :endpoint_url %>
@@ -30,7 +30,7 @@
     <%= f.label :maintenance_mode %><br>
     <%= f.check_box :maintenance_mode %>
   </div>
-  
+
   <div class="field">
     <%= f.label :maintenance_message %><br>
     <%= f.text_field :maintenance_message %>
@@ -40,11 +40,15 @@
     <%= f.label :disable_authentication %><br>
     <%= f.check_box :disable_authentication %>
   </div>
-  
+
+  <div class="field">
+    <%= f.label :fix_anno_cell_height %><br>
+    <%= f.check_box :fix_anno_cell_height %>
+  </div>
+
   <div class="actions">
     <%= f.submit %>
   </div>
 <% end %>
 
 <br/>
-

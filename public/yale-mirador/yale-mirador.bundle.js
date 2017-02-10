@@ -1,5 +1,5 @@
-// Yale-Mirador version 0.4.2 - Thu Feb 09 2017 17:46:01 GMT-0500 (EST)
-window._YaleMiradorVersion="Yale-Mirador version 0.4.2 - Thu Feb 09 2017 17:46:01 GMT-0500 (EST)";
+// Yale-Mirador version 0.4.3 - Fri Feb 10 2017 00:19:37 GMT-0500 (EST)
+window._YaleMiradorVersion="Yale-Mirador version 0.4.3 - Fri Feb 10 2017 00:19:37 GMT-0500 (EST)";
 
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -141,9 +141,13 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.2 - Thu Feb 09 2017 17:46:0
 	        throw msg;
 	      }).then(function (settingsFromApi) {
 	        _this.logger.debug('Settings from API:', settingsFromApi);
-	        var mainMenu = new _mainMenu2.default();
-	        var grid = new _grid2.default(_this.options.rootElement);
 	        var settings = jQuery.extend(settingsFromHtml, settingsFromApi);
+	        var grid = new _grid2.default(_this.options.rootElement);
+	        var mainMenu = new _mainMenu2.default();
+
+	        if (settings.fixAnnoCellHeight) {
+	          (0, _stateStore2.default)().setString('ANNO_CELL_FIXED', 'true');
+	        }
 
 	        (0, _miradorWindow2.default)().init({
 	          mainMenu: mainMenu,

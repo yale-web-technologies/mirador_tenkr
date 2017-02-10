@@ -71,6 +71,6 @@ class Admin::SettingsController < ApplicationController
     def admin_setting_params
       params.require(:admin_setting).permit(:site_name, :landing_path,
         :endpoint_url, :maintenance_mode, :maintenance_message,
-        :disable_authentication)
+        :disable_authentication, :fix_anno_cell_height)
     end
 end
