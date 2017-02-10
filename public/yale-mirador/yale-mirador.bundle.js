@@ -1,5 +1,5 @@
-// Yale-Mirador version 0.4.3 - Fri Feb 10 2017 00:19:37 GMT-0500 (EST)
-window._YaleMiradorVersion="Yale-Mirador version 0.4.3 - Fri Feb 10 2017 00:19:37 GMT-0500 (EST)";
+// Yale-Mirador version 0.4.3 - Fri Feb 10 2017 12:01:55 GMT-0500 (EST)
+window._YaleMiradorVersion="Yale-Mirador version 0.4.3 - Fri Feb 10 2017 12:01:55 GMT-0500 (EST)";
 
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -9055,7 +9055,7 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.3 - Fri Feb 10 2017 00:19:3
 /***/ function(module, exports) {
 
 	// Joosugi version 0.1.2
-	// Build: Thu Feb 09 2017 17:34:00 GMT-0500 (EST)
+	// Build: Fri Feb 10 2017 01:29:34 GMT-0500 (EST)
 
 	/******/ (function(modules) { // webpackBootstrap
 	/******/ 	// The module cache
@@ -9135,6 +9135,8 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.3 - Fri Feb 10 2017 00:19:3
 		  value: true
 		});
 
+		var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 		var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 		var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -9161,8 +9163,8 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.3 - Fri Feb 10 2017 00:19:3
 		    /*
 		     * Spec is a JSON passed from outside (an array of arrays).
 		     * It defines the tags to be used to define the hiearchy.
-		     * It is different from "ranges" because 
-		     * it is used to define a strucutre of annotations in a single canvas 
+		     * It is different from "ranges" because
+		     * it is used to define a strucutre of annotations in a single canvas
 		     * while ranges are used to define a structure of canvases in a sequence.
 		     * For example, the first array could list tags for sections of a story
 		     * and the second one could list tags for sub-sections.
@@ -9175,13 +9177,13 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.3 - Fri Feb 10 2017 00:19:3
 		    /**
 		     * This can be considered the output of parse,
 		     * while "this.spec" and "annotations" are the input.
-		     * 
+		     *
 		     * Each node is an object:
 		     * {
 		     *   spec: AN_OBJECT, // spec object from this.spec, with label, short, tag attributes
 		     *   annotation: AN_OBJECT, // annotation
 		     *   layerIds: A_SET, // set of layer IDs for annotations that belong to this node or its children
-		     *   cumulativeLabel: A_STRING, // concatenation of short labels inherited from the parent nodes 
+		     *   cumulativeLabel: A_STRING, // concatenation of short labels inherited from the parent nodes
 		     *   cumulativeTags: [], // list of tags for this node and its ancestors
 		     *   childNodes: AN_OBJECT, // child TOC nodes as a hashmap on tags
 		     *   childAnnotations: AN_ARRAY, // non-TOC-node annotations that targets this node
@@ -9418,7 +9420,7 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.3 - Fri Feb 10 2017 00:19:3
 		    /**
 		     * Recursively builds the TOC structure.
 		     * @param {object} annotation Annotation to be assigned to the parent node
-		     * @param {string[]} tags 
+		     * @param {string[]} tags
 		     * @param {number} rowIndex Index of this.annoHierarchy
 		     * @param {object} parent Parent node
 		     * @return {boolean} true if the annotation was set to be a TOC node, false if not.
@@ -9618,6 +9620,8 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.3 - Fri Feb 10 2017 00:19:3
 		      if (node.annotation['@id'] === annotation['@id']) {
 		        return true;
 		      }
+		      console.log('XXX node.childAnnotations:', node.childAnnotations);
+		      console.log('XXX type:', _typeof(node.childAnnotations));
 		      var _iteratorNormalCompletion9 = true;
 		      var _didIteratorError9 = false;
 		      var _iteratorError9 = undefined;
@@ -14055,7 +14059,7 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.3 - Fri Feb 10 2017 00:19:3
 	  _createClass(_class, [{
 	    key: 'init',
 	    value: function init(layers) {
-	      this.logger.debug('LayerSelector#init layers:', layers);
+	      this.logger.debug('LayerSelector#init layers:', layers, 'initialLayerId:', this.initialLayerId);
 	      this._isLoaded = false;
 	      this.selector = new _selector2.default({
 	        appendTo: this.parent
@@ -15132,6 +15136,7 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.3 - Fri Feb 10 2017 00:19:3
 	  }, {
 	    key: 'appendUnattachedAnnotations',
 	    value: function appendUnattachedAnnotations(options) {
+	      this.logger.debug('AnnotationListRenderer#appendUnattachedAnnotations');
 	      var _this = this;
 	      var layerId = options.layerId;
 	      var showAll = options.selectedTags[0] === 'all';
