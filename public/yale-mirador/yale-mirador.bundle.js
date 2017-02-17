@@ -1,5 +1,5 @@
-// Yale-Mirador version 0.4.4 - Wed Feb 15 2017 16:41:30 GMT-0500 (EST)
-window._YaleMiradorVersion="Yale-Mirador version 0.4.4 - Wed Feb 15 2017 16:41:30 GMT-0500 (EST)";
+// Yale-Mirador version 0.4.4 - Fri Feb 17 2017 13:54:51 GMT-0500 (EST)
+window._YaleMiradorVersion="Yale-Mirador version 0.4.4 - Fri Feb 17 2017 13:54:51 GMT-0500 (EST)";
 
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -122,8 +122,8 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.4 - Wed Feb 15 2017 16:41:3
 	      var _this = this;
 	      var configFetcher = (0, _configFetcher2.default)();
 	      var settingsFromHtml = configFetcher.fetchSettingsFromHtml(this.options.dataElement);
-	      var apiUrl = settingsFromHtml.apiUrl;
-	      var projectId = settingsFromHtml.projectId;
+	      var apiUrl = settingsFromHtml.apiUrl,
+	          projectId = settingsFromHtml.projectId;
 
 
 	      (0, _stateStore2.default)().setObject('layerIndexMap', null);
@@ -8891,6 +8891,7 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.4 - Wed Feb 15 2017 16:41:3
 	        if (item.componentName == 'Annotations') {
 	          var windowId = item.config.componentState.windowId;
 	          logger.debug('Annotation window destroyed:', windowId);
+	          _this._annotationWindows[windowId].destroy();
 	          delete _this._annotationWindows[windowId];
 	          _this._resizeWindows();
 	        }
@@ -9750,20 +9751,18 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.4 - Wed Feb 15 2017 16:41:3
 	      var showAll = options.selectedTags[0] === 'all';
 
 	      if (showAll && options.toc.numUnassigned() > 0) {
-	        (function () {
-	          var unassignedHeader = jQuery(headerTemplate({ text: 'Unassigned' }));
-	          var count = 0;
-	          options.parentElem.append(unassignedHeader);
-	          jQuery.each(options.toc.unassigned(), function (index, annotation) {
-	            if (layerId === annotation.layerId) {
-	              options.parentElem.append(_this.createAnnoElem(annotation, options));
-	              ++count;
-	            }
-	          });
-	          if (count === 0) {
-	            unassignedHeader.hide();
+	        var unassignedHeader = jQuery(headerTemplate({ text: 'Unassigned' }));
+	        var count = 0;
+	        options.parentElem.append(unassignedHeader);
+	        jQuery.each(options.toc.unassigned(), function (index, annotation) {
+	          if (layerId === annotation.layerId) {
+	            options.parentElem.append(_this.createAnnoElem(annotation, options));
+	            ++count;
 	          }
-	        })();
+	        });
+	        if (count === 0) {
+	          unassignedHeader.hide();
+	        }
 	      }
 	    }
 	  }, {
@@ -9951,8 +9950,8 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.4 - Wed Feb 15 2017 16:41:3
 /* 312 */
 /***/ function(module, exports) {
 
-	// Joosugi version 0.1.2
-	// Build: Fri Feb 10 2017 15:52:09 GMT-0500 (EST)
+	// Joosugi version 0.1.3
+	// Build: Fri Feb 17 2017 13:53:42 GMT-0500 (EST)
 
 	/******/ (function(modules) { // webpackBootstrap
 	/******/ 	// The module cache
@@ -10031,8 +10030,6 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.4 - Wed Feb 15 2017 16:41:3
 		Object.defineProperty(exports, "__esModule", {
 		  value: true
 		});
-
-		var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 		var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
@@ -10517,8 +10514,6 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.4 - Wed Feb 15 2017 16:41:3
 		      if (node.annotation['@id'] === annotation['@id']) {
 		        return true;
 		      }
-		      console.log('XXX node.childAnnotations:', node.childAnnotations);
-		      console.log('XXX type:', _typeof(node.childAnnotations));
 		      var _iteratorNormalCompletion9 = true;
 		      var _didIteratorError9 = false;
 		      var _iteratorError9 = undefined;
@@ -10547,16 +10542,14 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.4 - Wed Feb 15 2017 16:41:3
 		        }
 		      }
 
-		      console.log('XXX node.childNodes:', _typeof(node.childNodes), node.childNodes);
 		      var _iteratorNormalCompletion10 = true;
 		      var _didIteratorError10 = false;
 		      var _iteratorError10 = undefined;
 
 		      try {
-		        for (var _iterator10 = node.childNodes[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
+		        for (var _iterator10 = Object.values(node.childNodes)[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
 		          var childNode = _step10.value;
 
-		          console.log('XXX childNode', childNode);
 		          if (_this.matchNode(annotation, childNode)) {
 		            matched = true;
 		            break;
@@ -11075,9 +11068,7 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.4 - Wed Feb 15 2017 16:41:3
 		    key: 'deleteAnnotation',
 		    value: function deleteAnnotation(annotationId) {
 		      console.log('AnnotationExplorer#deleteAnnotation annotationId:', annotationId);
-		      console.log('source:', this.options.dataSource);
 		      var promise = this.options.dataSource.deleteAnnotation(annotationId);
-		      console.log('promise:', promise);
 		      return promise;
 		    }
 		  }, {
@@ -12911,6 +12902,7 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.4 - Wed Feb 15 2017 16:41:3
 	  }, {
 	    key: 'setItems',
 	    value: function setItems(itemsConfig) {
+	      logger.debug('Selector#setItems itemsConfig:', itemsConfig);
 	      var root = this.element.find('.menu');
 	      root.empty();
 	      this._setItems(itemsConfig, root);
@@ -12921,7 +12913,11 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.4 - Wed Feb 15 2017 16:41:3
 	      var _this = this;
 	      jQuery.each(itemsConfig, function (index, value) {
 	        if (value.children.length > 0) {
-	          _this.addItem(value.label, value.value, parent);
+	          _this.addItem({
+	            label: value.label,
+	            value: value.value,
+	            parent: parent
+	          });
 	          var menu = _this.addMenuItem(value.label, value.value, parent);
 	          _this._setItems(value.children, menu);
 	        } else {
@@ -13020,6 +13016,8 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.4 - Wed Feb 15 2017 16:41:3
 	  value: true
 	});
 
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _import = __webpack_require__(311);
@@ -13077,6 +13075,8 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.4 - Wed Feb 15 2017 16:41:3
 	    }, options);
 
 	    logger.debug('AnnotationWindow#constructor options:', options);
+	    this._jQuerySubscribed = {};
+	    this._miradorSubscribed = {};
 	  }
 
 	  /**
@@ -13129,6 +13129,12 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.4 - Wed Feb 15 2017 16:41:3
 	      }).catch(function (reason) {
 	        throw 'AnnotationWindow#init promise failed - ' + reason;
 	      });
+	    }
+	  }, {
+	    key: 'destroy',
+	    value: function destroy() {
+	      logger.debug('AnnotationWindow#destroy');
+	      this._unsubscribeAll();
 	    }
 	  }, {
 	    key: 'initMenuTagSelector',
@@ -13425,13 +13431,13 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.4 - Wed Feb 15 2017 16:41:3
 	        _this.saveOrder();
 	      });
 
-	      jQuery.subscribe('YM_READY_TO_RELOAD_ANNO_WIN', function (event) {
+	      this._subscribe(jQuery, 'YM_READY_TO_RELOAD_ANNO_WIN', function (event) {
 	        if (!_this.hasOpenEditor()) {
 	          _this.reload();
 	        }
 	      });
 
-	      jQuery.subscribe('ANNOTATION_FOCUSED', function (event, annoWinId, annotation) {
+	      this._subscribe(jQuery, 'ANNOTATION_FOCUSED', function (event, annoWinId, annotation) {
 	        logger.debug('Annotation window ' + _this.id + ' received annotation_focused event from ' + annoWinId);
 	        if (annoWinId === _this.id) {
 	          return;
@@ -13462,7 +13468,7 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.4 - Wed Feb 15 2017 16:41:3
 	        }
 	      });
 
-	      jQuery.subscribe('YM_ANNO_HEIGHT_FIXED', function (event, fixedHeight) {
+	      this._subscribe(jQuery, 'YM_ANNO_HEIGHT_FIXED', function (event, fixedHeight) {
 	        if (fixedHeight) {
 	          _this.element.addClass('fixed_height_cells');
 	        } else {
@@ -13470,9 +13476,89 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.4 - Wed Feb 15 2017 16:41:3
 	        }
 	      });
 
-	      this.miradorProxy.subscribe('currentCanvasIDUpdated.' + this.canvasWindow.id, function (event) {
+	      this._subscribe(this.miradorProxy, 'currentCanvasIDUpdated.' + this.canvasWindow.id, function (event) {
 	        _this.placeholder.text('Loading...').show();
 	      });
+	    }
+	  }, {
+	    key: '_subscribe',
+	    value: function _subscribe(context, eventId, handler) {
+	      var saved = void 0;
+
+	      if (context === jQuery) {
+	        saved = this._jQuerySubscribed;
+	      } else if (context === this.miradorProxy) {
+	        saved = this._miradorSubscribed;
+	      } else {
+	        var msg = 'AnnotationWindow#_subscribe invalid context ';
+	        logger.error(msg, context);
+	        throw msg + context;
+	      }
+	      if (!(saved[eventId] instanceof Array)) {
+	        saved[eventId] = [];
+	      }
+	      saved[eventId].push(handler);
+	      context.subscribe(eventId, handler);
+	    }
+	  }, {
+	    key: '_unsubscribeAll',
+	    value: function _unsubscribeAll() {
+	      var _arr = [jQuery, this.miradorProxy];
+
+	      for (var _i = 0; _i < _arr.length; _i++) {
+	        var context = _arr[_i];
+	        var saved = context === jQuery ? this._jQuerySubscribed : this._miradorSubscribed;
+
+	        var _iteratorNormalCompletion = true;
+	        var _didIteratorError = false;
+	        var _iteratorError = undefined;
+
+	        try {
+	          for (var _iterator = Object.entries(saved)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	            var _step$value = _slicedToArray(_step.value, 2),
+	                eventId = _step$value[0],
+	                handlers = _step$value[1];
+
+	            var _iteratorNormalCompletion2 = true;
+	            var _didIteratorError2 = false;
+	            var _iteratorError2 = undefined;
+
+	            try {
+	              for (var _iterator2 = handlers[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+	                var handler = _step2.value;
+
+	                context.unsubscribe(eventId, handler);
+	              }
+	            } catch (err) {
+	              _didIteratorError2 = true;
+	              _iteratorError2 = err;
+	            } finally {
+	              try {
+	                if (!_iteratorNormalCompletion2 && _iterator2.return) {
+	                  _iterator2.return();
+	                }
+	              } finally {
+	                if (_didIteratorError2) {
+	                  throw _iteratorError2;
+	                }
+	              }
+	            }
+	          }
+	        } catch (err) {
+	          _didIteratorError = true;
+	          _iteratorError = err;
+	        } finally {
+	          try {
+	            if (!_iteratorNormalCompletion && _iterator.return) {
+	              _iterator.return();
+	            }
+	          } finally {
+	            if (_didIteratorError) {
+	              throw _iteratorError;
+	            }
+	          }
+	        }
+	      }
 	    }
 	  }]);
 
@@ -13514,10 +13600,11 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.4 - Wed Feb 15 2017 16:41:3
 
 	var logger = (0, _logger2.default)();
 
-	var _class = function () {
-	  function _class(options) {
-	    _classCallCheck(this, _class);
+	var MenuTagSelector = function () {
+	  function MenuTagSelector(options) {
+	    _classCallCheck(this, MenuTagSelector);
 
+	    logger.debug('MenuTagSelector#constructor options:', options);
 	    jQuery.extend(this, {
 	      selector: null,
 	      parent: null,
@@ -13528,7 +13615,7 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.4 - Wed Feb 15 2017 16:41:3
 	    this.init();
 	  }
 
-	  _createClass(_class, [{
+	  _createClass(MenuTagSelector, [{
 	    key: 'init',
 	    value: function init() {
 	      var _this = this;
@@ -13552,8 +13639,10 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.4 - Wed Feb 15 2017 16:41:3
 
 	      return new Promise(function (resolve, reject) {
 	        if (!annoHierarchy) {
-	          reject();
+	          reject('Undefined annoHierarchy');
+	          return;
 	        }
+
 	        _this.selector.empty();
 
 	        var layers = [];
@@ -13584,6 +13673,7 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.4 - Wed Feb 15 2017 16:41:3
 	  }, {
 	    key: 'buildMenu',
 	    value: function buildMenu(node, parentItem) {
+	      logger.debug('MenuTagSelector#buildMenu node:', node, 'parentItem:', parentItem);
 	      var _this = this;
 	      var children = _util2.default.getValues(node.childNodes).sort(function (a, b) {
 	        return a.weight - b.weight;
@@ -13615,10 +13705,10 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.4 - Wed Feb 15 2017 16:41:3
 	    }
 	  }]);
 
-	  return _class;
+	  return MenuTagSelector;
 	}();
 
-	exports.default = _class;
+	exports.default = MenuTagSelector;
 
 /***/ },
 /* 320 */
@@ -13904,9 +13994,9 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.4 - Wed Feb 15 2017 16:41:3
 	    key: '_createAnnotationWindows',
 	    value: function _createAnnotationWindows(options) {
 	      logger.debug('MiradorWrapper#_createAnnotationWindows options:', options);
-	      var annotationId = options.annotationId;
-	      var layerIds = options.layerIds;
-	      var tocTags = options.tocTags;
+	      var annotationId = options.annotationId,
+	          layerIds = options.layerIds,
+	          tocTags = options.tocTags;
 
 	      var config = {
 	        miradorId: this._miradorId,
@@ -14277,15 +14367,13 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.4 - Wed Feb 15 2017 16:41:3
 	      var state = (0, _stateStore2.default)();
 
 	      if (!state.getObject('layerIndexMap')) {
-	        (function () {
-	          var map = {};
-	          var count = 0;
-	          layers.forEach(function (layer) {
-	            map[layer['@id']] = count;
-	            ++count;
-	          });
-	          state.setObject('layerIndexMap', count > 0 ? map : null);
-	        })();
+	        var map = {};
+	        var count = 0;
+	        layers.forEach(function (layer) {
+	          map[layer['@id']] = count;
+	          ++count;
+	        });
+	        state.setObject('layerIndexMap', count > 0 ? map : null);
 	      }
 	      return layers;
 	    }
