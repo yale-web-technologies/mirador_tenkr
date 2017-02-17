@@ -1,5 +1,5 @@
-// Yale-Mirador version 0.4.4 - Fri Feb 17 2017 13:54:51 GMT-0500 (EST)
-window._YaleMiradorVersion="Yale-Mirador version 0.4.4 - Fri Feb 17 2017 13:54:51 GMT-0500 (EST)";
+// Yale-Mirador v0.4.5-2-g608c28a built Fri Feb 17 2017 16:45:52 GMT-0500 (EST)
+window._YaleMiradorVersion="Yale-Mirador v0.4.5-2-g608c28a built Fri Feb 17 2017 16:45:52 GMT-0500 (EST)";
 
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -13087,6 +13087,8 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.4 - Fri Feb 17 2017 13:54:5
 	  _createClass(AnnotationWindow, [{
 	    key: 'init',
 	    value: function init() {
+	      var _this2 = this;
+
 	      var _this = this;
 	      var proxyMgr = (0, _miradorProxyManager2.default)();
 	      var annosToShow = [];
@@ -13102,11 +13104,25 @@ window._YaleMiradorVersion="Yale-Mirador version 0.4.4 - Fri Feb 17 2017 13:54:5
 	      this.listElem = this.element.find('.annowin_list');
 
 	      if (!this.initialLayerId && this.annotationId) {
+	        // annotation ID was given in the URL
 	        annosToShow = this.canvasWindow.annotationsList.filter(function (anno) {
 	          return anno['@id'] === _this.annotationId;
 	        });
 	        if (annosToShow.length > 0) {
 	          this.initialLayerId = annosToShow[0].layerId;
+	        }
+	      } else if (this.initialLayerId) {
+	        // layerIDs were given in the URL
+	        annosToShow = this.canvasWindow.annotationsList.filter(function (anno) {
+	          return anno.layerId == _this.initialLayerId;
+	        });
+	        if (this.initialTocTags) {
+	          var toc = this.explorer.getAnnotationToc();
+	          if (toc) {
+	            annosToShow = annosToShow.filter(function (anno) {
+	              return toc.matchHierarchy(anno, _this2.initialTocTags);
+	            });
+	          }
 	        }
 	      }
 
