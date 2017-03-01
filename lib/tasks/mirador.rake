@@ -1,3 +1,5 @@
+require 'Find'
+
 namespace :mirador do
   desc 'Install Yale-Mirador plugin'
   task :install, [:src_dir] => [:environment, :delete, :copy_mirador] { |t, args| }
@@ -27,11 +29,14 @@ namespace :mirador do
 
   desc 'Delete Yale-Mirador'
   task :delete => [:environment] do |t|
-    [
-      File.join(Rails.root, 'vendor', 'assets', 'plugins', 'mirador'),
-      File.join(Rails.root, 'vendor', 'assets', 'plugins', 'yale-mirador'),
+    [ File.join(Rails.root, 'public', 'mirador'),
       File.join(Rails.root, 'public', 'assets'),
-      File.join(Rails.root, 'public', 'mirador')
+      Dir.glob(File.join(Rails.root, 'vendor', 'assets', 'dexie.*')),
+      File.join(Rails.root, 'vendor', 'assets', 'goldenlayout'),
+      File.join(Rails.root, 'vendor', 'assets', 'js.cookie.js'),
+      File.join(Rails.root, 'vendor', 'assets', 'mirador'),
+      File.join(Rails.root, 'vendor', 'assets', 'semantic'),
+      File.join(Rails.root, 'vendor', 'assets', 'yale-mirador')
     ].each { |f| rm_rf(f) }
   end
 end
