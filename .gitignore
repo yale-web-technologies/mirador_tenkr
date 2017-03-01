@@ -16,5 +16,3 @@
 .DS_Store
 npm-debug.log
 /config/database.yml
-/public/assets/*
-!/public/assets/fonts
