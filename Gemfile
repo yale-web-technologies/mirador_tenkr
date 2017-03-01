@@ -25,9 +25,9 @@ gem 'omniauth-twitter'
 # Use SCSS for stylesheets
 # gem 'sass-rails', '~> 5.0'
 
-gem 'less-rails-semantic_ui', '~> 2.1.8'
+gem 'less-rails-semantic_ui', '~> 2.2.9'
 
-gem 'autoprefixer-rails', '~> 6.3.6'
+gem 'autoprefixer-rails', '~> 6.7.6'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '~> 3.0.0'
