@@ -13,7 +13,8 @@
 /tmp
 
 *~
+.DS_Store
 npm-debug.log
 /config/database.yml
 /public/assets
-/local_env
+
