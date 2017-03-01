@@ -1,9 +1,9 @@
 source 'https://rubygems.org'
 
-ruby '2.2.4'
+ruby '2.4.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 4.2.6'
+gem 'rails', '~> 5.0.1'
 
 gem 'activerecord-session_store', '~> 1.0.0'
 

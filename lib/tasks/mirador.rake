@@ -11,6 +11,7 @@ namespace :mirador do
     vendor_assets = File.join(Rails.root, 'vendor', 'assets')
     public_assets = File.join(Rails.root, 'public', 'assets')
     public_mirador = File.join(Rails.root, 'public', 'mirador')
+    vendor_assets_semantic = File.join(vendor_assets, 'semantic')
 
     # Copy to vendor/assets
     mkdir_p(vendor_assets)
@@ -25,6 +26,7 @@ namespace :mirador do
     end
     mkdir_p(File.join(public_assets, 'fonts'))
     cp_r(File.join(src_mirador, 'fonts'), public_assets)
+    cp_r(File.join(vendor_assets_semantic, 'themes'), public_assets)
   end
 
   desc 'Delete Yale-Mirador'

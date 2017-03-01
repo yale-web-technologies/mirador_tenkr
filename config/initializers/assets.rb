@@ -9,7 +9,7 @@ Rails.application.config.assets.version = '1.0'
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
 
-#Rails.application.config.assets.precompile += %w( semantic_ui/semantic_ui.css jquery.js goldenlayout-base.css goldenlayout.min.js mirador-combined.min.css mirador.min.js yale-mirador.bundle.css yale-mirador.bundle.js)
+Rails.application.config.assets.precompile += %w( search.js )
 
 [
   'dexie.min.js',

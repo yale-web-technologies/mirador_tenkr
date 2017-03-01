@@ -15,7 +15,7 @@
 //= require jquery-ui
 //= require js.cookie
 //= require semantic/semantic.min
-//= require tinymce
+// require tinymce
 //= require dexie.min
 //
 //= require main
