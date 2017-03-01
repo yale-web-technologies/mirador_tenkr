@@ -1,5 +1,3 @@
-require 'Find'
-
 namespace :mirador do
   desc 'Install Yale-Mirador plugin'
   task :install, [:src_dir] => [:environment, :delete, :copy_mirador] { |t, args| }
