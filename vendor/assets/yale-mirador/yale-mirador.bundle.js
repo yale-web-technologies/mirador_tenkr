@@ -1,5 +1,5 @@
-// Yale-Mirador v0.4.5-10-g657ad24 built Mon Feb 27 2017 13:18:02 GMT-0500 (EST)
-window._YaleMiradorVersion="Yale-Mirador v0.4.5-10-g657ad24 built Mon Feb 27 2017 13:18:02 GMT-0500 (EST)";
+// Yale-Mirador v0.4.5-10-g657ad24 built Fri Mar 03 2017 11:16:06 GMT-0500 (EST)
+window._YaleMiradorVersion="Yale-Mirador v0.4.5-10-g657ad24 built Fri Mar 03 2017 11:16:06 GMT-0500 (EST)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -6303,6 +6303,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var logger = (0, _logger2.default)();
 var _explorer = null;
 
 var YaleEndpoint = function () {
@@ -6314,13 +6315,12 @@ var YaleEndpoint = function () {
       prefix: null,
       dfd: null
     }, options);
-    this.logger = (0, _logger2.default)();
   }
 
   _createClass(YaleEndpoint, [{
     key: 'search',
     value: function search(options) {
-      this.logger.debug('YaleEndpoint#search', options);
+      logger.debug('YaleEndpoint#search', options);
       var _this = this;
       var canvasId = options.uri;
       var progressPane = (0, _modalAlert2.default)();
@@ -6332,7 +6332,7 @@ var YaleEndpoint = function () {
         var msg = 'ERROR YaleEndpoint#search getAnnotations - ' + reason;
         throw msg;
       }).then(function (annotations) {
-        _this.logger.debug('YaleEndpoint#search annotations: ', annotations);
+        logger.debug('YaleEndpoint#search annotations: ', annotations);
         progressPane.hide();
         var _iteratorNormalCompletion = true;
         var _didIteratorError = false;
@@ -6360,9 +6360,13 @@ var YaleEndpoint = function () {
         }
 
         _this.annotationsList = annotations;
-        _this.dfd.resolve(true);
+        try {
+          _this.dfd.resolve(true);
+        } catch (e) {
+          logger.error('YaleEndpoint#search dfd.resolve failed - ', e);
+        }
       }).catch(function (reason) {
-        _this.logger.error('YaleEndpoint#search failed - ', reason);
+        logger.error('YaleEndpoint#search failed - ', reason);
         progressPane.hide();
         errorPane.show('annotations');
       });
@@ -6377,13 +6381,13 @@ var YaleEndpoint = function () {
           var msg = 'YaleEndpoint#create _create failed - ' + reason;
           throw msg;
         }).then(function (anno) {
-          _this.logger.debug('YaleEndpoint#create successful with anno: ', anno);
+          logger.debug('YaleEndpoint#create successful with anno: ', anno);
           anno.endpoint = _this;
           if (typeof successCallback === 'function') {
             successCallback(anno);
           }
         }).catch(function (reason) {
-          _this.logger.error('ERROR YaleEndpoint#create successCallback failed');
+          logger.error('ERROR YaleEndpoint#create successCallback failed');
           errorCallback();
         });
       } else {
@@ -6396,7 +6400,7 @@ var YaleEndpoint = function () {
   }, {
     key: '_create',
     value: function _create(oaAnnotation) {
-      this.logger.debug('YaleEndpoint#_create oaAnnotation:', oaAnnotation);
+      logger.debug('YaleEndpoint#_create oaAnnotation:', oaAnnotation);
       var _this = this;
       var explorer = this.getAnnotationExplorer();
 
@@ -6417,7 +6421,7 @@ var YaleEndpoint = function () {
       if (this.userAuthorize('update', oaAnnotation)) {
         this._update(oaAnnotation).catch(function (reason) {
           var msg = 'ERROR YaleEndpoint#update _update failed - ' + reason;
-          _this.logger.error(msg);
+          logger.error(msg);
           errorCallback();
         }).then(function (anno) {
           if (typeof successCallback === 'function') {
@@ -6434,7 +6438,7 @@ var YaleEndpoint = function () {
   }, {
     key: '_update',
     value: function _update(oaAnnotation) {
-      this.logger.debug('YaleEndpoint#_update oaAnnotation:', oaAnnotation);
+      logger.debug('YaleEndpoint#_update oaAnnotation:', oaAnnotation);
       var _this = this;
       var explorer = this.getAnnotationExplorer();
       var annotationId = oaAnnotation['@id'];
@@ -6458,7 +6462,7 @@ var YaleEndpoint = function () {
   }, {
     key: 'deleteAnnotation',
     value: function deleteAnnotation(annotationId, successCallback, errorCallback) {
-      this.logger.debug('YaleEndpoint#deleteAnnotation annotationId: ' + annotationId);
+      logger.debug('YaleEndpoint#deleteAnnotation annotationId: ' + annotationId);
       var _this = this;
 
       if (this.userAuthorize('delete', null)) {
@@ -6467,11 +6471,11 @@ var YaleEndpoint = function () {
             successCallback();
           }
         }).catch(function (reason) {
-          _this.logger.error('YaleEndpoint#deleteAnnotation _deleteAnnotation failed:', reason);
+          logger.error('YaleEndpoint#deleteAnnotation _deleteAnnotation failed:', reason);
           errorCallback();
         });
       } else {
-        this.logger.info('YaleEndpoint#delete user not authorized');
+        logger.info('YaleEndpoint#delete user not authorized');
         (0, _errorDialog2.default)().show('authz_update');
         if (typeof errorCallback === 'function') {
           errorCallback();
@@ -6481,7 +6485,7 @@ var YaleEndpoint = function () {
   }, {
     key: '_deleteAnnotation',
     value: function _deleteAnnotation(annotationId) {
-      this.logger.debug('YaleEndpoint#_deleteAnnotation annotationId:', annotationId);
+      logger.debug('YaleEndpoint#_deleteAnnotation annotationId:', annotationId);
       var _this = this;
       var explorer = this.getAnnotationExplorer();
 
@@ -6505,7 +6509,7 @@ var YaleEndpoint = function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                this.logger.debug('YaleEndpoint#getLayers');
+                logger.debug('YaleEndpoint#getLayers');
                 explorer = this.getAnnotationExplorer();
                 return _context.abrupt('return', explorer.getLayers());
 
@@ -6526,7 +6530,7 @@ var YaleEndpoint = function () {
   }, {
     key: 'updateOrder',
     value: function updateOrder(canvasId, layerId, annoIds, successCallback, errorCallback) {
-      this.logger.debug('YaleEndpoint#updateOrder canvasId:', canvasId, 'layerId:', layerId, 'annoIds:', annoIds);
+      logger.debug('YaleEndpoint#updateOrder canvasId:', canvasId, 'layerId:', layerId, 'annoIds:', annoIds);
       var _this = this;
 
       if (this.userAuthorize('update', null)) {
@@ -6538,11 +6542,11 @@ var YaleEndpoint = function () {
             successCallback();
           }
         }).catch(function (reason) {
-          _this.logger.error('YaleEndpoint#updateOrder', reason);
+          logger.error('YaleEndpoint#updateOrder', reason);
           errorCallback();
         });
       } else {
-        this.logger.info('YaleEndpoint#updateOrder user not authorized');
+        logger.info('YaleEndpoint#updateOrder user not authorized');
         (0, _errorDialog2.default)().show('authz_update');
         if (typeof errorCallback === 'function') {
           errorCallback();
@@ -6567,7 +6571,7 @@ var YaleEndpoint = function () {
   }, {
     key: 'set',
     value: function set(prop, value, options) {
-      this.logger.debug('YaleEndpoint#set prop:', prop, ', value:', value, ', options:', options);
+      logger.debug('YaleEndpoint#set prop:', prop, ', value:', value, ', options:', options);
       if (options) {
         this[options.parent][prop] = value;
       } else {
@@ -6588,7 +6592,7 @@ var YaleEndpoint = function () {
     key: 'createAnnotationSource',
     value: function createAnnotationSource() {
       var source = (0, _pageController2.default)().getConfig().annotationEndpoint.dataSource;
-      this.logger.debug('YaleEndpoint#createAnnotationSource', source);
+      logger.debug('YaleEndpoint#createAnnotationSource', source);
       return new source({ prefix: this.prefix });
     }
   }, {
@@ -8401,6 +8405,7 @@ var AnnotationWindow = function () {
       return this.reload().catch(function (reason) {
         throw 'AnnotationWindow#init reload failed - ' + reason;
       }).then(function () {
+        logger.debug('AnnotationWindow annosToShow:', annosToShow);
         if (annosToShow.length > 0) {
           var finalTargetAnno = _import.annoUtil.findFinalTargetAnnotation(annosToShow[0], _this.canvasWindow.annotationsList);
           _this.highlightAnnotations(annosToShow, 'SELECTED');
