@@ -1,5 +1,5 @@
-// Yale-Mirador v0.4.5-10-g657ad24 built Fri Mar 03 2017 11:16:06 GMT-0500 (EST)
-window._YaleMiradorVersion="Yale-Mirador v0.4.5-10-g657ad24 built Fri Mar 03 2017 11:16:06 GMT-0500 (EST)";
+// Yale-Mirador v0.4.5-11-g5035b3f built Mon Mar 06 2017 17:01:58 GMT-0500 (EST)
+window._YaleMiradorVersion="Yale-Mirador v0.4.5-11-g5035b3f built Mon Mar 06 2017 17:01:58 GMT-0500 (EST)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -2605,6 +2605,10 @@ var AnnotationSource = function () {
                   layer_id: layerId,
                   annotation: annotation
                 };
+
+
+                this.logger.debug('AnnotationSource#createAnnotation payload:', request);
+
                 return _context3.abrupt('return', new Promise(function (resolve, reject) {
                   jQuery.ajax({
                     url: url,
@@ -2632,7 +2636,7 @@ var AnnotationSource = function () {
                   });
                 }));
 
-              case 10:
+              case 11:
               case 'end':
                 return _context3.stop();
             }
@@ -5529,6 +5533,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function getAnnotationCache() {
   if (!instance) {
     var cache = new AnnotationCache();
+    cache.clear(); // invalidate all data everytime app restarts
     return cache.init();
   } else {
     return new Promise(function (resolve, reject) {
@@ -6975,12 +6980,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
   var logger = (0, _logger2.default)();
 
   /*
-   * Functions in this file must be called in the context of an ImageView 
+   * Functions in this file must be called in the context of an ImageView
    * so "this" will point to the instance of the image view.
    */
   jQuery.extend($.yaleExt, {
 
     zoomToAnnotation: function zoomToAnnotation(annotation) {
+      logger.debug('ImageView(ext)#zoomToAnnotation anno:', annotation);
       var viewport = this.osd.viewport;
       var currentZoom = viewport.getZoom();
       logger.debug('panToAnnotation zoom: ' + currentZoom);
@@ -6995,7 +7001,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
       var zoomFactor = 1.0 / Math.max(widthRatio, heightRatio) * 0.75;
       logger.debug('zoomFactor: ' + zoomFactor);
 
-      viewport.zoomBy(zoomFactor);
+      if (typeof zoomFactor === 'number' && !isNaN(zoomFactor)) {
+        viewport.zoomBy(zoomFactor);
+      } else {
+        var msg = 'ImageView(ext)#zoomToAnnotation invalid zoomFactor ' + zoomFactor;
+        logger.error(msg, annotation);
+        throw msg;
+      }
     },
 
     /*
@@ -7003,6 +7015,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
      * and pan to show the annotated area.
      */
     panToAnnotation: function panToAnnotation(annotation) {
+      logger.debug('ImageView(ext)#panToAnnotation anno:', annotation);
       var viewport = this.osd.viewport;
       var shapes = $.yaleExt.getShapesForAnnotation.call(this.annotationsLayer.drawTool, annotation);
       var shapeBounds = $.yaleExt.getCombinedBounds(shapes); // in image coordinates
@@ -7065,8 +7078,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
         panY = shapeTop - padding - visibleTop;
       }
 
-      if (panX !== 0 || panY !== 0) {
+      if (typeof panX === 'number' && !isNaN(panX) && typeof panY === 'number' && !isNaN(panY)) {
         viewport.panBy(new OpenSeadragon.Point(panX, panY));
+      } else {
+        var msg = 'ImageView(ext)#panToAnnotation invalid value(s) panX: ' + panX + ', panY: ' + panY;
+        logger.error(msg, annotation);
+        throw msg;
       }
     }
 
@@ -8195,7 +8212,7 @@ var AnnotationListRenderer = function () {
             dialogElement.dialog('close');
           }
         });
-        dialogElement.dialog({
+        dialogElement.dialog({ // jQuery-UI dialog
           title: 'Create annotation',
           modal: true,
           draggable: true,
