@@ -139,6 +139,28 @@ p {
   padding-top: 0.6em;
   padding-bottom: 0.6em;
 }
+.fatal_error {
+  background-color: #000;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.fatal_error .header {
+  background-color: #777;
+  color: #fff;
+  font-size: 24px;
+  margin-bottom: 10px;
+  padding: 20px;
+  width: 100%;
+}
+.fatal_error p {
+  background-color: #000;
+  color: #eee;
+  font-size: 12px;
+  padding: 5px 20px;
+}
 .ym_modal {
   background-color: #bbb;
   padding: 20px;
