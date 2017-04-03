@@ -1,6 +1,11 @@
 class ApiController < ApplicationController
   def settings
     db_setting = Admin::Setting.first
+    begin
+      tooltip_styles = JSON.parse(db_setting.tooltip_styles)
+    rescue
+      tooltip_styles = nil
+    end
     jsonObj = {
       :buildPath => '/mirador',
       :tagHierarchy => _get_tag_hierarchy,
@@ -9,6 +14,9 @@ class ApiController < ApplicationController
       :disableAuthz => true,
       :fixAnnoCellHeight => db_setting.fix_anno_cell_height
     }
+    if tooltip_styles
+      jsonObj[:tooltipStyles] = tooltip_styles
+    end
     render json: jsonObj
   end
 

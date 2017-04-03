@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,82 +10,79 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170210052436) do
+ActiveRecord::Schema.define(version: 20170403173720) do
 
-  create_table "admin_manifests", force: :cascade do |t|
-    t.integer  "room_id",    limit: 4
-    t.string   "title",      limit: 255
-    t.string   "url",        limit: 255
-    t.integer  "weight",     limit: 4
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+  create_table "admin_manifests", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.integer  "room_id"
+    t.string   "title"
+    t.string   "url"
+    t.integer  "weight"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["room_id"], name: "index_admin_manifests_on_room_id", using: :btree
   end
 
-  add_index "admin_manifests", ["room_id"], name: "index_admin_manifests_on_room_id", using: :btree
-
-  create_table "admin_rooms", force: :cascade do |t|
-    t.string   "machine_name",   limit: 255
-    t.string   "title",          limit: 255
-    t.string   "description",    limit: 255
-    t.integer  "weight",         limit: 4
+  create_table "admin_rooms", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.string   "machine_name"
+    t.string   "title"
+    t.string   "description"
+    t.integer  "weight"
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
     t.text     "tag_hierarchy",  limit: 65535
     t.text     "splash_message", limit: 65535
+    t.index ["machine_name"], name: "index_admin_rooms_on_machine_name", unique: true, using: :btree
   end
 
-  add_index "admin_rooms", ["machine_name"], name: "index_admin_rooms_on_machine_name", unique: true, using: :btree
-
-  create_table "admin_settings", force: :cascade do |t|
-    t.string   "site_name",              limit: 255
-    t.string   "landing_path",           limit: 255
-    t.string   "endpoint_url",           limit: 255
+  create_table "admin_settings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.string   "site_name"
+    t.string   "landing_path"
+    t.string   "endpoint_url"
     t.boolean  "maintenance_mode"
-    t.string   "maintenance_message",    limit: 255
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.string   "maintenance_message"
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
     t.boolean  "disable_authentication"
     t.boolean  "fix_anno_cell_height"
+    t.text     "tooltip_styles",         limit: 65535
   end
 
-  create_table "admin_user_roles", force: :cascade do |t|
-    t.string   "netid",      limit: 255
-    t.string   "email",      limit: 255
-    t.string   "first_name", limit: 255
-    t.string   "last_name",  limit: 255
-    t.string   "role",       limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+  create_table "admin_user_roles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.string   "netid"
+    t.string   "email"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "role"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  create_table "sessions", force: :cascade do |t|
-    t.string   "session_id", limit: 255,   null: false
+  create_table "sessions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.string   "session_id",               null: false
     t.text     "data",       limit: 65535
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["session_id"], name: "index_sessions_on_session_id", unique: true, using: :btree
+    t.index ["updated_at"], name: "index_sessions_on_updated_at", using: :btree
   end
 
-  add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", unique: true, using: :btree
-  add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at", using: :btree
-
-  create_table "users", force: :cascade do |t|
-    t.string   "email",                  limit: 255, default: "", null: false
-    t.string   "encrypted_password",     limit: 255, default: "", null: false
-    t.string   "reset_password_token",   limit: 255
+  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          limit: 4,   default: 0,  null: false
+    t.integer  "sign_in_count",          default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip",     limit: 255
-    t.string   "last_sign_in_ip",        limit: 255
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
-    t.string   "provider",               limit: 255
-    t.string   "uid",                    limit: 255
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.string   "provider"
+    t.string   "uid"
+    t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
-
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
 end
