@@ -30,7 +30,7 @@ gem 'less-rails-semantic_ui', '~> 2.2.9'
 gem 'autoprefixer-rails', '~> 6.7.6'
 
 # Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '~> 3.0.0'
+gem 'uglifier', '~> 3.1.13'
 # Use CoffeeScript for .coffee assets and views
 # gem 'coffee-rails', '~> 4.1.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
@@ -39,11 +39,11 @@ gem 'uglifier', '~> 3.0.0'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 
-gem 'jquery-ui-rails', '~> 5.0.5'
+gem 'jquery-ui-rails', '~> 6.0.1'
 
-gem 'js_cookie_rails', '~> 1.0.1'
+gem 'js_cookie_rails', '~> 2.1.3'
 
-gem 'tinymce-rails', '~> 4.1.6'
+gem 'tinymce-rails', '~> 4.5.6'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 # gem 'turbolinks'
@@ -64,7 +64,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'therubyracer', group: :production
 gem 'rails_12factor', group: :production
 
-gem 'rest-client', '~> 1.8.0'
+gem 'rest-client', '~> 2.0.1'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
