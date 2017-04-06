@@ -14,5 +14,6 @@
 
 *~
 .DS_Store
+/.vscode
 npm-debug.log
 /config/database.yml
