@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170403173720) do
+ActiveRecord::Schema.define(version: 20170405190432) do
 
   create_table "admin_manifests", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "room_id"
@@ -57,7 +57,65 @@ ActiveRecord::Schema.define(version: 20170403173720) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "sessions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "manifests_canvases", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "canvas_id"
+    t.string   "label"
+    t.string   "width"
+    t.string   "height"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "sequence_id"
+    t.index ["canvas_id"], name: "index_manifests_canvases_on_canvas_id", unique: true, using: :btree
+    t.index ["sequence_id"], name: "index_manifests_canvases_on_sequence_id", using: :btree
+  end
+
+  create_table "manifests_images", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "image_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "canvas_id"
+    t.index ["canvas_id"], name: "index_manifests_images_on_canvas_id", using: :btree
+  end
+
+  create_table "manifests_manifests", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "manifest_id"
+    t.string   "label"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["manifest_id"], name: "index_manifests_manifests_on_manifest_id", unique: true, using: :btree
+  end
+
+  create_table "manifests_resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "resource_id"
+    t.string   "resource_type"
+    t.string   "width"
+    t.string   "height"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.integer  "image_id"
+    t.index ["image_id"], name: "index_manifests_resources_on_image_id", using: :btree
+  end
+
+  create_table "manifests_sequences", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "sequence_id"
+    t.string   "label"
+    t.string   "viewing_direction"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.integer  "manifest_id"
+    t.index ["manifest_id"], name: "index_manifests_sequences_on_manifest_id", using: :btree
+  end
+
+  create_table "manifests_services", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "service_id"
+    t.string   "profile"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "resource_id"
+    t.index ["resource_id"], name: "index_manifests_services_on_resource_id", using: :btree
+  end
+
+  create_table "sessions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "session_id",               null: false
     t.text     "data",       limit: 65535
     t.datetime "created_at"

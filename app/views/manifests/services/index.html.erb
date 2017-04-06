@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Manifests Services</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @manifests_services.each do |manifests_service| %>
+      <tr>
+        <td><%= link_to 'Show', manifests_service %></td>
+        <td><%= link_to 'Edit', edit_manifests_service_path(manifests_service) %></td>
+        <td><%= link_to 'Destroy', manifests_service, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Manifests Service', new_manifests_service_path %>

@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Manifests Resources</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @manifests_resources.each do |manifests_resource| %>
+      <tr>
+        <td><%= link_to 'Show', manifests_resource %></td>
+        <td><%= link_to 'Edit', edit_manifests_resource_path(manifests_resource) %></td>
+        <td><%= link_to 'Destroy', manifests_resource, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Manifests Resource', new_manifests_resource_path %>

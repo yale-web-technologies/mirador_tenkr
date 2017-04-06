@@ -1,0 +1,2 @@
+module Manifests::CanvasHelper
+end

@@ -1,0 +1,2 @@
+module Manifests::ManifestsHelper
+end

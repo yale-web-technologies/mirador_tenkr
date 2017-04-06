@@ -1,0 +1,37 @@
+<div class="ui container">
+  <div class="ui grid">
+    <div class="column">
+
+<p id="notice"><%= notice %></p>
+
+<h1>Manifests Manifests</h1>
+
+<table class="ui celled table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Label</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @manifests_manifests.each do |manifests_manifest| %>
+      <tr>
+        <td><%= manifests_manifest.manifest_id %></td>
+        <td><%= manifests_manifest.label %></td>
+        <td><%= link_to 'Show', manifests_manifest %></td>
+        <td><%= link_to 'Edit', edit_manifests_manifest_path(manifests_manifest) %></td>
+        <td><%= link_to 'Destroy', manifests_manifest, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Manifests Manifest', new_manifests_manifest_path %>
+
+    </div>
+  </div>
+</div>

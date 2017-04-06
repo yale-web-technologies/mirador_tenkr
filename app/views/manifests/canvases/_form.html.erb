@@ -1,0 +1,17 @@
+<%= form_for(manifests_canvas) do |f| %>
+  <% if manifests_canvas.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(manifests_canvas.errors.count, "error") %> prohibited this manifests_canvas from being saved:</h2>
+
+      <ul>
+      <% manifests_canvas.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

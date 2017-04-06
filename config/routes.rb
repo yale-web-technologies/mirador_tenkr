@@ -1,5 +1,25 @@
 Rails.application.routes.draw do
 
+  namespace :manifests do
+    resources :services
+  end
+  namespace :manifests do
+    resources :canvases
+  end
+  namespace :manifests do
+    resources :resources
+  end
+  namespace :manifests do
+    resources :images
+  end
+  namespace :manifests do
+    end
+  namespace :manifests do
+    resources :sequences
+  end
+  namespace :manifests do
+    resources :manifests
+  end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -61,25 +81,30 @@ Rails.application.routes.draw do
   root 'home#index'
 
   get '/:id', to: 'home#viewer', constraints: { id: /\d/ }
-  
+
   get '/rooms/:name', to: 'rooms#show'
-  
+
   get '/mirador', to: 'mirador#index'
-  
+
   constraints format: 'json' do
     get '/api/settings', to: 'api#settings'
     get '/api/tag_hierarchy', to: 'api#tag_hierarchy'
   end
-  
+
   get '/login', to: 'application#login'
   get '/logout', to: 'application#logout'
-  
+
+  namespace :manifests do
+    get '/api/image_service', to: 'api#image_service'
+    get '/api/ingest', to: 'api#ingest'
+  end
+
   namespace :admin do
     resources :manifests
     resources :rooms
     resources :settings
     resources :user_roles
-    
+
     get '/', to: 'home#index'
     get '/import', to: 'import#index'
     post '/import/import_user_roles', to: 'import#import_user_roles'

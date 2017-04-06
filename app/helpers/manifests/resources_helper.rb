@@ -1,0 +1,2 @@
+module Manifests::ResourcesHelper
+end

@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Manifests Canvas</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @manifests_canvas.each do |manifests_canva| %>
+      <tr>
+        <td><%= link_to 'Show', manifests_canva %></td>
+        <td><%= link_to 'Edit', edit_manifests_canva_path(manifests_canva) %></td>
+        <td><%= link_to 'Destroy', manifests_canva, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Manifests Canva', new_manifests_canva_path %>

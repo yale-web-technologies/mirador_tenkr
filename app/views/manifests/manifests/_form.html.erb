@@ -1,0 +1,17 @@
+<%= form_for(manifests_manifest) do |f| %>
+  <% if manifests_manifest.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(manifests_manifest.errors.count, "error") %> prohibited this manifests_manifest from being saved:</h2>
+
+      <ul>
+      <% manifests_manifest.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Manifests Images</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @manifests_images.each do |manifests_image| %>
+      <tr>
+        <td><%= link_to 'Show', manifests_image %></td>
+        <td><%= link_to 'Edit', edit_manifests_image_path(manifests_image) %></td>
+        <td><%= link_to 'Destroy', manifests_image, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Manifests Image', new_manifests_image_path %>
