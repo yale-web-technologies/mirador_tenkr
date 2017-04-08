@@ -1,5 +1,5 @@
-// Yale-Mirador v0.6.1-0-gf06b444 built Sat Apr 08 2017 00:21:08 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.6.1-0-gf06b444 built Sat Apr 08 2017 00:21:08 GMT-0400 (EDT)";
+// Yale-Mirador v0.6.1-1-gbfcd93c built Sat Apr 08 2017 01:17:50 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.6.1-1-gbfcd93c built Sat Apr 08 2017 01:17:50 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -8449,10 +8449,9 @@ var MiradorWrapper = function () {
   }, {
     key: '_bindEvents',
     value: function _bindEvents(options) {
-      var _this2 = this;
+      var _this = this;
 
       logger.debug('MiradorWrapper#_bindEvents options:', options);
-      var _this = this;
       var miradorProxy = proxyMgr.getMiradorProxy(this._miradorId);
 
       miradorProxy.subscribe('ANNOTATIONS_LIST_UPDATED', function (event, params) {
@@ -8469,7 +8468,7 @@ var MiradorWrapper = function () {
 
       miradorProxy.subscribe('YM_ANNOWIN_ANNO_SHOW', function (event, windowId, annoId) {
         logger.debug('MiradorWrapper SUB YM_ANNOWIN_ANNO_SHOW windowId: ' + windowId + ', annoId: ' + annoId);
-        _this2.options.grid.showAnnotation(_this2._miradorId, windowId, annoId);
+        _this.options.grid.showAnnotation(_this._miradorId, windowId, annoId);
       });
 
       miradorProxy.subscribe('YM_CLICKED_OPEN_ANNO_WINDOW', function (event, canvasWindowId) {
@@ -8477,7 +8476,7 @@ var MiradorWrapper = function () {
         miradorProxy.publish('YM_DISPLAY_ON');
         _this.options.grid.addAnnotationWindow({
           miradorId: _this._miradorId,
-          canvasWindowId: canvasWindowId
+          imageWindowId: canvasWindowId
         });
       });
 
@@ -9053,14 +9052,15 @@ var AnnotationWindow = function () {
   }, {
     key: 'addCreateWindowButton',
     value: function addCreateWindowButton() {
-      var _this = this;
+      var _this3 = this;
+
       var parent = this.element.find('.annowin_layer_row');
       var button = jQuery('<div/>').addClass('ym_create_window_button').append(jQuery('<i class="fa fa-plus fa-lg fa-fw"></i>'));
       parent.append(button);
       button.click(function (event) {
         jQuery.publish('YM_ADD_WINDOW', {
-          miradorId: _this.miradorId,
-          canvasWindowId: _this.canvasWindowId
+          miradorId: _this3.miradorId,
+          imageWindowId: _this3.canvasWindowId
         });
       });
     }
