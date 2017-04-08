@@ -15,7 +15,9 @@
   <%= stylesheet_link_tag 'yale-mirador.bundle' %>
 
   <% if defined? @use_firebase %>
-    <%= javascript_include_tag 'https://www.gstatic.com/firebasejs/live/3.0/firebase.js' %>
+    <% if false %> <%# not including firebase because it does not work from China %>
+      <%= javascript_include_tag 'https://www.gstatic.com/firebasejs/live/3.0/firebase.js' %>
+    <% end %>
   <% end %>
 
   <%= javascript_include_tag 'mirador.min' %>
