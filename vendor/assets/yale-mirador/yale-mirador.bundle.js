@@ -1,5 +1,5 @@
-// Yale-Mirador v0.6.2-0-g69ce572 built Tue Apr 18 2017 10:39:28 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.6.2-0-g69ce572 built Tue Apr 18 2017 10:39:28 GMT-0400 (EDT)";
+// Yale-Mirador v0.6.2-1-g7037dd6 built Tue Apr 18 2017 12:06:23 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.6.2-1-g7037dd6 built Tue Apr 18 2017 12:06:23 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -9718,7 +9718,8 @@ var MenuTagSelector = function () {
       selector: null,
       parent: null,
       annotationExplorer: null,
-      changeCallback: null
+      changeCallback: null,
+      depth: 1
     }, options);
 
     this.init();
@@ -9755,7 +9756,7 @@ var MenuTagSelector = function () {
         _this.selector.empty();
 
         var layers = [];
-        var menu = _this.buildMenu(annoHierarchy);
+        var menu = _this.buildMenu(annoHierarchy, null, 0);
         logger.debug('MenuTagSelector menu:', menu);
 
         _this.selector.setItems(menu);
@@ -9781,8 +9782,11 @@ var MenuTagSelector = function () {
 
   }, {
     key: 'buildMenu',
-    value: function buildMenu(node, parentItem) {
-      logger.debug('MenuTagSelector#buildMenu node:', node, 'parentItem:', parentItem);
+    value: function buildMenu(node, parentItem, currentDepth) {
+      logger.debug('MenuTagSelector#buildMenu node:', node, 'parentItem:', parentItem, 'currentDepth:', currentDepth);
+      if (currentDepth > this.depth) {
+        return null;
+      }
       var _this = this;
       var children = _util2.default.getValues(node.childNodes).sort(function (a, b) {
         return a.weight - b.weight;
@@ -9798,7 +9802,10 @@ var MenuTagSelector = function () {
       }
       if (children.length > 0) {
         jQuery.each(children, function (key, childNode) {
-          item.children.push(_this.buildMenu(childNode, node.isRoot ? null : item));
+          var subMenu = _this.buildMenu(childNode, node.isRoot ? null : item, currentDepth + 1);
+          if (subMenu) {
+            item.children.push(subMenu);
+          }
         });
       }
       if (node.isRoot) {

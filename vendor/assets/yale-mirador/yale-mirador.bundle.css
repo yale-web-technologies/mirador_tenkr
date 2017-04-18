@@ -394,6 +394,10 @@ p {
   margin: 0;
   padding: 5px 0 5px 0;
 }
+.annowin_header .menu.transition.visible {
+  max-height: 250px;
+  overflow-y: scroll;
+}
 .mirador-viewer .mirador-icon-window-menu.annowin_window_menu {
   margin: 0 10px 0 0;
   font-size: 0.8rem;
