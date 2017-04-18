@@ -1,5 +1,5 @@
-// Yale-Mirador v0.6.2-1-g7037dd6 built Tue Apr 18 2017 12:06:23 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.6.2-1-g7037dd6 built Tue Apr 18 2017 12:06:23 GMT-0400 (EDT)";
+// Yale-Mirador v0.6.2-2-g2e38bb4 built Tue Apr 18 2017 14:51:02 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.6.2-2-g2e38bb4 built Tue Apr 18 2017 14:51:02 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -7960,6 +7960,7 @@ var _class = function () {
       var annoListRenderer = new _annotationListRenderer2.default({
         canvasWindowId: imageWindowId
       });
+      // Just taking the first (highest-level) tag, for now
       var annoWin = new _annotationWindow2.default({ appendTo: jQuery('#' + windowId),
         annotationListRenderer: annoListRenderer,
         explorer: annoExplorer,
@@ -9101,6 +9102,8 @@ var AnnotationWindow = function () {
       var _this = this;
       var proxyMgr = (0, _miradorProxyManager2.default)();
       var annosToShow = [];
+      var fullTagsTargets = null;
+      var targetAnno = null;
 
       if (!this.id) {
         this.id = Mirador.genUUID();
@@ -9129,11 +9132,22 @@ var AnnotationWindow = function () {
           var toc = this.explorer.getAnnotationToc();
           if (toc) {
             annosToShow = annosToShow.filter(function (anno) {
+              return toc.matchHierarchy(anno, _this2.initialTocTags.slice(0, 1));
+            });
+            fullTagsTargets = annosToShow.filter(function (anno) {
               return toc.matchHierarchy(anno, _this2.initialTocTags);
             });
+            if (fullTagsTargets.length > 0) {
+              targetAnno = fullTagsTargets[0];
+            }
           }
         }
       }
+
+      if (!targetAnno) {
+        targetAnno = annosToShow[0];
+      }
+      logger.debug('AnnotationWindow#init targetAnno:', targetAnno);
 
       this.initLayerSelector();
       this.addCreateWindowButton();
@@ -9144,10 +9158,11 @@ var AnnotationWindow = function () {
       return this.reload().catch(function (reason) {
         throw 'AnnotationWindow#init reload failed - ' + reason;
       }).then(function () {
-        logger.debug('AnnotationWindow annosToShow:', annosToShow);
+        logger.debug('AnnotationWindow#init annosToShow:', annosToShow);
         if ((_this2.annotationId || _this2.initialTocTags) && annosToShow.length > 0) {
-          var finalTargetAnno = _import.annoUtil.findFinalTargetAnnotation(annosToShow[0], _this.canvasWindow.annotationsList);
-          _this.highlightAnnotations(annosToShow, 'SELECTED');
+          var finalTargetAnno = _import.annoUtil.findFinalTargetAnnotation(targetAnno, _this.canvasWindow.annotationsList);
+          logger.debug('AnnotationsWindow#init finalTargetAnno:', finalTargetAnno);
+          _this.highlightAnnotations(fullTagsTargets || annosToShow, 'SELECTED');
           _this.miradorProxy.publish('ANNOTATION_FOCUSED', [_this.id, finalTargetAnno]);
         }
         _this.bindEvents();
@@ -9372,10 +9387,10 @@ var AnnotationWindow = function () {
       logger.debug('annoElem.position().top:', annoElem.position().top);
       logger.debug('element.scrollTop():' + this.element.scrollTop());
 
-      //this.listElem.animate({
-      this.element.animate({
-        //scrollTop: annoElem.position().top + this.listElem.scrollTop()
-        scrollTop: annoElem.position().top + this.listElem.position().top + this.element.scrollTop()
+      this.listElem.animate({
+        //this.element.animate({
+        scrollTop: annoElem.position().top + this.listElem.scrollTop()
+        //scrollTop: annoElem.position().top + this.listElem.position().top + this.element.scrollTop()
       }, 250);
     }
   }, {
@@ -9719,6 +9734,7 @@ var MenuTagSelector = function () {
       parent: null,
       annotationExplorer: null,
       changeCallback: null,
+      initialTags: null,
       depth: 1
     }, options);
 
@@ -9729,6 +9745,10 @@ var MenuTagSelector = function () {
     key: 'init',
     value: function init() {
       var _this = this;
+      if (this.initialTags) {
+        this.initialTags = this.initialTags.slice(0, this.depth);
+      }
+
       this.selector = new _selector2.default({
         appendTo: this.parent,
         changeCallback: function changeCallback(value, text) {
@@ -14756,7 +14776,7 @@ module.exports = __webpack_require__(27);
 /***/ (function(module, exports) {
 
 // Joosugi version 0.2.0
-// Build: Tue Apr 18 2017 10:39:23 GMT-0400 (EDT)
+// Build: Tue Apr 18 2017 13:55:32 GMT-0400 (EDT)
 
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -15655,9 +15675,14 @@ module.exports = __webpack_require__(27);
 	          }
 	        }
 	      });
-	      console.log('KK tags:', tags);
 	      return tags;
 	    }
+
+	    /**
+	     * @param {object} annotation
+	     * @param {string[]} tags
+	     */
+
 	  }, {
 	    key: 'matchHierarchy',
 	    value: function matchHierarchy(annotation, tags) {
