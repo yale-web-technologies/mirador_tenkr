@@ -1,5 +1,5 @@
-// Yale-Mirador v0.6.2-2-g2e38bb4 built Tue Apr 18 2017 14:51:02 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.6.2-2-g2e38bb4 built Tue Apr 18 2017 14:51:02 GMT-0400 (EDT)";
+// Yale-Mirador v0.6.2-2-g2e38bb4 built Tue Apr 18 2017 16:23:11 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.6.2-2-g2e38bb4 built Tue Apr 18 2017 16:23:11 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -9101,6 +9101,7 @@ var AnnotationWindow = function () {
 
       var _this = this;
       var proxyMgr = (0, _miradorProxyManager2.default)();
+      var toc = this.explorer.getAnnotationToc();
       var annosToShow = [];
       var fullTagsTargets = null;
       var targetAnno = null;
@@ -9115,21 +9116,25 @@ var AnnotationWindow = function () {
       this.appendTo.append(this.element);
       this.listElem = this.element.find('.annowin_list');
 
-      if (!this.initialLayerId && this.annotationId) {
+      if (this.annotationId) {
         // annotation ID was given in the URL
-        annosToShow = this.canvasWindow.annotationsList.filter(function (anno) {
+        var matched = this.canvasWindow.annotationsList.filter(function (anno) {
           return anno['@id'] === _this.annotationId;
         });
-        if (annosToShow.length > 0) {
-          this.initialLayerId = annosToShow[0].layerId;
+        targetAnno = matched[0];
+        if (matched.length > 0) {
+          this.initialLayerId = targetAnno.layerId;
+          if (toc) {
+            this.initialTocTags = toc.getTagsFromAnnotationId(this.annotationId);
+          }
         }
-      } else if (this.initialLayerId) {
+      }
+      if (this.initialLayerId) {
         // layerIDs were given in the URL
         annosToShow = this.canvasWindow.annotationsList.filter(function (anno) {
           return anno.layerId == _this.initialLayerId;
         });
         if (this.initialTocTags) {
-          var toc = this.explorer.getAnnotationToc();
           if (toc) {
             annosToShow = annosToShow.filter(function (anno) {
               return toc.matchHierarchy(anno, _this2.initialTocTags.slice(0, 1));
@@ -9137,7 +9142,7 @@ var AnnotationWindow = function () {
             fullTagsTargets = annosToShow.filter(function (anno) {
               return toc.matchHierarchy(anno, _this2.initialTocTags);
             });
-            if (fullTagsTargets.length > 0) {
+            if (fullTagsTargets.length > 0 && !targetAnno) {
               targetAnno = fullTagsTargets[0];
             }
           }
@@ -9162,7 +9167,7 @@ var AnnotationWindow = function () {
         if ((_this2.annotationId || _this2.initialTocTags) && annosToShow.length > 0) {
           var finalTargetAnno = _import.annoUtil.findFinalTargetAnnotation(targetAnno, _this.canvasWindow.annotationsList);
           logger.debug('AnnotationsWindow#init finalTargetAnno:', finalTargetAnno);
-          _this.highlightAnnotations(fullTagsTargets || annosToShow, 'SELECTED');
+          _this.highlightAnnotations([targetAnno], 'SELECTED');
           _this.miradorProxy.publish('ANNOTATION_FOCUSED', [_this.id, finalTargetAnno]);
         }
         _this.bindEvents();
@@ -9384,14 +9389,12 @@ var AnnotationWindow = function () {
   }, {
     key: 'scrollToElem',
     value: function scrollToElem(annoElem) {
-      logger.debug('annoElem.position().top:', annoElem.position().top);
-      logger.debug('element.scrollTop():' + this.element.scrollTop());
-
+      /*
       this.listElem.animate({
-        //this.element.animate({
-        scrollTop: annoElem.position().top + this.listElem.scrollTop()
-        //scrollTop: annoElem.position().top + this.listElem.position().top + this.element.scrollTop()
+        scrollTop: annoElem.position().top
       }, 250);
+      */
+      annoElem[0].scrollIntoView(true);
     }
   }, {
     key: 'scrollToAnnotation',
@@ -14776,7 +14779,7 @@ module.exports = __webpack_require__(27);
 /***/ (function(module, exports) {
 
 // Joosugi version 0.2.0
-// Build: Tue Apr 18 2017 13:55:32 GMT-0400 (EDT)
+// Build: Tue Apr 18 2017 16:23:05 GMT-0400 (EDT)
 
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
