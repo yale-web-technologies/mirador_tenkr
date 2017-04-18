@@ -139,6 +139,26 @@ p {
   padding-top: 0.6em;
   padding-bottom: 0.6em;
 }
+.horizontal-lr {
+  direction: ltr;
+  white-space: normal;
+  writing-mode: horizontal-tb;
+}
+.horizontal-rl {
+  direction: rtl;
+  white-space: normal;
+  writing-mode: horizontal-tb;
+}
+.vertical-lr {
+  direction: ltr;
+  white-space: nowrap;
+  writing-mode: vertical-lr;
+}
+.vertical-rl {
+  direction: ltr;
+  white-space: nowrap;
+  writing-mode: vertical-rl;
+}
 .fatal_error {
   background-color: #000;
   bottom: 0;
@@ -337,9 +357,10 @@ p {
   border: #777 solid 1px;
   box-sizing: border-box;
   color: #fafafa;
+  display: flex;
+  flex-direction: column;
   height: 100%;
   margin: 0;
-  overflow-y: scroll;
   padding: 0 0 5px;
   position: absolute;
   width: 100%;
@@ -369,6 +390,7 @@ p {
   color: #fff;
 }
 .annowin_header {
+  flex: 0 1 auto;
   margin: 0;
   padding: 5px 0 5px 0;
 }
@@ -388,13 +410,13 @@ p {
   display: none;
 }
 .annowin_list {
+  flex: 1 1 auto;
   position: relative;
   /* required to make the div "positioned" so the child elements' positions to be obtained and scroll levels adjusted accordingly. */
   left: 0;
   right: 0;
   margin: 0;
   overflow-y: scroll;
-  min-height: 150%;
 }
 .annowin_group_header {
   font-size: 0.9em;
@@ -512,6 +534,19 @@ p {
 .annowin_anno .normal_view p:last-of-type {
   margin-bottom: 0;
 }
+.annowin_anno .content {
+  padding: 5px 5px;
+  font-size: 14px;
+  width: 100%;
+}
+.annowin_anno .annowin_anno .tag {
+  font-size: 0.7rem;
+  color: #eee;
+  background-color: #888;
+  margin: 0 2px;
+  padding: 0.1rem 0.2rem;
+  border-radius: 0.2rem;
+}
 .ym_anno_selected {
   border-color: #4684cc;
   border-width: 4px;
@@ -526,18 +561,6 @@ p {
   border-color: #fbb917;
   border-width: 4px;
   padding: 0;
-}
-.annowin_anno .content {
-  padding: 5px 5px;
-  font-size: 14px;
-}
-.annowin_anno .tag {
-  font-size: 0.7rem;
-  color: #eee;
-  background-color: #888;
-  margin: 0 2px;
-  padding: 0.1rem 0.2rem;
-  border-radius: 0.2rem;
 }
 .ym_annotation_window.fixed_height_cells .annowin_anno > .normal_view {
   height: 100px;
