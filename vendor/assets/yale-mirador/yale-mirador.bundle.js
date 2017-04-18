@@ -1,5 +1,5 @@
-// Yale-Mirador v0.6.2-2-g2e38bb4 built Tue Apr 18 2017 16:23:11 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.6.2-2-g2e38bb4 built Tue Apr 18 2017 16:23:11 GMT-0400 (EDT)";
+// Yale-Mirador v0.6.2-3-ga248a03 built Tue Apr 18 2017 16:56:47 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.6.2-3-ga248a03 built Tue Apr 18 2017 16:56:47 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -662,7 +662,8 @@ var StateStore = function () {
       this.logger.debug('StateStore#setString', key, value, this._localStorageAvailable);
       this._checkKey(key);
       this._settings[key] = value;
-      if (this._localStorasgeAvailable) {
+      if (this._localStorageAvailable) {
+        this.logger.debug('To local storage:', key, value);
         localStorage.setItem(key, value);
       }
     }
