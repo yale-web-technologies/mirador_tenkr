@@ -12,10 +12,12 @@ class ApiController < ApplicationController
       :endpointUrl => db_setting.endpoint_url,
       :firebase => _firebase_settings,
       :disableAuthz => true,
-      :fixAnnoCellHeight => db_setting.fix_anno_cell_height
+      :ui => {
+        :fixAnnoCellHeight => db_setting.fix_anno_cell_height
+      }
     }
     if tooltip_styles
-      jsonObj[:tooltipStyles] = tooltip_styles
+      jsonObj[:ui][:tooltipStyles] = tooltip_styles
     end
     render json: jsonObj
   end
