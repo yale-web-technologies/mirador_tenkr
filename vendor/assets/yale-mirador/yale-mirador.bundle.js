@@ -1,5 +1,5 @@
-// Yale-Mirador v0.6.2-5-geb42465 built Wed Apr 19 2017 15:03:57 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.6.2-5-geb42465 built Wed Apr 19 2017 15:03:57 GMT-0400 (EDT)";
+// Yale-Mirador v0.6.2-6-g8ce8a09 built Wed Apr 19 2017 16:45:43 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.6.2-6-g8ce8a09 built Wed Apr 19 2017 16:45:43 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -7644,7 +7644,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
   $.yaleExt = $.yaleExt || {};
 
   /*
-   * All functions in this file must be called in the context of 
+   * All functions in this file must be called in the context of
    * an OsdRegionDrawTool so "this" will point to the instance of it.
    */
   jQuery.extend($.yaleExt, {
@@ -7680,6 +7680,85 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
         });
       });
       this.osdViewer.forceRedraw();
+    },
+
+    updateHighlightsMulti: function updateHighlightsMulti(annotations) {
+      console.log('TTT annotations:', annotations);
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = Object.values(this.annotationsToShapesMap)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var shapes = _step.value;
+          var _iteratorNormalCompletion2 = true;
+          var _didIteratorError2 = false;
+          var _iteratorError2 = undefined;
+
+          try {
+            for (var _iterator2 = shapes[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+              var shape = _step2.value;
+              var _iteratorNormalCompletion3 = true;
+              var _didIteratorError3 = false;
+              var _iteratorError3 = undefined;
+
+              try {
+                for (var _iterator3 = annotations[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+                  var annotation = _step3.value;
+
+                  if (shape.data.annotation['@id'] === annotation['@id']) {
+                    $.yaleExt.highlightShape(shape);
+                    shape.bringToFront();
+                  } else {
+                    $.yaleExt.deHighlightShape(shape);
+                    shape.sendToBack();
+                  }
+                }
+              } catch (err) {
+                _didIteratorError3 = true;
+                _iteratorError3 = err;
+              } finally {
+                try {
+                  if (!_iteratorNormalCompletion3 && _iterator3.return) {
+                    _iterator3.return();
+                  }
+                } finally {
+                  if (_didIteratorError3) {
+                    throw _iteratorError3;
+                  }
+                }
+              }
+            }
+          } catch (err) {
+            _didIteratorError2 = true;
+            _iteratorError2 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                _iterator2.return();
+              }
+            } finally {
+              if (_didIteratorError2) {
+                throw _iteratorError2;
+              }
+            }
+          }
+        }
+        //this.osdViewer.forceRedraw();
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
     }
 
   });
