@@ -1,5 +1,5 @@
-// Yale-Mirador v0.6.2-3-ga248a03 built Tue Apr 18 2017 16:56:47 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.6.2-3-ga248a03 built Tue Apr 18 2017 16:56:47 GMT-0400 (EDT)";
+// Yale-Mirador v0.6.2-5-geb42465 built Wed Apr 19 2017 15:03:57 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.6.2-5-geb42465 built Wed Apr 19 2017 15:03:57 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -663,7 +663,6 @@ var StateStore = function () {
       this._checkKey(key);
       this._settings[key] = value;
       if (this._localStorageAvailable) {
-        this.logger.debug('To local storage:', key, value);
         localStorage.setItem(key, value);
       }
     }
@@ -7106,6 +7105,7 @@ var MiradorConfigBuilder = function () {
       if (!this.options.isEditor) {
         config.windowSettings.canvasControls.annotations.annotationCreation = false;
       }
+      config.windowSettings.canvasControls.annotations.annotationState = 'on';
 
       this.logger.debug('MiradorConfigBuilder#buildConfig config:', config);
       return config;
@@ -9071,8 +9071,6 @@ var AnnotationWindow = function () {
   function AnnotationWindow(options) {
     _classCallCheck(this, AnnotationWindow);
 
-    var _this = this;
-
     jQuery.extend(this, {
       id: null, // annotation window ID
       miradorId: null,
@@ -9225,6 +9223,7 @@ var AnnotationWindow = function () {
       var button = jQuery('<div/>').addClass('ym_create_window_button').append(jQuery('<i class="fa fa-plus fa-lg fa-fw"></i>'));
       parent.append(button);
       button.click(function (event) {
+        _this3.miradorProxy.publish('YM_DISPLAY_ON');
         jQuery.publish('YM_ADD_WINDOW', {
           miradorId: _this3.miradorId,
           imageWindowId: _this3.canvasWindowId
