@@ -1,5 +1,5 @@
-// Yale-Mirador v0.6.2-6-g8ce8a09 built Wed Apr 19 2017 16:45:43 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.6.2-6-g8ce8a09 built Wed Apr 19 2017 16:45:43 GMT-0400 (EDT)";
+// Yale-Mirador v0.6.2-8-g129f73d built Thu Apr 20 2017 10:35:46 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.6.2-8-g129f73d built Thu Apr 20 2017 10:35:46 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -7683,7 +7683,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
     },
 
     updateHighlightsMulti: function updateHighlightsMulti(annotations) {
-      console.log('TTT annotations:', annotations);
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
       var _iteratorError = undefined;
@@ -8203,8 +8202,6 @@ var _class = function () {
               var annoWin = _step6.value;
 
               var usedLayerId = annoWin.getCurrentLayerId();
-              console.log('used', usedLayerId);
-              console.log('new0', candidateLayerId);
               if (candidateLayerId === usedLayerId) {
                 useThisLayer = false;
                 break;
@@ -8226,7 +8223,6 @@ var _class = function () {
           }
 
           if (useThisLayer) {
-            console.log('USE', candidateLayerId);
             return candidateLayerId;
           }
         }
@@ -8245,7 +8241,6 @@ var _class = function () {
         }
       }
 
-      console.log('NO_CANDIDATE');
       return allLayers[0]['@id']; // return the first if every layer is already in use
     }
   }]);
@@ -9415,7 +9410,6 @@ var AnnotationWindow = function () {
       var id = window.canvasID;
       var canvases = window.manifest.getCanvases();
       var current = canvases.filter(function (canvas) {
-        console.log('canvas:', canvas);
         return canvas['@id'] === id;
       });
       if (current.length < 1) {
