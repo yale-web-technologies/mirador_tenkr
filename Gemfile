@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '2.4.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.0.1'
+gem 'rails', '~> 5.0.2'
 
 gem 'activerecord-session_store', '~> 1.0.0'
 
@@ -27,10 +27,10 @@ gem 'omniauth-twitter'
 
 gem 'less-rails-semantic_ui', '~> 2.2.9'
 
-gem 'autoprefixer-rails', '~> 6.7.6'
+gem 'autoprefixer-rails', '~> 7.0.1'
 
 # Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '~> 3.1.13'
+gem 'uglifier', '~> 3.2.0'
 # Use CoffeeScript for .coffee assets and views
 # gem 'coffee-rails', '~> 4.1.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
@@ -43,7 +43,7 @@ gem 'jquery-ui-rails', '~> 6.0.1'
 
 gem 'js_cookie_rails', '~> 2.1.3'
 
-gem 'tinymce-rails', '~> 4.5.6'
+gem 'tinymce-rails', '~> 4.6.0'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 # gem 'turbolinks'
