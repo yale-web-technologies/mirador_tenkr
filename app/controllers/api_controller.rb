@@ -1,11 +1,8 @@
 class ApiController < ApplicationController
   def settings
     db_setting = Admin::Setting.first
-    begin
-      tooltip_styles = JSON.parse(db_setting.tooltip_styles)
-    rescue
-      tooltip_styles = nil
-    end
+    tooltip_styles = _parse_json(db_setting.tooltip_styles)
+    overlay_settings = _parse_json(db_setting.ui_annotations_overlay)
     jsonObj = {
       :buildPath => '/mirador',
       :tagHierarchy => _get_tag_hierarchy,
@@ -16,9 +13,8 @@ class ApiController < ApplicationController
         :fixAnnoCellHeight => db_setting.fix_anno_cell_height
       }
     }
-    if tooltip_styles
-      jsonObj[:ui][:tooltipStyles] = tooltip_styles
-    end
+    jsonObj[:ui][:tooltipStyles] = tooltip_styles if tooltip_styles
+    jsonObj[:ui][:annotationsOverlay] = overlay_settings if overlay_settings
     render json: jsonObj
   end
 
@@ -30,6 +26,14 @@ class ApiController < ApplicationController
       return nil # JSON.parse wouldn't take nil as argument
     else
       return JSON.parse(jsonStr)
+    end
+  end
+
+  def _parse_json(json)
+    begin
+      return JSON.parse(json)
+    rescue
+      return nil
     end
   end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170405190432) do
+ActiveRecord::Schema.define(version: 20170510192709) do
 
   create_table "admin_manifests", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "room_id"
@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 20170405190432) do
     t.boolean  "disable_authentication"
     t.boolean  "fix_anno_cell_height"
     t.text     "tooltip_styles",         limit: 65535
+    t.string   "ui_annotations_overlay"
   end
 
   create_table "admin_user_roles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
@@ -115,7 +116,7 @@ ActiveRecord::Schema.define(version: 20170405190432) do
     t.index ["resource_id"], name: "index_manifests_services_on_resource_id", using: :btree
   end
 
-  create_table "sessions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "sessions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "session_id",               null: false
     t.text     "data",       limit: 65535
     t.datetime "created_at"
