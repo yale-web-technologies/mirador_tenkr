@@ -446,9 +446,11 @@ p {
 }
 .annowin_anno {
   background-color: #fafafa;
-  border: solid 1px #eee;
+  border: solid 2px #fafafa;
   color: #000;
-  padding: 3px;
+}
+.annowin_anno:hover {
+  border: solid 1px #bbb;
 }
 .annowin_anno .menu_bar {
   background-color: #76b4fc;
@@ -539,7 +541,7 @@ p {
   margin-bottom: 0;
 }
 .annowin_anno .content {
-  padding: 5px 5px;
+  padding: 5px 10px 5px 15px;
   font-size: 14px;
   width: 100%;
 }
@@ -553,17 +555,17 @@ p {
 }
 .ym_anno_selected {
   border-color: #4684cc;
-  border-width: 4px;
+  border-width: 1px;
   padding: 0;
 }
 .ym_anno_targeting {
   border-color: #cc6600;
-  border-width: 4px;
+  border-width: 1px;
   padding: 0;
 }
 .ym_anno_targeted {
   border-color: #fbb917;
-  border-width: 4px;
+  border-width: 1px;
   padding: 0;
 }
 .ym_annotation_window.fixed_height_cells .annowin_anno > .normal_view {
