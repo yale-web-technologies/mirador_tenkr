@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170510192709) do
+ActiveRecord::Schema.define(version: 20170601030439) do
 
   create_table "admin_manifests", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "room_id"
@@ -27,10 +27,11 @@ ActiveRecord::Schema.define(version: 20170510192709) do
     t.string   "title"
     t.string   "description"
     t.integer  "weight"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
-    t.text     "tag_hierarchy",  limit: 65535
-    t.text     "splash_message", limit: 65535
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.text     "tag_hierarchy",            limit: 65535
+    t.text     "splash_message",           limit: 65535
+    t.text     "project_mirador_settings", limit: 65535
     t.index ["machine_name"], name: "index_admin_rooms_on_machine_name", unique: true, using: :btree
   end
 
@@ -46,6 +47,7 @@ ActiveRecord::Schema.define(version: 20170510192709) do
     t.boolean  "fix_anno_cell_height"
     t.text     "tooltip_styles",         limit: 65535
     t.string   "ui_annotations_overlay"
+    t.text     "site_mirador_settings",  limit: 65535
   end
 
   create_table "admin_user_roles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|

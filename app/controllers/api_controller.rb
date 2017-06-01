@@ -1,6 +1,13 @@
 class ApiController < ApplicationController
   def settings
     db_setting = Admin::Setting.first
+    site_mirador_settings =_parse_json(db_setting.site_mirador_settings)
+    site_mirador_settings[:tagHierarchy] = _get_tag_hierarchy
+    render json: site_mirador_settings
+  end
+
+  def settings_old
+    db_setting = Admin::Setting.first
     tooltip_styles = _parse_json(db_setting.tooltip_styles)
     overlay_settings = _parse_json(db_setting.ui_annotations_overlay)
     jsonObj = {
@@ -33,6 +40,7 @@ class ApiController < ApplicationController
     begin
       return JSON.parse(json)
     rescue
+      logger.error("Failed to parse JSON: #{json}")
       return nil
     end
   end

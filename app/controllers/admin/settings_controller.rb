@@ -72,6 +72,6 @@ class Admin::SettingsController < ApplicationController
       params.require(:admin_setting).permit(:site_name, :landing_path,
         :endpoint_url, :maintenance_mode, :maintenance_message,
         :disable_authentication, :fix_anno_cell_height, :tooltip_styles,
-        :ui_annotations_overlay)
+        :ui_annotations_overlay, :site_mirador_settings)
     end
 end
