@@ -1,5 +1,5 @@
-// Yale-Mirador v0.6.3-2-g2716574 built Thu Jun 01 2017 10:52:55 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.6.3-2-g2716574 built Thu Jun 01 2017 10:52:55 GMT-0400 (EDT)";
+// Yale-Mirador v0.6.3-4-ged20458 built Thu Jun 01 2017 15:10:53 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.6.3-4-ged20458 built Thu Jun 01 2017 15:10:53 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -175,7 +175,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var registeredKeys = new Set(['annotationBackendUrl', 'annotationLayers', 'annotationsOverlay', 'copyrighted', 'copyrightedImageServiceUrl', 'disableAuthz', 'fixAnnoCellHeight', 'lastSelectedLayer', 'layerIndexMap', 'projectId', 'textDirection', 'tooltipStyles']);
+var logger = (0, _logger2.default)();
+
+var registeredKeys = new Set(['annotationBackendUrl', 'annotationLayers', 'annotationsOverlay', 'copyrighted', 'copyrightedImageServiceUrl', 'disableAuthz', 'fixAnnoCellHeight', 'hideTagsInAnnotation', 'lastSelectedLayer', 'layerIndexMap', 'projectId', 'textDirection', 'tooltipStyles']);
 
 /**
  * Holds states for the app, which will optionally persist if local storgae is
@@ -189,7 +191,6 @@ var StateStore = function () {
   function StateStore() {
     _classCallCheck(this, StateStore);
 
-    this.logger = (0, _logger2.default)();
     this._settings = {};
     this._localStorageAvailable = storageAvailable('localStorage');
   }
@@ -209,13 +210,14 @@ var StateStore = function () {
   }, {
     key: 'setTransient',
     value: function setTransient(key, value) {
+      logger.debug('StateStore#setTransient', key, value);
       this._checkKey(key);
       this._settings[key] = value;
     }
   }, {
     key: 'getString',
     value: function getString(key) {
-      this.logger.debug('StateStore#getString', key);
+      logger.debug('StateStore#getString', key);
       this._checkKey(key);
       var value = this._settings[key];
       if (!value) {
@@ -227,7 +229,7 @@ var StateStore = function () {
   }, {
     key: 'setString',
     value: function setString(key, value) {
-      this.logger.debug('StateStore#setString', key, value, this._localStorageAvailable);
+      logger.debug('StateStore#setString', key, value, this._localStorageAvailable);
       this._checkKey(key);
       this._settings[key] = value;
       if (this._localStorageAvailable) {
@@ -247,7 +249,7 @@ var StateStore = function () {
   }, {
     key: 'getObject',
     value: function getObject(key) {
-      this.logger.debug('StateStore#getObject', key);
+      logger.debug('StateStore#getObject', key);
       this._checkKey(key);
       var value = this.getString(key);
       return value ? JSON.parse(value) : null;
@@ -255,7 +257,7 @@ var StateStore = function () {
   }, {
     key: 'setObject',
     value: function setObject(key, value) {
-      this.logger.debug('StateStore#setObject', key, value);
+      logger.debug('StateStore#setObject', key, value);
       this._checkKey(key);
       var stringValue = JSON.stringify(value);
       this.setString(key, stringValue);
@@ -733,6 +735,7 @@ var App = function () {
                   state.setString('textDirection', settings.ui.textDirection);
                   state.setTransient('annotationsOverlay', settings.ui.annotationsOverlay);
                   state.setTransient('tooltipStyles', settings.ui.tooltipStyles);
+                  state.setTransient('hideTagsInAnnotation', settings.ui.hideTagsInAnnotation);
                 }
 
               case 13:
@@ -12769,6 +12772,10 @@ var AnnotationListRenderer = function () {
         menuBar.addClass('targeting_anno');
       } else {
         menuBar.removeClass('targeting_anno');
+      }
+
+      if (state.getTransient('hideTagsInAnnotation')) {
+        annoElem.find('.tags').hide();
       }
 
       this.bindAnnotationItemEvents(annoElem, annotation, options);
