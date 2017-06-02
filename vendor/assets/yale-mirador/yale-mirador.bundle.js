@@ -1,5 +1,5 @@
-// Yale-Mirador v0.6.3-4-ged20458 built Thu Jun 01 2017 15:10:53 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.6.3-4-ged20458 built Thu Jun 01 2017 15:10:53 GMT-0400 (EDT)";
+// Yale-Mirador v0.6.3-4-ged20458 built Fri Jun 02 2017 14:26:31 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.6.3-4-ged20458 built Fri Jun 02 2017 14:26:31 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
