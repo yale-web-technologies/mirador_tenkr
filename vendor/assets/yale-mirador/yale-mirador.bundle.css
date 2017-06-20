@@ -64,6 +64,13 @@ a.hud-control.hud-dropdown {
 .mirador-container .mirador-viewer a.mirador-icon-open-annowin.selected {
   color: black;
 }
+.mirador-container .mirador-viewer .annotation-display.annotation-tooltip .text-viewer {
+  color: #eee;
+}
+.mirador-container .mirador-viewer .annotation-display.annotation-tooltip .text-viewer:hover {
+  cursor: pointer;
+  color: #fff;
+}
 .mirador-container .qtip-viewer .qtip-content {
   max-height: unset;
 }

@@ -1,5 +1,5 @@
-// Yale-Mirador v0.6.3-4-ged20458 built Fri Jun 02 2017 14:26:31 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.6.3-4-ged20458 built Fri Jun 02 2017 14:26:31 GMT-0400 (EDT)";
+// Yale-Mirador v0.6.3-7-g6c8610a built Mon Jun 19 2017 17:04:41 GMT+0900 (KST)
+window._YaleMiradorVersion="Yale-Mirador v0.6.3-7-g6c8610a built Mon Jun 19 2017 17:04:41 GMT+0900 (KST)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -12917,6 +12917,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _import = __webpack_require__(2);
@@ -13008,6 +13010,10 @@ var AnnotationWindow = function () {
       if (this.annotationId) {
         // annotation ID was given in the URL
         var matched = this.canvasWindow.annotationsList.filter(function (anno) {
+          if (!anno || (typeof anno === 'undefined' ? 'undefined' : _typeof(anno)) !== 'object') {
+            logger.error('AnnotationWindow#init Invalid annotation', anno);
+            return false;
+          }
           return anno['@id'] === _this.annotationId;
         });
         targetAnno = matched[0];
@@ -13018,6 +13024,7 @@ var AnnotationWindow = function () {
           }
         }
       }
+
       if (this.initialLayerId) {
         // layerIDs were given in the URL
         annosToShow = this.canvasWindow.annotationsList.filter(function (anno) {
@@ -14000,7 +14007,7 @@ var template = Handlebars.compile(['Loading annotations ...'].join(''));
 /* 40 */
 /***/ (function(module, exports) {
 
-// joosugi v0.2.1-5-g8111a81 built Thu May 18 2017 15:59:53 GMT-0400 (EDT)
+// joosugi v0.2.1-7-g0524e13 built Tue Jun 06 2017 20:59:30 GMT+0200 (CEST)
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -14980,7 +14987,11 @@ var AnnotationToc = function () {
       var _this = this;
       var matched = false;
 
-      if (node.annotation['@id'] === annotation['@id']) {
+      if (!node.annotation) {
+        console.log('ERROR AnnotationToc#matchNode no annotation assigned to node', node.spec);
+      }
+
+      if (node.annotation && node.annotation['@id'] === annotation['@id']) {
         return true;
       }
       var _iteratorNormalCompletion10 = true;
