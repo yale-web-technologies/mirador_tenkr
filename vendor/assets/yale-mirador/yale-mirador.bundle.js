@@ -1,5 +1,5 @@
-// Yale-Mirador v0.6.3-7-g6c8610a built Mon Jun 19 2017 17:04:41 GMT+0900 (KST)
-window._YaleMiradorVersion="Yale-Mirador v0.6.3-7-g6c8610a built Mon Jun 19 2017 17:04:41 GMT+0900 (KST)";
+// Yale-Mirador v0.6.3-9-g703b604 built Tue Jun 20 2017 23:28:26 GMT+0900 (KST)
+window._YaleMiradorVersion="Yale-Mirador v0.6.3-9-g703b604 built Tue Jun 20 2017 23:28:26 GMT+0900 (KST)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -67,7 +67,7 @@ window._YaleMiradorVersion="Yale-Mirador v0.6.3-7-g6c8610a built Mon Jun 19 2017
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 45);
+/******/ 	return __webpack_require__(__webpack_require__.s = 46);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -310,8 +310,8 @@ function getStateStore() {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-__webpack_require__(40);
 __webpack_require__(41);
+__webpack_require__(42);
 
 var annoUtil = joosugi.annotationUtil;
 var Anno = joosugi.AnnotationWrapper;
@@ -340,7 +340,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _miradorProxy = __webpack_require__(31);
+var _miradorProxy = __webpack_require__(32);
 
 var _miradorProxy2 = _interopRequireDefault(_miradorProxy);
 
@@ -560,6 +560,8 @@ __webpack_require__(27);
 
 __webpack_require__(28);
 
+__webpack_require__(29);
+
 __webpack_require__(24);
 
 var _import = __webpack_require__(2);
@@ -588,7 +590,7 @@ var _stateStore = __webpack_require__(1);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
-var _grid = __webpack_require__(29);
+var _grid = __webpack_require__(30);
 
 var _grid2 = _interopRequireDefault(_grid);
 
@@ -598,7 +600,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-__webpack_require__(42);
+__webpack_require__(43);
 
 //import MainMenu from './widgets/main-menu'; //deprecated
 //import './util/jquery-tiny-pubsub-trace'; // import this only for debugging!
@@ -813,7 +815,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _miradorWrapper = __webpack_require__(33);
+var _miradorWrapper = __webpack_require__(34);
 
 var _miradorWrapper2 = _interopRequireDefault(_miradorWrapper);
 
@@ -9395,7 +9397,7 @@ module.exports = _dereq_(23);
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}]},{},[1]);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(44), __webpack_require__(43)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(45), __webpack_require__(44)))
 
 /***/ }),
 /* 16 */
@@ -10172,7 +10174,7 @@ var _app = __webpack_require__(4);
 
 var _app2 = _interopRequireDefault(_app);
 
-var _errorDialog = __webpack_require__(37);
+var _errorDialog = __webpack_require__(38);
 
 var _errorDialog2 = _interopRequireDefault(_errorDialog);
 
@@ -10188,7 +10190,7 @@ var _pageController = __webpack_require__(5);
 
 var _pageController2 = _interopRequireDefault(_pageController);
 
-var _modalAlert = __webpack_require__(39);
+var _modalAlert = __webpack_require__(40);
 
 var _modalAlert2 = _interopRequireDefault(_modalAlert);
 
@@ -10599,11 +10601,15 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = {
   en: {
     nextCanvas: 'Next Canvas',
-    previousCanvas: 'Previous Canvas'
+    previousCanvas: 'Previous Canvas',
+    showBottomPanel: "Show Canvas List",
+    hideBottomPanel: "Hide Canvas List"
   },
   ko: {
     nextCanvas: '다음 캔버스',
-    previousCanvas: '이전 캔버스'
+    previousCanvas: '이전 캔버스',
+    showBottomPanel: "캔버스 리스트",
+    hideBottomPanel: "캔버스 리스트 감추기"
   }
 };
 
@@ -11016,6 +11022,86 @@ var _logger2 = _interopRequireDefault(_logger);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 (function ($) {
+  var logger = (0, _logger2.default)();
+
+  $.Hud.prototype.qtipExtra = function (jsonLd) {
+
+    this.element.find('.mirador-osd-previous').each(function () {
+      jQuery(this).qtip({
+        content: {
+          text: jQuery(this).attr('title')
+        },
+        position: {
+          my: 'bottom left',
+          at: 'top left'
+        },
+        style: {
+          classes: 'qtip-dark qtip-shadow qtip-rounded',
+          tip: false
+        }
+      });
+    });
+    this.element.find('.mirador-osd-next').each(function () {
+      jQuery(this).qtip({
+        content: {
+          text: jQuery(this).attr('title')
+        },
+        position: {
+          my: 'bottom right',
+          at: 'top right'
+        },
+        style: {
+          classes: 'qtip-dark qtip-shadow qtip-rounded',
+          tip: false
+        }
+      });
+    });
+  };
+
+  $.Hud.prototype.toggleBottomPanelQtip = function (bottomPanelVisible) {
+    var title = bottomPanelVisible ? i18next.t('hideBottomPanel') : i18next.t('showBottomPanel');
+    var elem = this.element.find('.mirador-osd-toggle-bottom-panel');
+
+    if (!this._bottomPanelQtipInitialized) {
+      elem.each(function () {
+        jQuery(this).qtip({
+          content: {
+            text: title
+          },
+          position: {
+            my: 'bottom center',
+            at: 'top center',
+            adjust: {
+              method: 'shift',
+              y: 10
+            }
+          },
+          style: {
+            classes: 'qtip-dark qtip-shadow qtip-rounded'
+          }
+        });
+      });
+      this._bottomPanelQtipInitialized = true;
+    } else {
+      elem.qtip('option', 'content.text', title);
+    }
+  };
+})(Mirador);
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _logger = __webpack_require__(0);
+
+var _logger2 = _interopRequireDefault(_logger);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function ($) {
 
   $.yaleExt = $.yaleExt || {};
 
@@ -11125,7 +11211,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 })(Mirador);
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11323,7 +11409,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 })(Mirador);
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11518,7 +11604,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 })(Mirador);
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11546,11 +11632,11 @@ var _stateStore = __webpack_require__(1);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
-var _annotationListRenderer = __webpack_require__(35);
+var _annotationListRenderer = __webpack_require__(36);
 
 var _annotationListRenderer2 = _interopRequireDefault(_annotationListRenderer);
 
-var _annotationWindow = __webpack_require__(36);
+var _annotationWindow = __webpack_require__(37);
 
 var _annotationWindow2 = _interopRequireDefault(_annotationWindow);
 
@@ -11948,7 +12034,7 @@ var _class = function () {
 exports.default = _class;
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12077,7 +12163,7 @@ var LayoutConfigParser = function () {
 exports.default = LayoutConfigParser;
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12093,7 +12179,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _workspaceProxy = __webpack_require__(32);
+var _workspaceProxy = __webpack_require__(33);
 
 var _workspaceProxy2 = _interopRequireDefault(_workspaceProxy);
 
@@ -12172,7 +12258,7 @@ var MiradorProxy = function () {
 exports.default = MiradorProxy;
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12238,7 +12324,7 @@ var WorkspaceProxy = function () {
 exports.default = WorkspaceProxy;
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12262,7 +12348,7 @@ var _miradorProxyManager = __webpack_require__(3);
 
 var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
-var _layoutConfigParser = __webpack_require__(30);
+var _layoutConfigParser = __webpack_require__(31);
 
 var _layoutConfigParser2 = _interopRequireDefault(_layoutConfigParser);
 
@@ -12270,7 +12356,7 @@ var _miradorConfigBuilder = __webpack_require__(23);
 
 var _miradorConfigBuilder2 = _interopRequireDefault(_miradorConfigBuilder);
 
-var _annotationExplorer = __webpack_require__(34);
+var _annotationExplorer = __webpack_require__(35);
 
 var _windowProxy = __webpack_require__(8);
 
@@ -12422,7 +12508,7 @@ var MiradorWrapper = function () {
 exports.default = MiradorWrapper;
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12519,7 +12605,7 @@ exports.openAnnotationSelector = openAnnotationSelector;
 ;
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12905,7 +12991,7 @@ var annotationTemplate = Handlebars.compile(['<div class="annowin_anno">', '  <d
 var headerTemplate = Handlebars.compile(['<div class="annowin_group_header">{{text}}', '</div>'].join(''));
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12939,7 +13025,7 @@ var _stateStore = __webpack_require__(1);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
-var _menuTagSelector = __webpack_require__(38);
+var _menuTagSelector = __webpack_require__(39);
 
 var _menuTagSelector2 = _interopRequireDefault(_menuTagSelector);
 
@@ -13716,7 +13802,7 @@ exports.default = AnnotationWindow;
 var template = Handlebars.compile(['<div class="ym_annotation_window">', '  <div class="annowin_header">', '    <div class="annowin_layer_row">', '      <span class="layer_selector_container"></span>', '    </div>', '    <div class="annowin_menu_tag_row">', '      <span class="menu_tag_selector_container"></span>', '    </div>', '    <div class="annowin_temp_row">', '      <div class="fluid ui small orange button ym_button">Click to save order</div>', '    </div>', '  </div>', '  <div class="placeholder"></div>', '  <div class="annowin_list">', '  </div>', '</div>'].join(''));
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13787,7 +13873,7 @@ var template = Handlebars.compile(['<div class="header">Error</div>', '<div clas
 var MSG_TRY_LATER = '<p>Please try again by reloading the page, or if problem persists, contact the site administrator.</p>';
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13940,7 +14026,7 @@ var MenuTagSelector = function () {
 exports.default = MenuTagSelector;
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14004,7 +14090,7 @@ var instance = null;
 var template = Handlebars.compile(['Loading annotations ...'].join(''));
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports) {
 
 // joosugi v0.2.1-7-g0524e13 built Tue Jun 06 2017 20:59:30 GMT+0200 (CEST)
@@ -15485,7 +15571,7 @@ window.joosugi = {
 module.exports = joosugi;
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports) {
 
 // joosugi-semantic-ui v0.1.1-3-gbf770d5 built Tue May 09 2017 14:36:06 GMT-0400 (EDT)
@@ -18845,13 +18931,13 @@ module.exports = __webpack_require__(0);
 module.exports = joosugiUI;
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -19037,7 +19123,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports) {
 
 var g;
@@ -19064,7 +19150,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(15);
