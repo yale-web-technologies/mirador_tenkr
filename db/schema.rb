@@ -118,7 +118,7 @@ ActiveRecord::Schema.define(version: 20170601030439) do
     t.index ["resource_id"], name: "index_manifests_services_on_resource_id", using: :btree
   end
 
-  create_table "sessions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "sessions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "session_id",               null: false
     t.text     "data",       limit: 65535
     t.datetime "created_at"
