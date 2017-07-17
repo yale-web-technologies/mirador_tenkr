@@ -3,6 +3,7 @@ class ApiController < ApplicationController
     db_setting = Admin::Setting.first
     site_mirador_settings =_parse_json(db_setting.site_mirador_settings)
     site_mirador_settings[:tagHierarchy] = _get_tag_hierarchy
+    site_mirador_settings[:tocSpec] = _get_toc_spec
     render json: site_mirador_settings
   end
 
@@ -29,6 +30,17 @@ class ApiController < ApplicationController
     room_id = params[:room_id]
     room = Admin::Room.find(room_id)
     jsonStr = room.tag_hierarchy
+    if jsonStr.nil? || jsonStr.strip == ''
+      return nil # JSON.parse wouldn't take nil as argument
+    else
+      return JSON.parse(jsonStr)
+    end
+  end
+
+  def _get_toc_spec
+    room_id = params[:room_id]
+    room = Admin::Room.find(room_id)
+    jsonStr = room.toc_spec
     if jsonStr.nil? || jsonStr.strip == ''
       return nil # JSON.parse wouldn't take nil as argument
     else

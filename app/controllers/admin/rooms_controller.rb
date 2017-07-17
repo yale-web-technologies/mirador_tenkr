@@ -71,6 +71,6 @@ class Admin::RoomsController < ApplicationController
     def admin_room_params
       #params[:admin_room]
       params.require(:admin_room).permit(:machine_name, :title, :description,
-        :weight, :tag_hierarchy, :splash_message)
+        :weight, :tag_hierarchy, :toc_spec, :splash_message)
     end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170601030439) do
+ActiveRecord::Schema.define(version: 20170717084436) do
 
   create_table "admin_manifests", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "room_id"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 20170601030439) do
     t.text     "tag_hierarchy",            limit: 65535
     t.text     "splash_message",           limit: 65535
     t.text     "project_mirador_settings", limit: 65535
+    t.text     "toc_spec",                 limit: 65535
     t.index ["machine_name"], name: "index_admin_rooms_on_machine_name", unique: true, using: :btree
   end
 

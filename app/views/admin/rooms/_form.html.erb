@@ -10,7 +10,7 @@
       </ul>
     </div>
   <% end %>
-  
+
   <div class="field">
     <%= f.label(:machine_name, 'Name (letters, numbers, or underscores)') %>
     <%= f.text_field(:machine_name) %>
@@ -25,7 +25,7 @@
     <%= f.label(:description) %>
     <%= f.text_field(:description) %>
   </div>
-  
+
   <div class="field">
     <%= f.label(:weight) %>
     <%= f.text_field(:weight) %>
@@ -34,6 +34,11 @@
   <div class="field">
     <%= f.label(:tag_hierarchy) %>
     <%= f.text_area(:tag_hierarchy) %>
+  </div>
+
+  <div class="field">
+    <%= f.label(:toc_spec) %>
+    <%= f.text_area(:toc_spec) %>
   </div>
 
   <div class="field">
