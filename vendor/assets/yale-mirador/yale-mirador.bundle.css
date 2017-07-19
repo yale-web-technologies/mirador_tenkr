@@ -98,6 +98,9 @@ a.hud-control.hud-dropdown {
   margin-left: 5px;
   text-decoration: underline;
 }
+.mirador-container .sidePanel {
+  background-color: #bbb;
+}
 .mirador-container .sidePanel .tabContentArea {
   background-color: #000;
   color: #fff;
@@ -129,6 +132,29 @@ a.hud-control.hud-dropdown {
   height: @mirador-header-height;
 }
 */
+.mirador-container .sidePanel .ym-annotation-toc {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  overflow-y: scroll;
+}
+.mirador-container .sidePanel .ym-annotation-toc h1 {
+  margin: 15px;
+  font-size: 1.5rem;
+  color: #eee;
+}
+.mirador-container .sidePanel .ym-annotation-toc-item {
+  margin: 15px;
+}
+.mirador-container .sidePanel .ym-annotation-toc-item a {
+  color: #bbb;
+}
+.mirador-container .sidePanel .ym-annotation-toc-item a:hover {
+  color: #fff;
+}
+.mirador-container .sidePanel .ym-annotation-toc-item.selected a {
+  color: #fff;
+}
 html,
 body,
 div,

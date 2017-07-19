@@ -1,5 +1,5 @@
-// Yale-Mirador v0.6.3-14-gcfead26 built Mon Jul 17 2017 04:36:23 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.6.3-14-gcfead26 built Mon Jul 17 2017 04:36:23 GMT-0400 (EDT)";
+// Yale-Mirador v0.6.3-14-gcfead26 built Wed Jul 19 2017 15:43:05 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.6.3-14-gcfead26 built Wed Jul 19 2017 15:43:05 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -67,7 +67,7 @@ window._YaleMiradorVersion="Yale-Mirador v0.6.3-14-gcfead26 built Mon Jul 17 201
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 50);
+/******/ 	return __webpack_require__(__webpack_require__.s = 52);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -172,8 +172,8 @@ var Logger = function () {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-__webpack_require__(45);
-__webpack_require__(46);
+__webpack_require__(47);
+__webpack_require__(48);
 
 var Anno = joosugi.AnnotationWrapper;
 var AnnotationExplorer = joosugi.AnnotationExplorer;
@@ -200,11 +200,159 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+exports.default = getStateStore;
+
 var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _miradorProxy = __webpack_require__(34);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var logger = (0, _logger2.default)();
+
+var registeredKeys = new Set(['annotationBackendUrl', 'annotationLayers', 'annotationsOverlay', 'copyrighted', 'copyrightedImageServiceUrl', 'disableAuthz', 'fixAnnoCellHeight', 'hideTagsInAnnotation', 'lastSelectedLayer', 'layerIndexMap', 'projectId', 'tagHierarchy', 'textDirection', 'tocSpec', 'tooltipStyles']);
+
+/**
+ * Holds states for the app, which will optionally persist if local storgae is
+ * available.
+ * The distinction of setString, setObject, setBoolean was necessary
+ * because we have to assume only the "string" type is supported
+ * currently for local storage on all browsers.
+ */
+
+var StateStore = function () {
+  function StateStore() {
+    _classCallCheck(this, StateStore);
+
+    this._settings = {};
+    this._localStorageAvailable = storageAvailable('localStorage');
+  }
+
+  // For values that are not persisted
+
+
+  _createClass(StateStore, [{
+    key: 'getTransient',
+    value: function getTransient(key) {
+      this._checkKey(key);
+      return this._settings[key];
+    }
+
+    // For values that are not persisted
+
+  }, {
+    key: 'setTransient',
+    value: function setTransient(key, value) {
+      logger.debug('StateStore#setTransient', key, value);
+      this._checkKey(key);
+      this._settings[key] = value;
+    }
+  }, {
+    key: 'getString',
+    value: function getString(key) {
+      logger.debug('StateStore#getString', key);
+      this._checkKey(key);
+      var value = this._settings[key];
+      if (!value) {
+        value = this._localStorageAvailable ? localStorage.getItem(key) : null;
+        this._settings[key] = value;
+      }
+      return value;
+    }
+  }, {
+    key: 'setString',
+    value: function setString(key, value) {
+      logger.debug('StateStore#setString', key, value, this._localStorageAvailable);
+      this._checkKey(key);
+      this._settings[key] = value;
+      if (this._localStorageAvailable) {
+        localStorage.setItem(key, value);
+      }
+    }
+  }, {
+    key: 'getBoolean',
+    value: function getBoolean(key) {
+      return this.getString(key) === 'true';
+    }
+  }, {
+    key: 'setBoolean',
+    value: function setBoolean(key, value) {
+      this.setString(key, value ? 'true' : 'false');
+    }
+  }, {
+    key: 'getObject',
+    value: function getObject(key) {
+      logger.debug('StateStore#getObject', key);
+      this._checkKey(key);
+      var value = this.getString(key);
+      return value ? JSON.parse(value) : null;
+    }
+  }, {
+    key: 'setObject',
+    value: function setObject(key, value) {
+      logger.debug('StateStore#setObject', key, value);
+      this._checkKey(key);
+      var stringValue = JSON.stringify(value);
+      this.setString(key, stringValue);
+    }
+  }, {
+    key: '_checkKey',
+    value: function _checkKey(key) {
+      if (!registeredKeys.has(key)) {
+        throw 'ERROR Invalid key for StateStore ' + key;
+      }
+    }
+  }]);
+
+  return StateStore;
+}();
+
+/**
+ * param {string} type "localStorage" or "sessionStorage"
+ */
+
+
+function storageAvailable(type) {
+  try {
+    var storage = window[type],
+        x = '__storage_test__';
+    storage.setItem(x, x);
+    storage.removeItem(x);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+var _instance = null;
+
+function getStateStore() {
+  if (!_instance) {
+    _instance = new StateStore();
+  }
+  return _instance;
+};
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _logger = __webpack_require__(0);
+
+var _logger2 = _interopRequireDefault(_logger);
+
+var _miradorProxy = __webpack_require__(36);
 
 var _miradorProxy2 = _interopRequireDefault(_miradorProxy);
 
@@ -402,154 +550,6 @@ exports.default = getMiradorProxyManager;
 Mirador.getMiradorProxyManager = getMiradorProxyManager; // to be called from Mirador core.
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-exports.default = getStateStore;
-
-var _logger = __webpack_require__(0);
-
-var _logger2 = _interopRequireDefault(_logger);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var logger = (0, _logger2.default)();
-
-var registeredKeys = new Set(['annotationBackendUrl', 'annotationLayers', 'annotationsOverlay', 'copyrighted', 'copyrightedImageServiceUrl', 'disableAuthz', 'fixAnnoCellHeight', 'hideTagsInAnnotation', 'lastSelectedLayer', 'layerIndexMap', 'projectId', 'tagHierarchy', 'textDirection', 'tocSpec', 'tooltipStyles']);
-
-/**
- * Holds states for the app, which will optionally persist if local storgae is
- * available.
- * The distinction of setString, setObject, setBoolean was necessary
- * because we have to assume only the "string" type is supported
- * currently for local storage on all browsers.
- */
-
-var StateStore = function () {
-  function StateStore() {
-    _classCallCheck(this, StateStore);
-
-    this._settings = {};
-    this._localStorageAvailable = storageAvailable('localStorage');
-  }
-
-  // For values that are not persisted
-
-
-  _createClass(StateStore, [{
-    key: 'getTransient',
-    value: function getTransient(key) {
-      this._checkKey(key);
-      return this._settings[key];
-    }
-
-    // For values that are not persisted
-
-  }, {
-    key: 'setTransient',
-    value: function setTransient(key, value) {
-      logger.debug('StateStore#setTransient', key, value);
-      this._checkKey(key);
-      this._settings[key] = value;
-    }
-  }, {
-    key: 'getString',
-    value: function getString(key) {
-      logger.debug('StateStore#getString', key);
-      this._checkKey(key);
-      var value = this._settings[key];
-      if (!value) {
-        value = this._localStorageAvailable ? localStorage.getItem(key) : null;
-        this._settings[key] = value;
-      }
-      return value;
-    }
-  }, {
-    key: 'setString',
-    value: function setString(key, value) {
-      logger.debug('StateStore#setString', key, value, this._localStorageAvailable);
-      this._checkKey(key);
-      this._settings[key] = value;
-      if (this._localStorageAvailable) {
-        localStorage.setItem(key, value);
-      }
-    }
-  }, {
-    key: 'getBoolean',
-    value: function getBoolean(key) {
-      return this.getString(key) === 'true';
-    }
-  }, {
-    key: 'setBoolean',
-    value: function setBoolean(key, value) {
-      this.setString(key, value ? 'true' : 'false');
-    }
-  }, {
-    key: 'getObject',
-    value: function getObject(key) {
-      logger.debug('StateStore#getObject', key);
-      this._checkKey(key);
-      var value = this.getString(key);
-      return value ? JSON.parse(value) : null;
-    }
-  }, {
-    key: 'setObject',
-    value: function setObject(key, value) {
-      logger.debug('StateStore#setObject', key, value);
-      this._checkKey(key);
-      var stringValue = JSON.stringify(value);
-      this.setString(key, stringValue);
-    }
-  }, {
-    key: '_checkKey',
-    value: function _checkKey(key) {
-      if (!registeredKeys.has(key)) {
-        throw 'ERROR Invalid key for StateStore ' + key;
-      }
-    }
-  }]);
-
-  return StateStore;
-}();
-
-/**
- * param {string} type "localStorage" or "sessionStorage"
- */
-
-
-function storageAvailable(type) {
-  try {
-    var storage = window[type],
-        x = '__storage_test__';
-    storage.setItem(x, x);
-    storage.removeItem(x);
-    return true;
-  } catch (e) {
-    return false;
-  }
-}
-
-var _instance = null;
-
-function getStateStore() {
-  if (!_instance) {
-    _instance = new StateStore();
-  }
-  return _instance;
-};
-
-/***/ }),
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -564,17 +564,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 exports.default = getApp;
 
-__webpack_require__(27);
-
 __webpack_require__(28);
 
 __webpack_require__(29);
 
-__webpack_require__(30);
-
-__webpack_require__(31);
-
-__webpack_require__(26);
+__webpack_require__(33);
 
 var _import = __webpack_require__(1);
 
@@ -606,11 +600,11 @@ var _pageController = __webpack_require__(6);
 
 var _pageController2 = _interopRequireDefault(_pageController);
 
-var _stateStore = __webpack_require__(3);
+var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
-var _grid = __webpack_require__(32);
+var _grid = __webpack_require__(34);
 
 var _grid2 = _interopRequireDefault(_grid);
 
@@ -620,7 +614,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-__webpack_require__(47);
+__webpack_require__(49);
 
 //import MainMenu from './widgets/main-menu'; //deprecated
 //import './util/jquery-tiny-pubsub-trace'; // import this only for debugging!
@@ -951,6 +945,21 @@ var WindowProxy = function () {
       var imageView = this.getImageView();
       return imageView ? imageView.annotationsLayer.drawTool : null;
     }
+  }, {
+    key: 'getSidePanel',
+    value: function getSidePanel() {
+      return this.window.sidePanel;
+    }
+
+    /**
+     * @param {*} klass CSS class for the root element of sidebar content (child of .tabContentArea)
+     */
+
+  }, {
+    key: 'getSidePanelTabContentElement',
+    value: function getSidePanelTabContentElement(klass) {
+      return this.getSidePanel().element.find('.tabContentArea > .' + klass);
+    }
   }]);
 
   return WindowProxy;
@@ -979,11 +988,11 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _miradorProxyManager = __webpack_require__(2);
+var _miradorProxyManager = __webpack_require__(3);
 
 var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
-var _miradorWrapper = __webpack_require__(36);
+var _miradorWrapper = __webpack_require__(38);
 
 var _miradorWrapper2 = _interopRequireDefault(_miradorWrapper);
 
@@ -1256,7 +1265,7 @@ var _pageController = __webpack_require__(6);
 
 var _pageController2 = _interopRequireDefault(_pageController);
 
-var _stateStore = __webpack_require__(3);
+var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
@@ -2051,7 +2060,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _miradorProxyManager = __webpack_require__(2);
+var _miradorProxyManager = __webpack_require__(3);
 
 var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
@@ -2604,7 +2613,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _miradorProxyManager = __webpack_require__(2);
+var _miradorProxyManager = __webpack_require__(3);
 
 var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
@@ -2612,7 +2621,7 @@ var _pageController = __webpack_require__(6);
 
 var _pageController2 = _interopRequireDefault(_pageController);
 
-var _stateStore = __webpack_require__(3);
+var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
@@ -3104,7 +3113,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _stateStore = __webpack_require__(3);
+var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
@@ -10289,7 +10298,7 @@ module.exports = _dereq_(23);
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}]},{},[1]);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(49), __webpack_require__(48)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(51), __webpack_require__(50)))
 
 /***/ }),
 /* 18 */
@@ -10859,7 +10868,7 @@ var _app = __webpack_require__(4);
 
 var _app2 = _interopRequireDefault(_app);
 
-var _errorDialog = __webpack_require__(43);
+var _errorDialog = __webpack_require__(45);
 
 var _errorDialog2 = _interopRequireDefault(_errorDialog);
 
@@ -10867,7 +10876,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _miradorProxyManager = __webpack_require__(2);
+var _miradorProxyManager = __webpack_require__(3);
 
 var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
@@ -11425,7 +11434,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _stateStore = __webpack_require__(3);
+var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
@@ -11463,6 +11472,7 @@ var MiradorConfigBuilder = function () {
     value: function buildConfig() {
       var config = jQuery.extend(true, {}, this.options.defaultSettings);
       var annotationsOverlay = (0, _stateStore2.default)().getTransient('annotationsOverlay');
+      var tocSpec = (0, _stateStore2.default)().getTransient('tocSpec');
 
       jQuery.extend(config, {
         id: this.options.miradorId,
@@ -11491,12 +11501,19 @@ var MiradorConfigBuilder = function () {
         }
       });
 
-      config.windowSettings.displayLayout = false;
+      var windowSettings = config.windowSettings;
+
+      windowSettings.displayLayout = false;
+
+      if (tocSpec) {
+        windowSettings.sidePanelOptions.annotationTocTabAvailable = true;
+        windowSettings.sidePanelOptions.toc = false;
+      }
 
       if (!this.options.isEditor) {
-        config.windowSettings.canvasControls.annotations.annotationCreation = false;
+        windowSettings.canvasControls.annotations.annotationCreation = false;
       }
-      config.windowSettings.canvasControls.annotations.annotationState = 'on';
+      windowSettings.canvasControls.annotations.annotationState = 'on';
 
       if (annotationsOverlay) {
         if (annotationsOverlay.hoverColor) {
@@ -11551,6 +11568,139 @@ exports.default = MiradorConfigBuilder;
 
 /***/ }),
 /* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _stateStore = __webpack_require__(2);
+
+var _stateStore2 = _interopRequireDefault(_stateStore);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var AnnotationTableOfContents = function () {
+  function AnnotationTableOfContents(options) {
+    _classCallCheck(this, AnnotationTableOfContents);
+
+    this.options = Object.assign({
+      element: null,
+      appendTo: null,
+      windowId: null,
+      structures: [],
+      manifestVersion: null,
+      previousSelectedElements: [],
+      selectedElements: [],
+      previousOpenElements: [],
+      openElements: [],
+      hoveredElement: [],
+      selectContext: null,
+      tocData: {},
+      active: null,
+      eventEmitter: null
+    }, options);
+
+    this.init();
+  }
+
+  _createClass(AnnotationTableOfContents, [{
+    key: 'init',
+    value: function init() {
+      var _this = this;
+      var tocSpec = (0, _stateStore2.default)().getTransient('tocSpec');
+
+      if (!tocSpec) {
+        this.element = jQuery(emptyTemplate()).appendTo(this.options.appendTo);
+      } else {
+        this.element = jQuery(template()).appendTo(this.options.appendTo);
+        var topGen = tocSpec.generator[0];
+
+        for (var i = 0; i < topGen.max; ++i) {
+          var itemElem = this._createItem(i, tocSpec);
+          this.element.append(itemElem);
+        }
+      }
+
+      this._selectedElem = null;
+
+      this.element.data('AnnotationTableOfContent', this);
+
+      this.element.mousemove(function (event) {
+        // To prevent mousemove handler for the annotation overlay from being called
+        // -- it must be a bug on the imageview's or annotation layer's side.
+        event.stopPropagation();
+      });
+
+      this.element.mouseenter(function (event) {
+        _this._unselect();
+      });
+    }
+  }, {
+    key: 'scrollToTags',
+    value: function scrollToTags(tags) {
+      var klass = '.' + tags[0];
+      var targetElem = this.element.find(klass);
+
+      this._select(targetElem);
+      this.element.scrollTo(targetElem, 500);
+    }
+  }, {
+    key: '_select',
+    value: function _select(elem) {
+      this._unselect();
+      this._selectedElem = elem;
+      elem.addClass('selected');
+    }
+  }, {
+    key: '_unselect',
+    value: function _unselect() {
+      if (this._selectedElem) {
+        this._selectedElem.removeClass('selected');
+      }
+    }
+  }, {
+    key: '_createItem',
+    value: function _createItem(index, tocSpec) {
+      var _this = this;
+      var spec = tocSpec.generator[0];
+      var tag = spec.tag.prefix + (index + 1);
+      var item = jQuery(itemTemplate({
+        tag: tag,
+        content: spec.descriptions[index]
+      }));
+
+      var canvasIds = tocSpec.canvasMap[tag];
+
+      item.click(function (event) {
+        var imageWindowId = _this.options.windowId;
+        jQuery.publish('YM_ANNOTATION_TOC_TAGS_SELECTED', [imageWindowId, canvasIds[0], [tag]]);
+      });
+      return item;
+    }
+  }]);
+
+  return AnnotationTableOfContents;
+}();
+
+exports.default = AnnotationTableOfContents;
+
+
+var template = Handlebars.compile(['<div class="ym-annotation-toc">', '<h1>Table of Contents</h1>', '</div>'].join(''));
+
+var emptyTemplate = Handlebars.compile(['<div class="ym-annotation-toc">', 'Table of contents is empty', '</div>'].join(''));
+
+var itemTemplate = Handlebars.compile(['<div class="ym-annotation-toc-item {{tag}}">', '<a href="#">{{{content}}}</a>', '</div>'].join(''));
+
+/***/ }),
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11616,7 +11766,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 })(Mirador);
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11632,7 +11782,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _stateStore = __webpack_require__(3);
+var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
@@ -11696,7 +11846,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 })(Mirador);
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11776,7 +11926,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 })(Mirador);
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11788,7 +11938,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _miradorProxyManager = __webpack_require__(2);
+var _miradorProxyManager = __webpack_require__(3);
 
 var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
@@ -11804,7 +11954,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
     logger.debug('ImageView(ext)#zoomToAnnotation annotation:', annotation);
     var viewport = this.osd.viewport;
     var currentZoom = viewport.getZoom();
-    logger.debug('panToAnnotation zoom: ' + currentZoom);
+    logger.debug('zoomToAnnotation zoom: ' + currentZoom);
     var shapes = this.annotationsLayer.drawTool.getShapesForAnnotation(annotation);
     var shapeBounds = $.yaleExt.getCombinedBounds(shapes); // in image coordinates
     var shapeWH = viewport.imageToViewportCoordinates(shapeBounds.width, shapeBounds.height);
@@ -11991,7 +12141,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 })(Mirador);
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12003,7 +12153,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _stateStore = __webpack_require__(3);
+var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
@@ -12189,7 +12339,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 })(Mirador);
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12199,7 +12349,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _stateStore = __webpack_require__(3);
+var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
@@ -12215,11 +12365,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
     logger.debug('OsdRegionDrawTool(ext)#getShapesForAnnotation this.annotationsToShapesMap:', this.annotationsToShapesMap);
     var out_shapes = [];
     jQuery.each(this.annotationsToShapesMap, function (key, shapes) {
-      jQuery.each(shapes, function (index, shape) {
-        if (shape.data.annotation['@id'] === annotation['@id']) {
+      if (key === annotation['@id']) {
+        jQuery.each(shapes, function (index, shape) {
           out_shapes.push(shape);
-        }
-      });
+        });
+      }
     });
     return out_shapes;
   };
@@ -12386,7 +12536,36 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 })(Mirador);
 
 /***/ }),
-/* 32 */
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__(30);
+
+__webpack_require__(31);
+
+__webpack_require__(32);
+
+__webpack_require__(27);
+
+var _annotationTableOfContents = __webpack_require__(26);
+
+var _annotationTableOfContents2 = _interopRequireDefault(_annotationTableOfContents);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * Make global names available to Mirador.
+ */
+(function ($) {
+
+  $.AnnotationTableOfContents = _annotationTableOfContents2.default;
+})(Mirador);
+
+/***/ }),
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12406,15 +12585,15 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _miradorProxyManager = __webpack_require__(2);
+var _miradorProxyManager = __webpack_require__(3);
 
 var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
-var _stateStore = __webpack_require__(3);
+var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
-var _annotationWindow = __webpack_require__(39);
+var _annotationWindow = __webpack_require__(41);
 
 var _annotationWindow2 = _interopRequireDefault(_annotationWindow);
 
@@ -12864,7 +13043,7 @@ var _class = function () {
 exports.default = _class;
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12880,7 +13059,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _miradorProxyManager = __webpack_require__(2);
+var _miradorProxyManager = __webpack_require__(3);
 
 var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
@@ -12993,7 +13172,7 @@ var LayoutConfigParser = function () {
 exports.default = LayoutConfigParser;
 
 /***/ }),
-/* 34 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13009,7 +13188,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _workspaceProxy = __webpack_require__(35);
+var _workspaceProxy = __webpack_require__(37);
 
 var _workspaceProxy2 = _interopRequireDefault(_workspaceProxy);
 
@@ -13088,7 +13267,7 @@ var MiradorProxy = function () {
 exports.default = MiradorProxy;
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13154,7 +13333,7 @@ var WorkspaceProxy = function () {
 exports.default = WorkspaceProxy;
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13174,11 +13353,11 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _miradorProxyManager = __webpack_require__(2);
+var _miradorProxyManager = __webpack_require__(3);
 
 var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
-var _layoutConfigParser = __webpack_require__(33);
+var _layoutConfigParser = __webpack_require__(35);
 
 var _layoutConfigParser2 = _interopRequireDefault(_layoutConfigParser);
 
@@ -13186,13 +13365,15 @@ var _miradorConfigBuilder = __webpack_require__(25);
 
 var _miradorConfigBuilder2 = _interopRequireDefault(_miradorConfigBuilder);
 
-var _annotationExplorer = __webpack_require__(37);
+var _annotationExplorer = __webpack_require__(39);
 
 var _windowProxy = __webpack_require__(5);
 
 var _windowProxy2 = _interopRequireDefault(_windowProxy);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -13302,10 +13483,49 @@ var MiradorWrapper = function () {
         }
       });
 
-      miradorProxy.subscribe('YM_ANNOWIN_ANNO_SHOW', function (event, windowId, annoId) {
-        logger.debug('MiradorWrapper SUB YM_ANNOWIN_ANNO_SHOW windowId: ' + windowId + ', annoId: ' + annoId);
-        _this.options.grid.showAnnotation(_this._miradorId, windowId, annoId);
-      });
+      miradorProxy.subscribe('YM_IMAGE_WINDOW_TOOLTIP_ANNO_CLICKED', function () {
+        var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(event, windowId, annoId) {
+          var miradorProxy, windowProxy, canvasId, tocPanel, annoTocMenu, toc, annotation;
+          return regeneratorRuntime.wrap(function _callee$(_context) {
+            while (1) {
+              switch (_context.prev = _context.next) {
+                case 0:
+                  logger.debug('MiradorWrapper SUB YM_ANNOWIN_ANNO_SHOW windowId: ' + windowId + ', annoId: ' + annoId);
+                  miradorProxy = proxyMgr.getMiradorProxy(_this._miradorId);
+                  windowProxy = miradorProxy.getWindowProxyById(windowId);
+                  canvasId = windowProxy.getCurrentCanvasId();
+                  tocPanel = windowProxy.getSidePanelTabContentElement('ym-annotation-toc');
+                  annoTocMenu = tocPanel.data('AnnotationTableOfContent');
+
+
+                  _this.options.grid.showAnnotation(_this._miradorId, windowId, annoId);
+
+                  _context.next = 9;
+                  return (0, _app2.default)().getAnnotationTocCache().getToc(canvasId);
+
+                case 9:
+                  toc = _context.sent;
+                  annotation = toc.annotations.filter(function (anno) {
+                    return anno['@id'] === annoId;
+                  })[0];
+
+
+                  if (annotation && annoTocMenu) {
+                    annoTocMenu.scrollToTags(annotation.tocTags);
+                  }
+
+                case 12:
+                case 'end':
+                  return _context.stop();
+              }
+            }
+          }, _callee, _this);
+        }));
+
+        return function (_x, _x2, _x3) {
+          return _ref.apply(this, arguments);
+        };
+      }());
 
       miradorProxy.subscribe('YM_CLICKED_OPEN_ANNO_WINDOW', function (event, canvasWindowId) {
         logger.debug('MiradorWrapper received YM_CLICKED_OPEN_ANNO_WINDOW from ', canvasWindowId);
@@ -13326,6 +13546,75 @@ var MiradorWrapper = function () {
           _this._createAnnotationWindows(imageWindowId, options);
         }
       });
+
+      jQuery.subscribe('YM_ANNOTATION_TOC_TAGS_SELECTED', function () {
+        var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(evnet, windowId, canvasId, tags) {
+          var tocCache, toc, miradorProxy, windowProxy, imageView, tocNode, annotation, newCanvasId, zoomToAnnotation;
+          return regeneratorRuntime.wrap(function _callee2$(_context2) {
+            while (1) {
+              switch (_context2.prev = _context2.next) {
+                case 0:
+                  logger.debug('MiradorWrapper:SUB:YM_ANNOTATION_TOC_TAGS_SELECTED imageWindow:', windowId, 'canvasId:', canvasId, 'tags:', tags);
+
+                  tocCache = (0, _app2.default)().getAnnotationTocCache();
+                  _context2.next = 4;
+                  return tocCache.getToc(canvasId);
+
+                case 4:
+                  toc = _context2.sent;
+                  miradorProxy = proxyMgr.getMiradorProxy(_this._miradorId);
+                  windowProxy = miradorProxy.getWindowProxyById(windowId);
+                  imageView = windowProxy.getImageView();
+                  tocNode = toc.getNodeFromTags(tags);
+                  annotation = tocNode.annotation;
+                  newCanvasId = canvasId;
+
+                  zoomToAnnotation = function zoomToAnnotation(event) {
+                    imageView.zoomToAnnotation(annotation);
+                    imageView.panToAnnotation(annotation);
+                    var drawTool = windowProxy.getDrawTool();
+                    drawTool.updateHighlights(annotation);
+                    miradorProxy.unsubscribe('annotationsRendered.' + windowId, zoomToAnnotation);
+                  };
+
+                  if (canvasId === windowProxy.getCurrentCanvasId()) {
+                    zoomToAnnotation();
+                  } else {
+                    miradorProxy.subscribe('annotationsRendered.' + windowId, zoomToAnnotation);
+                    windowProxy.setCurrentCanvasId(canvasId);
+                  }
+
+                case 13:
+                case 'end':
+                  return _context2.stop();
+              }
+            }
+          }, _callee2, _this);
+        }));
+
+        return function (_x4, _x5, _x6, _x7) {
+          return _ref2.apply(this, arguments);
+        };
+      }());
+
+      jQuery.subscribe('ANNOWIN_ANNOTATION_CLICKED', function (event, params) {
+        var miradorProxy = proxyMgr.getMiradorProxy(_this._miradorId);
+        var windowProxy = miradorProxy.getWindowProxyById(params.imageWindowId);
+        var tocPanel = windowProxy.getSidePanelTabContentElement('ym-annotation-toc');
+        var annoTocMenu = tocPanel.data('AnnotationTableOfContent');
+
+        if (annoTocMenu) {
+          annoTocMenu.scrollToTags(params.annotation.tocTags);
+        }
+      });
+
+      /*
+      [{
+         annotationWindowId: annoWin.getId(),
+         annotation: annotation,
+         canvasId: jQuery(this).data('canvasId'),
+         imageWindowId: annoWin.getImageWindowId()
+       }]);*/
     }
   }]);
 
@@ -13335,7 +13624,7 @@ var MiradorWrapper = function () {
 exports.default = MiradorWrapper;
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13418,7 +13707,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _miradorProxyManager = __webpack_require__(2);
+var _miradorProxyManager = __webpack_require__(3);
 
 var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
@@ -13432,7 +13721,7 @@ exports.openAnnotationSelector = openAnnotationSelector;
 ;
 
 /***/ }),
-/* 38 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13444,11 +13733,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _annotationRenderer = __webpack_require__(41);
+var _annotationRenderer = __webpack_require__(43);
 
 var _annotationRenderer2 = _interopRequireDefault(_annotationRenderer);
 
-var _annotationPageRenderer = __webpack_require__(40);
+var _annotationPageRenderer = __webpack_require__(42);
 
 var _annotationPageRenderer2 = _interopRequireDefault(_annotationPageRenderer);
 
@@ -13867,12 +14156,12 @@ var AnnotationListWidget = function () {
     key: 'moveToAnnotation',
     value: function () {
       var _ref7 = _asyncToGenerator(regeneratorRuntime.mark(function _callee7(annoId, canvasId) {
-        var targetPage, i;
+        var targetPage, i, pageItem, annoElem;
         return regeneratorRuntime.wrap(function _callee7$(_context7) {
           while (1) {
             switch (_context7.prev = _context7.next) {
               case 0:
-                logger.debug('AnnotationListWidget annoId:', annoId, 'canvasId:', canvasId);
+                logger.debug('AnnotationListWidget annoId', annoId, 'canvasId:', canvasId);
 
                 targetPage = -1;
                 i = 0;
@@ -13898,7 +14187,7 @@ var AnnotationListWidget = function () {
 
               case 10:
                 if (!(targetPage >= 0)) {
-                  _context7.next = 16;
+                  _context7.next = 19;
                   break;
                 }
 
@@ -13906,14 +14195,25 @@ var AnnotationListWidget = function () {
                 return this.moveToPage(targetPage);
 
               case 13:
+                pageItem = this._pageStateList[targetPage];
+                annoElem = null;
+
+                pageItem.element.find('.annowin_anno').each(function (index, value) {
+                  var currentElem = jQuery(value);
+                  if (currentElem.data('annotationId') === annoId) {
+                    annoElem = currentElem;
+                    annoElem[0].scrollIntoView(true);
+                    return false;
+                  }
+                });
                 this._highlightAnnotation(annoId, canvasId);
-                _context7.next = 17;
+                _context7.next = 20;
                 break;
 
-              case 16:
+              case 19:
                 logger.debug('AnnotationListWidget#scrollToAnnotation page not found for canvasId', canvasId);
 
-              case 17:
+              case 20:
               case 'end':
                 return _context7.stop();
             }
@@ -14367,7 +14667,9 @@ var AnnotationListWidget = function () {
 
       if (diff === 0) {
         logger.debug('Winding back');
+        this._unbindScrollEvent();
         this.options.rootElem.scrollTop(scrollTop - 5);
+        this._bindScrollEvent();
       }
     }
   }, {
@@ -14379,14 +14681,16 @@ var AnnotationListWidget = function () {
 
       if (scrollTop === 0) {
         logger.debug('Winding forward');
+        this._unbindScrollEvent();
         this.options.rootElem.scrollTop(scrollTop + 5);
+        this._bindScrollEvent();
       }
     }
   }, {
     key: '_activateMorePagesForward',
     value: function () {
       var _ref13 = _asyncToGenerator(regeneratorRuntime.mark(function _callee13(pageNum, numPages) {
-        var rootElem, nextPage;
+        var rootElem, nextPage, currentPage;
         return regeneratorRuntime.wrap(function _callee13$(_context13) {
           while (1) {
             switch (_context13.prev = _context13.next) {
@@ -14397,32 +14701,33 @@ var AnnotationListWidget = function () {
 
               case 3:
                 if (!(nextPage < numPages)) {
-                  _context13.next = 12;
+                  _context13.next = 13;
                   break;
                 }
 
                 logger.debug('AnnotationListWidget#_activateMorePagesForward nextPage:', nextPage, 'numPages:', numPages, 'scroll height:', rootElem[0].scrollHeight, 'element height:', rootElem.height());
-                _context13.next = 7;
-                return this._activatePageForward(nextPage);
+                currentPage = nextPage;
+                _context13.next = 8;
+                return this._activatePageForward(currentPage);
 
-              case 7:
+              case 8:
                 nextPage = _context13.sent;
 
-                if (!(rootElem[0].scrollHeight > rootElem.height())) {
-                  _context13.next = 10;
+                if (!(nextPage === currentPage || rootElem[0].scrollHeight > rootElem.height())) {
+                  _context13.next = 11;
                   break;
                 }
 
-                return _context13.abrupt('break', 12);
+                return _context13.abrupt('break', 13);
 
-              case 10:
+              case 11:
                 _context13.next = 3;
                 break;
 
-              case 12:
+              case 13:
                 return _context13.abrupt('return', nextPage);
 
-              case 13:
+              case 14:
               case 'end':
                 return _context13.stop();
             }
@@ -14440,7 +14745,7 @@ var AnnotationListWidget = function () {
     key: '_activateMorePagesBackward',
     value: function () {
       var _ref14 = _asyncToGenerator(regeneratorRuntime.mark(function _callee14(pageNum) {
-        var rootElem, nextPage;
+        var rootElem, nextPage, currentPage;
         return regeneratorRuntime.wrap(function _callee14$(_context14) {
           while (1) {
             switch (_context14.prev = _context14.next) {
@@ -14451,32 +14756,33 @@ var AnnotationListWidget = function () {
 
               case 3:
                 if (!(nextPage >= 0)) {
-                  _context14.next = 12;
+                  _context14.next = 13;
                   break;
                 }
 
                 logger.debug('AnnotationListWidget#_activateMorePagesBackward nextPage:', nextPage, 'scroll height:', rootElem[0].scrollHeight, 'element height:', rootElem.height());
-                _context14.next = 7;
-                return this._activatePageBackward(nextPage);
+                currentPage = nextPage;
+                _context14.next = 8;
+                return this._activatePageBackward(currentPage);
 
-              case 7:
+              case 8:
                 nextPage = _context14.sent;
 
-                if (!(rootElem[0].scrollHeight > rootElem.height())) {
-                  _context14.next = 10;
+                if (!(nextPage === currentPage || rootElem[0].scrollHeight > rootElem.height())) {
+                  _context14.next = 11;
                   break;
                 }
 
-                return _context14.abrupt('break', 12);
+                return _context14.abrupt('break', 13);
 
-              case 10:
+              case 11:
                 _context14.next = 3;
                 break;
 
-              case 12:
+              case 13:
                 return _context14.abrupt('return', nextPage);
 
-              case 13:
+              case 14:
               case 'end':
                 return _context14.stop();
             }
@@ -14558,11 +14864,25 @@ var AnnotationListWidget = function () {
               case 6:
                 annotations = _context15.sent;
                 tocCache = (0, _app2.default)().getAnnotationTocCache();
-                _context15.next = 10;
+
+                if (!tocCache) {
+                  _context15.next = 14;
+                  break;
+                }
+
+                _context15.next = 11;
                 return tocCache.getToc(canvasId);
 
-              case 10:
-                toc = _context15.sent;
+              case 11:
+                _context15.t0 = _context15.sent;
+                _context15.next = 15;
+                break;
+
+              case 14:
+                _context15.t0 = null;
+
+              case 15:
+                toc = _context15.t0;
 
                 logger.debug('AnnotationListWidget#_loadPage toc:', toc);
 
@@ -14579,7 +14899,7 @@ var AnnotationListWidget = function () {
                 });
                 (0, _modalAlert2.default)().hide();
 
-              case 16:
+              case 21:
               case 'end':
                 return _context15.stop();
             }
@@ -14617,6 +14937,7 @@ var AnnotationListWidget = function () {
             while (1) {
               switch (_context16.prev = _context16.next) {
                 case 0:
+                  console.log('SCROLL');
                   elem = jQuery(this);
                   scrollTop = elem.scrollTop();
                   currentPos = scrollTop + elem.height();
@@ -14625,23 +14946,23 @@ var AnnotationListWidget = function () {
                   //logger.debug('contentHeight:', contentHeight, 'scrollTop:', scrollTop, 'scroll bottom:', currentPos);
 
                   if (!(scrollTop < 20)) {
-                    _context16.next = 7;
+                    _context16.next = 8;
                     break;
                   }
 
-                  _context16.next = 7;
+                  _context16.next = 8;
                   return _this.pageBack();
 
-                case 7:
+                case 8:
                   if (!(contentHeight - currentPos < 20)) {
-                    _context16.next = 10;
+                    _context16.next = 11;
                     break;
                   }
 
-                  _context16.next = 10;
+                  _context16.next = 11;
                   return _this.pageForward();
 
-                case 10:
+                case 11:
                 case 'end':
                   return _context16.stop();
               }
@@ -14672,7 +14993,7 @@ var AnnotationListWidget = function () {
 exports.default = AnnotationListWidget;
 
 /***/ }),
-/* 39 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14690,7 +15011,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _import = __webpack_require__(1);
 
-var _annotationListWidget = __webpack_require__(38);
+var _annotationListWidget = __webpack_require__(40);
 
 var _annotationListWidget2 = _interopRequireDefault(_annotationListWidget);
 
@@ -14706,15 +15027,15 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _miradorProxyManager = __webpack_require__(2);
+var _miradorProxyManager = __webpack_require__(3);
 
 var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
-var _stateStore = __webpack_require__(3);
+var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
-var _menuTagSelector = __webpack_require__(44);
+var _menuTagSelector = __webpack_require__(46);
 
 var _menuTagSelector2 = _interopRequireDefault(_menuTagSelector);
 
@@ -14755,6 +15076,7 @@ var AnnotationWindow = function () {
     }, options);
 
     logger.debug('AnnotationWindow#constructor options:', options);
+    this._tocSpec = (0, _stateStore2.default)().getTransient('tocSpec');
     this._jQuerySubscribed = {};
     this._miradorSubscribed = {};
   }
@@ -14796,11 +15118,25 @@ var AnnotationWindow = function () {
 
                 //const toc = this.options.explorer.getAnnotationToc();
                 canvasId = this.canvasWindow.getCurrentCanvasId();
-                _context.next = 11;
+
+                if (!this._tocSpec) {
+                  _context.next = 15;
+                  break;
+                }
+
+                _context.next = 12;
                 return (0, _app2.default)().getAnnotationTocCache().getToc(canvasId);
 
-              case 11:
-                toc = _context.sent;
+              case 12:
+                _context.t0 = _context.sent;
+                _context.next = 16;
+                break;
+
+              case 15:
+                _context.t0 = null;
+
+              case 16:
+                toc = _context.t0;
 
 
                 this.element = jQuery(template({}));
@@ -14871,7 +15207,7 @@ var AnnotationWindow = function () {
                   throw 'AnnotationWindow#init promise failed - ' + reason;
                 }));
 
-              case 25:
+              case 30:
               case 'end':
                 return _context.stop();
             }
@@ -15022,12 +15358,15 @@ var AnnotationWindow = function () {
       var canvas = this.getCurrentCanvas();
       this.element.find('.title').text(canvas.label);
 
+      /* We're not showing toc selector in annotation window. Annotation ToC is now in sidebar menu
       if (state.getTransient('tagHierarchy')) {
         this.initMenuTagSelector();
         this.element.find('.annowin_menu_tag_row').show();
       } else {
         this.element.find('.annowin_menu_tag_row').hide();
       }
+      */
+
       var layersPromise = new Promise(function (resolve, reject) {
         _this.options.explorer.getLayers().then(function (layers) {
           if (layers.length > 0) {
@@ -15302,12 +15641,14 @@ var AnnotationWindow = function () {
 
       logger.debug('AnnotationWindow#bindEvents');
 
-      this._subscribe(jQuery, 'YM_READY_TO_RELOAD_ANNO_WIN', function (event, imageWindowId) {
-        logger.debug('AnnotationWindow:SUB:YM_READY_TO_RELOAD_ANNO_WIN annoWin:', _this5.options.id, 'imageWindow:', imageWindowId);
-        if (imageWindowId === _this5.options.canvasWindowId && !_this5.hasOpenEditor()) {
-          _this5.reload();
+      /*
+      this._subscribe(jQuery, 'YM_READY_TO_RELOAD_ANNO_WIN', (event, imageWindowId) => {
+        logger.debug('AnnotationWindow:SUB:YM_READY_TO_RELOAD_ANNO_WIN annoWin:', this.options.id, 'imageWindow:', imageWindowId);
+        if (imageWindowId === this.options.canvasWindowId && !this.hasOpenEditor()) {
+          this.reload();
         }
       });
+      */
 
       this._subscribe(jQuery, 'ANNOWIN_ANNOTATION_CLICKED', function () {
         var _ref5 = _asyncToGenerator(regeneratorRuntime.mark(function _callee5(event, params) {
@@ -15455,8 +15796,15 @@ var AnnotationWindow = function () {
         }
       });
 
-      this._subscribe(this.miradorProxy, 'currentCanvasIDUpdated.' + this.canvasWindow.id, function (event) {
-        _this5.placeholder.text('Loading...').show();
+      /*
+      this._subscribe(this.miradorProxy, 'currentCanvasIDUpdated.' + this.canvasWindow.id, event => {
+        this.placeholder.text('Loading...').show();
+      });
+      */
+
+      this._subscribe(jQuery, 'YM_ANNOTATION_TOC_TAGS_SELECTED', function (evnet, windowId, canvasId, tags) {
+        logger.debug('AnnotationWindow:SUB:YM_ANNOTATION_TOC_TAGS_SELECTED imageWindow:', windowId, 'canvasId:', canvasId, 'tags:', tags);
+        _this5.options.annotationListWidget.moveToTags(tags);
       });
     }
   }, {
@@ -15550,7 +15898,7 @@ exports.default = AnnotationWindow;
 var template = Handlebars.compile(['<div class="ym_annotation_window">', '  <div class="annowin_header">', '    <div class="annowin_layer_row">', '      <span class="layer_selector_container"></span>', '    </div>', '    <div class="annowin_menu_tag_row">', '      <span class="menu_tag_selector_container"></span>', '    </div>', '  </div>', '  <div class="placeholder"></div>', '  <div class="annowin_list">', '  </div>', '</div>'].join(''));
 
 /***/ }),
-/* 40 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15562,7 +15910,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _annotationTocRenderer = __webpack_require__(42);
+var _annotationTocRenderer = __webpack_require__(44);
 
 var _annotationTocRenderer2 = _interopRequireDefault(_annotationTocRenderer);
 
@@ -15750,7 +16098,7 @@ exports.default = AnnotationPageRenderer;
 var pageTemplate = Handlebars.compile(['<div class="ym-annotation-page page-{{pageNum}}">', '  <div class="page-header">{{text}}', '  </div>', '  <div class="annowin_temp_row">', '    <span class="ui small orange button ym_button save">Save new order</span>', '    <span class="ui small orange button ym_button cancel">Cancel</span>', '  </div>', '</div>'].join(''));
 
 /***/ }),
-/* 41 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15992,7 +16340,7 @@ exports.default = AnnotationRenderer;
 var annotationTemplate = Handlebars.compile(['<div class="annowin_anno">', '  <div class="normal_view">', '    {{#if isEditor}}', '      <div class="menu_bar">', '        <div class="ui text menu">', '          <div class="ui dropdown item">', '            Action<i class="dropdown icon"></i>', '            <div class="menu">', '              <div class="annotate item"><i class="fa fa-hand-o-left fa-fw"></i> Annotate</div>', '              <div class="edit item"><i class="fa fa-edit fa-fw"></i> {{t "edit"}}</div>', '              <div class="delete item"><i class="fa fa-times fa-fw"></i> {{t "delete"}}</div>', '            </div>', '          </div>', '          {{#if orderable}}', '            <div class="right menu">', '              <i class="caret down icon"></i>', '              <i class="caret up icon"></i>', '            </div>', '          {{/if}}', '        </div>', '      </div>', '    {{/if}}', '    <div class="content">{{{content}}}</div>', '    <div class="tags">{{{tags}}}</div>', '  </div>', '</div>'].join(''));
 
 /***/ }),
-/* 42 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16225,7 +16573,7 @@ function hasChildAnnotationsToShow(node, layerId) {
 }
 
 /***/ }),
-/* 43 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16296,7 +16644,7 @@ var template = Handlebars.compile(['<div class="header">Error</div>', '<div clas
 var MSG_TRY_LATER = '<p>Please try again by reloading the page, or if problem persists, contact the site administrator.</p>';
 
 /***/ }),
-/* 44 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16472,10 +16820,10 @@ var MenuTagSelector = function () {
 exports.default = MenuTagSelector;
 
 /***/ }),
-/* 45 */
+/* 47 */
 /***/ (function(module, exports) {
 
-// joosugi v0.2.1-9-g3a1bb78 built Mon Jul 17 2017 02:14:56 GMT-0400 (EDT)
+// joosugi v0.2.1-9-g3a1bb78 built Wed Jul 19 2017 14:30:22 GMT-0400 (EDT)
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -17358,6 +17706,7 @@ var AnnotationToc = function () {
           if (targetAnno) {
             var node = this.annoToNodeMap[targetAnno['@id']];
             if (targetAnno && node) {
+              annotation.tocTags = node.cumulativeTags; // XXX
               node.childAnnotations.push(annotation);
               this.registerLayerWithNode(node, annotation.layerId);
             } else {
@@ -17416,6 +17765,7 @@ var AnnotationToc = function () {
         } else {
           // Assign the annotation to parent (a TOC node)
           parent.annotation = annotation;
+          parent.annotation.tocTags = parent.cumulativeTags; // XXX
           this.annoToNodeMap[annotation['@id']] = parent;
           this.registerLayerWithNode(parent, annotation.layerId);
           return true;
@@ -17447,6 +17797,7 @@ var AnnotationToc = function () {
           return false;
         } else {
           parent.annotation = annotation;
+          parent.annotation.tocTags = parent.cumulativeTags; // XXX
           this.registerLayerWithNode(parent, annotation.layerId);
           this.annoToNodeMap[annotation['@id']] = parent;
           return true;
@@ -17722,6 +18073,9 @@ var AnnotationToc = function () {
     value: function numUnassigned() {
       return this._unassigned.length;
     }
+  }, {
+    key: 'findAllChildAnnotations',
+    value: function findAllChildAnnotations(node) {}
 
     /**
      * Traverses the Toc structure and calls visitCallback() for each node.
@@ -18039,7 +18393,7 @@ window.joosugi = {
 module.exports = joosugi;
 
 /***/ }),
-/* 46 */
+/* 48 */
 /***/ (function(module, exports) {
 
 // joosugi-semantic-ui v0.1.1-3-gbf770d5 built Tue May 09 2017 14:36:06 GMT-0400 (EDT)
@@ -21399,13 +21753,13 @@ module.exports = __webpack_require__(0);
 module.exports = joosugiUI;
 
 /***/ }),
-/* 47 */
+/* 49 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 48 */
+/* 50 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -21591,7 +21945,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 49 */
+/* 51 */
 /***/ (function(module, exports) {
 
 var g;
@@ -21618,7 +21972,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 50 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(17);
