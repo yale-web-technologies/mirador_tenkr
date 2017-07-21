@@ -1,5 +1,5 @@
-// Yale-Mirador v0.6.3-18-g8891dc0 built Fri Jul 21 2017 00:05:12 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.6.3-18-g8891dc0 built Fri Jul 21 2017 00:05:12 GMT-0400 (EDT)";
+// Yale-Mirador v0.6.3-18-g8891dc0 built Fri Jul 21 2017 09:22:05 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.6.3-18-g8891dc0 built Fri Jul 21 2017 09:22:05 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -16628,10 +16628,11 @@ var AnnotationTocRenderer = function () {
     key: 'createHeaderElem',
     value: function createHeaderElem(node) {
       var text = node.cumulativeLabel;
+      var tags = node.cumulativeTags;
       var headerHtml = headerTemplate({ text: text });
-      var headerElem = jQuery(headerHtml);
+      var headerElem = jQuery(headerHtml).addClass('header-level-' + tags.length);
 
-      headerElem.data('tags', node.cumulativeTags);
+      headerElem.data('tags', tags);
       return headerElem;
     }
   }]);
