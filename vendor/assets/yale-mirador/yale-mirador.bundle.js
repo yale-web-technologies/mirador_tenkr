@@ -1,5 +1,5 @@
-// Yale-Mirador v0.6.3-18-g8891dc0 built Fri Jul 21 2017 09:22:05 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.6.3-18-g8891dc0 built Fri Jul 21 2017 09:22:05 GMT-0400 (EDT)";
+// Yale-Mirador v0.6.3-20-g0f80e0a built Mon Jul 24 2017 15:34:25 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.6.3-20-g0f80e0a built Mon Jul 24 2017 15:34:25 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -350,10 +350,6 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 exports.default = getApp;
 
-__webpack_require__(28);
-
-__webpack_require__(29);
-
 __webpack_require__(33);
 
 var _import = __webpack_require__(1);
@@ -362,7 +358,7 @@ var _annotationSource = __webpack_require__(8);
 
 var _annotationSource2 = _interopRequireDefault(_annotationSource);
 
-var _annotationTocCache = __webpack_require__(19);
+var _annotationTocCache = __webpack_require__(20);
 
 var _annotationTocCache2 = _interopRequireDefault(_annotationTocCache);
 
@@ -1505,6 +1501,8 @@ var _app = __webpack_require__(3);
 
 var _app2 = _interopRequireDefault(_app);
 
+var _yaleEndpoint = __webpack_require__(12);
+
 var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
@@ -1678,7 +1676,7 @@ var AnnotationSource = function () {
 
               case 11:
                 if (annotations) {
-                  _context2.next = 16;
+                  _context2.next = 19;
                   break;
                 }
 
@@ -1688,16 +1686,29 @@ var AnnotationSource = function () {
               case 14:
                 annotations = _context2.sent;
 
-                if (cache) {
-                  cache.setAnnotationsPerCanvas(canvasId, annotations);
+                if (!cache) {
+                  _context2.next = 19;
+                  break;
                 }
 
-              case 16:
-                return _context2.abrupt('return', layerId ? annotations.filter(function (anno) {
-                  return anno.layerId === layerId;
-                }) : annotations);
+                _context2.next = 18;
+                return cache.setAnnotationsPerCanvas(canvasId, annotations);
 
-              case 17:
+              case 18:
+                this._attachEndpoint(annotations);
+
+              case 19:
+                //this._attachEndpoint(annotations);
+
+                if (layerId) {
+                  annotations = annotations.filter(function (anno) {
+                    return anno.layerId === layerId;
+                  });
+                }
+
+                return _context2.abrupt('return', annotations);
+
+              case 21:
               case 'end':
                 return _context2.stop();
             }
@@ -1711,6 +1722,66 @@ var AnnotationSource = function () {
 
       return getAnnotations;
     }()
+  }, {
+    key: '_attachEndpoint',
+    value: function _attachEndpoint(annotations) {
+      logger.debug('AnnotationSource#_attachEndpoint annotations:', annotations);
+      var endpoint = (0, _yaleEndpoint.getEndpoint)();
+
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = annotations[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var anno = _step.value;
+
+          anno.endpoint = endpoint;
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+    }
+  }, {
+    key: '_detachEndpoint',
+    value: function _detachEndpoint(annotations) {
+      logger.debug('AnnotationSource#_detachEndpoint annotations:', annotations);
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+
+      try {
+        for (var _iterator2 = annotations[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var anno = _step2.value;
+
+          delete anno.endpoint;
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+            _iterator2.return();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
+      }
+    }
   }, {
     key: '_getRemoteAnnotations',
     value: function _getRemoteAnnotations(canvasId) {
@@ -1728,36 +1799,38 @@ var AnnotationSource = function () {
           dataType: 'json',
           contentType: 'application/json; charset=utf-8',
           success: function success(data, textStatus, jqXHR) {
-            logger.debug('AnnotationSource#_getAnnotations data: ', data);
+            logger.debug('AnnotationSource#_getRemoteAnnotations data: ', data);
             try {
-              var _iteratorNormalCompletion = true;
-              var _didIteratorError = false;
-              var _iteratorError = undefined;
+              var _annotations = [];
+
+              var _iteratorNormalCompletion3 = true;
+              var _didIteratorError3 = false;
+              var _iteratorError3 = undefined;
 
               try {
-                for (var _iterator = data[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                  var value = _step.value;
+                for (var _iterator3 = data[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+                  var item = _step3.value;
 
-                  var annotation = _this2._getAnnotationInOA(value.annotation);
-                  annotation.layerId = value.layer_id;
-                  annotations.push(annotation);
+                  var annotation = item.annotation;
+                  annotation.layerId = item.layer_id;
+                  _annotations.push(_this2._toMiradorAnnotation(annotation));
                 }
               } catch (err) {
-                _didIteratorError = true;
-                _iteratorError = err;
+                _didIteratorError3 = true;
+                _iteratorError3 = err;
               } finally {
                 try {
-                  if (!_iteratorNormalCompletion && _iterator.return) {
-                    _iterator.return();
+                  if (!_iteratorNormalCompletion3 && _iterator3.return) {
+                    _iterator3.return();
                   }
                 } finally {
-                  if (_didIteratorError) {
-                    throw _iteratorError;
+                  if (_didIteratorError3) {
+                    throw _iteratorError3;
                   }
                 }
               }
 
-              resolve(annotations);
+              resolve(_annotations);
             } catch (e) {
               logger.error('AnnotationSource#_getRemoteAnnotations error parsing data for canvas', canvasId, 'data:', data, 'error:', e);
               resolve([]);
@@ -1788,7 +1861,7 @@ var AnnotationSource = function () {
               case 3:
                 cache = _context4.sent;
                 layerId = oaAnnotation.layerId;
-                annotation = this._getAnnotationInEndpoint(oaAnnotation);
+                annotation = this._toBackendAnnotation(oaAnnotation);
                 url = this.options.prefix + '/annotations';
                 request = {
                   layer_id: layerId,
@@ -1814,19 +1887,20 @@ var AnnotationSource = function () {
                               case 0:
                                 logger.debug('AnnotationSource#createAnnotation creation successful on the annotation server:', data);
                                 annotation = data;
-                                oaAnnotation = _this3._getAnnotationInOA(annotation);
+                                oaAnnotation = _this3._toMiradorAnnotation(annotation);
 
                                 oaAnnotation.layerId = layerId;
+                                oaAnnotation.endpoint = (0, _yaleEndpoint.getEndpoint)();
 
                                 if (!cache) {
-                                  _context3.next = 7;
+                                  _context3.next = 8;
                                   break;
                                 }
 
-                                _context3.next = 7;
+                                _context3.next = 8;
                                 return cache.invalidateAllCanvases();
 
-                              case 7:
+                              case 8:
                                 tocCache = (0, _app2.default)().getAnnotationTocCache();
 
                                 if (tocCache) {
@@ -1834,7 +1908,7 @@ var AnnotationSource = function () {
                                 }
                                 resolve(oaAnnotation);
 
-                              case 10:
+                              case 11:
                               case 'end':
                                 return _context3.stop();
                             }
@@ -1884,7 +1958,7 @@ var AnnotationSource = function () {
 
               case 2:
                 cache = _context6.sent;
-                annotation = this._getAnnotationInEndpoint(oaAnnotation);
+                annotation = this.__toBackendAnnotation(oaAnnotation);
                 url = this.options.prefix + '/annotations';
                 data = {
                   layer_id: [oaAnnotation.layerId],
@@ -1909,27 +1983,30 @@ var AnnotationSource = function () {
                             switch (_context5.prev = _context5.next) {
                               case 0:
                                 logger.debug('AnnotationSource#updateAnnotation successful', data);
-                                annotation = _this4._getAnnotationInOA(data);
+                                annotation = _this4._toMiradorAnnotation(data);
 
                                 annotation.layerId = oaAnnotation.layerId;
+                                annotation.endpoint = (0, _yaleEndpoint.getEndpoint)();
 
                                 if (!cache) {
-                                  _context5.next = 6;
+                                  _context5.next = 7;
                                   break;
                                 }
 
-                                _context5.next = 6;
+                                _context5.next = 7;
                                 return cache.invalidateAllCanvases();
 
-                              case 6:
+                              case 7:
                                 tocCache = (0, _app2.default)().getAnnotationTocCache();
+
 
                                 if (tocCache) {
                                   tocCache.invalidate();
                                 }
+
                                 resolve(annotation);
 
-                              case 9:
+                              case 10:
                               case 'end':
                                 return _context5.stop();
                             }
@@ -2135,70 +2212,47 @@ var AnnotationSource = function () {
       return updateAnnotationListOrder;
     }()
 
-    // Convert Endpoint annotation to OA
+    // Convert annotation to have format required by Mirador
 
   }, {
-    key: '_getAnnotationInOA',
-    value: function _getAnnotationInOA(annotation) {
-      var motivation = annotation.motivation;
-      if (!(motivation instanceof Array)) {
-        if (motivation !== 'oa:commenting') {
-          this.logger.error('ERROR YaleEndpoint#getAnnotationInOA unexpected motivation value: ', motivation, ', id: ' + annotation['@id']);
-        }
-        motivation = ['oa:commenting'];
-      }
+    key: '_toMiradorAnnotation',
+    value: function _toMiradorAnnotation(annotation) {
+      var anno = jQuery.extend(true, {}, annotation);
+      var target = anno.on;
 
-      var target = annotation.on;
-
-      if (target.selector && target.selector['@type'] === 'oa:Choice') {
+      if (target && target.selector && target.selector['@type'] === 'oa:Choice') {
         // if the new (dual) mirador strategy format
         target = [target];
       }
 
-      var oaAnnotation = {
-        '@context': 'http://iiif.io/api/presentation/2/context.json',
-        '@type': 'oa:Annotation',
-        '@id': annotation['@id'],
-        motivation: motivation,
-        resource: annotation.resource,
-        on: target,
-        within: annotation.within
-      };
+      anno.on = target;
 
-      oaAnnotation.layerId = annotation.layerId;
-      return oaAnnotation;
+      return anno;
     }
 
-    // Converts OA Annotation to endpoint format
+    // Convert annotation to correct format to be saved in backend
 
   }, {
-    key: '_getAnnotationInEndpoint',
-    value: function _getAnnotationInEndpoint(oaAnnotation) {
-      var target = oaAnnotation.on;
+    key: '_toBackendAnnotation',
+    value: function _toBackendAnnotation(annotation) {
+      var endpoint = annotation.endpoint;
+      delete annotation.endpoint;
+      var anno = jQuery.extend(true, {}, annotation);
+      annotation.endpoint = endpoint;
+
+      var target = anno.on;
 
       // XXX temporary fix until the annotation server supports multiple targets
       if (target instanceof Array) {
         if (target.length !== 1) {
-          logger.error('AnnotationSource#_getAnnotationInEndpoint unexpected target length', target.length);
+          logger.error('AnnotationSource#__toBackendAnnotation unexpected target length', target.length);
         }
         target = target[0];
       }
 
-      var annotation = {
-        '@id': oaAnnotation['@id'],
-        '@type': oaAnnotation['@type'],
-        '@context': oaAnnotation['@context'],
-        motivation: oaAnnotation.motivation,
-        resource: oaAnnotation.resource,
-        on: target
-      };
-      if (oaAnnotation.within) {
-        annotation.within = oaAnnotation.within;
-      }
-      if (oaAnnotation.orderWeight) {
-        annotation.orderWeight = oaAnnotation.orderWeight;
-      }
-      return annotation;
+      anno.target = target;
+
+      return anno;
     }
   }]);
 
@@ -2323,8 +2377,9 @@ var logger = (0, _logger2.default)();
 function getAnnotationCache() {
   if (!instance) {
     instance = new AnnotationCache();
-    instance.clear(); // invalidate all data everytime app restarts
-    return instance.init();
+    return instance.deleteDb().then(function () {
+      return instance.init();
+    });
   } else {
     return new Promise(function (resolve, reject) {
       instance.isValid() ? resolve(instance) : resolve(null);
@@ -2354,12 +2409,13 @@ var AnnotationCache = function () {
             _this2._valid = true;
             resolve(_this2);
           }).catch(function (reason) {
-            logger.error('AnnotationCache#constructor promise rejected - ', reason);
-            reject(this);
+            this._valid = false;
+            resolve(this);
           });
         } else {
-          reject(_this2);
           logger.info('IndexedDB is not available on this browser.');
+          _this2._valid = false;
+          resolve(_this2);
         }
       });
     }
@@ -2371,18 +2427,18 @@ var AnnotationCache = function () {
   }, {
     key: '_initIndexedDb',
     value: function _initIndexedDb() {
-      var _this = this;
-      this._db = new Dexie(this._dbName).on('versionchange', function (event) {
-        logger.debug('versionchange ' + event.newVersion);
-      });
+      logger.debug('AnnotationCache#_initIndexedDb');
 
+      this._db = new Dexie(this._dbName);
       this._db.version(1).stores({
         layers: 'id,jsonData,timestamp',
         annosPerCanvas: 'canvasId,jsonData,timestamp'
       });
+
       return this._db.open().catch(function (e) {
-        logger.error('AnnotationCache#setupIndexDb open failed: ' + e);
-        _this._valid = false;
+        var msg = 'AnnotationCache#setupIndexDb open failed: ' + e;
+        logger.error(msg);
+        throw msg;
       });
     }
 
@@ -2391,13 +2447,10 @@ var AnnotationCache = function () {
      */
 
   }, {
-    key: 'clear',
-    value: function clear() {
-      var _this = this;
-      logger.debug('AnnotationCache#clear');
-      return new Dexie(this._dbName).delete().catch(function (e) {
-        logger.error('AnnotationCache#clear exception: ' + e.stack);
-      });
+    key: 'deleteDb',
+    value: function deleteDb() {
+      logger.debug('AnnotationCache#deleteDb');
+      return Dexie.delete(this._dbName);
     }
 
     /**
@@ -2407,6 +2460,7 @@ var AnnotationCache = function () {
   }, {
     key: 'emptyTable',
     value: function emptyTable(name) {
+      logger.debug('AnnotationCache#emptyTable', name);
       var _this = this;
       var table = this._db.table(name);
       return this._db.transaction('rw', table, function () {
@@ -2426,6 +2480,7 @@ var AnnotationCache = function () {
   }, {
     key: 'getLayers',
     value: function getLayers() {
+      logger.debug('AnnotationCache#getLayers');
       return this._db.layers.where('id').equals(1).first(function (row) {
         var data = row !== undefined ? row.jsonData : null;
         return data instanceof Array ? data : [];
@@ -2439,6 +2494,7 @@ var AnnotationCache = function () {
   }, {
     key: 'setLayers',
     value: function setLayers(layersJson) {
+      logger.debug('AnnotationCache#setLayers', layersJson);
       var _this = this;
       return this.emptyTable('layers').then(function () {
         return _this._db.layers.add({ id: 1, jsonData: layersJson }).catch(function (e) {
@@ -2455,6 +2511,7 @@ var AnnotationCache = function () {
   }, {
     key: 'getAnnotationsPerCanvas',
     value: function getAnnotationsPerCanvas(canvasId) {
+      logger.debug('AnnotationCache#getAnnotationsPerCanvas', canvasId);
       var _this = this;
       var coll = this._db.annosPerCanvas.where('canvasId').equals(canvasId).and(function (rec) {
         var nowMS = new Date().valueOf();
@@ -2473,19 +2530,25 @@ var AnnotationCache = function () {
   }, {
     key: 'setAnnotationsPerCanvas',
     value: function setAnnotationsPerCanvas(canvasId, data) {
+      logger.debug('AnnotationCache#setAnnotationsPerCanvas canvas:', canvasId, 'data:', data);
       var table = this._db.annosPerCanvas;
       var coll = this._db.annosPerCanvas.where('canvasId').equals(canvasId);
       var nowMS = new Date().valueOf();
 
-      if (coll.count() === 0) {
-        return table.add({ canvasId: canvasId, jsonData: data, timestamp: nowMS });
-      } else {
-        return table.put({ canvasId: canvasId, jsonData: data, timestamp: nowMS });
-      }
+      return coll.count().then(function (count) {
+        if (count === 0) {
+          console.log('adding', { canvasId: canvasId, jsonData: data, timestamp: nowMS });
+          return table.add({ canvasId: canvasId, jsonData: data, timestamp: nowMS });
+        } else {
+          console.log('putting', count);
+          return table.put({ canvasId: canvasId, jsonData: data, timestamp: nowMS });
+        }
+      });
     }
   }, {
     key: 'deleteAnnotationsPerCanvas',
     value: function deleteAnnotationsPerCanvas(canvasId) {
+      logger.debug('AnnotationCache#deleteAnnotationsPerCanvas canvasId:', canvasId);
       var _this = this;
       var table = this._db.annosPerCanvas;
       var coll = table.where('canvasId').equals(canvasId);
@@ -2501,17 +2564,19 @@ var AnnotationCache = function () {
   }, {
     key: 'invalidateAllCanvases',
     value: function invalidateAllCanvases() {
+      logger.debug('AnnotationCache#invalidateAllCanvases');
       return this.emptyTable('annosPerCanvas');
     }
   }, {
     key: 'invalidateCanvasId',
     value: function invalidateCanvasId(canvasId) {
-      logger.debug('CACHE INVALIDATED: ' + canvasId);
+      logger.debug('AnnotationCache#invalidateCanvasId canvasId:', canvasId);
       return this.deleteAnnotationsPerCanvas(canvasId);
     }
   }, {
     key: 'invalidateAnnotation',
     value: function invalidateAnnotation(annotation, annoIsNew) {
+      logger.debug('AnnotationCache#invalidateAnnotation annotation:', annotation, 'annoIsNew:', annoIsNew);
       return this.invalidateAnnotationId(annotation['@id']);
     }
   }, {
@@ -2524,7 +2589,7 @@ var AnnotationCache = function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                logger.debug('invalidateAnnotationId: ' + annotationId);
+                logger.debug('AnnotationCache#invalidateAnnotationId' + annotationId);
                 proxyMgr = (0, _miradorProxyManager2.default)();
                 canvasIdSet = new Set();
                 _iteratorNormalCompletion = true;
@@ -2852,6 +2917,331 @@ var AnnotationCache = function () {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.getEndpoint = exports.YaleEndpoint = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _annotationSource = __webpack_require__(8);
+
+var _annotationSource2 = _interopRequireDefault(_annotationSource);
+
+var _app = __webpack_require__(3);
+
+var _app2 = _interopRequireDefault(_app);
+
+var _errorDialog = __webpack_require__(45);
+
+var _errorDialog2 = _interopRequireDefault(_errorDialog);
+
+var _logger = __webpack_require__(0);
+
+var _logger2 = _interopRequireDefault(_logger);
+
+var _miradorProxyManager = __webpack_require__(4);
+
+var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
+
+var _pageController = __webpack_require__(6);
+
+var _pageController2 = _interopRequireDefault(_pageController);
+
+var _modalAlert = __webpack_require__(15);
+
+var _modalAlert2 = _interopRequireDefault(_modalAlert);
+
+var _session = __webpack_require__(9);
+
+var _session2 = _interopRequireDefault(_session);
+
+var _util = __webpack_require__(7);
+
+var _util2 = _interopRequireDefault(_util);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var logger = (0, _logger2.default)();
+var _explorer = null;
+var _instances = [];
+
+function getEndpoint() {
+  logger.debug('getEndpoint _instances:', _instances.length, _instances);
+  return _instances[0];
+}
+
+var YaleEndpoint = function () {
+  function YaleEndpoint(options) {
+    _classCallCheck(this, YaleEndpoint);
+
+    jQuery.extend(this, {
+      annotationsList: [],
+      prefix: null,
+      dfd: null
+    }, options);
+    this._explorer = (0, _app2.default)().getAnnotationExplorer();
+    _instances.push(this);
+  }
+
+  _createClass(YaleEndpoint, [{
+    key: 'search',
+    value: function search(options) {
+      var _this2 = this;
+
+      logger.debug('YaleEndpoint#search options:', options);
+      var canvasId = options.uri;
+      var progressPane = (0, _modalAlert2.default)();
+      var errorPane = (0, _errorDialog2.default)();
+
+      progressPane.show('Loading annotations...');
+      this._explorer.getAnnotations({ canvasId: canvasId }).catch(function (reason) {
+        var msg = 'ERROR YaleEndpoint#search getAnnotations - ' + reason;
+        throw msg;
+      }).then(function (annotations) {
+        logger.debug('YaleEndpoint#search annotations:', annotations);
+        progressPane.hide();
+        _this2.annotationsList = annotations;
+        try {
+          _this2.dfd.resolve(true);
+        } catch (e) {
+          logger.error('YaleEndpoint#search dfd.resolve failed - ', e);
+        }
+      }).catch(function (reason) {
+        logger.error('YaleEndpoint#search failed - ', reason);
+        progressPane.hide();
+        errorPane.show('annotations');
+      });
+    }
+  }, {
+    key: 'create',
+    value: function create(oaAnnotation, successCallback, errorCallback) {
+      var _this = this;
+
+      if (this.userAuthorize('create', oaAnnotation)) {
+        this._create(oaAnnotation).catch(function (reason) {
+          var msg = 'YaleEndpoint#create _create failed - ' + reason;
+          throw msg;
+        }).then(function (anno) {
+          logger.debug('YaleEndpoint#create successful with anno: ', anno);
+          if (typeof successCallback === 'function') {
+            successCallback(anno);
+          }
+        }).catch(function (reason) {
+          logger.error('ERROR YaleEndpoint#create successCallback failed');
+          errorCallback();
+        });
+      } else {
+        (0, _errorDialog2.default)().show('authz_create');
+        if (typeof errorCallback === 'function') {
+          errorCallback();
+        }
+      }
+    }
+  }, {
+    key: '_create',
+    value: function _create(oaAnnotation) {
+      logger.debug('YaleEndpoint#_create oaAnnotation:', oaAnnotation);
+      var _this = this;
+
+      return this._explorer.createAnnotation(oaAnnotation).catch(function (reason) {
+        var msg = 'YaleEndpoint#_create createAnnotation failed - ' + reason;
+        throw msg;
+      }).then(function (anno) {
+        _this.annotationsList.push(anno);
+        return anno;
+      });
+    }
+  }, {
+    key: 'update',
+    value: function update(oaAnnotation, successCallback, errorCallback) {
+      var _this = this;
+      var annotationId = oaAnnotation['@id'];
+
+      if (this.userAuthorize('update', oaAnnotation)) {
+        this._update(oaAnnotation).catch(function (reason) {
+          var msg = 'ERROR YaleEndpoint#update _update failed - ' + reason;
+          logger.error(msg);
+          errorCallback();
+        }).then(function (anno) {
+          if (typeof successCallback === 'function') {
+            successCallback(anno);
+          }
+        });
+      } else {
+        (0, _errorDialog2.default)().show('authz_update');
+        if (typeof errorCallback === 'function') {
+          errorCallback();
+        }
+      }
+    }
+  }, {
+    key: '_update',
+    value: function _update(oaAnnotation) {
+      var _this3 = this;
+
+      logger.debug('YaleEndpoint#_update oaAnnotation:', oaAnnotation);
+      var _this = this;
+      var annotationId = oaAnnotation['@id'];
+
+      var promise = Promise.resolve().then(function () {
+        return _this3._explorer.updateAnnotation(oaAnnotation);
+      }).catch(function (reason) {
+        var msg = 'ERROR YaleEndpoint#_update updateAnnotation - ' + reason;
+        throw msg;
+      }).then(function (anno) {
+        jQuery.each(_this.annotationsList, function (index, value) {
+          if (value['@id'] === annotationId) {
+            _this.annotationsList[index] = anno;
+            return false;
+          }
+        });
+        return anno;
+      });
+      return promise;
+    }
+  }, {
+    key: 'deleteAnnotation',
+    value: function deleteAnnotation(annotationId, successCallback, errorCallback) {
+      logger.debug('YaleEndpoint#deleteAnnotation annotationId: ' + annotationId);
+      var _this = this;
+
+      if (this.userAuthorize('delete', null)) {
+        this._deleteAnnotation(annotationId).then(function () {
+          if (typeof successCallback === 'function') {
+            successCallback();
+          }
+        }).catch(function (reason) {
+          logger.error('YaleEndpoint#deleteAnnotation _deleteAnnotation failed:', reason);
+          errorCallback();
+        });
+      } else {
+        logger.info('YaleEndpoint#delete user not authorized');
+        (0, _errorDialog2.default)().show('authz_update');
+        if (typeof errorCallback === 'function') {
+          errorCallback();
+        }
+      }
+    }
+  }, {
+    key: '_deleteAnnotation',
+    value: function _deleteAnnotation(annotationId) {
+      logger.debug('YaleEndpoint#_deleteAnnotation annotationId:', annotationId);
+      var _this = this;
+
+      var promise = this._explorer.deleteAnnotation(annotationId).catch(function (reason) {
+        var msg = 'ERROR YaleEndpoint#_deleteAnnotation explorer.deleteAnnotation - ' + reason;
+        throw msg;
+      }).then(function (anno) {
+        _this.annotationsList = jQuery.grep(_this.annotationsList, function (value, index) {
+          return value['@id'] !== annotationId;
+        });
+        return anno;
+      });
+      return promise;
+    }
+  }, {
+    key: 'getLayers',
+    value: function () {
+      var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                logger.debug('YaleEndpoint#getLayers');
+                return _context.abrupt('return', this._explorer.getLayers());
+
+              case 2:
+              case 'end':
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function getLayers() {
+        return _ref.apply(this, arguments);
+      }
+
+      return getLayers;
+    }()
+  }, {
+    key: 'updateOrder',
+    value: function updateOrder(canvasId, layerId, annoIds, successCallback, errorCallback) {
+      logger.debug('YaleEndpoint#updateOrder canvasId:', canvasId, 'layerId:', layerId, 'annoIds:', annoIds);
+      var _this = this;
+
+      if (this.userAuthorize('update', null)) {
+        this._updateOrder(canvasId, layerId, annoIds).catch(function (reason) {
+          var msg = 'YaleEndpoint#updateOrder _upadteOrder failed: ' + reason;
+          throw msg;
+        }).then(function () {
+          if (typeof successCallback === 'function') {
+            successCallback();
+          }
+        }).catch(function (reason) {
+          logger.error('YaleEndpoint#updateOrder', reason);
+          errorCallback();
+        });
+      } else {
+        logger.info('YaleEndpoint#updateOrder user not authorized');
+        (0, _errorDialog2.default)().show('authz_update');
+        if (typeof errorCallback === 'function') {
+          errorCallback();
+        }
+      }
+    }
+  }, {
+    key: '_updateOrder',
+    value: function _updateOrder(canvasId, layerId, annoIds) {
+      return this._explorer.updateAnnotationListOrder(canvasId, layerId, annoIds);
+    }
+  }, {
+    key: 'userAuthorize',
+    value: function userAuthorize(action, annotation) {
+      if (action === 'create' || action === 'update' || action === 'delete') {
+        return _session2.default.isEditor();
+      } else {
+        return true;
+      }
+    }
+  }, {
+    key: 'set',
+    value: function set(prop, value, options) {
+      logger.debug('YaleEndpoint#set prop:', prop, ', value:', value, ', options:', options);
+      if (options) {
+        this[options.parent][prop] = value;
+      } else {
+        this[prop] = value;
+      }
+    }
+
+    /*
+    parseAnnotations() {
+      const spec = getPageController().getConfig().extension.tagHierarchy;
+      this._explorer.reloadAnnotationToc(spec, this.annotationsList);
+    }
+    */
+
+  }]);
+
+  return YaleEndpoint;
+}();
+
+exports.YaleEndpoint = YaleEndpoint;
+exports.getEndpoint = getEndpoint;
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -2873,7 +3263,7 @@ var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
-var _layerSelector = __webpack_require__(13);
+var _layerSelector = __webpack_require__(14);
 
 var _layerSelector2 = _interopRequireDefault(_layerSelector);
 
@@ -3345,7 +3735,7 @@ exports.default = AnnotationEditor;
 var template = Handlebars.compile(['<div class="ym_anno_editor">', '  <div class="header">', '    <span class="layer_select"></span>', '  </div>', '  <textarea></textarea>', '  <input class="tags_editor" placeholder="{{t "addTagsHere"}}…" {{#if tags}}value="{{tags}}"{{/if}}/>', '  {{#unless miradorDriven}}', '    <div class="bottom_row">', '        <button class="ym_save">Save</button>', '        <button class="ym_cancel">Cancel</button>', '      <div class="ym_float_right">', '        <i class="large caret up icon ym_vertical_dec"></i>', '        <i class="large caret down icon ym_vertical_inc"></i>', '      </div>', '    </div>', '  {{/unless}}', '</div>'].join(''));
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3365,7 +3755,7 @@ var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
-var _selector = __webpack_require__(15);
+var _selector = __webpack_require__(16);
 
 var _selector2 = _interopRequireDefault(_selector);
 
@@ -3507,7 +3897,7 @@ var _class = function () {
 exports.default = _class;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3569,7 +3959,7 @@ var ModalAlert = function () {
 var instance = null;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3735,7 +4125,7 @@ var template = Handlebars.compile(['<div class="basic tiny ui button ym_button d
 var itemTemplate = Handlebars.compile(['<div class="item">', '  {{#if colorClass}}', '    <span class="icon_span"><i class="circle icon {{colorClass}}"></i></span>', '  {{/if}}', '  <span class="label">{{label}}</span>', '</div>'].join(''));
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3769,7 +4159,7 @@ jQuery(document).ready(function () {
 });
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {var require;var require;(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return require(o,!0);if(i)return require(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
@@ -10549,7 +10939,7 @@ module.exports = _dereq_(23);
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(51), __webpack_require__(50)))
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10563,7 +10953,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _import = __webpack_require__(1);
 
-var _firebaseProxy = __webpack_require__(20);
+var _firebaseProxy = __webpack_require__(21);
 
 var _firebaseProxy2 = _interopRequireDefault(_firebaseProxy);
 
@@ -10794,7 +11184,7 @@ var AnnotationSourceFb = function () {
 exports.default = AnnotationSourceFb;
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10920,7 +11310,7 @@ var AnnotationTocCache = function () {
 exports.default = AnnotationTocCache;
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11097,350 +11487,6 @@ var FirebaseProxy = function () {
 }();
 
 exports.default = FirebaseProxy;
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _annotationSource = __webpack_require__(8);
-
-var _annotationSource2 = _interopRequireDefault(_annotationSource);
-
-var _app = __webpack_require__(3);
-
-var _app2 = _interopRequireDefault(_app);
-
-var _errorDialog = __webpack_require__(45);
-
-var _errorDialog2 = _interopRequireDefault(_errorDialog);
-
-var _logger = __webpack_require__(0);
-
-var _logger2 = _interopRequireDefault(_logger);
-
-var _miradorProxyManager = __webpack_require__(4);
-
-var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
-
-var _pageController = __webpack_require__(6);
-
-var _pageController2 = _interopRequireDefault(_pageController);
-
-var _modalAlert = __webpack_require__(14);
-
-var _modalAlert2 = _interopRequireDefault(_modalAlert);
-
-var _session = __webpack_require__(9);
-
-var _session2 = _interopRequireDefault(_session);
-
-var _util = __webpack_require__(7);
-
-var _util2 = _interopRequireDefault(_util);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var logger = (0, _logger2.default)();
-var _explorer = null;
-
-var YaleEndpoint = function () {
-  function YaleEndpoint(options) {
-    _classCallCheck(this, YaleEndpoint);
-
-    jQuery.extend(this, {
-      annotationsList: [],
-      prefix: null,
-      dfd: null
-    }, options);
-    this._explorer = (0, _app2.default)().getAnnotationExplorer();
-  }
-
-  _createClass(YaleEndpoint, [{
-    key: 'search',
-    value: function search(options) {
-      logger.debug('YaleEndpoint#search options:', options);
-      var _this = this;
-      var canvasId = options.uri;
-      var progressPane = (0, _modalAlert2.default)();
-      var errorPane = (0, _errorDialog2.default)();
-
-      progressPane.show('Loading annotations...');
-      this._explorer.getAnnotations({ canvasId: canvasId }).catch(function (reason) {
-        var msg = 'ERROR YaleEndpoint#search getAnnotations - ' + reason;
-        throw msg;
-      }).then(function (annotations) {
-        logger.debug('YaleEndpoint#search annotations:', annotations);
-        progressPane.hide();
-        var _iteratorNormalCompletion = true;
-        var _didIteratorError = false;
-        var _iteratorError = undefined;
-
-        try {
-          for (var _iterator = annotations[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            var anno = _step.value;
-
-            anno.endpoint = _this;
-          }
-        } catch (err) {
-          _didIteratorError = true;
-          _iteratorError = err;
-        } finally {
-          try {
-            if (!_iteratorNormalCompletion && _iterator.return) {
-              _iterator.return();
-            }
-          } finally {
-            if (_didIteratorError) {
-              throw _iteratorError;
-            }
-          }
-        }
-
-        _this.annotationsList = annotations;
-        try {
-          _this.dfd.resolve(true);
-        } catch (e) {
-          logger.error('YaleEndpoint#search dfd.resolve failed - ', e);
-        }
-      }).catch(function (reason) {
-        logger.error('YaleEndpoint#search failed - ', reason);
-        progressPane.hide();
-        errorPane.show('annotations');
-      });
-    }
-  }, {
-    key: 'create',
-    value: function create(oaAnnotation, successCallback, errorCallback) {
-      var _this = this;
-
-      if (this.userAuthorize('create', oaAnnotation)) {
-        this._create(oaAnnotation).catch(function (reason) {
-          var msg = 'YaleEndpoint#create _create failed - ' + reason;
-          throw msg;
-        }).then(function (anno) {
-          logger.debug('YaleEndpoint#create successful with anno: ', anno);
-          anno.endpoint = _this;
-          if (typeof successCallback === 'function') {
-            successCallback(anno);
-          }
-        }).catch(function (reason) {
-          logger.error('ERROR YaleEndpoint#create successCallback failed');
-          errorCallback();
-        });
-      } else {
-        (0, _errorDialog2.default)().show('authz_create');
-        if (typeof errorCallback === 'function') {
-          errorCallback();
-        }
-      }
-    }
-  }, {
-    key: '_create',
-    value: function _create(oaAnnotation) {
-      logger.debug('YaleEndpoint#_create oaAnnotation:', oaAnnotation);
-      var _this = this;
-
-      return this._explorer.createAnnotation(oaAnnotation).catch(function (reason) {
-        var msg = 'YaleEndpoint#_create createAnnotation failed - ' + reason;
-        throw msg;
-      }).then(function (anno) {
-        _this.annotationsList.push(anno);
-        return anno;
-      });
-    }
-  }, {
-    key: 'update',
-    value: function update(oaAnnotation, successCallback, errorCallback) {
-      var _this2 = this;
-
-      var _this = this;
-      var annotationId = oaAnnotation['@id'];
-
-      if (this.userAuthorize('update', oaAnnotation)) {
-        this._update(oaAnnotation).catch(function (reason) {
-          var msg = 'ERROR YaleEndpoint#update _update failed - ' + reason;
-          logger.error(msg);
-          errorCallback();
-        }).then(function (anno) {
-          anno.endpoint = _this2;
-          if (typeof successCallback === 'function') {
-            successCallback(anno);
-          }
-        });
-      } else {
-        (0, _errorDialog2.default)().show('authz_update');
-        if (typeof errorCallback === 'function') {
-          errorCallback();
-        }
-      }
-    }
-  }, {
-    key: '_update',
-    value: function _update(oaAnnotation) {
-      var _this3 = this;
-
-      logger.debug('YaleEndpoint#_update oaAnnotation:', oaAnnotation);
-      var _this = this;
-      var annotationId = oaAnnotation['@id'];
-
-      var promise = Promise.resolve().then(function () {
-        return _this3._explorer.updateAnnotation(oaAnnotation);
-      }).catch(function (reason) {
-        var msg = 'ERROR YaleEndpoint#_update updateAnnotation - ' + reason;
-        throw msg;
-      }).then(function (anno) {
-        jQuery.each(_this.annotationsList, function (index, value) {
-          if (value['@id'] === annotationId) {
-            _this.annotationsList[index] = anno;
-            return false;
-          }
-        });
-        return anno;
-      });
-      return promise;
-    }
-  }, {
-    key: 'deleteAnnotation',
-    value: function deleteAnnotation(annotationId, successCallback, errorCallback) {
-      logger.debug('YaleEndpoint#deleteAnnotation annotationId: ' + annotationId);
-      var _this = this;
-
-      if (this.userAuthorize('delete', null)) {
-        this._deleteAnnotation(annotationId).then(function () {
-          if (typeof successCallback === 'function') {
-            successCallback();
-          }
-        }).catch(function (reason) {
-          logger.error('YaleEndpoint#deleteAnnotation _deleteAnnotation failed:', reason);
-          errorCallback();
-        });
-      } else {
-        logger.info('YaleEndpoint#delete user not authorized');
-        (0, _errorDialog2.default)().show('authz_update');
-        if (typeof errorCallback === 'function') {
-          errorCallback();
-        }
-      }
-    }
-  }, {
-    key: '_deleteAnnotation',
-    value: function _deleteAnnotation(annotationId) {
-      logger.debug('YaleEndpoint#_deleteAnnotation annotationId:', annotationId);
-      var _this = this;
-
-      var promise = this._explorer.deleteAnnotation(annotationId).catch(function (reason) {
-        var msg = 'ERROR YaleEndpoint#_deleteAnnotation explorer.deleteAnnotation - ' + reason;
-        throw msg;
-      }).then(function (anno) {
-        _this.annotationsList = jQuery.grep(_this.annotationsList, function (value, index) {
-          return value['@id'] !== annotationId;
-        });
-        return anno;
-      });
-      return promise;
-    }
-  }, {
-    key: 'getLayers',
-    value: function () {
-      var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
-        return regeneratorRuntime.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                logger.debug('YaleEndpoint#getLayers');
-                return _context.abrupt('return', this._explorer.getLayers());
-
-              case 2:
-              case 'end':
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function getLayers() {
-        return _ref.apply(this, arguments);
-      }
-
-      return getLayers;
-    }()
-  }, {
-    key: 'updateOrder',
-    value: function updateOrder(canvasId, layerId, annoIds, successCallback, errorCallback) {
-      logger.debug('YaleEndpoint#updateOrder canvasId:', canvasId, 'layerId:', layerId, 'annoIds:', annoIds);
-      var _this = this;
-
-      if (this.userAuthorize('update', null)) {
-        this._updateOrder(canvasId, layerId, annoIds).catch(function (reason) {
-          var msg = 'YaleEndpoint#updateOrder _upadteOrder failed: ' + reason;
-          throw msg;
-        }).then(function () {
-          if (typeof successCallback === 'function') {
-            successCallback();
-          }
-        }).catch(function (reason) {
-          logger.error('YaleEndpoint#updateOrder', reason);
-          errorCallback();
-        });
-      } else {
-        logger.info('YaleEndpoint#updateOrder user not authorized');
-        (0, _errorDialog2.default)().show('authz_update');
-        if (typeof errorCallback === 'function') {
-          errorCallback();
-        }
-      }
-    }
-  }, {
-    key: '_updateOrder',
-    value: function _updateOrder(canvasId, layerId, annoIds) {
-      return this._explorer.updateAnnotationListOrder(canvasId, layerId, annoIds);
-    }
-  }, {
-    key: 'userAuthorize',
-    value: function userAuthorize(action, annotation) {
-      if (action === 'create' || action === 'update' || action === 'delete') {
-        return _session2.default.isEditor();
-      } else {
-        return true;
-      }
-    }
-  }, {
-    key: 'set',
-    value: function set(prop, value, options) {
-      logger.debug('YaleEndpoint#set prop:', prop, ', value:', value, ', options:', options);
-      if (options) {
-        this[options.parent][prop] = value;
-      } else {
-        this[prop] = value;
-      }
-    }
-
-    /*
-    parseAnnotations() {
-      const spec = getPageController().getConfig().extension.tagHierarchy;
-      this._explorer.reloadAnnotationToc(spec, this.annotationsList);
-    }
-    */
-
-  }]);
-
-  return YaleEndpoint;
-}();
-
-exports.default = YaleEndpoint;
 
 /***/ }),
 /* 22 */
@@ -11677,7 +11723,7 @@ var _annotationSource = __webpack_require__(8);
 
 var _annotationSource2 = _interopRequireDefault(_annotationSource);
 
-var _annotationSourceFb = __webpack_require__(18);
+var _annotationSourceFb = __webpack_require__(19);
 
 var _annotationSourceFb2 = _interopRequireDefault(_annotationSourceFb);
 
@@ -12025,10 +12071,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var _import = __webpack_require__(1);
 
-var _annotationEditor = __webpack_require__(12);
-
-var _annotationEditor2 = _interopRequireDefault(_annotationEditor);
-
 var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
@@ -12041,19 +12083,11 @@ var _util = __webpack_require__(7);
 
 var _util2 = _interopRequireDefault(_util);
 
-var _yaleEndpoint = __webpack_require__(21);
-
-var _yaleEndpoint2 = _interopRequireDefault(_yaleEndpoint);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 (function ($) {
 
   $.yaleExt = $.yaleExt || {};
-
-  // Exposing modules defined in Mirador config
-  $.YaleEndpoint = _yaleEndpoint2.default;
-  $.AnnotationEditor = _annotationEditor2.default;
 
   var logger = (0, _logger2.default)();
 
@@ -12793,17 +12827,27 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 "use strict";
 
 
+var _annotationEditor = __webpack_require__(13);
+
+var _annotationEditor2 = _interopRequireDefault(_annotationEditor);
+
+var _annotationTableOfContents = __webpack_require__(26);
+
+var _annotationTableOfContents2 = _interopRequireDefault(_annotationTableOfContents);
+
+var _yaleEndpoint = __webpack_require__(12);
+
+__webpack_require__(27);
+
+__webpack_require__(28);
+
+__webpack_require__(29);
+
 __webpack_require__(30);
 
 __webpack_require__(31);
 
 __webpack_require__(32);
-
-__webpack_require__(27);
-
-var _annotationTableOfContents = __webpack_require__(26);
-
-var _annotationTableOfContents2 = _interopRequireDefault(_annotationTableOfContents);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12812,7 +12856,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  */
 (function ($) {
 
+  $.AnnotationEditor = _annotationEditor2.default;
   $.AnnotationTableOfContents = _annotationTableOfContents2.default;
+  $.YaleEndpoint = _yaleEndpoint.YaleEndpoint;
 })(Mirador);
 
 /***/ }),
@@ -13610,8 +13656,6 @@ var MiradorWrapper = function () {
       });
       var windowsConfig = parser.getWindowsConfig();
       if (windowsConfig) {
-        var miradorProxy = proxyMgr.getMiradorProxy(this._miradorId);
-        miradorProxy.publish('YM_DISPLAY_ON');
         jQuery.publish('YM_ADD_WINDOWS', windowsConfig);
       }
     }
@@ -13656,6 +13700,8 @@ var MiradorWrapper = function () {
           return;
         } else {
           _this._urlOptionsProcessed = true;
+          var _miradorProxy = proxyMgr.getMiradorProxy(_this._miradorId);
+          _miradorProxy.publish('YM_DISPLAY_ON');
           _this._createAnnotationWindows(imageWindowId, options);
         }
       });
@@ -13864,7 +13910,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _modalAlert = __webpack_require__(14);
+var _modalAlert = __webpack_require__(15);
 
 var _modalAlert2 = _interopRequireDefault(_modalAlert);
 
@@ -15152,7 +15198,7 @@ var _menuTagSelector = __webpack_require__(46);
 
 var _menuTagSelector2 = _interopRequireDefault(_menuTagSelector);
 
-var _layerSelector = __webpack_require__(13);
+var _layerSelector = __webpack_require__(14);
 
 var _layerSelector2 = _interopRequireDefault(_layerSelector);
 
@@ -16213,7 +16259,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _import = __webpack_require__(1);
 
-var _annotationEditor = __webpack_require__(12);
+var _annotationEditor = __webpack_require__(13);
 
 var _annotationEditor2 = _interopRequireDefault(_annotationEditor);
 
@@ -16549,13 +16595,16 @@ var AnnotationTocRenderer = function () {
         for (var _iterator = node.childAnnotations[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
           var annotation = _step.value;
 
+          console.log('LL0:', this.options.layerId);
+          console.log('LL1:', annotation.layerId);
+
           if (annotation.layerId === this.options.layerId) {
             var annoElem = renderer.createAnnoElem(annotation, {
               pageElem: pageElem,
               canvasId: pageElem.data('canvasId'),
               isEditor: this._isEditor
             });
-            this.options.container.append(annoElem);
+            pageElem.append(annoElem);
           }
         }
       } catch (err) {
@@ -16762,7 +16811,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _selector = __webpack_require__(15);
+var _selector = __webpack_require__(16);
 
 var _selector2 = _interopRequireDefault(_selector);
 
@@ -22101,9 +22150,9 @@ module.exports = g;
 /* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(17);
+__webpack_require__(18);
 __webpack_require__(3);
-module.exports = __webpack_require__(16);
+module.exports = __webpack_require__(17);
 
 
 /***/ })
