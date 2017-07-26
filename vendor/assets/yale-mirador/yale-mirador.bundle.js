@@ -1,5 +1,5 @@
-// Yale-Mirador v0.6.3-21-g5a756a5 built Tue Jul 25 2017 16:55:56 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.6.3-21-g5a756a5 built Tue Jul 25 2017 16:55:56 GMT-0400 (EDT)";
+// Yale-Mirador v0.6.3-24-g4bfe975 built Wed Jul 26 2017 13:17:33 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.6.3-24-g4bfe975 built Wed Jul 26 2017 13:17:33 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -1493,6 +1493,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _import = __webpack_require__(1);
+
 var _annotationCache = __webpack_require__(11);
 
 var _annotationCache2 = _interopRequireDefault(_annotationCache);
@@ -2412,7 +2414,7 @@ var AnnotationCache = function () {
             switch (_context.prev = _context.next) {
               case 0:
                 if (!this._dbCache.isValid()) {
-                  _context.next = 3;
+                  _context.next = 5;
                   break;
                 }
 
@@ -2424,6 +2426,9 @@ var AnnotationCache = function () {
                 return this._dbCache.init();
 
               case 5:
+                return _context.abrupt('return', this);
+
+              case 6:
               case 'end':
                 return _context.stop();
             }
@@ -15708,6 +15713,39 @@ var AnnotationWindow = function () {
       });
     }
   }, {
+    key: '_getParagraphTag',
+    value: function _getParagraphTag(annotation) {
+      var tags = (0, _import.Anno)(annotation).tags;
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+
+      try {
+        for (var _iterator2 = tags[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var tag = _step2.value;
+
+          if (tag.match(/^p\d+$/)) {
+            return tag;
+          }
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+            _iterator2.return();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
+      }
+
+      return null;
+    }
+  }, {
     key: 'bindEvents',
     value: function bindEvents() {
       var _this5 = this;
@@ -15725,7 +15763,7 @@ var AnnotationWindow = function () {
 
       this._subscribe(jQuery, 'ANNOWIN_ANNOTATION_CLICKED', function () {
         var _ref5 = _asyncToGenerator(regeneratorRuntime.mark(function _callee5(event, params) {
-          var $anno, listWidget, annotations, layerId, tocSpec, toc, siblings, annoMap, _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, anno, targeting, targeted;
+          var $anno, listWidget, annotations, layerId, tocSpec, toc, siblings, annoMap, _iteratorNormalCompletion3, _didIteratorError3, _iteratorError3, _iterator3, _step3, anno, targeting, targeted;
 
           return regeneratorRuntime.wrap(function _callee5$(_context5) {
             while (1) {
@@ -15754,7 +15792,7 @@ var AnnotationWindow = function () {
                   tocSpec = (0, _stateStore2.default)().getTransient('tocSpec');
 
                   if (!tocSpec) {
-                    _context5.next = 20;
+                    _context5.next = 21;
                     break;
                   }
 
@@ -15767,60 +15805,64 @@ var AnnotationWindow = function () {
 
                   logger.debug('AnnotationWindow SUB ANNOWIN_ANNOTATION_CLICKED siblings:', siblings);
 
+                  siblings = siblings.filter(function (anno) {
+                    return _this5._getParagraphTag(anno) === _this5._getParagraphTag(params.annotation);
+                  });
+
                   if (!(siblings.length > 0)) {
-                    _context5.next = 20;
+                    _context5.next = 21;
                     break;
                   }
 
                   _this5.highlightAnnotations(siblings, 'SIBLING');
                   return _context5.abrupt('return');
 
-                case 20:
+                case 21:
                   annoMap = {};
-                  _iteratorNormalCompletion2 = true;
-                  _didIteratorError2 = false;
-                  _iteratorError2 = undefined;
-                  _context5.prev = 24;
+                  _iteratorNormalCompletion3 = true;
+                  _didIteratorError3 = false;
+                  _iteratorError3 = undefined;
+                  _context5.prev = 25;
 
-                  for (_iterator2 = annotations[Symbol.iterator](); !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                    anno = _step2.value;
+                  for (_iterator3 = annotations[Symbol.iterator](); !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+                    anno = _step3.value;
 
                     annoMap[anno['@id']] = anno;
                   }
-                  _context5.next = 32;
+                  _context5.next = 33;
                   break;
 
-                case 28:
-                  _context5.prev = 28;
-                  _context5.t0 = _context5['catch'](24);
-                  _didIteratorError2 = true;
-                  _iteratorError2 = _context5.t0;
+                case 29:
+                  _context5.prev = 29;
+                  _context5.t0 = _context5['catch'](25);
+                  _didIteratorError3 = true;
+                  _iteratorError3 = _context5.t0;
 
-                case 32:
-                  _context5.prev = 32;
+                case 33:
                   _context5.prev = 33;
+                  _context5.prev = 34;
 
-                  if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                    _iterator2.return();
+                  if (!_iteratorNormalCompletion3 && _iterator3.return) {
+                    _iterator3.return();
                   }
 
-                case 35:
-                  _context5.prev = 35;
+                case 36:
+                  _context5.prev = 36;
 
-                  if (!_didIteratorError2) {
-                    _context5.next = 38;
+                  if (!_didIteratorError3) {
+                    _context5.next = 39;
                     break;
                   }
 
-                  throw _iteratorError2;
-
-                case 38:
-                  return _context5.finish(35);
+                  throw _iteratorError3;
 
                 case 39:
-                  return _context5.finish(32);
+                  return _context5.finish(36);
 
                 case 40:
+                  return _context5.finish(33);
+
+                case 41:
                   targeting = _import.annoUtil.findTransitiveTargetingAnnotations(params.annotation, annoMap);
 
                   targeting = targeting.filter(function (anno) {
@@ -15828,32 +15870,32 @@ var AnnotationWindow = function () {
                   });
 
                   if (!(targeting.length > 0)) {
-                    _context5.next = 45;
+                    _context5.next = 46;
                     break;
                   }
 
                   _this5.highlightAnnotations(targeting, 'TARGETING');
                   return _context5.abrupt('return');
 
-                case 45:
+                case 46:
                   targeted = _import.annoUtil.findTransitiveTargetAnnotations(params.annotation, annoMap).filter(function (anno) {
                     return anno.layerId === _this5.getCurrentLayerId();
                   });
 
                   if (!(targeted.length > 0)) {
-                    _context5.next = 49;
+                    _context5.next = 50;
                     break;
                   }
 
                   _this5.highlightAnnotations(targeted, 'TARGET');
                   return _context5.abrupt('return');
 
-                case 49:
+                case 50:
                 case 'end':
                   return _context5.stop();
               }
             }
-          }, _callee5, _this5, [[24, 28, 32, 40], [33,, 35, 39]]);
+          }, _callee5, _this5, [[25, 29, 33, 41], [34,, 36, 40]]);
         }));
 
         return function (_x5, _x6) {
@@ -15909,52 +15951,52 @@ var AnnotationWindow = function () {
         var context = _arr[_i];
         var saved = context === jQuery ? this._jQuerySubscribed : this._miradorSubscribed;
 
-        var _iteratorNormalCompletion3 = true;
-        var _didIteratorError3 = false;
-        var _iteratorError3 = undefined;
+        var _iteratorNormalCompletion4 = true;
+        var _didIteratorError4 = false;
+        var _iteratorError4 = undefined;
 
         try {
-          for (var _iterator3 = Object.entries(saved)[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-            var _step3$value = _slicedToArray(_step3.value, 2),
-                eventId = _step3$value[0],
-                handlers = _step3$value[1];
+          for (var _iterator4 = Object.entries(saved)[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+            var _step4$value = _slicedToArray(_step4.value, 2),
+                eventId = _step4$value[0],
+                handlers = _step4$value[1];
 
-            var _iteratorNormalCompletion4 = true;
-            var _didIteratorError4 = false;
-            var _iteratorError4 = undefined;
+            var _iteratorNormalCompletion5 = true;
+            var _didIteratorError5 = false;
+            var _iteratorError5 = undefined;
 
             try {
-              for (var _iterator4 = handlers[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-                var handler = _step4.value;
+              for (var _iterator5 = handlers[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+                var handler = _step5.value;
 
                 context.unsubscribe(eventId, handler);
               }
             } catch (err) {
-              _didIteratorError4 = true;
-              _iteratorError4 = err;
+              _didIteratorError5 = true;
+              _iteratorError5 = err;
             } finally {
               try {
-                if (!_iteratorNormalCompletion4 && _iterator4.return) {
-                  _iterator4.return();
+                if (!_iteratorNormalCompletion5 && _iterator5.return) {
+                  _iterator5.return();
                 }
               } finally {
-                if (_didIteratorError4) {
-                  throw _iteratorError4;
+                if (_didIteratorError5) {
+                  throw _iteratorError5;
                 }
               }
             }
           }
         } catch (err) {
-          _didIteratorError3 = true;
-          _iteratorError3 = err;
+          _didIteratorError4 = true;
+          _iteratorError4 = err;
         } finally {
           try {
-            if (!_iteratorNormalCompletion3 && _iterator3.return) {
-              _iterator3.return();
+            if (!_iteratorNormalCompletion4 && _iterator4.return) {
+              _iterator4.return();
             }
           } finally {
-            if (_didIteratorError3) {
-              throw _iteratorError3;
+            if (_didIteratorError4) {
+              throw _iteratorError4;
             }
           }
         }
@@ -16521,9 +16563,6 @@ var AnnotationTocRenderer = function () {
         for (var _iterator = node.childAnnotations[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
           var annotation = _step.value;
 
-          console.log('LL0:', this.options.layerId);
-          console.log('LL1:', annotation.layerId);
-
           if (annotation.layerId === this.options.layerId) {
             var annoElem = renderer.createAnnoElem(annotation, {
               pageElem: pageElem,
@@ -16900,7 +16939,7 @@ exports.default = MenuTagSelector;
 /* 49 */
 /***/ (function(module, exports) {
 
-// joosugi v0.2.1-9-g3a1bb78 built Thu Jul 20 2017 18:36:28 GMT-0400 (EDT)
+// joosugi v0.2.1-9-g3a1bb78 built Wed Jul 26 2017 13:12:46 GMT-0400 (EDT)
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -17000,58 +17039,11 @@ var Annotation = function () {
   }
 
   _createClass(Annotation, [{
-    key: 'hasTags',
-    value: function hasTags(tags) {
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = this.tags[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var annoTag = _step.value;
-          var _iteratorNormalCompletion2 = true;
-          var _didIteratorError2 = false;
-          var _iteratorError2 = undefined;
-
-          try {
-            for (var _iterator2 = tags[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-              var tag = _step2.value;
-
-              if (tag === annoTag) {
-                return true;
-              }
-            }
-          } catch (err) {
-            _didIteratorError2 = true;
-            _iteratorError2 = err;
-          } finally {
-            try {
-              if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                _iterator2.return();
-              }
-            } finally {
-              if (_didIteratorError2) {
-                throw _iteratorError2;
-              }
-            }
-          }
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator.return) {
-            _iterator.return();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
-
-      return false;
+    key: 'addTag',
+    value: function addTag(tag) {
+      var resources = this._makeArray(this.oaAnnotation.resource);
+      resources.push(this._createTag(tag));
+      this.oaAnnotation.resource = resources;
     }
   }, {
     key: 'addTarget',
@@ -17101,6 +17093,14 @@ var Annotation = function () {
       } else {
         return null;
       }
+    }
+  }, {
+    key: '_createTag',
+    value: function _createTag(tagString) {
+      return {
+        '@type': 'oa:Tag',
+        chars: tagString
+      };
     }
   }, {
     key: 'id',
@@ -17159,29 +17159,29 @@ var Annotation = function () {
       var resources = this._makeArray(this.oaAnnotation.resource);
       var tags = [];
 
-      var _iteratorNormalCompletion3 = true;
-      var _didIteratorError3 = false;
-      var _iteratorError3 = undefined;
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
 
       try {
-        for (var _iterator3 = resources[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-          var item = _step3.value;
+        for (var _iterator = resources[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var item = _step.value;
 
           if (item['@type'] === "oa:Tag") {
             tags.push(item.chars);
           }
         }
       } catch (err) {
-        _didIteratorError3 = true;
-        _iteratorError3 = err;
+        _didIteratorError = true;
+        _iteratorError = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion3 && _iterator3.return) {
-            _iterator3.return();
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
           }
         } finally {
-          if (_didIteratorError3) {
-            throw _iteratorError3;
+          if (_didIteratorError) {
+            throw _iteratorError;
           }
         }
       }
@@ -17265,24 +17265,6 @@ exports.default = {
     }
 
     return false;
-  },
-
-  hasTags: function hasTags(annotation, tags) {
-    var annoTags = this.getTags(annotation);
-
-    for (var i = 0; i < tags.length; ++i) {
-      var found = false;
-      for (var j = 0; j < annoTags.length; ++j) {
-        if (tags[i] === annoTags[j]) {
-          found = true;
-          break;
-        }
-      }
-      if (!found) {
-        return false;
-      }
-    }
-    return true;
   },
 
   // For an annotation that targets other annotation(s), follow the
@@ -17756,8 +17738,12 @@ var AnnotationToc = function () {
     value: function parse() {
       // First pass
       var remainingAnnotations = this.addTaggedAnnotations(this.annotations);
+
       // Second pass
       this.addRemainingAnnotations(remainingAnnotations);
+
+      // Third pass
+      this.processOrdering();
     }
 
     /**
@@ -17804,6 +17790,13 @@ var AnnotationToc = function () {
 
       return remainder;
     }
+
+    /**
+     * Assign remaining (non-node) annotations to correct toc nodes.
+     *
+     * @param {object[]} annotations
+     */
+
   }, {
     key: 'addRemainingAnnotations',
     value: function addRemainingAnnotations(annotations) {
@@ -17846,6 +17839,50 @@ var AnnotationToc = function () {
           }
         }
       }
+    }
+
+    /**
+     * Assign paragraph numbers (tags) to  annotations
+     */
+
+  }, {
+    key: 'processOrdering',
+    value: function processOrdering() {
+      this.walk(function (node) {
+        var annotations = node.childAnnotations;
+        var counts = {};
+
+        var _iteratorNormalCompletion7 = true;
+        var _didIteratorError7 = false;
+        var _iteratorError7 = undefined;
+
+        try {
+          for (var _iterator7 = annotations[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+            var anno = _step7.value;
+
+            var $anno = (0, _annotationWrapper2.default)(anno);
+            var layerId = $anno.layerId;
+            if (counts[layerId] === undefined) {
+              counts[layerId] = 0;
+            }
+            var count = ++counts[layerId];
+            $anno.addTag('p' + count);
+          }
+        } catch (err) {
+          _didIteratorError7 = true;
+          _iteratorError7 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion7 && _iterator7.return) {
+              _iterator7.return();
+            }
+          } finally {
+            if (_didIteratorError7) {
+              throw _iteratorError7;
+            }
+          }
+        }
+      });
     }
   }, {
     key: '_findFinalTargetAnnotationOnCanvas',
@@ -17931,20 +17968,20 @@ var AnnotationToc = function () {
     key: 'tagInSpecs',
     value: function tagInSpecs(tags, nodeSpecs) {
       var match = null;
-      var _iteratorNormalCompletion7 = true;
-      var _didIteratorError7 = false;
-      var _iteratorError7 = undefined;
+      var _iteratorNormalCompletion8 = true;
+      var _didIteratorError8 = false;
+      var _iteratorError8 = undefined;
 
       try {
-        for (var _iterator7 = tags[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
-          var tag = _step7.value;
-          var _iteratorNormalCompletion8 = true;
-          var _didIteratorError8 = false;
-          var _iteratorError8 = undefined;
+        for (var _iterator8 = tags[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
+          var tag = _step8.value;
+          var _iteratorNormalCompletion9 = true;
+          var _didIteratorError9 = false;
+          var _iteratorError9 = undefined;
 
           try {
-            for (var _iterator8 = nodeSpecs[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
-              var nodeSpec = _step8.value;
+            for (var _iterator9 = nodeSpecs[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
+              var nodeSpec = _step9.value;
 
               if (tag === nodeSpec.tag) {
                 match = nodeSpec;
@@ -17952,16 +17989,16 @@ var AnnotationToc = function () {
               }
             }
           } catch (err) {
-            _didIteratorError8 = true;
-            _iteratorError8 = err;
+            _didIteratorError9 = true;
+            _iteratorError9 = err;
           } finally {
             try {
-              if (!_iteratorNormalCompletion8 && _iterator8.return) {
-                _iterator8.return();
+              if (!_iteratorNormalCompletion9 && _iterator9.return) {
+                _iterator9.return();
               }
             } finally {
-              if (_didIteratorError8) {
-                throw _iteratorError8;
+              if (_didIteratorError9) {
+                throw _iteratorError9;
               }
             }
           }
@@ -17971,16 +18008,16 @@ var AnnotationToc = function () {
           }
         }
       } catch (err) {
-        _didIteratorError7 = true;
-        _iteratorError7 = err;
+        _didIteratorError8 = true;
+        _iteratorError8 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion7 && _iterator7.return) {
-            _iterator7.return();
+          if (!_iteratorNormalCompletion8 && _iterator8.return) {
+            _iterator8.return();
           }
         } finally {
-          if (_didIteratorError7) {
-            throw _iteratorError7;
+          if (_didIteratorError8) {
+            throw _iteratorError8;
           }
         }
       }
@@ -18015,13 +18052,13 @@ var AnnotationToc = function () {
     value: function getNodeFromTags(tags) {
       var node = this.annoHierarchy;
 
-      var _iteratorNormalCompletion9 = true;
-      var _didIteratorError9 = false;
-      var _iteratorError9 = undefined;
+      var _iteratorNormalCompletion10 = true;
+      var _didIteratorError10 = false;
+      var _iteratorError10 = undefined;
 
       try {
-        for (var _iterator9 = tags[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
-          var tag = _step9.value;
+        for (var _iterator10 = tags[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
+          var tag = _step10.value;
 
           console.log('TAG', tag);
           console.log('NODE', node);
@@ -18031,16 +18068,16 @@ var AnnotationToc = function () {
           }
         }
       } catch (err) {
-        _didIteratorError9 = true;
-        _iteratorError9 = err;
+        _didIteratorError10 = true;
+        _iteratorError10 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion9 && _iterator9.return) {
-            _iterator9.return();
+          if (!_iteratorNormalCompletion10 && _iterator10.return) {
+            _iterator10.return();
           }
         } finally {
-          if (_didIteratorError9) {
-            throw _iteratorError9;
+          if (_didIteratorError10) {
+            throw _iteratorError10;
           }
         }
       }
@@ -18062,13 +18099,13 @@ var AnnotationToc = function () {
       this.walk(function (node) {
         var annotations = (node.annotation ? [node.annotation] : []).concat(node.childAnnotations);
 
-        var _iteratorNormalCompletion10 = true;
-        var _didIteratorError10 = false;
-        var _iteratorError10 = undefined;
+        var _iteratorNormalCompletion11 = true;
+        var _didIteratorError11 = false;
+        var _iteratorError11 = undefined;
 
         try {
-          for (var _iterator10 = annotations[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
-            var anno = _step10.value;
+          for (var _iterator11 = annotations[Symbol.iterator](), _step11; !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {
+            var anno = _step11.value;
 
             if (anno['@id'] === annotationId) {
               tags = node.cumulativeTags;
@@ -18076,16 +18113,16 @@ var AnnotationToc = function () {
             }
           }
         } catch (err) {
-          _didIteratorError10 = true;
-          _iteratorError10 = err;
+          _didIteratorError11 = true;
+          _iteratorError11 = err;
         } finally {
           try {
-            if (!_iteratorNormalCompletion10 && _iterator10.return) {
-              _iterator10.return();
+            if (!_iteratorNormalCompletion11 && _iterator11.return) {
+              _iterator11.return();
             }
           } finally {
-            if (_didIteratorError10) {
-              throw _iteratorError10;
+            if (_didIteratorError11) {
+              throw _iteratorError11;
             }
           }
         }
@@ -18117,43 +18154,15 @@ var AnnotationToc = function () {
       if (node.annotation && node.annotation['@id'] === annotation['@id']) {
         return true;
       }
-      var _iteratorNormalCompletion11 = true;
-      var _didIteratorError11 = false;
-      var _iteratorError11 = undefined;
-
-      try {
-        for (var _iterator11 = node.childAnnotations[Symbol.iterator](), _step11; !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {
-          var anno = _step11.value;
-
-          if (anno['@id'] === annotation['@id']) {
-            matched = true;
-            break;
-          }
-        }
-      } catch (err) {
-        _didIteratorError11 = true;
-        _iteratorError11 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion11 && _iterator11.return) {
-            _iterator11.return();
-          }
-        } finally {
-          if (_didIteratorError11) {
-            throw _iteratorError11;
-          }
-        }
-      }
-
       var _iteratorNormalCompletion12 = true;
       var _didIteratorError12 = false;
       var _iteratorError12 = undefined;
 
       try {
-        for (var _iterator12 = Object.values(node.childNodes)[Symbol.iterator](), _step12; !(_iteratorNormalCompletion12 = (_step12 = _iterator12.next()).done); _iteratorNormalCompletion12 = true) {
-          var childNode = _step12.value;
+        for (var _iterator12 = node.childAnnotations[Symbol.iterator](), _step12; !(_iteratorNormalCompletion12 = (_step12 = _iterator12.next()).done); _iteratorNormalCompletion12 = true) {
+          var anno = _step12.value;
 
-          if (_this.matchNode(annotation, childNode)) {
+          if (anno['@id'] === annotation['@id']) {
             matched = true;
             break;
           }
@@ -18169,6 +18178,34 @@ var AnnotationToc = function () {
         } finally {
           if (_didIteratorError12) {
             throw _iteratorError12;
+          }
+        }
+      }
+
+      var _iteratorNormalCompletion13 = true;
+      var _didIteratorError13 = false;
+      var _iteratorError13 = undefined;
+
+      try {
+        for (var _iterator13 = Object.values(node.childNodes)[Symbol.iterator](), _step13; !(_iteratorNormalCompletion13 = (_step13 = _iterator13.next()).done); _iteratorNormalCompletion13 = true) {
+          var childNode = _step13.value;
+
+          if (_this.matchNode(annotation, childNode)) {
+            matched = true;
+            break;
+          }
+        }
+      } catch (err) {
+        _didIteratorError13 = true;
+        _iteratorError13 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion13 && _iterator13.return) {
+            _iterator13.return();
+          }
+        } finally {
+          if (_didIteratorError13) {
+            throw _iteratorError13;
           }
         }
       }
@@ -18212,13 +18249,13 @@ var AnnotationToc = function () {
         return _this.tagWeights[a] - _this.tagWeights[b];
       });
 
-      var _iteratorNormalCompletion13 = true;
-      var _didIteratorError13 = false;
-      var _iteratorError13 = undefined;
+      var _iteratorNormalCompletion14 = true;
+      var _didIteratorError14 = false;
+      var _iteratorError14 = undefined;
 
       try {
-        for (var _iterator13 = sortedTags[Symbol.iterator](), _step13; !(_iteratorNormalCompletion13 = (_step13 = _iterator13.next()).done); _iteratorNormalCompletion13 = true) {
-          var tag = _step13.value;
+        for (var _iterator14 = sortedTags[Symbol.iterator](), _step14; !(_iteratorNormalCompletion14 = (_step14 = _iterator14.next()).done); _iteratorNormalCompletion14 = true) {
+          var tag = _step14.value;
 
           var childNode = node.childNodes[tag];
           var stop = callback(childNode);
@@ -18227,16 +18264,16 @@ var AnnotationToc = function () {
           }
         }
       } catch (err) {
-        _didIteratorError13 = true;
-        _iteratorError13 = err;
+        _didIteratorError14 = true;
+        _iteratorError14 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion13 && _iterator13.return) {
-            _iterator13.return();
+          if (!_iteratorNormalCompletion14 && _iterator14.return) {
+            _iterator14.return();
           }
         } finally {
-          if (_didIteratorError13) {
-            throw _iteratorError13;
+          if (_didIteratorError14) {
+            throw _iteratorError14;
           }
         }
       }
