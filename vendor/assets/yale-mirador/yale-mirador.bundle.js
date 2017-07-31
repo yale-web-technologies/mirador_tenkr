@@ -1,5 +1,5 @@
-// Yale-Mirador v0.6.3-24-g4bfe975 built Wed Jul 26 2017 13:17:33 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.6.3-24-g4bfe975 built Wed Jul 26 2017 13:17:33 GMT-0400 (EDT)";
+// Yale-Mirador v0.7.0-0-g600ac94 built Mon Jul 31 2017 13:55:30 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.7.0-0-g600ac94 built Mon Jul 31 2017 13:55:30 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -796,7 +796,7 @@ var App = function () {
   }, {
     key: '_setupAnnotationTocCache',
     value: function _setupAnnotationTocCache() {
-      var tocSpec = (0, _stateStore2.default)().getTransient('tagHierarchy');
+      var tocSpec = (0, _stateStore2.default)().getTransient('tocSpec');
       if (tocSpec) {
         this._annotationTocCache = new _annotationTocCache2.default({
           tocSpec: tocSpec,
@@ -1088,7 +1088,7 @@ var PageController = function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                logger.debug('PageController#showAnnotation windowId:', windowId, 'annoId:' + annoId);
+                logger.debug('PageController#showAnnotation windowId:', windowId, 'annoId:' + annoId, 'defaultLayer:', this._tocSpec.defaultLayer);
                 grid = this.options.grid;
                 windowProxy = this._miradorProxy.getWindowProxyById(windowId);
                 canvasId = windowProxy.getCurrentCanvasId();
@@ -3797,7 +3797,7 @@ jQuery(document).ready(function () {
 /* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global, process) {var require;var require;(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return require(o,!0);if(i)return require(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
+/* WEBPACK VAR INJECTION */(function(global, process) {var require;var require;(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return require(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 (function (global){
 "use strict";
 
@@ -12271,18 +12271,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
   var _listenForActions = $.ImageView.prototype.listenForActions;
 
   $.ImageView.prototype.listenForActions = function () {
-    var _this = this;
+    var _this2 = this;
 
     _listenForActions.call(this);
 
     this.eventEmitter.subscribe('ANNOTATIONS_LIST_UPDATED', function (event) {
-      logger.debug('ImageView in window ' + _this.windowId + ' received annotationRendered; annotationToBeFocused:', _this._annotationToBeFocused);
-      if (_this._annotationToBeFocused) {
+      logger.debug('ImageView in window ' + _this2.windowId + ' received annotationRendered; annotationToBeFocused:', _this2._annotationToBeFocused);
+      if (_this2._annotationToBeFocused) {
         // setTimeout in order to give the OsdRegionDrawTool time to create
         // annotation shapes in the overlay after window.getAnnotations() is done
         setTimeout(function () {
-          var imageWindowProxy = (0, _miradorProxyManager2.default)().getWindowProxyById(_this.windowId);
-          var anno = _this._annotationToBeFocused;
+          var imageWindowProxy = (0, _miradorProxyManager2.default)().getWindowProxyById(_this2.windowId);
+          var anno = _this2._annotationToBeFocused;
 
           if (!_import.annoUtil.hasTargetOnCanvas(anno)) {
             var annoMap = {};
@@ -12342,15 +12342,22 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
               return false;
             })[0];
           }
-          _this._annotationToBeFocused = null;
+          _this2._annotationToBeFocused = null;
           if (anno) {
-            _this.zoomToAnnotation(anno);
-            _this.panToAnnotation(anno);
-            _this.annotationsLayer.drawTool.updateHighlights(anno);
+            _this2.zoomToAnnotation(anno);
+            _this2.panToAnnotation(anno);
+            _this2.annotationsLayer.drawTool.updateHighlights(anno);
           } else {
             logger.error('ImageWindow(ext):SUB:ANNOWIN_ANNOTATION_CLICKED annotation not found');
           }
         }, 500);
+      }
+    });
+
+    this.eventEmitter.subscribe('YM_DISPLAY_ON', function (event) {
+      if (_this2.hud.annoState.current === 'off') {
+        console.log('ON !!!!!!!!!!');
+        _this.hud.annoState.displayOn(_this.element.find('.mirador-osd-annotations-layer'));
       }
     });
   };
@@ -13656,7 +13663,7 @@ var MiradorWrapper = function () {
                   windowProxy = miradorProxy.getWindowProxyById(windowId);
                   imageView = windowProxy.getImageView();
                   tocNode = toc.getNodeFromTags(tags);
-                  annotation = tocNode.annotation;
+                  annotation = tocNode.canvasAnnotations[0];
                   newCanvasId = canvasId;
 
                   zoomToAnnotation = function zoomToAnnotation(event) {
@@ -15027,7 +15034,6 @@ var AnnotationListWidget = function () {
             while (1) {
               switch (_context16.prev = _context16.next) {
                 case 0:
-                  console.log('SCROLL');
                   elem = jQuery(this);
                   scrollTop = elem.scrollTop();
                   currentPos = scrollTop + elem.height();
@@ -15036,23 +15042,23 @@ var AnnotationListWidget = function () {
                   //logger.debug('contentHeight:', contentHeight, 'scrollTop:', scrollTop, 'scroll bottom:', currentPos);
 
                   if (!(scrollTop < 20)) {
-                    _context16.next = 8;
+                    _context16.next = 7;
                     break;
                   }
 
-                  _context16.next = 8;
+                  _context16.next = 7;
                   return _this.pageBack();
 
-                case 8:
+                case 7:
                   if (!(contentHeight - currentPos < 20)) {
-                    _context16.next = 11;
+                    _context16.next = 10;
                     break;
                   }
 
-                  _context16.next = 11;
+                  _context16.next = 10;
                   return _this.pageForward();
 
-                case 11:
+                case 10:
                 case 'end':
                   return _context16.stop();
               }
@@ -16514,8 +16520,7 @@ var AnnotationTocRenderer = function () {
           return; // do nothing with root node
         }
         _this.appendHeader(node);
-        _this.appendAnnotationForTocNode(node);
-        _this.appendAnnotationsForChildNodes(node);
+        _this.appendAnnotations(node);
       });
       this.appendUnattachedAnnotations();
     }
@@ -16527,31 +16532,15 @@ var AnnotationTocRenderer = function () {
       // We are distinguishing between leaf and non-leaf nodes to ensure
       // only one header will show over any set of annotations.
 
-      if (nonLeafHasAnnotationsToShow(node, layerId) || leafHasAnnotationsToShow(node, layerId)) {
+      if (nodeHasAnnotationsToShow(node, layerId)) {
         var headerElem = this.createHeaderElem(node);
         this.options.container.append(headerElem);
       }
     }
   }, {
-    key: 'appendAnnotationForTocNode',
-    value: function appendAnnotationForTocNode(node) {
-      logger.debug('AnnotationTocRenderer#appendAnnotationsForTocNode node:', node);
-      if (node.annotation && node.annotation.layerId === this.options.layerId) {
-        var renderer = this.options.annotationRenderer;
-        var annoElem = renderer.createAnnoElem(node.annotation, {
-          pageElem: this.options.container,
-          canvasId: this.options.canvasId,
-          isEditor: this._isEditor
-        });
-        this.options.container.append(annoElem);
-      } else {
-        //logger.debug('AnnotationTocRenderer#appendAnnotationForTocNode no annotation is associated with node', node, 'and layer', this.options.layerId);
-      }
-    }
-  }, {
-    key: 'appendAnnotationsForChildNodes',
-    value: function appendAnnotationsForChildNodes(node) {
-      logger.debug('AnnotationTocRenderer#appendAnnotationsForChildNodes children:', node.childAnnotations);
+    key: 'appendAnnotations',
+    value: function appendAnnotations(node) {
+      logger.debug('AnnotationTocRenderer#appendAnnotations node:', node);
       var renderer = this.options.annotationRenderer;
       var pageElem = this.options.container;
 
@@ -16560,11 +16549,11 @@ var AnnotationTocRenderer = function () {
       var _iteratorError = undefined;
 
       try {
-        for (var _iterator = node.childAnnotations[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var annotation = _step.value;
+        for (var _iterator = node.annotations[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var anno = _step.value;
 
-          if (annotation.layerId === this.options.layerId) {
-            var annoElem = renderer.createAnnoElem(annotation, {
+          if (anno.layerId === this.options.layerId) {
+            var annoElem = renderer.createAnnoElem(anno, {
               pageElem: pageElem,
               canvasId: pageElem.data('canvasId'),
               isEditor: this._isEditor
@@ -16641,12 +16630,10 @@ var AnnotationTocRenderer = function () {
   }, {
     key: 'createHeaderElem',
     value: function createHeaderElem(node) {
-      var text = node.cumulativeLabel;
-      var tags = node.cumulativeTags;
-      var headerHtml = headerTemplate({ text: text });
-      var headerElem = jQuery(headerHtml).addClass('header-level-' + tags.length);
+      var headerHtml = headerTemplate({ text: node.label });
+      var headerElem = jQuery(headerHtml).addClass('header-level-' + node.tags.length);
 
-      headerElem.data('tags', tags);
+      headerElem.data('tags', node.tags);
       return headerElem;
     }
   }]);
@@ -16659,32 +16646,34 @@ exports.default = AnnotationTocRenderer;
 
 var headerTemplate = Handlebars.compile(['<div class="annowin_group_header">{{text}}', '</div>'].join(''));
 
-// True if node is a non-leaf and there are annotations to show under the header
-function nonLeafHasAnnotationsToShow(node, layerId) {
-  var numChildNodes = Object.keys(node.childNodes).length;
+function nodeHasAnnotationsToShow(node, layerId) {
+  var _iteratorNormalCompletion3 = true;
+  var _didIteratorError3 = false;
+  var _iteratorError3 = undefined;
 
-  return numChildNodes > 0 && ( // non-leaf
-  node.annotation && node.annotation.layerId === layerId || // the annotation for this node matches the current layer so it will show
-  hasChildAnnotationsToShow(node, layerId)); // there are annotations that target this non-leaf node directly
-}
+  try {
+    for (var _iterator3 = node.annotations[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+      var anno = _step3.value;
 
-// True if node is a leaf and there are annotations to show under the header
-function leafHasAnnotationsToShow(node, layerId) {
-  var numChildNodes = Object.keys(node.childNodes).length;
-
-  return numChildNodes === 0 && // leaf
-  node.layerIds.has(layerId); // node is a leaf and there are annotations with matching layer
-}
-
-function hasChildAnnotationsToShow(node, layerId) {
-  var annos = node.childAnnotations;
-  var num = annos.length;
-  for (var i = 0; i < num; ++i) {
-    var anno = node.childAnnotations[i];
-    if (anno.layerId === layerId) {
-      return true;
+      if (anno.layerId === layerId) {
+        return true;
+      }
+    }
+  } catch (err) {
+    _didIteratorError3 = true;
+    _iteratorError3 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion3 && _iterator3.return) {
+        _iterator3.return();
+      }
+    } finally {
+      if (_didIteratorError3) {
+        throw _iteratorError3;
+      }
     }
   }
+
   return false;
 }
 
@@ -16939,7 +16928,7 @@ exports.default = MenuTagSelector;
 /* 49 */
 /***/ (function(module, exports) {
 
-// joosugi v0.2.1-9-g3a1bb78 built Wed Jul 26 2017 13:12:46 GMT-0400 (EDT)
+// joosugi v0.3.0-1-gd80b657 built Mon Jul 31 2017 13:54:39 GMT-0400 (EDT)
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -16977,9 +16966,6 @@ exports.default = MenuTagSelector;
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -17007,7 +16993,7 @@ exports.default = MenuTagSelector;
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -17411,14 +17397,8 @@ exports.default = {
   },
 
   findAllAnnotationsForTocNode: function findAllAnnotationsForTocNode(tocNode) {
-    var result = [];
+    var result = [].concat(tocNode.annotations);
 
-    if (tocNode.annotation) {
-      result.push(tocNode.annotation);
-    }
-    if (tocNode.childAnnotations instanceof Array) {
-      result = result.concat(tocNode.childAnnotations);
-    }
     var _iteratorNormalCompletion5 = true;
     var _didIteratorError5 = false;
     var _iteratorError5 = undefined;
@@ -17499,8 +17479,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _annotationWrapper = __webpack_require__(0);
@@ -17545,17 +17523,7 @@ var AnnotationToc = function () {
       logger = this.options.logger;
     }
 
-    /*
-     * Spec is a JSON passed from outside (an array of arrays).
-     * It defines the tags to be used to define the hiearchy.
-     * It is different from "ranges" because
-     * it is used to define a strucutre of annotations in a single canvas
-     * while ranges are used to define a structure of canvases in a sequence.
-     * For example, the first array could list tags for sections of a story
-     * and the second one could list tags for sub-sections.
-     */
     this.spec = spec;
-
     this.annotations = annotations;
     this._annoMap = {};
     var _iteratorNormalCompletion = true;
@@ -17568,6 +17536,20 @@ var AnnotationToc = function () {
 
         this._annoMap[anno['@id']] = anno;
       }
+
+      /**
+       * This can be considered the output of parse,
+       * while "this.spec" and "annotations" are the input.
+       *
+       * Each node is an object:
+       * {
+       *   annotations: [], // annotations that directly belong to this node
+       *   canvasAnnotations: [], // annotations that targets a canvas directly
+       *   tags: [], // tags for this node
+       *   childNodes: AN_OBJECT, // child TOC nodes as a hashmap on tags
+       *   isRoot: A_BOOL // true if the node is the root
+       * }
+       */
     } catch (err) {
       _didIteratorError = true;
       _iteratorError = err;
@@ -17583,26 +17565,7 @@ var AnnotationToc = function () {
       }
     }
 
-    this.tagWeights = {}; // for sorting
-
-    /**
-     * This can be considered the output of parse,
-     * while "this.spec" and "annotations" are the input.
-     *
-     * Each node is an object:
-     * {
-     *   spec: AN_OBJECT, // spec object from this.spec, with label, short, tag attributes
-     *   annotation: AN_OBJECT, // annotation
-     *   layerIds: A_SET, // set of layer IDs for annotations that belong to this node or its children
-     *   cumulativeLabel: A_STRING, // concatenation of short labels inherited from the parent nodes
-     *   cumulativeTags: [], // list of tags for this node and its ancestors
-     *   childNodes: AN_OBJECT, // child TOC nodes as a hashmap on tags
-     *   childAnnotations: AN_ARRAY, // non-TOC-node annotations that targets this node
-     *   isRoot: A_BOOL, // true if the node is the root
-     *   weight: A_NUMBER // for sorting
-     * }
-     */
-    this.annoHierarchy = null;
+    this._root = null;
 
     /**
      * Annotations that do not belong to the ToC structure.
@@ -17617,10 +17580,7 @@ var AnnotationToc = function () {
     key: 'init',
     value: function init(annotations) {
       logger.debug('AnnotationToc#init spec: ', this.spec);
-
-      this.annoHierarchy = this.newNode(null, null); // root node
-
-      this.initTagWeights();
+      this._root = this._newNode(null, null); // root node
       this.parse(this.annotations);
     }
 
@@ -17634,7 +17594,7 @@ var AnnotationToc = function () {
     key: 'getNode',
     value: function getNode() {
       var tags = Array.from(arguments);
-      var node = this.annoHierarchy;
+      var node = this._root;
 
       var _iteratorNormalCompletion2 = true;
       var _didIteratorError2 = false;
@@ -17664,426 +17624,17 @@ var AnnotationToc = function () {
         }
       }
 
-      return node === this.annoHierarchy ? null : node;
+      return node === this._root ? null : node;
     }
   }, {
     key: 'findNodeForAnnotation',
     value: function findNodeForAnnotation(annotation) {
-      var targetAnno = this._findFinalTargetAnnotationOnCanvas(annotation);
-      return targetAnno ? this.annoToNodeMap[targetAnno['@id']] : null;
-    }
-
-    /**
-     * Assign weights to tags according to their position in the array.
-     */
-
-  }, {
-    key: 'initTagWeights',
-    value: function initTagWeights() {
-      var _this = this;
-      //jQuery.each(this.spec.nodeSpecs, function(rowIndex, row) {
-      var _iteratorNormalCompletion3 = true;
-      var _didIteratorError3 = false;
-      var _iteratorError3 = undefined;
-
-      try {
-        for (var _iterator3 = this.spec.nodeSpecs[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-          var row = _step3.value;
-
-          //jQuery.each(row, function(index, nodeSpec) {
-          var _iteratorNormalCompletion4 = true;
-          var _didIteratorError4 = false;
-          var _iteratorError4 = undefined;
-
-          try {
-            for (var _iterator4 = row.entries()[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-              var _step4$value = _slicedToArray(_step4.value, 2),
-                  index = _step4$value[0],
-                  nodeSpec = _step4$value[1];
-
-              _this.tagWeights[nodeSpec.tag] = index;
-            }
-          } catch (err) {
-            _didIteratorError4 = true;
-            _iteratorError4 = err;
-          } finally {
-            try {
-              if (!_iteratorNormalCompletion4 && _iterator4.return) {
-                _iterator4.return();
-              }
-            } finally {
-              if (_didIteratorError4) {
-                throw _iteratorError4;
-              }
-            }
-          }
-        }
-      } catch (err) {
-        _didIteratorError3 = true;
-        _iteratorError3 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion3 && _iterator3.return) {
-            _iterator3.return();
-          }
-        } finally {
-          if (_didIteratorError3) {
-            throw _iteratorError3;
-          }
-        }
-      }
-    }
-  }, {
-    key: 'parse',
-    value: function parse() {
-      // First pass
-      var remainingAnnotations = this.addTaggedAnnotations(this.annotations);
-
-      // Second pass
-      this.addRemainingAnnotations(remainingAnnotations);
-
-      // Third pass
-      this.processOrdering();
-    }
-
-    /**
-     * Build a TOC structure
-     * @return An array of annotations that are NOT assigned to a TOC node.
-     */
-
-  }, {
-    key: 'addTaggedAnnotations',
-    value: function addTaggedAnnotations(annotations) {
-      var _this = this;
-      var remainder = [];
-
-      var _iteratorNormalCompletion5 = true;
-      var _didIteratorError5 = false;
-      var _iteratorError5 = undefined;
-
-      try {
-        for (var _iterator5 = annotations[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-          var annotation = _step5.value;
-
-          var $anno = (0, _annotationWrapper2.default)(annotation);
-          var tags = $anno.tags;
-          var success = _this.buildChildNodes(annotation, tags, 0, _this.annoHierarchy);
-
-          if (!success) {
-            remainder.push(annotation);
-          }
-        }
-      } catch (err) {
-        _didIteratorError5 = true;
-        _iteratorError5 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion5 && _iterator5.return) {
-            _iterator5.return();
-          }
-        } finally {
-          if (_didIteratorError5) {
-            throw _iteratorError5;
-          }
-        }
-      }
-
-      return remainder;
-    }
-
-    /**
-     * Assign remaining (non-node) annotations to correct toc nodes.
-     *
-     * @param {object[]} annotations
-     */
-
-  }, {
-    key: 'addRemainingAnnotations',
-    value: function addRemainingAnnotations(annotations) {
-      var _iteratorNormalCompletion6 = true;
-      var _didIteratorError6 = false;
-      var _iteratorError6 = undefined;
-
-      try {
-        for (var _iterator6 = annotations[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-          var annotation = _step6.value;
-
-          var targetAnno = this._findFinalTargetAnnotationOnCanvas(annotation);
-
-          if (targetAnno) {
-            var node = this.annoToNodeMap[targetAnno['@id']];
-            if (targetAnno && node) {
-              annotation.tocTags = node.cumulativeTags; // XXX
-              node.childAnnotations.push(annotation);
-              this.registerLayerWithNode(node, annotation.layerId);
-            } else {
-              logger.error('AnnotationToc#addRemainingAnnotations not covered by ToC');
-              this._unassigned.push(annotation);
-            }
-          } else {
-            logger.error('AnnotationToc#addRemainingAnnotations orphan', annotation);
-            this._unassigned.push(annotation);
-          }
-        }
-      } catch (err) {
-        _didIteratorError6 = true;
-        _iteratorError6 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion6 && _iterator6.return) {
-            _iterator6.return();
-          }
-        } finally {
-          if (_didIteratorError6) {
-            throw _iteratorError6;
-          }
-        }
-      }
-    }
-
-    /**
-     * Assign paragraph numbers (tags) to  annotations
-     */
-
-  }, {
-    key: 'processOrdering',
-    value: function processOrdering() {
-      this.walk(function (node) {
-        var annotations = node.childAnnotations;
-        var counts = {};
-
-        var _iteratorNormalCompletion7 = true;
-        var _didIteratorError7 = false;
-        var _iteratorError7 = undefined;
-
-        try {
-          for (var _iterator7 = annotations[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
-            var anno = _step7.value;
-
-            var $anno = (0, _annotationWrapper2.default)(anno);
-            var layerId = $anno.layerId;
-            if (counts[layerId] === undefined) {
-              counts[layerId] = 0;
-            }
-            var count = ++counts[layerId];
-            $anno.addTag('p' + count);
-          }
-        } catch (err) {
-          _didIteratorError7 = true;
-          _iteratorError7 = err;
-        } finally {
-          try {
-            if (!_iteratorNormalCompletion7 && _iterator7.return) {
-              _iterator7.return();
-            }
-          } finally {
-            if (_didIteratorError7) {
-              throw _iteratorError7;
-            }
-          }
-        }
-      });
-    }
-  }, {
-    key: '_findFinalTargetAnnotationOnCanvas',
-    value: function _findFinalTargetAnnotationOnCanvas(annotation) {
-      var annos = _annotationUtil2.default.findTargetAnnotationsOnCanvas(annotation, this._annoMap);
-      if (annos.length > 1) {
-        logger.warning('AnnotationToc#_findFinalTargetAnnotationOnCanvas foudn more than one targets:', annos);
-      }
-      return annos[0];
-    }
-
-    /**
-     * Recursively builds the TOC structure.
-     * @param {object} annotation Annotation to be assigned to the parent node
-     * @param {string[]} tags
-     * @param {number} rowIndex Index of this.annoHierarchy
-     * @param {object} parent Parent node
-     * @return {boolean} true if the annotation was set to be a TOC node, false if not.
-     */
-
-  }, {
-    key: 'buildChildNodes',
-    value: function buildChildNodes(annotation, tags, rowIndex, parent) {
-      var currentNode = null;
-
-      if (rowIndex >= this.spec.nodeSpecs.length) {
-        // no more levels to explore in the TOC structure
-        if (parent.isRoot) {
-          // The root is not a TOC node
-          return false;
-        } else {
-          // Assign the annotation to parent (a TOC node)
-          parent.annotation = annotation;
-          parent.annotation.tocTags = parent.cumulativeTags; // XXX
-          this.annoToNodeMap[annotation['@id']] = parent;
-          this.registerLayerWithNode(parent, annotation.layerId);
-          return true;
-        }
-      }
-
-      var nodeSpec = this.tagInSpecs(tags, this.spec.nodeSpecs[rowIndex]);
-
-      if (nodeSpec) {
-        // one of the tags belongs to the corresponding level of the pre-defined tag hierarchy
-        var tag = nodeSpec.tag;
-        var annoHierarchy = this.annoHierarchy;
-
-        if (!parent.childNodes[tag]) {
-          parent.childNodes[tag] = this.newNode(nodeSpec, parent);
-        }
-
-        currentNode = parent.childNodes[tag];
-
-        if (parent.isRoot) {
-          currentNode.cumulativeLabel = currentNode.spec.short;
-        } else {
-          currentNode.cumulativeLabel = parent.cumulativeLabel + this.spec.shortLabelSeparator + currentNode.spec.short;
-        }
-        return this.buildChildNodes(annotation, tags, rowIndex + 1, currentNode);
-      } else {
-        // no matching tags so far
-        if (parent.isRoot) {
-          return false;
-        } else {
-          parent.annotation = annotation;
-          parent.annotation.tocTags = parent.cumulativeTags; // XXX
-          this.registerLayerWithNode(parent, annotation.layerId);
-          this.annoToNodeMap[annotation['@id']] = parent;
-          return true;
-        }
-      }
-    }
-
-    /**
-     * A tag object is an object in this.tagHierarcy that represents a tag.
-     *
-     * @param {string[]} tags List of tags
-     * @param {object[]} nodeSpecs List of node specs
-     * @return {object} The "node spec" object if one of the objects in nodeSpecs represents one of the tags; null if not.
-     */
-
-  }, {
-    key: 'tagInSpecs',
-    value: function tagInSpecs(tags, nodeSpecs) {
-      var match = null;
-      var _iteratorNormalCompletion8 = true;
-      var _didIteratorError8 = false;
-      var _iteratorError8 = undefined;
-
-      try {
-        for (var _iterator8 = tags[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
-          var tag = _step8.value;
-          var _iteratorNormalCompletion9 = true;
-          var _didIteratorError9 = false;
-          var _iteratorError9 = undefined;
-
-          try {
-            for (var _iterator9 = nodeSpecs[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
-              var nodeSpec = _step9.value;
-
-              if (tag === nodeSpec.tag) {
-                match = nodeSpec;
-                break;
-              }
-            }
-          } catch (err) {
-            _didIteratorError9 = true;
-            _iteratorError9 = err;
-          } finally {
-            try {
-              if (!_iteratorNormalCompletion9 && _iterator9.return) {
-                _iterator9.return();
-              }
-            } finally {
-              if (_didIteratorError9) {
-                throw _iteratorError9;
-              }
-            }
-          }
-
-          if (match) {
-            break;
-          }
-        }
-      } catch (err) {
-        _didIteratorError8 = true;
-        _iteratorError8 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion8 && _iterator8.return) {
-            _iterator8.return();
-          }
-        } finally {
-          if (_didIteratorError8) {
-            throw _iteratorError8;
-          }
-        }
-      }
-
-      return match;
-    }
-  }, {
-    key: 'newNode',
-    value: function newNode(nodeSpec, parent) {
-      if (!parent) {
-        // root node
-        return {
-          isRoot: true,
-          childNodes: {}
-        };
-      } else {
-        var tags = parent.isRoot ? [nodeSpec.tag] : parent.cumulativeTags.concat([nodeSpec.tag]);
-        return {
-          spec: nodeSpec,
-          annotation: null,
-          layerIds: new Set(),
-          cumulativeLabel: '',
-          cumulativeTags: tags,
-          childNodes: {},
-          childAnnotations: [],
-          weight: this.tagWeights[nodeSpec.tag]
-        };
-      }
+      return this.getNode.apply(this, annotation.tocTags);
     }
   }, {
     key: 'getNodeFromTags',
     value: function getNodeFromTags(tags) {
-      var node = this.annoHierarchy;
-
-      var _iteratorNormalCompletion10 = true;
-      var _didIteratorError10 = false;
-      var _iteratorError10 = undefined;
-
-      try {
-        for (var _iterator10 = tags[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
-          var tag = _step10.value;
-
-          console.log('TAG', tag);
-          console.log('NODE', node);
-          node = node.childNodes[tag];
-          if (!node) {
-            break;
-          }
-        }
-      } catch (err) {
-        _didIteratorError10 = true;
-        _iteratorError10 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion10 && _iterator10.return) {
-            _iterator10.return();
-          }
-        } finally {
-          if (_didIteratorError10) {
-            throw _iteratorError10;
-          }
-        }
-      }
-
-      console.log('NODENODE:', node);
-      return !node || node.isRoot ? null : node;
+      return this.getNode.apply(this, tags);
     }
 
     /**
@@ -18097,32 +17648,30 @@ var AnnotationToc = function () {
       var tags = [];
 
       this.walk(function (node) {
-        var annotations = (node.annotation ? [node.annotation] : []).concat(node.childAnnotations);
-
-        var _iteratorNormalCompletion11 = true;
-        var _didIteratorError11 = false;
-        var _iteratorError11 = undefined;
+        var _iteratorNormalCompletion3 = true;
+        var _didIteratorError3 = false;
+        var _iteratorError3 = undefined;
 
         try {
-          for (var _iterator11 = annotations[Symbol.iterator](), _step11; !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {
-            var anno = _step11.value;
+          for (var _iterator3 = node.annotations[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+            var anno = _step3.value;
 
             if (anno['@id'] === annotationId) {
-              tags = node.cumulativeTags;
+              tags = node.tags;
               return true;
             }
           }
         } catch (err) {
-          _didIteratorError11 = true;
-          _iteratorError11 = err;
+          _didIteratorError3 = true;
+          _iteratorError3 = err;
         } finally {
           try {
-            if (!_iteratorNormalCompletion11 && _iterator11.return) {
-              _iterator11.return();
+            if (!_iteratorNormalCompletion3 && _iterator3.return) {
+              _iterator3.return();
             }
           } finally {
-            if (_didIteratorError11) {
-              throw _iteratorError11;
+            if (_didIteratorError3) {
+              throw _iteratorError3;
             }
           }
         }
@@ -18144,78 +17693,50 @@ var AnnotationToc = function () {
   }, {
     key: 'matchNode',
     value: function matchNode(annotation, node) {
-      var _this = this;
       var matched = false;
 
-      if (!node.annotation) {
-        logger.error('AnnotationToc#matchNode no annotation assigned to node', node.spec);
-      }
-
-      if (node.annotation && node.annotation['@id'] === annotation['@id']) {
+      var annos = node.canvasAnnotations.filter(function (anno) {
+        return anno['@id'] === annotation['@id'];
+      });
+      if (annos.length > 0) {
         return true;
       }
-      var _iteratorNormalCompletion12 = true;
-      var _didIteratorError12 = false;
-      var _iteratorError12 = undefined;
+
+      annos = node.annotations.filter(function (anno) {
+        return anno['@id'] === annotation['@id'];
+      });
+      if (annos.length > 0) {
+        return true;
+      }
+
+      var _iteratorNormalCompletion4 = true;
+      var _didIteratorError4 = false;
+      var _iteratorError4 = undefined;
 
       try {
-        for (var _iterator12 = node.childAnnotations[Symbol.iterator](), _step12; !(_iteratorNormalCompletion12 = (_step12 = _iterator12.next()).done); _iteratorNormalCompletion12 = true) {
-          var anno = _step12.value;
+        for (var _iterator4 = Object.values(node.childNodes)[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+          var childNode = _step4.value;
 
-          if (anno['@id'] === annotation['@id']) {
-            matched = true;
-            break;
+          if (this.matchNode(annotation, childNode)) {
+            return true;
           }
         }
       } catch (err) {
-        _didIteratorError12 = true;
-        _iteratorError12 = err;
+        _didIteratorError4 = true;
+        _iteratorError4 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion12 && _iterator12.return) {
-            _iterator12.return();
+          if (!_iteratorNormalCompletion4 && _iterator4.return) {
+            _iterator4.return();
           }
         } finally {
-          if (_didIteratorError12) {
-            throw _iteratorError12;
+          if (_didIteratorError4) {
+            throw _iteratorError4;
           }
         }
       }
 
-      var _iteratorNormalCompletion13 = true;
-      var _didIteratorError13 = false;
-      var _iteratorError13 = undefined;
-
-      try {
-        for (var _iterator13 = Object.values(node.childNodes)[Symbol.iterator](), _step13; !(_iteratorNormalCompletion13 = (_step13 = _iterator13.next()).done); _iteratorNormalCompletion13 = true) {
-          var childNode = _step13.value;
-
-          if (_this.matchNode(annotation, childNode)) {
-            matched = true;
-            break;
-          }
-        }
-      } catch (err) {
-        _didIteratorError13 = true;
-        _iteratorError13 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion13 && _iterator13.return) {
-            _iterator13.return();
-          }
-        } finally {
-          if (_didIteratorError13) {
-            throw _iteratorError13;
-          }
-        }
-      }
-
-      return matched;
-    }
-  }, {
-    key: 'registerLayerWithNode',
-    value: function registerLayerWithNode(node, layerId) {
-      node.layerIds.add(layerId);
+      return false;
     }
   }, {
     key: 'unassigned',
@@ -18227,9 +17748,6 @@ var AnnotationToc = function () {
     value: function numUnassigned() {
       return this._unassigned.length;
     }
-  }, {
-    key: 'findAllChildAnnotations',
-    value: function findAllChildAnnotations(node) {}
 
     /**
      * Traverses the Toc structure and calls visitCallback() for each node.
@@ -18239,43 +17757,220 @@ var AnnotationToc = function () {
   }, {
     key: 'walk',
     value: function walk(visitCallback) {
-      this.visit(this.annoHierarchy, visitCallback);
+      this._visit(this._root, visitCallback);
     }
   }, {
-    key: 'visit',
-    value: function visit(node, callback) {
-      var _this = this;
-      var sortedTags = Object.keys(node.childNodes).sort(function (a, b) {
-        return _this.tagWeights[a] - _this.tagWeights[b];
-      });
+    key: '_visit',
+    value: function _visit(node, callback) {
+      var sortedTags = Object.keys(node.childNodes).sort();
 
-      var _iteratorNormalCompletion14 = true;
-      var _didIteratorError14 = false;
-      var _iteratorError14 = undefined;
+      var _iteratorNormalCompletion5 = true;
+      var _didIteratorError5 = false;
+      var _iteratorError5 = undefined;
 
       try {
-        for (var _iterator14 = sortedTags[Symbol.iterator](), _step14; !(_iteratorNormalCompletion14 = (_step14 = _iterator14.next()).done); _iteratorNormalCompletion14 = true) {
-          var tag = _step14.value;
+        for (var _iterator5 = sortedTags[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+          var tag = _step5.value;
 
           var childNode = node.childNodes[tag];
           var stop = callback(childNode);
           if (!stop) {
-            _this.visit(childNode, callback);
+            this._visit(childNode, callback);
           }
         }
       } catch (err) {
-        _didIteratorError14 = true;
-        _iteratorError14 = err;
+        _didIteratorError5 = true;
+        _iteratorError5 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion14 && _iterator14.return) {
-            _iterator14.return();
+          if (!_iteratorNormalCompletion5 && _iterator5.return) {
+            _iterator5.return();
           }
         } finally {
-          if (_didIteratorError14) {
-            throw _iteratorError14;
+          if (_didIteratorError5) {
+            throw _iteratorError5;
           }
         }
+      }
+    }
+  }, {
+    key: 'parse',
+    value: function parse() {
+      // First pass
+      var remainingAnnotations = this._buildTocTree(this.annotations);
+    }
+
+    /**
+     * Build a TOC structure
+     * @return An array of annotations that are NOT assigned to a TOC node.
+     */
+
+  }, {
+    key: '_buildTocTree',
+    value: function _buildTocTree(annotations) {
+      var remainder = [];
+
+      var _iteratorNormalCompletion6 = true;
+      var _didIteratorError6 = false;
+      var _iteratorError6 = undefined;
+
+      try {
+        for (var _iterator6 = annotations[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+          var annotation = _step6.value;
+
+          var $anno = (0, _annotationWrapper2.default)(annotation);
+          var tags = $anno.tags;
+          var success = this._buildChildNodes(annotation, tags, 0, this._root);
+
+          if (!success) {
+            remainder.push(annotation);
+          }
+        }
+      } catch (err) {
+        _didIteratorError6 = true;
+        _iteratorError6 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion6 && _iterator6.return) {
+            _iterator6.return();
+          }
+        } finally {
+          if (_didIteratorError6) {
+            throw _iteratorError6;
+          }
+        }
+      }
+
+      return remainder;
+    }
+
+    /**
+     * Recursively builds the TOC structure.
+     * @param {object} annotation Annotation to be assigned to the parent node
+     * @param {string[]} tags
+     * @param {number} rowIndex Index of this._root
+     * @param {object} parent Parent node
+     * @return {boolean} true if the annotation was set to be a TOC node, false if not.
+     */
+
+  }, {
+    key: '_buildChildNodes',
+    value: function _buildChildNodes(annotation, tags, rowIndex, parent) {
+      var currentNode = null;
+
+      if (rowIndex >= this.spec.generator.length) {
+        // all tags matched with no more levels to explore in the TOC structure
+        if (parent.isRoot) {
+          // The root is not a TOC node
+          return false;
+        } else {
+          // Assign the annotation to parent (a TOC node)
+          annotation.tocTags = parent.tags;
+          if (_annotationUtil2.default.hasTargetOnCanvas(annotation)) {
+            parent.canvasAnnotations.push(annotation);
+          }
+          parent.annotations.push(annotation);
+          this.annoToNodeMap[annotation['@id']] = parent;
+          return true;
+        }
+      }
+
+      var tag = this._getTagForLevel(tags, rowIndex);
+
+      if (tag) {
+        // one of the tags belongs to the corresponding level of tag hierarchy
+        if (!parent.childNodes[tag]) {
+          parent.childNodes[tag] = this._newNode(tag, parent);
+        }
+        currentNode = parent.childNodes[tag];
+
+        if (parent.isRoot) {
+          currentNode.label = this._extractTagNumber(tag);
+        } else {
+          currentNode.label = parent.label + '.' + this._extractTagNumber(tag);
+        }
+        return this._buildChildNodes(annotation, tags, rowIndex + 1, currentNode);
+      } else {
+        // no more match before reaching a leaf node
+        if (parent.isRoot) {
+          return false;
+        } else {
+          annotation.tocTags = parent.tags;
+          if (_annotationUtil2.default.hasTargetOnCanvas(annotation)) {
+            parent.canvasAnnotations.push(annotation);
+          }
+          parent.annotations.push(annotation);
+          this.annoToNodeMap[annotation['@id']] = parent;
+          return true;
+        }
+      }
+    }
+  }, {
+    key: '_getTagForLevel',
+    value: function _getTagForLevel(tags, level) {
+      //logger.debug('AnnotationToc#_getTagForLevel tags:', tags, 'level:', level);
+      var prefix = this.spec.generator[level].tag.prefix;
+
+      var _iteratorNormalCompletion7 = true;
+      var _didIteratorError7 = false;
+      var _iteratorError7 = undefined;
+
+      try {
+        for (var _iterator7 = tags[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+          var tag = _step7.value;
+
+          if (tag.match('^' + prefix + '\\d+$')) {
+            return tag;
+          }
+        }
+      } catch (err) {
+        _didIteratorError7 = true;
+        _iteratorError7 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion7 && _iterator7.return) {
+            _iterator7.return();
+          }
+        } finally {
+          if (_didIteratorError7) {
+            throw _iteratorError7;
+          }
+        }
+      }
+
+      return null;
+    }
+  }, {
+    key: '_extractTagNumber',
+    value: function _extractTagNumber(tag) {
+      return tag.match(/\d+$/)[0];
+    }
+
+    /**
+     *
+     * @param {*} tag
+     * @param {*} parent parent node
+     */
+
+  }, {
+    key: '_newNode',
+    value: function _newNode(tag, parent) {
+      if (!parent) {
+        // root node
+        return {
+          isRoot: true,
+          childNodes: {}
+        };
+      } else {
+        var tags = parent.isRoot ? [tag] : parent.tags.concat([tag]);
+
+        return {
+          annotations: [],
+          canvasAnnotations: [],
+          tags: tags,
+          label: '',
+          childNodes: {}
+        };
       }
     }
   }]);
@@ -18287,6 +17982,38 @@ exports.default = AnnotationToc;
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _annotationWrapper = __webpack_require__(0);
+
+var _annotationWrapper2 = _interopRequireDefault(_annotationWrapper);
+
+var _annotationExplorer = __webpack_require__(4);
+
+var _annotationExplorer2 = _interopRequireDefault(_annotationExplorer);
+
+var _annotationToc = __webpack_require__(2);
+
+var _annotationToc2 = _interopRequireDefault(_annotationToc);
+
+var _annotationUtil = __webpack_require__(1);
+
+var _annotationUtil2 = _interopRequireDefault(_annotationUtil);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+window.joosugi = {
+  AnnotationExplorer: _annotationExplorer2.default,
+  AnnotationToc: _annotationToc2.default,
+  AnnotationWrapper: _annotationWrapper2.default,
+  annotationUtil: _annotationUtil2.default
+};
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18491,38 +18218,6 @@ var AnnotationExplorer = function () {
 }();
 
 exports.default = AnnotationExplorer;
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _annotationWrapper = __webpack_require__(0);
-
-var _annotationWrapper2 = _interopRequireDefault(_annotationWrapper);
-
-var _annotationExplorer = __webpack_require__(3);
-
-var _annotationExplorer2 = _interopRequireDefault(_annotationExplorer);
-
-var _annotationToc = __webpack_require__(2);
-
-var _annotationToc2 = _interopRequireDefault(_annotationToc);
-
-var _annotationUtil = __webpack_require__(1);
-
-var _annotationUtil2 = _interopRequireDefault(_annotationUtil);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-window.joosugi = {
-  AnnotationExplorer: _annotationExplorer2.default,
-  AnnotationToc: _annotationToc2.default,
-  AnnotationWrapper: _annotationWrapper2.default,
-  annotationUtil: _annotationUtil2.default
-};
 
 /***/ })
 /******/ ]);
@@ -22070,6 +21765,10 @@ process.off = noop;
 process.removeListener = noop;
 process.removeAllListeners = noop;
 process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
 
 process.binding = function (name) {
     throw new Error('process.binding is not supported');

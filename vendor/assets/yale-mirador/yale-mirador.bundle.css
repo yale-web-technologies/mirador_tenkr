@@ -422,6 +422,7 @@ p {
 }
 .ym_annotation_window .ym_create_window_button:hover {
   color: #fff;
+  cursor: pointer;
 }
 .annowin_header {
   flex: 0 1 auto;
