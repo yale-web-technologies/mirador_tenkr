@@ -464,8 +464,12 @@ p {
   padding-top: 5px;
 }
 .annowin_group_header {
-  font-size: 0.9em;
+  position: sticky;
+  z-index: 10;
+  top: 0;
   padding-left: 5px;
+  background-color: #000;
+  font-size: 0.9em;
 }
 /* Icon for link to the annotation target, shown in the annotation editor. */
 .anno_target_icon {
