@@ -1,5 +1,5 @@
-// Yale-Mirador v0.7.0-5-g8805d35 built Thu Aug 03 2017 14:17:04 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.7.0-5-g8805d35 built Thu Aug 03 2017 14:17:04 GMT-0400 (EDT)";
+// Yale-Mirador v0.7.0-5-g8805d35 built Thu Aug 03 2017 14:38:21 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.7.0-5-g8805d35 built Thu Aug 03 2017 14:38:21 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -13020,7 +13020,7 @@ var _class = function () {
         miradorId: options.miradorId || null,
         canvasWindowId: imageWindowId,
         initialLayerId: options.layerId || this._pickLayer(),
-        initialTocTags: options.tocTags || null,
+        initialTocTags: options.tocTags || [],
         annotationId: options.annotationId || null
       });
       return annoWin.init().then(function (window) {
@@ -15527,12 +15527,15 @@ var AnnotationWindow = function () {
                   throw 'AnnotationWindow#init reload failed - ' + reason;
                 }).then(function () {
                   logger.debug('AnnotationWindow#init annosToShow:', annosToShow);
+                  var listWidget = _this2.options.annotationListWidget;
                   //if ((this.options.annotationId || this.options.initialTocTags) && annosToShow.length > 0) {
                   if (_this2.options.annotationId) {
-                    _this2.options.annotationListWidget.highlightAnnotations([targetAnno], 'SELECTED');
-                    _this2.options.annotationListWidget.moveToAnnotation(_this2.options.annotationId, canvasId);
+                    listWidget.highlightAnnotations([targetAnno], 'SELECTED');
+                    listWidget.moveToAnnotation(_this2.options.annotationId, canvasId);
                   } else if (_this2.options.initialTocTags.length > 0) {
-                    _this2.options.annotationListWidget.moveToTags(_this2.options.initialTocTags);
+                    listWidget.moveToTags(_this2.options.initialTocTags);
+                  } else {
+                    listWidget.moveToPage(0);
                   }
                   _this2.bindEvents();
                   return _this2;
