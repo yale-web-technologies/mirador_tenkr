@@ -1,5 +1,5 @@
-// Yale-Mirador v0.7.0-5-g8805d35 built Thu Aug 03 2017 14:38:21 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.7.0-5-g8805d35 built Thu Aug 03 2017 14:38:21 GMT-0400 (EDT)";
+// Yale-Mirador v0.7.0-6-g3d5914b built Thu Aug 03 2017 16:39:29 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.7.0-6-g3d5914b built Thu Aug 03 2017 16:39:29 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -1101,18 +1101,15 @@ var PageController = function () {
                 })[0];
                 layerId = annotation.layerId;
 
-
-                console.log('TTT', this._tocSpec);
-
                 if (!(this._tocSpec && this._tocSpec.defaultLayer)) {
-                  _context.next = 16;
+                  _context.next = 15;
                   break;
                 }
 
-                _context.next = 13;
+                _context.next = 12;
                 return this._getAnnotationByTagsAndLayer((0, _import.Anno)(annotation).tags, this._tocSpec.defaultLayer, canvasId);
 
-              case 13:
+              case 12:
                 derivedAnnotation = _context.sent;
 
                 layerId = this._tocSpec.defaultLayer;
@@ -1123,28 +1120,24 @@ var PageController = function () {
                   logger.warning('PageController#_showAnnotation no annotation found for layer', layerId);
                 }
 
-              case 16:
+              case 15:
                 targetWindow = grid.getAnnotationWindowByLayer(layerId);
 
                 if (!targetWindow) {
-                  _context.next = 22;
+                  _context.next = 19;
                   break;
                 }
 
-                _context.next = 20;
-                return targetWindow.moveToAnnotation(annotation['@id'], canvasId);
-
-              case 20:
-                _context.next = 29;
+                _context.next = 26;
                 break;
 
-              case 22:
+              case 19:
                 if (!annotation) {
-                  _context.next = 28;
+                  _context.next = 25;
                   break;
                 }
 
-                _context.next = 25;
+                _context.next = 22;
                 return grid.addAnnotationWindow({
                   miradorId: this._miradorId,
                   imageWindowId: windowId,
@@ -1154,15 +1147,15 @@ var PageController = function () {
                   logger.error('PageController#_showAnnotation addAnnotationWindow failed <- ' + reason);
                 });
 
-              case 25:
+              case 22:
                 annoWindow = _context.sent;
-                _context.next = 29;
+                _context.next = 26;
                 break;
 
-              case 28:
+              case 25:
                 logger.error('PageController#_showAnnotation annotation not found in annotation window, annoId: ' + annotation['@id']);
 
-              case 29:
+              case 26:
               case 'end':
                 return _context.stop();
             }
@@ -1239,7 +1232,7 @@ var PageController = function () {
             while (1) {
               switch (_context3.prev = _context3.next) {
                 case 0:
-                  logger.debug('MiradorWrapper:SUB:YM_IMAGE_WINDOW_TOOLtip_ANNO_CLICKED windowId: ' + windowId + ', annoId: ' + annoId);
+                  logger.debug('MiradorWrapper:SUB:YM_IMAGE_WINDOW_TOOLTIP_ANNO_CLICKED windowId: ' + windowId + ', annoId: ' + annoId);
                   windowProxy = _this2._miradorProxy.getWindowProxyById(windowId);
                   canvasId = windowProxy.getCurrentCanvasId();
                   tocPanel = windowProxy.getSidePanelTabContentElement('ym-annotation-toc');
@@ -1318,7 +1311,7 @@ var PageController = function () {
             imageView.panToAnnotation(anno);
             imageView.annotationsLayer.drawTool.updateHighlights(anno);
           } else {
-            logger.error('PageController:SUB:ANNOWIN_ANNOTATION_CLICKED annotation not found');
+            logger.error('PageController:SUB:ANNOWIN_ANNOTATION_CLICKED annotation not found', params.annotation);
           }
         } else {
           // need to load the canvas that the annotation is targeting
@@ -2465,7 +2458,7 @@ var AnnotationCache = function () {
 
               case 7:
                 if (!this._dbCache.isValid()) {
-                  _context2.next = 16;
+                  _context2.next = 15;
                   break;
                 }
 
@@ -2475,17 +2468,16 @@ var AnnotationCache = function () {
               case 10:
                 annotations = _context2.sent;
 
-                console.log('dadada dbcache annos:', annotations);
                 if (annotations !== null) {
                   logger.debug('db cache hit', canvasId, annotations);
                   this._memCache.setAnnotationsPerCanvas(canvasId, annotations);
                 }
                 return _context2.abrupt('return', Promise.resolve(annotations));
 
-              case 16:
+              case 15:
                 return _context2.abrupt('return', Promise.resolve(null));
 
-              case 17:
+              case 16:
               case 'end':
                 return _context2.stop();
             }
@@ -15408,6 +15400,7 @@ var AnnotationWindow = function () {
     this._tocSpec = (0, _stateStore2.default)().getTransient('tocSpec');
     this._jQuerySubscribed = {};
     this._miradorSubscribed = {};
+    this._annotationTocCache = (0, _app2.default)().getAnnotationTocCache();
   }
 
   _createClass(AnnotationWindow, [{
@@ -15593,7 +15586,7 @@ var AnnotationWindow = function () {
     key: 'destroy',
     value: function destroy() {
       logger.debug('AnnotationWindow#destroy');
-      this._unsubscribeAll();
+      //this._unsubscribeAll(); //XXXX
     }
   }, {
     key: 'initMenuTagSelector',
@@ -16129,6 +16122,43 @@ var AnnotationWindow = function () {
         logger.debug('AnnotationWindow:SUB:YM_ANNOTATION_TOC_TAGS_SELECTED imageWindow:', windowId, 'canvasId:', canvasId, 'tags:', tags);
         _this6.options.annotationListWidget.moveToTags(tags);
       });
+
+      this._subscribe(this.miradorProxy, 'YM_IMAGE_WINDOW_TOOLTIP_ANNO_CLICKED', function () {
+        var _ref7 = _asyncToGenerator(regeneratorRuntime.mark(function _callee7(event, windowId, annoId) {
+          var windowProxy, canvasId, toc, annotation;
+          return regeneratorRuntime.wrap(function _callee7$(_context7) {
+            while (1) {
+              switch (_context7.prev = _context7.next) {
+                case 0:
+                  logger.debug('AnnotationWindow:SUB:YM_IMAGE_WINDOW_TOOLTIP_ANNO_CLICKED windowId:', windowId, 'annoId:', annoId, 'annoWin:', _this6.id);
+                  windowProxy = _this6.miradorProxy.getWindowProxyById(windowId);
+                  canvasId = windowProxy.getCurrentCanvasId();
+                  _context7.next = 5;
+                  return _this6._annotationTocCache.getToc(canvasId);
+
+                case 5:
+                  toc = _context7.sent;
+                  annotation = toc.annotations.filter(function (anno) {
+                    return anno['@id'] === annoId;
+                  })[0];
+
+
+                  if (annotation) {
+                    _this6.options.annotationListWidget.moveToTags(annotation.tocTags);
+                  }
+
+                case 8:
+                case 'end':
+                  return _context7.stop();
+              }
+            }
+          }, _callee7, _this6);
+        }));
+
+        return function (_x7, _x8, _x9) {
+          return _ref7.apply(this, arguments);
+        };
+      }());
     }
   }, {
     key: '_subscribe',
@@ -17133,7 +17163,7 @@ exports.default = MenuTagSelector;
 /* 49 */
 /***/ (function(module, exports) {
 
-// joosugi v0.3.0-2-gb1047ad built Tue Aug 01 2017 11:08:11 GMT-0400 (EDT)
+// joosugi v0.3.0-3-g925da54 built Thu Aug 03 2017 16:26:59 GMT-0400 (EDT)
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -17461,10 +17491,12 @@ exports.default = {
   // For an annotation that targets other annotation(s), follow the
   // "on" relations recursively until no more targets are found.
   findTransitiveTargetAnnotations: function findTransitiveTargetAnnotations(annotation, annotationMap) {
-    //this.logger.debug('annoUtil.findTransitiveTargetAnnotations annotation:', annotation, 'annotationMap:', annotationMap);
+    this.logger.debug('annoUtil.findTransitiveTargetAnnotations annotation:', annotation, 'annotationMap:', annotationMap);
     var $anno = (0, _annotationWrapper2.default)(annotation);
     var targetAnnos = $anno.targets.map(function (target) {
       var annoId = target.full;
+      console.log('TGT id:', annoId);
+      console.log('TGT anno:', annotationMap[annoId]);
       return annotationMap[annoId];
     }).filter(function (anno) {
       return anno !== undefined && anno !== null;
@@ -17554,8 +17586,10 @@ exports.default = {
   findTargetAnnotationsOnCanvas: function findTargetAnnotationsOnCanvas(annotation, annotationMap) {
     var _this = this;
 
+    this.logger.debug('AnnotationUtil.findTargetAnnotationsOnCanvas anno:', annotation, 'annoMap:', annotationMap);
     var allTargetAnnos = this.findTransitiveTargetAnnotations(annotation, annotationMap);
     return allTargetAnnos.filter(function (anno) {
+      console.log('AAAA', anno['@id']);
       var _iteratorNormalCompletion4 = true;
       var _didIteratorError4 = false;
       var _iteratorError4 = undefined;
