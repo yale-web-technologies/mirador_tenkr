@@ -457,6 +457,9 @@ p {
   margin: 0;
   overflow-y: scroll;
 }
+.annowin_list:focus {
+  outline: none;
+}
 .page-header {
   font-size: 14px;
   padding-left: 5px;
@@ -496,6 +499,10 @@ p {
 }
 .annowin_anno:hover {
   border-color: #bbb;
+}
+.annowin_anno:focus {
+  border-color: #4684cc;
+  outline: none;
 }
 .annowin_anno .menu_bar {
   background-color: #76b4fc;
