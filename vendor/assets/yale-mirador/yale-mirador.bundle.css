@@ -146,6 +146,9 @@ a.hud-control.hud-dropdown {
 .mirador-container .sidePanel .ym-annotation-toc-item {
   margin: 15px;
 }
+.mirador-container .sidePanel .ym-annotation-toc-item:focus {
+  outline: none;
+}
 .mirador-container .sidePanel .ym-annotation-toc-item a {
   color: #bbb;
 }
@@ -499,10 +502,16 @@ p {
 }
 .annowin_anno:hover {
   border-color: #bbb;
+  border-width: 1px;
+  padding: 1px;
 }
 .annowin_anno:focus {
   border-color: #4684cc;
   outline: none;
+}
+.annowin_anno:focus:hover {
+  border-width: 2px;
+  padding: 0;
 }
 .annowin_anno .menu_bar {
   background-color: #76b4fc;
