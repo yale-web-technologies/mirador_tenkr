@@ -1,5 +1,5 @@
-// Yale-Mirador v0.7.0-9-gf677e53 built Sun Aug 06 2017 17:37:53 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.7.0-9-gf677e53 built Sun Aug 06 2017 17:37:53 GMT-0400 (EDT)";
+// Yale-Mirador v0.7.2-0-g1ea7ca2 built Thu Aug 10 2017 13:38:21 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.7.2-0-g1ea7ca2 built Thu Aug 10 2017 13:38:21 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -13913,6 +13913,11 @@ var AnnotationListWidget = function () {
   }
 
   _createClass(AnnotationListWidget, [{
+    key: 'getRootElement',
+    value: function getRootElement() {
+      return this.options.rootElem;
+    }
+  }, {
     key: 'reload',
     value: function reload(layerId) {
       this._nav = this._setupNavigation();
@@ -16812,6 +16817,9 @@ var AnnotationRenderer = function () {
       var nav = listWidget.getNav();
 
       annoElem.focus(function (event) {
+        annoWin.clearAnnotationHighlights();
+        nav.setPageByCanvasId(annoElem.data('canvasId'));
+
         jQuery.publish('ANNOWIN_ANNOTATION_FOCUSED', [{
           annotationWindowId: annoWin.getId(),
           annotation: annotation,
@@ -16819,13 +16827,6 @@ var AnnotationRenderer = function () {
           imageWindowId: annoWin.getImageWindowId(),
           offset: annoElem.position().top
         }]);
-      });
-
-      annoElem.click(function (event) {
-        logger.debug('Clicked annotation:', annotation);
-        annoWin.clearAnnotationHighlights();
-        nav.setPageByCanvasId(annoElem.data('canvasId'));
-        annoElem.focus();
       });
 
       annoElem.find('.annotate').click(function (event) {

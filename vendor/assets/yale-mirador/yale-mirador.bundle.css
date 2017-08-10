@@ -164,6 +164,9 @@ div,
 p {
   margin: 0;
 }
+:focus {
+  outline: none;
+}
 .ym_float_right {
   float: right;
 }
@@ -504,12 +507,15 @@ p {
   border-color: #bbb;
   border-width: 1px;
   padding: 1px;
+  cursor: pointer;
 }
-.annowin_anno:focus {
+.annowin_anno:focus,
+.annowin_anno:hover:focus {
   border-color: #4684cc;
   outline: none;
 }
-.annowin_anno:focus:hover {
+.annowin_anno:focus:hover,
+.annowin_anno:hover:focus:hover {
   border-width: 2px;
   padding: 0;
 }
