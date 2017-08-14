@@ -1,5 +1,5 @@
-// Yale-Mirador v0.7.2-0-g1ea7ca2 built Thu Aug 10 2017 13:38:21 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.7.2-0-g1ea7ca2 built Thu Aug 10 2017 13:38:21 GMT-0400 (EDT)";
+// Yale-Mirador v0.7.2-0-g1ea7ca2 built Mon Aug 14 2017 15:35:31 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.7.2-0-g1ea7ca2 built Mon Aug 14 2017 15:35:31 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -14348,15 +14348,18 @@ var AnnotationListWidget = function () {
     }
   }, {
     key: 'scrollToElem',
-    value: function scrollToElem(annoElem, yOffset) {
+    value: function scrollToElem(annoElem, yOffsetIn) {
       var _this3 = this;
+
+      console.log('yOffsetIn:', yOffsetIn);
+      var yOffset = this._calcOffset(annoElem, yOffsetIn);
 
       this._unbindScrollEvent();
 
       return new Promise(function (resolve, reject) {
         _this3.options.rootElem.scrollTo(annoElem, {
           offset: {
-            top: yOffset || -_this3._groupHeaderHeight
+            top: yOffset
           },
           onAfter: function onAfter() {
             _this3._bindScrollEvent();
@@ -14364,6 +14367,21 @@ var AnnotationListWidget = function () {
           }
         });
       });
+    }
+
+    // Note to avoid confusion: yOffsetIn will typically have a negative value if defined
+
+  }, {
+    key: '_calcOffset',
+    value: function _calcOffset(annoElem, yOffsetIn) {
+      if (yOffsetIn === undefined) {
+        return -this._groupHeaderHeight;
+      }
+      var minOffset = annoElem.height() - this.options.rootElem.height();
+      console.log('minOffset:', minOffset);
+      var yOffset = yOffsetIn < minOffset ? minOffset : yOffsetIn;
+      console.log('yOffset:', yOffset);
+      return yOffset;
     }
   }, {
     key: 'scrollToAnnotation',
