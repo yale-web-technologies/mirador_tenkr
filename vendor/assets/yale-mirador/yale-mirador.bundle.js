@@ -1,5 +1,5 @@
-// Yale-Mirador v0.7.2-0-g1ea7ca2 built Mon Aug 14 2017 15:35:31 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.7.2-0-g1ea7ca2 built Mon Aug 14 2017 15:35:31 GMT-0400 (EDT)";
+// Yale-Mirador v0.7.2-0-g1ea7ca2 built Mon Aug 14 2017 16:00:39 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.7.2-0-g1ea7ca2 built Mon Aug 14 2017 16:00:39 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -16216,23 +16216,19 @@ var AnnotationWindow = function () {
                 case 5:
                   listWidget.clearHighlights();
 
-                  _context6.next = 8;
-                  return listWidget.moveToCanvas(params.canvasId);
-
-                case 8:
                   annotations = _this7.canvasWindow.getAnnotationsList();
                   layerId = _this7.currentLayerId;
                   tocSpec = (0, _stateStore2.default)().getTransient('tocSpec');
 
                   if (!tocSpec) {
-                    _context6.next = 38;
+                    _context6.next = 39;
                     break;
                   }
 
-                  _context6.next = 14;
+                  _context6.next = 12;
                   return (0, _app2.default)().getAnnotationTocCache().getToc(params.canvasId);
 
-                case 14:
+                case 12:
                   toc = _context6.sent;
                   siblingElems = listWidget.getTocSiblingElems(params.annotation, annotations, layerId, toc);
 
@@ -16241,98 +16237,111 @@ var AnnotationWindow = function () {
                   _iteratorNormalCompletion = true;
                   _didIteratorError = false;
                   _iteratorError = undefined;
-                  _context6.prev = 20;
+                  _context6.prev = 18;
                   for (_iterator = siblingElems[Symbol.iterator](); !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
                     elem = _step.value;
 
                     listWidget.highlightAnnotationElem(elem);
                   }
 
-                  _context6.next = 28;
+                  _context6.next = 26;
                   break;
 
-                case 24:
-                  _context6.prev = 24;
-                  _context6.t0 = _context6['catch'](20);
+                case 22:
+                  _context6.prev = 22;
+                  _context6.t0 = _context6['catch'](18);
                   _didIteratorError = true;
                   _iteratorError = _context6.t0;
 
-                case 28:
-                  _context6.prev = 28;
-                  _context6.prev = 29;
+                case 26:
+                  _context6.prev = 26;
+                  _context6.prev = 27;
 
                   if (!_iteratorNormalCompletion && _iterator.return) {
                     _iterator.return();
                   }
 
-                case 31:
-                  _context6.prev = 31;
+                case 29:
+                  _context6.prev = 29;
 
                   if (!_didIteratorError) {
-                    _context6.next = 34;
+                    _context6.next = 32;
                     break;
                   }
 
                   throw _iteratorError;
 
+                case 32:
+                  return _context6.finish(29);
+
+                case 33:
+                  return _context6.finish(26);
+
                 case 34:
-                  return _context6.finish(31);
-
-                case 35:
-                  return _context6.finish(28);
-
-                case 36:
-                  if (siblingElems.length > 0) {
-                    listWidget.scrollToElem(siblingElems[0], -params.offset);
+                  if (!(siblingElems.length > 0)) {
+                    _context6.next = 38;
+                    break;
                   }
-                  return _context6.abrupt('return');
+
+                  _context6.next = 37;
+                  return listWidget.moveToCanvas(params.canvasId);
+
+                case 37:
+                  listWidget.scrollToElem(siblingElems[0], -params.offset);
 
                 case 38:
+                  return _context6.abrupt('return');
+
+                case 39:
+                  _context6.next = 41;
+                  return listWidget.moveToCanvas(params.canvasId);
+
+                case 41:
                   annoMap = {};
                   _iteratorNormalCompletion2 = true;
                   _didIteratorError2 = false;
                   _iteratorError2 = undefined;
-                  _context6.prev = 42;
+                  _context6.prev = 45;
 
                   for (_iterator2 = annotations[Symbol.iterator](); !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
                     anno = _step2.value;
 
                     annoMap[anno['@id']] = anno;
                   }
-                  _context6.next = 50;
+                  _context6.next = 53;
                   break;
 
-                case 46:
-                  _context6.prev = 46;
-                  _context6.t1 = _context6['catch'](42);
+                case 49:
+                  _context6.prev = 49;
+                  _context6.t1 = _context6['catch'](45);
                   _didIteratorError2 = true;
                   _iteratorError2 = _context6.t1;
 
-                case 50:
-                  _context6.prev = 50;
-                  _context6.prev = 51;
+                case 53:
+                  _context6.prev = 53;
+                  _context6.prev = 54;
 
                   if (!_iteratorNormalCompletion2 && _iterator2.return) {
                     _iterator2.return();
                   }
 
-                case 53:
-                  _context6.prev = 53;
+                case 56:
+                  _context6.prev = 56;
 
                   if (!_didIteratorError2) {
-                    _context6.next = 56;
+                    _context6.next = 59;
                     break;
                   }
 
                   throw _iteratorError2;
 
-                case 56:
+                case 59:
+                  return _context6.finish(56);
+
+                case 60:
                   return _context6.finish(53);
 
-                case 57:
-                  return _context6.finish(50);
-
-                case 58:
+                case 61:
                   targeting = _import.annoUtil.findTransitiveTargetingAnnotations(params.annotation, annoMap);
 
                   targeting = targeting.filter(function (anno) {
@@ -16340,32 +16349,32 @@ var AnnotationWindow = function () {
                   });
 
                   if (!(targeting.length > 0)) {
-                    _context6.next = 63;
+                    _context6.next = 66;
                     break;
                   }
 
                   listWidget.highlightAnnotations(targeting, 'TARGETING');
                   return _context6.abrupt('return');
 
-                case 63:
+                case 66:
                   targeted = _import.annoUtil.findTransitiveTargetAnnotations(params.annotation, annoMap).filter(function (anno) {
                     return anno.layerId === _this7.getCurrentLayerId();
                   });
 
                   if (!(targeted.length > 0)) {
-                    _context6.next = 67;
+                    _context6.next = 70;
                     break;
                   }
 
                   listWidget.highlightAnnotations(targeted, 'TARGET');
                   return _context6.abrupt('return');
 
-                case 67:
+                case 70:
                 case 'end':
                   return _context6.stop();
               }
             }
-          }, _callee6, _this7, [[20, 24, 28, 36], [29,, 31, 35], [42, 46, 50, 58], [51,, 53, 57]]);
+          }, _callee6, _this7, [[18, 22, 26, 34], [27,, 29, 33], [45, 49, 53, 61], [54,, 56, 60]]);
         }));
 
         return function (_x5, _x6) {
