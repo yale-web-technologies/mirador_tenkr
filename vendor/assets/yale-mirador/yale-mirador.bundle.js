@@ -1,5 +1,5 @@
-// Yale-Mirador v0.7.2-0-g1ea7ca2 built Mon Aug 14 2017 16:00:39 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.7.2-0-g1ea7ca2 built Mon Aug 14 2017 16:00:39 GMT-0400 (EDT)";
+// Yale-Mirador v0.7.2-1-g080868f built Tue Aug 15 2017 15:11:18 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.7.2-1-g080868f built Tue Aug 15 2017 15:11:18 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -13895,6 +13895,7 @@ var AnnotationListWidget = function () {
       maxContentRelativeHeight: 5
     }, options);
 
+    this._annoWin = this.options.annotationWindow;
     this._tocSpec = this.options.state.getTransient('tocSpec');
     this._groupHeaderHeight = 19;
 
@@ -13948,43 +13949,42 @@ var AnnotationListWidget = function () {
     key: '_onSetPage',
     value: function () {
       var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(pageNum, canvas) {
-        var rootElem, imageWindowProxy, oldCanvasId, newCanvasId;
+        var rootElem, oldCanvasId, newCanvasId;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                logger.debug('AnnotationListWidget#_onSetPage pageNum:', pageNum, 'canvas:', canvas);
                 rootElem = this.options.rootElem;
-                imageWindowProxy = this.options.annotationWindow.getImageWindowProxy();
-                oldCanvasId = imageWindowProxy.getCurrentCanvasId();
+                oldCanvasId = this._annoWin.getCurrentCanvasId();
                 newCanvasId = canvas['@id'];
 
-
-                this._deactivateAllPages();
-                _context.next = 7;
-                return this._activatePage(pageNum);
-
-              case 7:
-                if (!(rootElem[0].scrollHeight <= rootElem.height())) {
-                  _context.next = 10;
+                if (this._nav.isLoaded(pageNum)) {
+                  _context.next = 8;
                   break;
                 }
 
-                _context.next = 10;
-                return this._activateMorePagesForwardFirst(pageNum);
+                this._unloadAllPages();
+                _context.next = 8;
+                return this._loadPage(pageNum);
 
-              case 10:
-                _context.next = 12;
+              case 8:
+
+                if (rootElem[0].scrollHeight <= rootElem.height()) {
+                  //await this._activateMorePagesForwardFirst(pageNum);
+                }
+                _context.next = 11;
                 return this.scrollToPage(pageNum, true);
 
-              case 12:
+              case 11:
 
                 if (oldCanvasId !== newCanvasId) {
-                  imageWindowProxy.setCurrentCanvasId(newCanvasId, {
+                  this._annoWin.getImageWindowProxy().setCurrentCanvasId(newCanvasId, {
                     eventOriginatorType: 'AnnotationWindow'
                   });
                 }
 
-              case 13:
+              case 12:
               case 'end':
                 return _context.stop();
             }
@@ -13999,19 +13999,25 @@ var AnnotationListWidget = function () {
       return _onSetPage;
     }()
   }, {
-    key: 'moveToPage',
+    key: 'goToPage',
     value: function () {
       var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(pageNum) {
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                logger.debug('AnnotationListWidgetr#moveToPage', pageNum);
+                logger.debug('AnnotationListWidgetr#goToPage', pageNum, 'from', this._nav.getPage());
+
+                if (!(pageNum !== this._nav.getPage())) {
+                  _context2.next = 5;
+                  break;
+                }
+
                 this._nav.setPage(pageNum);
-                _context2.next = 4;
+                _context2.next = 5;
                 return this._onSetPage(pageNum, this._nav.getCanvas(pageNum));
 
-              case 4:
+              case 5:
               case 'end':
                 return _context2.stop();
             }
@@ -14019,14 +14025,14 @@ var AnnotationListWidget = function () {
         }, _callee2, this);
       }));
 
-      function moveToPage(_x3) {
+      function goToPage(_x3) {
         return _ref2.apply(this, arguments);
       }
 
-      return moveToPage;
+      return goToPage;
     }()
   }, {
-    key: 'moveToCanvas',
+    key: 'goToPageByCanvas',
     value: function () {
       var _ref3 = _asyncToGenerator(regeneratorRuntime.mark(function _callee3(canvasId) {
         var pageNum;
@@ -14034,10 +14040,10 @@ var AnnotationListWidget = function () {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                logger.debug('AnnotationListWidgetr#moveToCanvas', canvasId);
+                logger.debug('AnnotationListWidgetr#goToPageByCanvas', canvasId);
                 pageNum = this._nav.getPageNumForCanvas(canvasId);
                 _context3.next = 4;
-                return this.moveToPage(pageNum);
+                return this.goToPage(pageNum);
 
               case 4:
               case 'end':
@@ -14047,14 +14053,14 @@ var AnnotationListWidget = function () {
         }, _callee3, this);
       }));
 
-      function moveToCanvas(_x4) {
+      function goToPageByCanvas(_x4) {
         return _ref3.apply(this, arguments);
       }
 
-      return moveToCanvas;
+      return goToPageByCanvas;
     }()
   }, {
-    key: 'moveToTags',
+    key: 'goToPageByTags',
     value: function () {
       var _ref4 = _asyncToGenerator(regeneratorRuntime.mark(function _callee4(tags) {
         var canvasIds;
@@ -14062,21 +14068,25 @@ var AnnotationListWidget = function () {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                logger.debug('AnnotationListWidgetr#moveToTags', tags);
+                logger.debug('AnnotationListWidgetr#goToPageByTags', tags);
                 canvasIds = this._tocSpec.canvasMap[tags[0]];
 
+                console.log('TOTORO canvasIds:', canvasIds);
+                console.log('TOTORO test', canvasIds instanceof Array && canvasIds.length > 0);
+
                 if (!(canvasIds instanceof Array && canvasIds.length > 0)) {
-                  _context4.next = 6;
+                  _context4.next = 9;
                   break;
                 }
 
-                _context4.next = 5;
-                return this.moveToCanvas(canvasIds[0]);
+                console.log('TOTORO on');
+                _context4.next = 8;
+                return this.goToPageByCanvas(canvasIds[0]);
 
-              case 5:
+              case 8:
                 this.scrollToTags(tags);
 
-              case 6:
+              case 9:
               case 'end':
                 return _context4.stop();
             }
@@ -14084,14 +14094,14 @@ var AnnotationListWidget = function () {
         }, _callee4, this);
       }));
 
-      function moveToTags(_x5) {
+      function goToPageByTags(_x5) {
         return _ref4.apply(this, arguments);
       }
 
-      return moveToTags;
+      return goToPageByTags;
     }()
   }, {
-    key: 'loadForward',
+    key: 'loadNextPages',
     value: function () {
       var _ref5 = _asyncToGenerator(regeneratorRuntime.mark(function _callee5() {
         var nav, pageNum, nextPage;
@@ -14099,7 +14109,7 @@ var AnnotationListWidget = function () {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
-                logger.debug('AnnotationListWidget#loadForward', this._loading);
+                logger.debug('AnnotationListWidget#loadNextPages', this._loading);
 
                 if (!this._loading) {
                   _context5.next = 3;
@@ -14137,7 +14147,7 @@ var AnnotationListWidget = function () {
                 nextPage = _context5.sent;
 
               case 15:
-                this._deactivatePagesFromBack();
+                this._unloadPreviousPages();
                 this._windBack();
 
               case 17:
@@ -14148,7 +14158,7 @@ var AnnotationListWidget = function () {
                 _context5.prev = 19;
                 _context5.t0 = _context5['catch'](5);
 
-                logger.error('AnnotationListWidget#loadForward failed', _context5.t0);
+                logger.error('AnnotationListWidget#loadNextPages failed', _context5.t0);
 
               case 22:
                 _context5.prev = 22;
@@ -14164,14 +14174,14 @@ var AnnotationListWidget = function () {
         }, _callee5, this, [[5, 19, 22, 25]]);
       }));
 
-      function loadForward() {
+      function loadNextPages() {
         return _ref5.apply(this, arguments);
       }
 
-      return loadForward;
+      return loadNextPages;
     }()
   }, {
-    key: 'loadBackward',
+    key: 'loadPreviousPages',
     value: function () {
       var _ref6 = _asyncToGenerator(regeneratorRuntime.mark(function _callee6() {
         var nav, pageNum, nextPage;
@@ -14179,7 +14189,7 @@ var AnnotationListWidget = function () {
           while (1) {
             switch (_context6.prev = _context6.next) {
               case 0:
-                logger.debug('AnnotationListWidget#pageBack', this._loading);
+                logger.debug('AnnotationListWidget#loadPreviousPages', this._loading);
 
                 if (!this._loading) {
                   _context6.next = 3;
@@ -14194,7 +14204,7 @@ var AnnotationListWidget = function () {
                 _context6.prev = 5;
                 pageNum = nav.getActiveRange().startPage - 1;
 
-                if (!(pageNum !== -1)) {
+                if (!(pageNum >= 0)) {
                   _context6.next = 16;
                   break;
                 }
@@ -14214,7 +14224,7 @@ var AnnotationListWidget = function () {
                 return this._activateMorePagesBackwardFirst(nextPage);
 
               case 14:
-                this._deactivatePagesFromForward();
+                this._unloadNextPages();
                 this._windForward();
 
               case 16:
@@ -14226,7 +14236,7 @@ var AnnotationListWidget = function () {
                 _context6.prev = 19;
                 _context6.t0 = _context6['catch'](5);
 
-                logger.error('AnnotationListWidget#loadBackward failed', _context6.t0);
+                logger.error('AnnotationListWidget#loadPreviousPages failed', _context6.t0);
 
               case 22:
                 _context6.prev = 22;
@@ -14242,14 +14252,14 @@ var AnnotationListWidget = function () {
         }, _callee6, this, [[5, 19, 22, 25]]);
       }));
 
-      function loadBackward() {
+      function loadPreviousPages() {
         return _ref6.apply(this, arguments);
       }
 
-      return loadBackward;
+      return loadPreviousPages;
     }()
   }, {
-    key: 'moveToAnnotation',
+    key: 'goToAnnotation',
     value: function () {
       var _ref7 = _asyncToGenerator(regeneratorRuntime.mark(function _callee7(annoId, canvasId) {
         var nav, targetPage;
@@ -14257,7 +14267,7 @@ var AnnotationListWidget = function () {
           while (1) {
             switch (_context7.prev = _context7.next) {
               case 0:
-                logger.debug('AnnotationListWidget#moveToAnnotation annoId', annoId, 'canvasId:', canvasId);
+                logger.debug('AnnotationListWidget#goToAnnotation annoId', annoId, 'canvasId:', canvasId);
 
                 nav = this._nav;
                 targetPage = nav.getPageNumForCanvas(canvasId);
@@ -14268,7 +14278,7 @@ var AnnotationListWidget = function () {
                 }
 
                 _context7.next = 6;
-                return this.moveToPage(targetPage);
+                return this.goToPage(targetPage);
 
               case 6:
 
@@ -14289,11 +14299,11 @@ var AnnotationListWidget = function () {
         }, _callee7, this);
       }));
 
-      function moveToAnnotation(_x6, _x7) {
+      function goToAnnotation(_x6, _x7) {
         return _ref7.apply(this, arguments);
       }
 
-      return moveToAnnotation;
+      return goToAnnotation;
     }()
 
     /**
@@ -14323,7 +14333,7 @@ var AnnotationListWidget = function () {
   }, {
     key: 'scrollToTags',
     value: function scrollToTags(targetTags) {
-      logger.debug('AnnotationListWidget#srollToTags targetTags:', targetTags);
+      logger.debug('AnnotationListWidget#scrollToTags targetTags:', targetTags);
       var targetElem = null;
 
       this.options.rootElem.find('.annowin_group_header').each(function (index, value) {
@@ -14340,8 +14350,11 @@ var AnnotationListWidget = function () {
           return false;
         }
       });
+      console.log('targetElem:', targetElem[0].outerHTML);
       if (targetElem) {
-        targetElem[0].scrollIntoView();
+        this.options.rootElem.scrollTo(targetElem.next(), {
+          offset: { top: -this._groupHeaderHeight }
+        });
       } else {
         logger.warning('AnnotationListWidget#scrollToTags Header element not found for', targetTags);
       }
@@ -14570,29 +14583,33 @@ var AnnotationListWidget = function () {
       }
     }
   }, {
-    key: '_activatePage',
+    key: '_activatePageForward',
     value: function () {
       var _ref8 = _asyncToGenerator(regeneratorRuntime.mark(function _callee8(pageNum) {
-        var nav;
+        var nextPage;
         return regeneratorRuntime.wrap(function _callee8$(_context8) {
           while (1) {
             switch (_context8.prev = _context8.next) {
               case 0:
-                logger.debug('AnnotationListWidget#_activatePage', pageNum);
-                nav = this._nav;
+                _context8.next = 2;
+                return this._loadPage(pageNum);
 
-                if (nav.isLoaded(pageNum)) {
-                  _context8.next = 5;
+              case 2:
+                nextPage = pageNum;
+
+                if (!(pageNum < this._nav.getNumPages() - 1)) {
+                  _context8.next = 7;
                   break;
                 }
 
-                _context8.next = 5;
-                return this._loadPage(pageNum);
+                ++nextPage;
+                _context8.next = 7;
+                return this._loadPage(nextPage);
 
-              case 5:
-                nav.getPageElement(pageNum).show();
+              case 7:
+                return _context8.abrupt('return', nextPage);
 
-              case 6:
+              case 8:
               case 'end':
                 return _context8.stop();
             }
@@ -14600,14 +14617,14 @@ var AnnotationListWidget = function () {
         }, _callee8, this);
       }));
 
-      function _activatePage(_x8) {
+      function _activatePageForward(_x8) {
         return _ref8.apply(this, arguments);
       }
 
-      return _activatePage;
+      return _activatePageForward;
     }()
   }, {
-    key: '_activatePageForward',
+    key: '_activatePageBackward',
     value: function () {
       var _ref9 = _asyncToGenerator(regeneratorRuntime.mark(function _callee9(pageNum) {
         var nextPage;
@@ -14616,19 +14633,19 @@ var AnnotationListWidget = function () {
             switch (_context9.prev = _context9.next) {
               case 0:
                 _context9.next = 2;
-                return this._activatePage(pageNum);
+                return this._loadPage(pageNum);
 
               case 2:
                 nextPage = pageNum;
 
-                if (!(pageNum < this._nav.getNumPages() - 1)) {
+                if (!(pageNum > 0)) {
                   _context9.next = 7;
                   break;
                 }
 
-                ++nextPage;
+                --nextPage;
                 _context9.next = 7;
-                return this._activatePage(nextPage);
+                return this._loadPage(nextPage);
 
               case 7:
                 return _context9.abrupt('return', nextPage);
@@ -14641,35 +14658,30 @@ var AnnotationListWidget = function () {
         }, _callee9, this);
       }));
 
-      function _activatePageForward(_x9) {
+      function _activatePageBackward(_x9) {
         return _ref9.apply(this, arguments);
       }
 
-      return _activatePageForward;
+      return _activatePageBackward;
     }()
   }, {
-    key: '_activatePageBackward',
+    key: '_activateMorePagesForwardFirst',
     value: function () {
       var _ref10 = _asyncToGenerator(regeneratorRuntime.mark(function _callee10(pageNum) {
-        var nextPage;
+        var numCanvases, nextPage;
         return regeneratorRuntime.wrap(function _callee10$(_context10) {
           while (1) {
             switch (_context10.prev = _context10.next) {
               case 0:
-                _context10.next = 2;
-                return this._activatePage(pageNum);
+                logger.debug('AnnotationListWidget#_activateMorePagesForwardFirst', pageNum);
+                numCanvases = this.options.canvases.length;
+                _context10.next = 4;
+                return this._activateMorePagesForward(pageNum, numCanvases);
 
-              case 2:
-                nextPage = pageNum;
-
-                if (!(pageNum > 0)) {
-                  _context10.next = 7;
-                  break;
-                }
-
-                --nextPage;
+              case 4:
+                nextPage = _context10.sent;
                 _context10.next = 7;
-                return this._activatePage(nextPage);
+                return this._activateMorePagesBackward(pageNum, numCanvases);
 
               case 7:
                 return _context10.abrupt('return', nextPage);
@@ -14682,30 +14694,30 @@ var AnnotationListWidget = function () {
         }, _callee10, this);
       }));
 
-      function _activatePageBackward(_x10) {
+      function _activateMorePagesForwardFirst(_x10) {
         return _ref10.apply(this, arguments);
       }
 
-      return _activatePageBackward;
+      return _activateMorePagesForwardFirst;
     }()
   }, {
-    key: '_activateMorePagesForwardFirst',
+    key: '_activateMorePagesBackwardFirst',
     value: function () {
-      var _ref11 = _asyncToGenerator(regeneratorRuntime.mark(function _callee11(pageNum) {
+      var _ref11 = _asyncToGenerator(regeneratorRuntime.mark(function _callee11(pageNum, numPages) {
         var numCanvases, nextPage;
         return regeneratorRuntime.wrap(function _callee11$(_context11) {
           while (1) {
             switch (_context11.prev = _context11.next) {
               case 0:
-                logger.debug('AnnotationListWidget#_activateMorePagesForwardFirst', pageNum);
+                logger.debug('AnnotationListWidget#_activateMorePagesBackwardFirst', pageNum, numPages);
                 numCanvases = this.options.canvases.length;
                 _context11.next = 4;
-                return this._activateMorePagesForward(pageNum, numCanvases);
+                return this._activateMorePagesBackward(pageNum, numCanvases);
 
               case 4:
                 nextPage = _context11.sent;
                 _context11.next = 7;
-                return this._activateMorePagesBackward(pageNum, numCanvases);
+                return this._activateMorePagesForward(pageNum, numCanvases);
 
               case 7:
                 return _context11.abrupt('return', nextPage);
@@ -14718,44 +14730,8 @@ var AnnotationListWidget = function () {
         }, _callee11, this);
       }));
 
-      function _activateMorePagesForwardFirst(_x11) {
+      function _activateMorePagesBackwardFirst(_x11, _x12) {
         return _ref11.apply(this, arguments);
-      }
-
-      return _activateMorePagesForwardFirst;
-    }()
-  }, {
-    key: '_activateMorePagesBackwardFirst',
-    value: function () {
-      var _ref12 = _asyncToGenerator(regeneratorRuntime.mark(function _callee12(pageNum, numPages) {
-        var numCanvases, nextPage;
-        return regeneratorRuntime.wrap(function _callee12$(_context12) {
-          while (1) {
-            switch (_context12.prev = _context12.next) {
-              case 0:
-                logger.debug('AnnotationListWidget#_activateMorePagesBackwardFirst', pageNum, numPages);
-                numCanvases = this.options.canvases.length;
-                _context12.next = 4;
-                return this._activateMorePagesBackward(pageNum, numCanvases);
-
-              case 4:
-                nextPage = _context12.sent;
-                _context12.next = 7;
-                return this._activateMorePagesForward(pageNum, numCanvases);
-
-              case 7:
-                return _context12.abrupt('return', nextPage);
-
-              case 8:
-              case 'end':
-                return _context12.stop();
-            }
-          }
-        }, _callee12, this);
-      }));
-
-      function _activateMorePagesBackwardFirst(_x12, _x13) {
-        return _ref12.apply(this, arguments);
       }
 
       return _activateMorePagesBackwardFirst;
@@ -14791,11 +14767,11 @@ var AnnotationListWidget = function () {
   }, {
     key: '_activateMorePagesForward',
     value: function () {
-      var _ref13 = _asyncToGenerator(regeneratorRuntime.mark(function _callee13(pageNum, numPages) {
+      var _ref12 = _asyncToGenerator(regeneratorRuntime.mark(function _callee12(pageNum, numPages) {
         var rootElem, nextPage, currentPage;
-        return regeneratorRuntime.wrap(function _callee13$(_context13) {
+        return regeneratorRuntime.wrap(function _callee12$(_context12) {
           while (1) {
-            switch (_context13.prev = _context13.next) {
+            switch (_context12.prev = _context12.next) {
               case 0:
                 logger.debug('AnnotationListWidget#_activateMorePagesForward', pageNum, numPages);
                 rootElem = this.options.rootElem;
@@ -14803,14 +14779,69 @@ var AnnotationListWidget = function () {
 
               case 3:
                 if (!(nextPage < numPages)) {
-                  _context13.next = 13;
+                  _context12.next = 13;
                   break;
                 }
 
                 logger.debug('AnnotationListWidget#_activateMorePagesForward nextPage:', nextPage, 'numPages:', numPages, 'scroll height:', rootElem[0].scrollHeight, 'element height:', rootElem.height());
                 currentPage = nextPage;
-                _context13.next = 8;
+                _context12.next = 8;
                 return this._activatePageForward(currentPage);
+
+              case 8:
+                nextPage = _context12.sent;
+
+                if (!(nextPage === currentPage || rootElem[0].scrollHeight > rootElem.height())) {
+                  _context12.next = 11;
+                  break;
+                }
+
+                return _context12.abrupt('break', 13);
+
+              case 11:
+                _context12.next = 3;
+                break;
+
+              case 13:
+                return _context12.abrupt('return', nextPage);
+
+              case 14:
+              case 'end':
+                return _context12.stop();
+            }
+          }
+        }, _callee12, this);
+      }));
+
+      function _activateMorePagesForward(_x13, _x14) {
+        return _ref12.apply(this, arguments);
+      }
+
+      return _activateMorePagesForward;
+    }()
+  }, {
+    key: '_activateMorePagesBackward',
+    value: function () {
+      var _ref13 = _asyncToGenerator(regeneratorRuntime.mark(function _callee13(pageNum) {
+        var rootElem, nextPage, currentPage;
+        return regeneratorRuntime.wrap(function _callee13$(_context13) {
+          while (1) {
+            switch (_context13.prev = _context13.next) {
+              case 0:
+                logger.debug('AnnotationListWidget#_activateMorePagesBackward', pageNum);
+                rootElem = this.options.rootElem;
+                nextPage = pageNum;
+
+              case 3:
+                if (!(nextPage >= 0)) {
+                  _context13.next = 13;
+                  break;
+                }
+
+                logger.debug('AnnotationListWidget#_activateMorePagesBackward nextPage:', nextPage, 'scroll height:', rootElem[0].scrollHeight, 'element height:', rootElem.height());
+                currentPage = nextPage;
+                _context13.next = 8;
+                return this._activatePageBackward(currentPage);
 
               case 8:
                 nextPage = _context13.sent;
@@ -14837,63 +14868,8 @@ var AnnotationListWidget = function () {
         }, _callee13, this);
       }));
 
-      function _activateMorePagesForward(_x14, _x15) {
+      function _activateMorePagesBackward(_x15) {
         return _ref13.apply(this, arguments);
-      }
-
-      return _activateMorePagesForward;
-    }()
-  }, {
-    key: '_activateMorePagesBackward',
-    value: function () {
-      var _ref14 = _asyncToGenerator(regeneratorRuntime.mark(function _callee14(pageNum) {
-        var rootElem, nextPage, currentPage;
-        return regeneratorRuntime.wrap(function _callee14$(_context14) {
-          while (1) {
-            switch (_context14.prev = _context14.next) {
-              case 0:
-                logger.debug('AnnotationListWidget#_activateMorePagesBackward', pageNum);
-                rootElem = this.options.rootElem;
-                nextPage = pageNum;
-
-              case 3:
-                if (!(nextPage >= 0)) {
-                  _context14.next = 13;
-                  break;
-                }
-
-                logger.debug('AnnotationListWidget#_activateMorePagesBackward nextPage:', nextPage, 'scroll height:', rootElem[0].scrollHeight, 'element height:', rootElem.height());
-                currentPage = nextPage;
-                _context14.next = 8;
-                return this._activatePageBackward(currentPage);
-
-              case 8:
-                nextPage = _context14.sent;
-
-                if (!(nextPage === currentPage || rootElem[0].scrollHeight > rootElem.height())) {
-                  _context14.next = 11;
-                  break;
-                }
-
-                return _context14.abrupt('break', 13);
-
-              case 11:
-                _context14.next = 3;
-                break;
-
-              case 13:
-                return _context14.abrupt('return', nextPage);
-
-              case 14:
-              case 'end':
-                return _context14.stop();
-            }
-          }
-        }, _callee14, this);
-      }));
-
-      function _activateMorePagesBackward(_x16) {
-        return _ref14.apply(this, arguments);
       }
 
       return _activateMorePagesBackward;
@@ -14906,9 +14882,9 @@ var AnnotationListWidget = function () {
       this._nav.unload(pageNum);
     }
   }, {
-    key: '_deactivatePagesFromForward',
-    value: function _deactivatePagesFromForward() {
-      logger.debug('AnnotationListWidget#_deactivatePagesFromForward');
+    key: '_unloadNextPages',
+    value: function _unloadNextPages() {
+      logger.debug('AnnotationListWidget#_unloadNextPages');
       var nav = this._nav;
       var rootElem = this.options.rootElem;
       var rootElemHeight = rootElem.height();
@@ -14920,21 +14896,21 @@ var AnnotationListWidget = function () {
       }
     }
   }, {
-    key: '_deactivatePagesFromBack',
-    value: function _deactivatePagesFromBack() {
-      logger.debug('AnnotationListWidget#_deactivatePagesFromBack');
+    key: '_unloadPreviousPages',
+    value: function _unloadPreviousPages() {
+      logger.debug('AnnotationListWidget#_unloadPreviousPages');
       var rootElem = this.options.rootElem;
       var rootElemHeight = rootElem.height();
       var maxHeight = this.options.maxContentRelativeHeight * rootElemHeight;
 
       for (var nextPage = 0; nextPage < this._currentPageNum - 1 && rootElem[0].scrollHeight - rootElemHeight > maxHeight; ++nextPage) {
-        logger.debug('AnnotationListWidget#_deactivatePagesFromBack nextPage:', nextPage, 'scroll height:', rootElem[0].scrollHeight, 'maxHeight:', maxHeight);
+        logger.debug('AnnotationListWidget#_unloadPreviousPages nextPage:', nextPage, 'scroll height:', rootElem[0].scrollHeight, 'maxHeight:', maxHeight);
         nav.getPageElement(nextPage).hide();
       }
     }
   }, {
-    key: '_deactivateAllPages',
-    value: function _deactivateAllPages() {
+    key: '_unloadAllPages',
+    value: function _unloadAllPages() {
       var _iteratorNormalCompletion6 = true;
       var _didIteratorError6 = false;
       var _iteratorError6 = undefined;
@@ -14959,29 +14935,42 @@ var AnnotationListWidget = function () {
           }
         }
       }
+
+      this._nav.unloadAll();
     }
   }, {
     key: '_loadPage',
     value: function () {
-      var _ref15 = _asyncToGenerator(regeneratorRuntime.mark(function _callee15(pageNum) {
+      var _ref14 = _asyncToGenerator(regeneratorRuntime.mark(function _callee14(pageNum) {
         var _this4 = this;
 
         var nav, canvasId, annotations, tocCache, toc, element;
-        return regeneratorRuntime.wrap(function _callee15$(_context15) {
+        return regeneratorRuntime.wrap(function _callee14$(_context14) {
           while (1) {
-            switch (_context15.prev = _context15.next) {
+            switch (_context14.prev = _context14.next) {
               case 0:
                 logger.debug('AnnotationListWidget#_loadPage pageNum:', pageNum);
-                (0, _modalAlert2.default)().show('Loading');
                 nav = this._nav;
+
+                if (!nav.isLoaded(pageNum)) {
+                  _context14.next = 4;
+                  break;
+                }
+
+                return _context14.abrupt('return');
+
+              case 4:
+
+                (0, _modalAlert2.default)().show('Loading');
+
                 canvasId = nav.getCanvas(pageNum)['@id'];
-                _context15.next = 6;
+                _context14.next = 8;
                 return this.options.annotationExplorer.getAnnotations({
                   canvasId: canvasId
                 });
 
-              case 6:
-                annotations = _context15.sent;
+              case 8:
+                annotations = _context14.sent;
 
                 annotations = annotations.filter(function (anno) {
                   return anno.layerId === _this4.options.layerId;
@@ -14989,23 +14978,23 @@ var AnnotationListWidget = function () {
                 tocCache = (0, _app2.default)().getAnnotationTocCache();
 
                 if (!tocCache) {
-                  _context15.next = 15;
+                  _context14.next = 17;
                   break;
                 }
 
-                _context15.next = 12;
+                _context14.next = 14;
                 return tocCache.getToc(canvasId);
 
-              case 12:
-                _context15.t0 = _context15.sent;
-                _context15.next = 16;
+              case 14:
+                _context14.t0 = _context14.sent;
+                _context14.next = 18;
                 break;
 
-              case 15:
-                _context15.t0 = null;
+              case 17:
+                _context14.t0 = null;
 
-              case 16:
-                toc = _context15.t0;
+              case 18:
+                toc = _context14.t0;
                 element = nav.getPageElement(pageNum);
 
 
@@ -15017,18 +15006,19 @@ var AnnotationListWidget = function () {
                   isEditor: this.options.isEditor,
                   pageNum: pageNum
                 });
+                element.show();
                 (0, _modalAlert2.default)().hide();
 
-              case 21:
+              case 24:
               case 'end':
-                return _context15.stop();
+                return _context14.stop();
             }
           }
-        }, _callee15, this);
+        }, _callee14, this);
       }));
 
-      function _loadPage(_x17) {
-        return _ref15.apply(this, arguments);
+      function _loadPage(_x16) {
+        return _ref14.apply(this, arguments);
       }
 
       return _loadPage;
@@ -15160,11 +15150,11 @@ var AnnotationListWidget = function () {
   }, {
     key: '_focusNextAnnotation',
     value: function () {
-      var _ref16 = _asyncToGenerator(regeneratorRuntime.mark(function _callee16() {
+      var _ref15 = _asyncToGenerator(regeneratorRuntime.mark(function _callee15() {
         var nav, current, next, nextPage, nextPageElem;
-        return regeneratorRuntime.wrap(function _callee16$(_context16) {
+        return regeneratorRuntime.wrap(function _callee15$(_context15) {
           while (1) {
-            switch (_context16.prev = _context16.next) {
+            switch (_context15.prev = _context15.next) {
               case 0:
                 nav = this._nav;
                 current = jQuery(this.options.rootElem.find('.annowin_anno:focus'));
@@ -15175,29 +15165,29 @@ var AnnotationListWidget = function () {
                 }
 
                 if (!(next.size() > 0)) {
-                  _context16.next = 8;
+                  _context15.next = 8;
                   break;
                 }
 
                 next.focus();
-                _context16.next = 16;
+                _context15.next = 16;
                 break;
 
               case 8:
                 nextPage = nav.getPage() + 1;
 
                 if (!(nextPage < nav.getNumPages())) {
-                  _context16.next = 16;
+                  _context15.next = 16;
                   break;
                 }
 
                 if (nav.isLoaded(nextPage)) {
-                  _context16.next = 13;
+                  _context15.next = 13;
                   break;
                 }
 
-                _context16.next = 13;
-                return this.loadForward();
+                _context15.next = 13;
+                return this.loadNextPages();
 
               case 13:
                 nextPageElem = nav.getPageElement(nextPage);
@@ -15210,14 +15200,14 @@ var AnnotationListWidget = function () {
 
               case 16:
               case 'end':
-                return _context16.stop();
+                return _context15.stop();
             }
           }
-        }, _callee16, this);
+        }, _callee15, this);
       }));
 
       function _focusNextAnnotation() {
-        return _ref16.apply(this, arguments);
+        return _ref15.apply(this, arguments);
       }
 
       return _focusNextAnnotation;
@@ -15225,11 +15215,11 @@ var AnnotationListWidget = function () {
   }, {
     key: '_focusPrevAnnotation',
     value: function () {
-      var _ref17 = _asyncToGenerator(regeneratorRuntime.mark(function _callee17() {
+      var _ref16 = _asyncToGenerator(regeneratorRuntime.mark(function _callee16() {
         var nav, current, prev, prevPage, prevPageElem;
-        return regeneratorRuntime.wrap(function _callee17$(_context17) {
+        return regeneratorRuntime.wrap(function _callee16$(_context16) {
           while (1) {
-            switch (_context17.prev = _context17.next) {
+            switch (_context16.prev = _context16.next) {
               case 0:
                 nav = this._nav;
                 current = jQuery(this.options.rootElem.find('.annowin_anno:focus'));
@@ -15241,29 +15231,29 @@ var AnnotationListWidget = function () {
                 }
 
                 if (!(prev.size() > 0)) {
-                  _context17.next = 8;
+                  _context16.next = 8;
                   break;
                 }
 
                 prev.focus();
-                _context17.next = 16;
+                _context16.next = 16;
                 break;
 
               case 8:
                 prevPage = nav.getPage() - 1;
 
                 if (!(prevPage >= 0)) {
-                  _context17.next = 16;
+                  _context16.next = 16;
                   break;
                 }
 
                 if (nav.isLoaded(prevPage)) {
-                  _context17.next = 13;
+                  _context16.next = 13;
                   break;
                 }
 
-                _context17.next = 13;
-                return this.loadBackward();
+                _context16.next = 13;
+                return this.loadPreviousPages();
 
               case 13:
                 prevPageElem = nav.getPageElement(prevPage);
@@ -15276,14 +15266,14 @@ var AnnotationListWidget = function () {
 
               case 16:
               case 'end':
-                return _context17.stop();
+                return _context16.stop();
             }
           }
-        }, _callee17, this);
+        }, _callee16, this);
       }));
 
       function _focusPrevAnnotation() {
-        return _ref17.apply(this, arguments);
+        return _ref16.apply(this, arguments);
       }
 
       return _focusPrevAnnotation;
@@ -15294,11 +15284,11 @@ var AnnotationListWidget = function () {
       var _this = this;
 
       this.options.rootElem.scroll(function () {
-        var _ref18 = _asyncToGenerator(regeneratorRuntime.mark(function _callee18(event) {
+        var _ref17 = _asyncToGenerator(regeneratorRuntime.mark(function _callee17(event) {
           var elem, scrollTop, currentPos, contentHeight;
-          return regeneratorRuntime.wrap(function _callee18$(_context18) {
+          return regeneratorRuntime.wrap(function _callee17$(_context17) {
             while (1) {
-              switch (_context18.prev = _context18.next) {
+              switch (_context17.prev = _context17.next) {
                 case 0:
                   elem = jQuery(this);
                   scrollTop = elem.scrollTop();
@@ -15308,32 +15298,32 @@ var AnnotationListWidget = function () {
                   //logger.debug('contentHeight:', contentHeight, 'scrollTop:', scrollTop, 'scroll bottom:', currentPos);
 
                   if (!(scrollTop < 20)) {
-                    _context18.next = 7;
+                    _context17.next = 7;
                     break;
                   }
 
-                  _context18.next = 7;
-                  return _this.loadBackward();
+                  _context17.next = 7;
+                  return _this.loadPreviousPages();
 
                 case 7:
                   if (!(contentHeight - currentPos < 20)) {
-                    _context18.next = 10;
+                    _context17.next = 10;
                     break;
                   }
 
-                  _context18.next = 10;
-                  return _this.loadForward();
+                  _context17.next = 10;
+                  return _this.loadNextPages();
 
                 case 10:
                 case 'end':
-                  return _context18.stop();
+                  return _context17.stop();
               }
             }
-          }, _callee18, this);
+          }, _callee17, this);
         }));
 
-        return function (_x18) {
-          return _ref18.apply(this, arguments);
+        return function (_x17) {
+          return _ref17.apply(this, arguments);
         };
       }());
     }
@@ -15395,7 +15385,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var logger = (0, _logger2.default)();
-var callbackKeys = new Set(['onSetPage']);
 
 /**
  *  Navigation controller for the annotation window
@@ -15409,7 +15398,7 @@ var AnnotationNav = function () {
       canvases: []
     }, options);
 
-    this._pageNum = 0;
+    this._pageNum = -1;
     this._numPages = this.options.canvases.length;
     this._activeRange = { startPage: -1, endPage: -1 }; // marks pages that are loaded and visible
     this._pageStateList = this._createPageStateList();
@@ -15490,10 +15479,46 @@ var AnnotationNav = function () {
     key: 'unload',
     value: function unload(pageNum) {
       var item = this._pageStateList[pageNum];
+      this._unloadPageItem(item);
+      this._removeFromActiveRange(pageNum);
+    }
+  }, {
+    key: '_unloadPageItem',
+    value: function _unloadPageItem(item) {
       delete item.annotations;
       delete item.toc;
       item.loaded = false;
-      this._removeFromActiveRange(pageNum);
+    }
+  }, {
+    key: 'unloadAll',
+    value: function unloadAll() {
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = this._pageStateList[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var item = _step.value;
+
+          this._unloadPageItem(item);
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
+      this._activeRange.startPage = -1;
+      this._activeRange.endPage = -1;
     }
   }, {
     key: 'getActiveRange',
@@ -15547,13 +15572,13 @@ var AnnotationNav = function () {
     value: function _createPageStateList() {
       var pages = [];
 
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
 
       try {
-        for (var _iterator = this.options.canvases[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var canvas = _step.value;
+        for (var _iterator2 = this.options.canvases[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var canvas = _step2.value;
 
           pages.push({
             toc: null,
@@ -15564,16 +15589,16 @@ var AnnotationNav = function () {
           });
         }
       } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion && _iterator.return) {
-            _iterator.return();
+          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+            _iterator2.return();
           }
         } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
+          if (_didIteratorError2) {
+            throw _iteratorError2;
           }
         }
       }
@@ -15798,11 +15823,11 @@ var AnnotationWindow = function () {
                   //if ((this.options.annotationId || this.options.initialTocTags) && annosToShow.length > 0) {
                   if (_this2.options.annotationId) {
                     listWidget.highlightAnnotations([targetAnno], 'SELECTED');
-                    listWidget.moveToAnnotation(_this2.options.annotationId, canvasId);
+                    listWidget.goToAnnotation(_this2.options.annotationId, canvasId);
                   } else if (_this2.options.initialTocTags.length > 0) {
-                    listWidget.moveToTags(_this2.options.initialTocTags);
+                    //listWidget.goToPageByTags(this.options.initialTocTags);
                   } else {
-                    listWidget.moveToPage(0);
+                    listWidget.goToPage(0);
                   }
                   _this2.bindEvents();
                   return _this2;
@@ -15884,7 +15909,7 @@ var AnnotationWindow = function () {
                   case 0:
                     logger.debug('Change from TOC selector: ', value);
                     _context2.next = 3;
-                    return _this3.options.annotationListWidget.moveToTags([value]);
+                    return _this3.options.annotationListWidget.goToPageByTags([value]);
 
                   case 3:
                   case 'end':
@@ -16054,7 +16079,7 @@ var AnnotationWindow = function () {
                 }
 
                 _context4.next = 10;
-                return listWidget.moveToTags(this.options.initialTocTags);
+                return listWidget.goToPageByTags(this.options.initialTocTags);
 
               case 10:
                 count = _context4.sent;
@@ -16067,7 +16092,7 @@ var AnnotationWindow = function () {
 
               case 14:
                 _context4.next = 16;
-                return listWidget.moveToCanvas(canvasId);
+                return listWidget.goToPageByCanvas(canvasId);
 
               case 16:
                 count = _context4.sent;
@@ -16095,14 +16120,19 @@ var AnnotationWindow = function () {
       return updateList;
     }()
   }, {
+    key: 'getCurrentCanvasId',
+    value: function getCurrentCanvasId() {
+      return this.canvasWindow.getCurrentCanvasId();
+    }
+  }, {
     key: 'getCurrentCanvas',
     value: function getCurrentCanvas() {
-      var window = this.canvasWindow;
-      var id = window.getCurrentCanvasId();
-      var canvases = window.getManifest().getCanvases();
+      var id = this.getCurrentCanvasId();
+      var canvases = this.canvasWindow.getManifest().getCanvases();
       var current = canvases.filter(function (canvas) {
         return canvas['@id'] === id;
       });
+
       if (current.length < 1) {
         (0, _fatalError2.default)('Could not find the requested canvas: ' + id);
       } else {
@@ -16115,16 +16145,16 @@ var AnnotationWindow = function () {
       this.options.annotationListWidget.scrollToAnnotation(annoId);
     }
   }, {
-    key: 'moveToAnnotation',
+    key: 'goToAnnotation',
     value: function () {
       var _ref5 = _asyncToGenerator(regeneratorRuntime.mark(function _callee5(annoId, canvasId) {
         return regeneratorRuntime.wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
-                logger.debug('AnnotationWindow#moveToAnnotation annoId:', annoId, 'canvasId:', canvasId);
+                logger.debug('AnnotationWindow#goToAnnotation annoId:', annoId, 'canvasId:', canvasId);
 
-                return _context5.abrupt('return', this.options.annotationListWidget.moveToAnnotation(annoId, canvasId));
+                return _context5.abrupt('return', this.options.annotationListWidget.goToAnnotation(annoId, canvasId));
 
               case 2:
               case 'end':
@@ -16134,11 +16164,11 @@ var AnnotationWindow = function () {
         }, _callee5, this);
       }));
 
-      function moveToAnnotation(_x3, _x4) {
+      function goToAnnotation(_x3, _x4) {
         return _ref5.apply(this, arguments);
       }
 
-      return moveToAnnotation;
+      return goToAnnotation;
     }()
   }, {
     key: 'createInfoDiv',
@@ -16284,7 +16314,7 @@ var AnnotationWindow = function () {
                   }
 
                   _context6.next = 37;
-                  return listWidget.moveToCanvas(params.canvasId);
+                  return listWidget.goToPageByCanvas(params.canvasId);
 
                 case 37:
                   listWidget.scrollToElem(siblingElems[0], -params.offset);
@@ -16294,7 +16324,7 @@ var AnnotationWindow = function () {
 
                 case 39:
                   _context6.next = 41;
-                  return listWidget.moveToCanvas(params.canvasId);
+                  return listWidget.goToPageByCanvas(params.canvasId);
 
                 case 41:
                   annoMap = {};
@@ -16392,7 +16422,7 @@ var AnnotationWindow = function () {
 
       this._subscribe(jQuery, 'YM_ANNOTATION_TOC_TAGS_SELECTED', function (evnet, windowId, canvasId, tags) {
         logger.debug('AnnotationWindow:SUB:YM_ANNOTATION_TOC_TAGS_SELECTED imageWindow:', windowId, 'canvasId:', canvasId, 'tags:', tags);
-        _this7.options.annotationListWidget.moveToTags(tags);
+        _this7.options.annotationListWidget.goToPageByTags(tags);
       });
 
       this._subscribe(this.miradorProxy, 'YM_IMAGE_WINDOW_TOOLTIP_ANNO_CLICKED', function () {
@@ -16416,7 +16446,7 @@ var AnnotationWindow = function () {
 
 
                   if (annotation) {
-                    _this7.options.annotationListWidget.moveToTags(annotation.tocTags);
+                    _this7.options.annotationListWidget.goToPageByTags(annotation.tocTags);
                   }
 
                 case 8:
@@ -16618,6 +16648,11 @@ var AnnotationPageRenderer = function () {
         this._renderDefault(pageElem, options);
       }
     }
+  }, {
+    key: 'unload',
+    value: function unload(pageElem) {
+      pageElem.find('.annowin_group_header, .annowin_anno').remove();
+    }
 
     /**
      * options: {
@@ -16654,7 +16689,7 @@ var AnnotationPageRenderer = function () {
                 canvasId: canvasId,
                 isEditor: options.isEditor
               });
-              pageElem.append(annoElem);
+              annoElem.append(annoElem);
             }
           } catch (e) {
             logger.error('ERROR AnnotationPageRenderer#_renderDefault', e);
@@ -17048,7 +17083,7 @@ var AnnotationTocRenderer = function () {
   }, {
     key: 'appendAnnotations',
     value: function appendAnnotations(node) {
-      logger.debug('AnnotationTocRenderer#appendAnnotations node:', node);
+      //logger.debug('AnnotationTocRenderer#appendAnnotations node:', node);
       var renderer = this.options.annotationRenderer;
       var pageElem = this.options.container;
 
