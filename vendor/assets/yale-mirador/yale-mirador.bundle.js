@@ -1,5 +1,5 @@
-// Yale-Mirador v0.7.2-4-g1c87e8f built Tue Aug 22 2017 14:09:41 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.7.2-4-g1c87e8f built Tue Aug 22 2017 14:09:41 GMT-0400 (EDT)";
+// Yale-Mirador v0.7.2-5-g3cbb427 built Tue Aug 22 2017 16:04:59 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.7.2-5-g3cbb427 built Tue Aug 22 2017 16:04:59 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -13440,14 +13440,15 @@ var MiradorProxy = function () {
     }
   }, {
     key: 'subscribe',
-    value: function subscribe(eventName, callback) {
-      logger.debug('MiradorProxy#subscribe', eventName, callback);
-      this._mirador.eventEmitter.subscribe(eventName, callback);
+    value: function subscribe(eventName, handler) {
+      logger.debug('MiradorProxy#subscribe', eventName, handler);
+      this._mirador.eventEmitter.subscribe(eventName, handler);
     }
   }, {
     key: 'unsubscribe',
-    value: function unsubscribe(eventName) {
-      this._mirador.eventEmitter.unsubscribe(eventName);
+    value: function unsubscribe(eventName, handler) {
+      logger.debug('MiradorProxy#unsubscribe', eventName, handler);
+      this._mirador.eventEmitter.unsubscribe(eventName, handler);
     }
   }]);
 
@@ -15561,19 +15562,17 @@ var AnnotationWindow = function () {
   function AnnotationWindow(options) {
     _classCallCheck(this, AnnotationWindow);
 
-    this.options = Object.assign({
-      id: null, // annotation window ID
-      miradorId: null,
-      canvasWindowId: null,
-      appendTo: null,
-      annotationListWidget: null,
-      explorer: null,
-      initialLayerId: null,
-      initialTocTags: [],
-      annotationId: null
-    }, options);
-
     logger.debug('AnnotationWindow#constructor options:', options);
+    this._id = options.id; // annotation window ID
+    this._miradorId = options.miradorId;
+    this._imageWindowId = options.canvasWindowId;
+    this._appendTo = options.appendTo;
+    this._listWidget = options.annotationListWidget;
+    this._explorer = options.explorer;
+    this._initialLayerId = options.initialLayerId;
+    this._initialTocTags = options.initialTocTags || [];
+    this._annotationId = options.annotationId;
+
     this._tocSpec = (0, _stateStore2.default)().getTransient('tocSpec');
     this._jQuerySubscribed = {};
     this._miradorSubscribed = {};
@@ -15583,7 +15582,7 @@ var AnnotationWindow = function () {
   _createClass(AnnotationWindow, [{
     key: 'getId',
     value: function getId() {
-      return this.options.id;
+      return this._id;
     }
 
     /**
@@ -15607,13 +15606,13 @@ var AnnotationWindow = function () {
                 targetAnno = null;
 
 
-                if (!this.options.id) {
-                  this.options.id = Mirador.genUUID();
+                if (!this._id) {
+                  this._id = Mirador.genUUID();
                 }
-                this.miradorProxy = proxyMgr.getMiradorProxy(this.options.miradorId);
-                this.canvasWindow = this.miradorProxy.getWindowProxyById(this.options.canvasWindowId);
+                this.miradorProxy = proxyMgr.getMiradorProxy(this._miradorId);
+                this.canvasWindow = this.miradorProxy.getWindowProxyById(this._imageWindowId);
 
-                //const toc = this.options.explorer.getAnnotationToc();
+                //const toc = this._explorer.getAnnotationToc();
                 canvasId = this.canvasWindow.getCurrentCanvasId();
 
                 if (!this._tocSpec) {
@@ -15637,42 +15636,42 @@ var AnnotationWindow = function () {
 
 
                 this.element = jQuery(template({}));
-                this.options.appendTo.append(this.element);
+                this._appendTo.append(this.element);
                 this.listElem = this.element.find('.annowin_list');
 
-                if (this.options.annotationId) {
+                if (this._annotationId) {
                   // annotation ID was given in the URL
                   matched = this.canvasWindow.getAnnotationsList().filter(function (anno) {
                     if (!anno || (typeof anno === 'undefined' ? 'undefined' : _typeof(anno)) !== 'object') {
                       logger.error('AnnotationWindow#init Invalid annotation', anno);
                       return false;
                     }
-                    return anno['@id'] === _this2.options.annotationId;
+                    return anno['@id'] === _this2._annotationId;
                   });
 
                   targetAnno = matched[0];
                   if (matched.length > 0) {
-                    this.options.initialLayerId = targetAnno.layerId;
+                    this._initialLayerId = targetAnno.layerId;
                     if (toc) {
-                      this.options.initialTocTags = toc.getTagsFromAnnotationId(this.options.annotationId);
+                      this._initialTocTags = toc.getTagsFromAnnotationId(this._annotationId);
                     }
                   }
                 }
 
-                if (this.options.initialLayerId) {
+                if (this._initialLayerId) {
                   // layerIDs were given in the URL
                   annosToShow = this.canvasWindow.getAnnotationsList();
                   annosToShow = annosToShow.filter(function (anno) {
-                    return anno.layerId == _this2.options.initialLayerId;
+                    return anno.layerId == _this2._initialLayerId;
                   });
 
-                  if (this.options.initialTocTags.length > 0) {
+                  if (this._initialTocTags.length > 0) {
                     if (toc) {
                       annosToShow = annosToShow.filter(function (anno) {
-                        return toc.matchHierarchy(anno, _this2.options.initialTocTags.slice(0, 1));
+                        return toc.matchHierarchy(anno, _this2._initialTocTags.slice(0, 1));
                       });
                       fullTagsTargets = annosToShow.filter(function (anno) {
-                        return toc.matchHierarchy(anno, _this2.options.initialTocTags);
+                        return toc.matchHierarchy(anno, _this2._initialTocTags);
                       });
                       if (fullTagsTargets.length > 0 && !targetAnno) {
                         targetAnno = fullTagsTargets[0];
@@ -15697,13 +15696,13 @@ var AnnotationWindow = function () {
                   throw 'AnnotationWindow#init reload failed - ' + reason;
                 }).then(function () {
                   logger.debug('AnnotationWindow#init annosToShow:', annosToShow);
-                  var listWidget = _this2.options.annotationListWidget;
-                  //if ((this.options.annotationId || this.options.initialTocTags) && annosToShow.length > 0) {
-                  if (_this2.options.annotationId) {
+                  var listWidget = _this2._listWidget;
+                  //if ((this._annotationId || this._initialTocTags) && annosToShow.length > 0) {
+                  if (_this2._annotationId) {
                     listWidget.highlightAnnotations([targetAnno], 'SELECTED');
-                    listWidget.goToAnnotation(_this2.options.annotationId, canvasId);
-                  } else if (_this2.options.initialTocTags.length > 0) {
-                    //listWidget.goToPageByTags(this.options.initialTocTags);
+                    listWidget.goToAnnotation(_this2._annotationId, canvasId);
+                  } else if (_this2._initialTocTags.length > 0) {
+                    //listWidget.goToPageByTags(this._initialTocTags);
                   } else {
                     listWidget.goToPage(0);
                   }
@@ -15730,7 +15729,7 @@ var AnnotationWindow = function () {
   }, {
     key: 'getImageWindowId',
     value: function getImageWindowId() {
-      return this.options.canvasWindowId;
+      return this._imageWindowId;
     }
   }, {
     key: 'getImageWindowProxy',
@@ -15741,27 +15740,32 @@ var AnnotationWindow = function () {
   }, {
     key: '_setupAnnotationListWidget',
     value: function _setupAnnotationListWidget() {
-      if (!this.options.annotationListWidget) {
-        var windowProxy = (0, _miradorProxyManager2.default)().getWindowProxyById(this.options.canvasWindowId);
+      if (!this._listWidget) {
+        var windowProxy = (0, _miradorProxyManager2.default)().getWindowProxyById(this._imageWindowId);
         var canvases = windowProxy.getManifest().getCanvases();
 
-        this.options.annotationListWidget = new _annotationListWidget2.default({
+        this._listWidget = new _annotationListWidget2.default({
           annotationWindow: this,
           rootElem: this.listElem,
           canvases: canvases,
-          tocTags: this.options.initialTocTags,
-          annotationExplorer: this.options.explorer,
+          tocTags: this._initialTocTags,
+          annotationExplorer: this._explorer,
           state: (0, _stateStore2.default)(),
           isEditor: _session2.default.isEditor()
         });
-        this.options.annotationListWidget.reload(this.options.initialLayerId);
+        this._listWidget.reload(this._initialLayerId);
       }
     }
   }, {
     key: 'destroy',
     value: function destroy() {
       logger.debug('AnnotationWindow#destroy');
-      //this._unsubscribeAll(); //XXXX
+      this._unsubscribeAll(); //XXXX
+    }
+  }, {
+    key: 'getAnnoListNav',
+    value: function getAnnoListNav() {
+      return this._listWidget.getNav();
     }
   }, {
     key: 'initMenuTagSelector',
@@ -15775,8 +15779,8 @@ var AnnotationWindow = function () {
       this.menuTagSelector = new _menuTagSelector2.default({
         parent: this.element.find('.menu_tag_selector_container'),
         tocSpec: (0, _stateStore2.default)().getTransient('tocSpec'),
-        annotationExplorer: this.options.explorer,
-        initialTags: this.options.initialTocTags,
+        annotationExplorer: this._explorer,
+        initialTags: this._initialTocTags,
         changeCallback: function () {
           var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(value, text) {
             return regeneratorRuntime.wrap(function _callee2$(_context2) {
@@ -15785,7 +15789,7 @@ var AnnotationWindow = function () {
                   case 0:
                     logger.debug('Change from TOC selector: ', value);
                     _context2.next = 3;
-                    return _this3.options.annotationListWidget.goToPageByTags([value]);
+                    return _this3._listWidget.goToPageByTags([value]);
 
                   case 3:
                   case 'end':
@@ -15806,11 +15810,11 @@ var AnnotationWindow = function () {
     value: function initLayerSelector() {
       var _this4 = this;
 
-      this._setCurrentLayerId(this.options.initialLayerId);
+      this._setCurrentLayerId(this._initialLayerId);
       this.layerSelector = new _layerSelector2.default({
         parent: this.element.find('.layer_selector_container'),
-        annotationExplorer: this.options.explorer,
-        initialLayerId: this.options.initialLayerId,
+        annotationExplorer: this._explorer,
+        initialLayerId: this._initialLayerId,
         changeCallback: function changeCallback(value, text) {
           logger.debug('Change from Layer selector: ', value);
           _this4._setCurrentLayerId(value);
@@ -15829,8 +15833,8 @@ var AnnotationWindow = function () {
       button.click(function (event) {
         _this5.miradorProxy.publish('YM_DISPLAY_ON');
         jQuery.publish('YM_ADD_WINDOW', {
-          miradorId: _this5.options.miradorId,
-          imageWindowId: _this5.options.canvasWindowId
+          miradorId: _this5._miradorId,
+          imageWindowId: _this5._imageWindowId
         });
       });
     }
@@ -15875,7 +15879,7 @@ var AnnotationWindow = function () {
       */
 
       var layersPromise = new Promise(function (resolve, reject) {
-        _this.options.explorer.getLayers().then(function (layers) {
+        _this._explorer.getLayers().then(function (layers) {
           if (layers.length > 0) {
             if (_this.layerSelector.isLoaded()) {
               resolve();
@@ -15894,7 +15898,7 @@ var AnnotationWindow = function () {
       });
 
       var tocPromise = new Promise(function (resolve, reject) {
-        if (_this.options.explorer.getAnnotationToc()) {
+        if (_this._explorer.getAnnotationToc()) {
           _this.menuTagSelector.reload().then(function () {
             resolve();
           }).catch(function (reason) {
@@ -15937,13 +15941,13 @@ var AnnotationWindow = function () {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                listWidget = this.options.annotationListWidget;
+                listWidget = this._listWidget;
                 state = (0, _stateStore2.default)();
                 canvasId = this.canvasWindow.getCurrentCanvasId();
 
                 logger.debug('AnnotationWindow#updateList canvasId:', canvasId);
                 /*
-                if (this.options.explorer.getAnnotationToc()) {
+                if (this._explorer.getAnnotationToc()) {
                   options.selectedTags = this.menuTagSelector.val().split('|');
                 }
                 */
@@ -15954,21 +15958,21 @@ var AnnotationWindow = function () {
               case 6:
                 count = 0;
 
-                if (!(this.options.initialTocTags.length > 0)) {
+                if (!(this._initialTocTags.length > 0)) {
                   _context4.next = 14;
                   break;
                 }
 
                 _context4.next = 10;
-                return listWidget.goToPageByTags(this.options.initialTocTags).catch(function (reason) {
-                  throw 'listWidget#goToPageByTags failed: ' + reason + '(tags: ' + _this7.options.initialTocTags + ')';
+                return listWidget.goToPageByTags(this._initialTocTags).catch(function (reason) {
+                  throw 'listWidget#goToPageByTags failed: ' + reason + '(tags: ' + _this7._initialTocTags + ')';
                 });
 
               case 10:
                 count = _context4.sent;
 
-                if (this.options.annotationId) {
-                  listWidget.scrollToAnnotation(this.options.annotationId);
+                if (this._annotationId) {
+                  listWidget.scrollToAnnotation(this._annotationId);
                 }
                 _context4.next = 17;
                 break;
@@ -16027,7 +16031,7 @@ var AnnotationWindow = function () {
   }, {
     key: 'scrollToAnnotation',
     value: function scrollToAnnotation(annoId) {
-      this.options.annotationListWidget.scrollToAnnotation(annoId);
+      this._listWidget.scrollToAnnotation(annoId);
     }
   }, {
     key: 'goToAnnotation',
@@ -16039,7 +16043,7 @@ var AnnotationWindow = function () {
               case 0:
                 logger.debug('AnnotationWindow#goToAnnotation annoId:', annoId, 'canvasId:', canvasId);
 
-                return _context5.abrupt('return', this.options.annotationListWidget.goToAnnotation(annoId, canvasId));
+                return _context5.abrupt('return', this._listWidget.goToAnnotation(annoId, canvasId));
 
               case 2:
               case 'end':
@@ -16095,12 +16099,12 @@ var AnnotationWindow = function () {
   }, {
     key: 'clearAnnotationHighlights',
     value: function clearAnnotationHighlights() {
-      this.options.annotationListWidget.clearAnnotationHighlights();
+      this._listWidget.clearAnnotationHighlights();
     }
   }, {
     key: 'highlightAnnotationElem',
     value: function highlightAnnotationElem(annoElem, flag) {
-      this.options.annotationListWidget.highlightAnnotationElem(annoElem, flag);
+      this._listWidget.highlightAnnotationElem(annoElem, flag);
     }
   }, {
     key: 'bindEvents',
@@ -16117,11 +16121,11 @@ var AnnotationWindow = function () {
             while (1) {
               switch (_context6.prev = _context6.next) {
                 case 0:
-                  logger.debug('Annotation window ' + _this8.options.id + ' received ANNOWIN_ANNOTATION_FOCUSED params:', params, 'layer:', _this8.getCurrentLayerId());
+                  logger.debug('Annotation window ' + _this8._id + ' received ANNOWIN_ANNOTATION_FOCUSED params:', params, 'layer:', _this8.getCurrentLayerId());
                   $anno = (0, _import.Anno)(params.annotation);
-                  listWidget = _this8.options.annotationListWidget;
+                  listWidget = _this8._listWidget;
 
-                  if (!(params.annotationWindowId === _this8.options.id)) {
+                  if (!(params.annotationWindowId === _this8._id)) {
                     _context6.next = 5;
                     break;
                   }
@@ -16307,7 +16311,7 @@ var AnnotationWindow = function () {
 
       this._subscribe(jQuery, 'YM_ANNOTATION_TOC_TAGS_SELECTED', function (evnet, windowId, canvasId, tags) {
         logger.debug('AnnotationWindow:SUB:YM_ANNOTATION_TOC_TAGS_SELECTED imageWindow:', windowId, 'canvasId:', canvasId, 'tags:', tags);
-        _this8.options.annotationListWidget.goToPageByTags(tags);
+        _this8._listWidget.goToPageByTags(tags);
       });
 
       this._subscribe(this.miradorProxy, 'YM_IMAGE_WINDOW_TOOLTIP_ANNO_CLICKED', function () {
@@ -16331,7 +16335,7 @@ var AnnotationWindow = function () {
 
 
                   if (annotation) {
-                    _this8.options.annotationListWidget.goToPageByTags(annotation.tocTags);
+                    _this8._listWidget.goToPageByTags(annotation.tocTags);
                   }
 
                 case 8:
@@ -16394,6 +16398,7 @@ var AnnotationWindow = function () {
               for (var _iterator4 = handlers[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
                 var handler = _step4.value;
 
+                console.log('UNSUB', eventId, handler);
                 context.unsubscribe(eventId, handler);
               }
             } catch (err) {
@@ -16779,8 +16784,7 @@ var AnnotationRenderer = function () {
     value: function bindAnnotationItemEvents(annoElem, annotation, options) {
       var _this = this;
       var annoWin = this.options.annotationWindow;
-      var listWidget = annoWin.options.annotationListWidget;
-      var nav = listWidget.getNav();
+      var nav = annoWin.getAnnoListNav();
 
       annoElem.focus(function (event) {
         annoWin.clearAnnotationHighlights();
