@@ -1,5 +1,5 @@
-// Yale-Mirador v0.7.2-1-g080868f built Tue Aug 15 2017 15:11:18 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.7.2-1-g080868f built Tue Aug 15 2017 15:11:18 GMT-0400 (EDT)";
+// Yale-Mirador v0.7.2-4-g1c87e8f built Tue Aug 22 2017 14:09:41 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.7.2-4-g1c87e8f built Tue Aug 22 2017 14:09:41 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -67,7 +67,7 @@ window._YaleMiradorVersion="Yale-Mirador v0.7.2-1-g080868f built Tue Aug 15 2017
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 55);
+/******/ 	return __webpack_require__(__webpack_require__.s = 56);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -172,8 +172,8 @@ var Logger = function () {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-__webpack_require__(50);
 __webpack_require__(51);
+__webpack_require__(52);
 
 var Anno = joosugi.AnnotationWrapper;
 var AnnotationExplorer = joosugi.AnnotationExplorer;
@@ -189,6 +189,154 @@ exports.annoUtil = annoUtil;
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+exports.default = getStateStore;
+
+var _logger = __webpack_require__(0);
+
+var _logger2 = _interopRequireDefault(_logger);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var logger = (0, _logger2.default)();
+
+var registeredKeys = new Set(['annotationBackendUrl', 'annotationLayers', 'annotationsOverlay', 'copyrighted', 'copyrightedImageServiceUrl', 'disableAuthz', 'fixAnnoCellHeight', 'hideTagsInAnnotation', 'lastSelectedLayer', 'layerIndexMap', 'projectId', 'tagHierarchy', 'textDirection', 'tocSpec', 'tooltipStyles']);
+
+/**
+ * Holds states for the app, which will optionally persist if local storgae is
+ * available.
+ * The distinction of setString, setObject, setBoolean was necessary
+ * because we have to assume only the "string" type is supported
+ * currently for local storage on all browsers.
+ */
+
+var StateStore = function () {
+  function StateStore() {
+    _classCallCheck(this, StateStore);
+
+    this._settings = {};
+    this._localStorageAvailable = storageAvailable('localStorage');
+  }
+
+  // For values that are not persisted
+
+
+  _createClass(StateStore, [{
+    key: 'getTransient',
+    value: function getTransient(key) {
+      this._checkKey(key);
+      return this._settings[key];
+    }
+
+    // For values that are not persisted
+
+  }, {
+    key: 'setTransient',
+    value: function setTransient(key, value) {
+      logger.debug('StateStore#setTransient', key, value);
+      this._checkKey(key);
+      this._settings[key] = value;
+    }
+  }, {
+    key: 'getString',
+    value: function getString(key) {
+      logger.debug('StateStore#getString', key);
+      this._checkKey(key);
+      var value = this._settings[key];
+      if (!value) {
+        value = this._localStorageAvailable ? localStorage.getItem(key) : null;
+        this._settings[key] = value;
+      }
+      return value;
+    }
+  }, {
+    key: 'setString',
+    value: function setString(key, value) {
+      logger.debug('StateStore#setString', key, value, this._localStorageAvailable);
+      this._checkKey(key);
+      this._settings[key] = value;
+      if (this._localStorageAvailable) {
+        localStorage.setItem(key, value);
+      }
+    }
+  }, {
+    key: 'getBoolean',
+    value: function getBoolean(key) {
+      return this.getString(key) === 'true';
+    }
+  }, {
+    key: 'setBoolean',
+    value: function setBoolean(key, value) {
+      this.setString(key, value ? 'true' : 'false');
+    }
+  }, {
+    key: 'getObject',
+    value: function getObject(key) {
+      logger.debug('StateStore#getObject', key);
+      this._checkKey(key);
+      var value = this.getString(key);
+      return value ? JSON.parse(value) : null;
+    }
+  }, {
+    key: 'setObject',
+    value: function setObject(key, value) {
+      logger.debug('StateStore#setObject', key, value);
+      this._checkKey(key);
+      var stringValue = JSON.stringify(value);
+      this.setString(key, stringValue);
+    }
+  }, {
+    key: '_checkKey',
+    value: function _checkKey(key) {
+      if (!registeredKeys.has(key)) {
+        throw 'ERROR Invalid key for StateStore ' + key;
+      }
+    }
+  }]);
+
+  return StateStore;
+}();
+
+/**
+ * param {string} type "localStorage" or "sessionStorage"
+ */
+
+
+function storageAvailable(type) {
+  try {
+    var storage = window[type],
+        x = '__storage_test__';
+    storage.setItem(x, x);
+    storage.removeItem(x);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+var _instance = null;
+
+function getStateStore() {
+  if (!_instance) {
+    _instance = new StateStore();
+  }
+  return _instance;
+};
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -402,154 +550,6 @@ exports.default = getMiradorProxyManager;
 Mirador.getMiradorProxyManager = getMiradorProxyManager; // to be called from Mirador core.
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-exports.default = getStateStore;
-
-var _logger = __webpack_require__(0);
-
-var _logger2 = _interopRequireDefault(_logger);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var logger = (0, _logger2.default)();
-
-var registeredKeys = new Set(['annotationBackendUrl', 'annotationLayers', 'annotationsOverlay', 'copyrighted', 'copyrightedImageServiceUrl', 'disableAuthz', 'fixAnnoCellHeight', 'hideTagsInAnnotation', 'lastSelectedLayer', 'layerIndexMap', 'projectId', 'tagHierarchy', 'textDirection', 'tocSpec', 'tooltipStyles']);
-
-/**
- * Holds states for the app, which will optionally persist if local storgae is
- * available.
- * The distinction of setString, setObject, setBoolean was necessary
- * because we have to assume only the "string" type is supported
- * currently for local storage on all browsers.
- */
-
-var StateStore = function () {
-  function StateStore() {
-    _classCallCheck(this, StateStore);
-
-    this._settings = {};
-    this._localStorageAvailable = storageAvailable('localStorage');
-  }
-
-  // For values that are not persisted
-
-
-  _createClass(StateStore, [{
-    key: 'getTransient',
-    value: function getTransient(key) {
-      this._checkKey(key);
-      return this._settings[key];
-    }
-
-    // For values that are not persisted
-
-  }, {
-    key: 'setTransient',
-    value: function setTransient(key, value) {
-      logger.debug('StateStore#setTransient', key, value);
-      this._checkKey(key);
-      this._settings[key] = value;
-    }
-  }, {
-    key: 'getString',
-    value: function getString(key) {
-      logger.debug('StateStore#getString', key);
-      this._checkKey(key);
-      var value = this._settings[key];
-      if (!value) {
-        value = this._localStorageAvailable ? localStorage.getItem(key) : null;
-        this._settings[key] = value;
-      }
-      return value;
-    }
-  }, {
-    key: 'setString',
-    value: function setString(key, value) {
-      logger.debug('StateStore#setString', key, value, this._localStorageAvailable);
-      this._checkKey(key);
-      this._settings[key] = value;
-      if (this._localStorageAvailable) {
-        localStorage.setItem(key, value);
-      }
-    }
-  }, {
-    key: 'getBoolean',
-    value: function getBoolean(key) {
-      return this.getString(key) === 'true';
-    }
-  }, {
-    key: 'setBoolean',
-    value: function setBoolean(key, value) {
-      this.setString(key, value ? 'true' : 'false');
-    }
-  }, {
-    key: 'getObject',
-    value: function getObject(key) {
-      logger.debug('StateStore#getObject', key);
-      this._checkKey(key);
-      var value = this.getString(key);
-      return value ? JSON.parse(value) : null;
-    }
-  }, {
-    key: 'setObject',
-    value: function setObject(key, value) {
-      logger.debug('StateStore#setObject', key, value);
-      this._checkKey(key);
-      var stringValue = JSON.stringify(value);
-      this.setString(key, stringValue);
-    }
-  }, {
-    key: '_checkKey',
-    value: function _checkKey(key) {
-      if (!registeredKeys.has(key)) {
-        throw 'ERROR Invalid key for StateStore ' + key;
-      }
-    }
-  }]);
-
-  return StateStore;
-}();
-
-/**
- * param {string} type "localStorage" or "sessionStorage"
- */
-
-
-function storageAvailable(type) {
-  try {
-    var storage = window[type],
-        x = '__storage_test__';
-    storage.setItem(x, x);
-    storage.removeItem(x);
-    return true;
-  } catch (e) {
-    return false;
-  }
-}
-
-var _instance = null;
-
-function getStateStore() {
-  if (!_instance) {
-    _instance = new StateStore();
-  }
-  return _instance;
-};
-
-/***/ }),
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -596,7 +596,7 @@ var _pageController = __webpack_require__(6);
 
 var _pageController2 = _interopRequireDefault(_pageController);
 
-var _stateStore = __webpack_require__(3);
+var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
@@ -610,7 +610,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-__webpack_require__(52);
+__webpack_require__(53);
 
 //import MainMenu from './widgets/main-menu'; //deprecated
 //import './util/jquery-tiny-pubsub-trace'; // import this only for debugging!
@@ -989,7 +989,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _miradorProxyManager = __webpack_require__(2);
+var _miradorProxyManager = __webpack_require__(3);
 
 var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
@@ -1333,13 +1333,16 @@ var PageController = function () {
                   grid = _this2.options.grid;
                   layerId = _this2._tocSpec.defaultLayer;
                   annoWindow = grid.getAnnotationWindowByLayer(layerId);
+                  _context4.next = 6;
+                  return _this2._miradorWrapper.zoomToTags(windowId, canvasId, tags);
 
+                case 6:
                   if (annoWindow) {
-                    _context4.next = 8;
+                    _context4.next = 10;
                     break;
                   }
 
-                  _context4.next = 7;
+                  _context4.next = 9;
                   return grid.addAnnotationWindow({
                     miradorId: _this2._miradorId,
                     imageWindowId: windowId,
@@ -1349,10 +1352,10 @@ var PageController = function () {
                     logger.error('PageController#_showAnnotation addAnnotationWindow failed <- ' + reason);
                   });
 
-                case 7:
+                case 9:
                   annoWindow = _context4.sent;
 
-                case 8:
+                case 10:
                 case 'end':
                   return _context4.stop();
               }
@@ -1502,7 +1505,7 @@ var _pageController = __webpack_require__(6);
 
 var _pageController2 = _interopRequireDefault(_pageController);
 
-var _stateStore = __webpack_require__(3);
+var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
@@ -2361,7 +2364,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _miradorProxyManager = __webpack_require__(2);
+var _miradorProxyManager = __webpack_require__(3);
 
 var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
@@ -2552,7 +2555,7 @@ var _app = __webpack_require__(4);
 
 var _app2 = _interopRequireDefault(_app);
 
-var _errorDialog = __webpack_require__(48);
+var _errorDialog = __webpack_require__(49);
 
 var _errorDialog2 = _interopRequireDefault(_errorDialog);
 
@@ -2560,7 +2563,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _miradorProxyManager = __webpack_require__(2);
+var _miradorProxyManager = __webpack_require__(3);
 
 var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
@@ -2874,7 +2877,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _miradorProxyManager = __webpack_require__(2);
+var _miradorProxyManager = __webpack_require__(3);
 
 var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
@@ -2882,7 +2885,7 @@ var _pageController = __webpack_require__(6);
 
 var _pageController2 = _interopRequireDefault(_pageController);
 
-var _stateStore = __webpack_require__(3);
+var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
@@ -3380,7 +3383,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _stateStore = __webpack_require__(3);
+var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
@@ -10565,7 +10568,7 @@ module.exports = _dereq_(23);
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}]},{},[1]);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(54), __webpack_require__(53)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(55), __webpack_require__(54)))
 
 /***/ }),
 /* 19 */
@@ -10683,7 +10686,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _miradorProxyManager = __webpack_require__(2);
+var _miradorProxyManager = __webpack_require__(3);
 
 var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
@@ -11656,7 +11659,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _stateStore = __webpack_require__(3);
+var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
@@ -11801,7 +11804,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _stateStore = __webpack_require__(3);
+var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
@@ -12000,7 +12003,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _stateStore = __webpack_require__(3);
+var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
@@ -12148,7 +12151,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _miradorProxyManager = __webpack_require__(2);
+var _miradorProxyManager = __webpack_require__(3);
 
 var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
@@ -12369,7 +12372,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _stateStore = __webpack_require__(3);
+var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
@@ -12565,7 +12568,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _stateStore = __webpack_require__(3);
+var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
@@ -12812,11 +12815,11 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _miradorProxyManager = __webpack_require__(2);
+var _miradorProxyManager = __webpack_require__(3);
 
 var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
-var _stateStore = __webpack_require__(3);
+var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
@@ -12825,6 +12828,8 @@ var _annotationWindow = __webpack_require__(44);
 var _annotationWindow2 = _interopRequireDefault(_annotationWindow);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -12987,41 +12992,65 @@ var _class = function () {
     }
   }, {
     key: 'addAnnotationWindow',
-    value: function addAnnotationWindow(options) {
-      var _this2 = this;
+    value: function () {
+      var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(options) {
+        var windowId, imageWindowId, itemConfig, annoExplorer, annoWin;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                logger.debug('Grid#addAnnotationWindow options:', options);
+                windowId = Mirador.genUUID(); // annotation window ID
 
-      logger.debug('Grid#addAnnotationWindow options:', options);
-      var windowId = Mirador.genUUID(); // annotation window ID
-      var imageWindowId = options.imageWindowId || null;
-      var itemConfig = {
-        id: windowId,
-        type: 'component',
-        componentName: 'Annotations',
-        componentState: { windowId: windowId }
-      };
-      this._layout.root.contentItems[0].addChild(itemConfig);
+                imageWindowId = options.imageWindowId || null;
+                itemConfig = {
+                  id: windowId,
+                  type: 'component',
+                  componentName: 'Annotations',
+                  componentState: { windowId: windowId }
+                };
 
-      var annoExplorer = (0, _app2.default)().getAnnotationExplorer();
+                this._layout.root.contentItems[0].addChild(itemConfig);
 
-      // Just taking the first (highest-level) tag, for now
-      var annoWin = new _annotationWindow2.default({
-        id: windowId,
-        appendTo: jQuery('#' + windowId),
-        explorer: annoExplorer,
-        miradorId: options.miradorId || null,
-        canvasWindowId: imageWindowId,
-        initialLayerId: options.layerId || this._pickLayer(),
-        initialTocTags: options.tocTags || [],
-        annotationId: options.annotationId || null
-      });
-      return annoWin.init().then(function (window) {
-        _this2._annotationWindows[windowId] = annoWin;
-        _this2._resizeWindows();
-        return window;
-      }).catch(function (reason) {
-        logger.error('Grid#addAnnotationWindow annoWin.init failed:', reason);
-      });
-    }
+                annoExplorer = (0, _app2.default)().getAnnotationExplorer();
+
+                // Just taking the first (highest-level) tag, for now
+
+                annoWin = new _annotationWindow2.default({
+                  id: windowId,
+                  appendTo: jQuery('#' + windowId),
+                  explorer: annoExplorer,
+                  miradorId: options.miradorId || null,
+                  canvasWindowId: imageWindowId,
+                  initialLayerId: options.layerId || this._pickLayer(),
+                  initialTocTags: options.tocTags || [],
+                  annotationId: options.annotationId || null
+                });
+                _context.next = 9;
+                return annoWin.init().catch(function (reason) {
+                  logger.error('Grid#addAnnotationWindow annoWin.init failed:', reason);
+                });
+
+              case 9:
+
+                this._annotationWindows[windowId] = annoWin;
+                this._resizeWindows();
+                return _context.abrupt('return', annoWin);
+
+              case 12:
+              case 'end':
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function addAnnotationWindow(_x) {
+        return _ref.apply(this, arguments);
+      }
+
+      return addAnnotationWindow;
+    }()
   }, {
     key: 'getAnnotationWindows',
     value: function getAnnotationWindows() {
@@ -13030,6 +13059,7 @@ var _class = function () {
   }, {
     key: 'getAnnotationWindowByLayer',
     value: function getAnnotationWindowByLayer(layerId) {
+      logger.debug('Grid#getAnnotationWindowByLayer layerId:', layerId, 'windows:', this._annotationWindows);
       var _iteratorNormalCompletion3 = true;
       var _didIteratorError3 = false;
       var _iteratorError3 = undefined;
@@ -13038,6 +13068,8 @@ var _class = function () {
         for (var _iterator3 = Object.values(this._annotationWindows)[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
           var annoWindow = _step3.value;
 
+          console.log('ggg current:', annoWindow.getCurrentLayerId());
+          console.log('ggg default:', layerId);
           if (annoWindow.getCurrentLayerId() === layerId) {
             return annoWindow;
           }
@@ -13062,17 +13094,17 @@ var _class = function () {
   }, {
     key: 'bindEvents',
     value: function bindEvents() {
-      var _this3 = this;
+      var _this2 = this;
 
       logger.debug('Grid#bindEvents');
 
       jQuery.subscribe('YM_ADD_WINDOW', function (event, options) {
-        _this3.addAnnotationWindow(options || {});
+        _this2.addAnnotationWindow(options || {});
       });
 
       jQuery.subscribe('YM_ADD_WINDOWS', function (event, config) {
         logger.debug('Received YM_ADD_WINDOWS config:', config);
-        _this3.addAnnotationWindows(config);
+        _this2.addAnnotationWindows(config);
       });
     }
   }, {
@@ -13212,7 +13244,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _miradorProxyManager = __webpack_require__(2);
+var _miradorProxyManager = __webpack_require__(3);
 
 var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
@@ -13511,7 +13543,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _miradorProxyManager = __webpack_require__(2);
+var _miradorProxyManager = __webpack_require__(3);
 
 var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
@@ -13622,9 +13654,68 @@ var MiradorWrapper = function () {
       }
     }
   }, {
+    key: 'zoomToTags',
+    value: function () {
+      var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(windowId, canvasId, tags) {
+        var _this = this;
+
+        var tocCache, toc, windowProxy, imageView, tocNode, annotation, zoomToAnnotation;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                tocCache = (0, _app2.default)().getAnnotationTocCache();
+                _context.next = 3;
+                return tocCache.getToc(canvasId);
+
+              case 3:
+                toc = _context.sent;
+                windowProxy = this._miradorProxy.getWindowProxyById(windowId);
+                imageView = windowProxy.getImageView();
+                tocNode = toc.getNodeFromTags(tags);
+                annotation = tocNode.canvasAnnotations[0];
+
+                zoomToAnnotation = function zoomToAnnotation(event) {
+                  imageView.zoomToAnnotation(annotation);
+                  imageView.panToAnnotation(annotation);
+                  var drawTool = windowProxy.getDrawTool();
+                  drawTool.updateHighlights(annotation);
+                };
+
+                return _context.abrupt('return', new Promise(function (resolve, reject) {
+                  var handler = function handler(event) {
+                    zoomToAnnotation();
+                    _this._miradorProxy.unsubscribe('annotationsRendered.' + windowId, handler);
+                    resolve();
+                  };
+
+                  if (canvasId === windowProxy.getCurrentCanvasId()) {
+                    zoomToAnnotation();
+                    resolve();
+                  } else {
+                    _this._miradorProxy.subscribe('annotationsRendered.' + windowId, handler);
+                    windowProxy.setCurrentCanvasId(canvasId); // will trigger 'annotationsRendered' eventually
+                  }
+                }));
+
+              case 10:
+              case 'end':
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function zoomToTags(_x, _x2, _x3) {
+        return _ref.apply(this, arguments);
+      }
+
+      return zoomToTags;
+    }()
+  }, {
     key: '_bindEvents',
     value: function _bindEvents(options) {
-      var _this = this;
+      var _this2 = this;
 
       logger.debug('MiradorWrapper#_bindEvents options:', options);
       var miradorProxy = proxyMgr.getMiradorProxy(this._miradorId);
@@ -13642,77 +13733,27 @@ var MiradorWrapper = function () {
       miradorProxy.subscribe('YM_CLICKED_OPEN_ANNO_WINDOW', function (event, canvasWindowId) {
         logger.debug('MiradorWrapper received YM_CLICKED_OPEN_ANNO_WINDOW from ', canvasWindowId);
         miradorProxy.publish('YM_DISPLAY_ON');
-        _this.options.grid.addAnnotationWindow({
-          miradorId: _this._miradorId,
+        _this2.options.grid.addAnnotationWindow({
+          miradorId: _this2._miradorId,
           imageWindowId: canvasWindowId
         });
       });
 
       jQuery.subscribe('YM_READY_TO_RELOAD_ANNO_WIN', function (event, imageWindowId) {
         // after annotations have been loaded
-        if (_this._urlOptionsProcessed) {
+        if (_this2._urlOptionsProcessed) {
           // run this function only once
           return;
         } else {
-          _this._urlOptionsProcessed = true;
-          var _miradorProxy = proxyMgr.getMiradorProxy(_this._miradorId);
+          _this2._urlOptionsProcessed = true;
+          var _miradorProxy = proxyMgr.getMiradorProxy(_this2._miradorId);
           _miradorProxy.publish('YM_DISPLAY_ON');
-          _this._createAnnotationWindows(imageWindowId, options);
+          _this2._createAnnotationWindows(imageWindowId, options);
         }
       });
 
-      jQuery.subscribe('YM_ANNOTATION_TOC_TAGS_SELECTED', function () {
-        var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(evnet, windowId, canvasId, tags) {
-          var tocCache, toc, miradorProxy, windowProxy, imageView, tocNode, annotation, newCanvasId, zoomToAnnotation;
-          return regeneratorRuntime.wrap(function _callee$(_context) {
-            while (1) {
-              switch (_context.prev = _context.next) {
-                case 0:
-                  logger.debug('MiradorWrapper:SUB:YM_ANNOTATION_TOC_TAGS_SELECTED imageWindow:', windowId, 'canvasId:', canvasId, 'tags:', tags);
-
-                  tocCache = (0, _app2.default)().getAnnotationTocCache();
-                  _context.next = 4;
-                  return tocCache.getToc(canvasId);
-
-                case 4:
-                  toc = _context.sent;
-                  miradorProxy = proxyMgr.getMiradorProxy(_this._miradorId);
-                  windowProxy = miradorProxy.getWindowProxyById(windowId);
-                  imageView = windowProxy.getImageView();
-                  tocNode = toc.getNodeFromTags(tags);
-                  annotation = tocNode.canvasAnnotations[0];
-                  newCanvasId = canvasId;
-
-                  zoomToAnnotation = function zoomToAnnotation(event) {
-                    imageView.zoomToAnnotation(annotation);
-                    imageView.panToAnnotation(annotation);
-                    var drawTool = windowProxy.getDrawTool();
-                    drawTool.updateHighlights(annotation);
-                    miradorProxy.unsubscribe('annotationsRendered.' + windowId, zoomToAnnotation);
-                  };
-
-                  if (canvasId === windowProxy.getCurrentCanvasId()) {
-                    zoomToAnnotation();
-                  } else {
-                    miradorProxy.subscribe('annotationsRendered.' + windowId, zoomToAnnotation);
-                    windowProxy.setCurrentCanvasId(canvasId);
-                  }
-
-                case 13:
-                case 'end':
-                  return _context.stop();
-              }
-            }
-          }, _callee, _this);
-        }));
-
-        return function (_x, _x2, _x3, _x4) {
-          return _ref.apply(this, arguments);
-        };
-      }());
-
       jQuery.subscribe('ANNOWIN_ANNOTATION_FOCUSED', function (event, params) {
-        var miradorProxy = proxyMgr.getMiradorProxy(_this._miradorId);
+        var miradorProxy = proxyMgr.getMiradorProxy(_this2._miradorId);
         var windowProxy = miradorProxy.getWindowProxyById(params.imageWindowId);
         var tocPanel = windowProxy.getSidePanelTabContentElement('ym-annotation-toc');
         var annoTocMenu = tocPanel.data('AnnotationTableOfContent');
@@ -13813,7 +13854,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _miradorProxyManager = __webpack_require__(2);
+var _miradorProxyManager = __webpack_require__(3);
 
 var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
@@ -13843,10 +13884,6 @@ var _annotationNav = __webpack_require__(43);
 
 var _annotationNav2 = _interopRequireDefault(_annotationNav);
 
-var _annotationRenderer = __webpack_require__(46);
-
-var _annotationRenderer2 = _interopRequireDefault(_annotationRenderer);
-
 var _annotationPageRenderer = __webpack_require__(45);
 
 var _annotationPageRenderer2 = _interopRequireDefault(_annotationPageRenderer);
@@ -13865,6 +13902,14 @@ var _modalAlert = __webpack_require__(15);
 
 var _modalAlert2 = _interopRequireDefault(_modalAlert);
 
+var _stateStore = __webpack_require__(2);
+
+var _stateStore2 = _interopRequireDefault(_stateStore);
+
+var _scrollHelper = __webpack_require__(48);
+
+var _scrollHelper2 = _interopRequireDefault(_scrollHelper);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -13881,54 +13926,49 @@ var AnnotationListWidget = function () {
   function AnnotationListWidget(options) {
     _classCallCheck(this, AnnotationListWidget);
 
-    this.options = Object.assign({
-      annotationWindow: null,
-      rootElem: null,
-      imageWindowId: null,
-      canvases: [],
-      layerId: null,
-      state: null,
-      isEditor: false,
-      annotationExplorer: null,
-      annotationPageRenderer: null,
-      annotationRenderer: null,
-      maxContentRelativeHeight: 5
-    }, options);
+    this._annoWin = options.annotationWindow; // annotation window to which this widget belongs
+    this._rootElem = options.rootElem; // root HTML element for this list widget
+    this._annoPageRenderer = options.annotationPageRenderer;
+    this._annoExplorer = options.annotationExplorer;
+    this._canvases = options.canvases;
+    this._state = options.state;
+    this._isEditor = options.isEditor;
 
-    this._annoWin = this.options.annotationWindow;
-    this._tocSpec = this.options.state.getTransient('tocSpec');
-    this._groupHeaderHeight = 19;
+    this._minContentRelativeHeight = 1.5;
+    this._maxContentRelativeHeight = 5;
 
-    if (!this.options.annotationRenderer) {
-      this.options.annotationRenderer = new _annotationRenderer2.default({
-        annotationWindow: this.options.annotationWindow,
-        state: this.options.state
+    if (!this._state) {
+      this._state = (0, _stateStore2.default)();
+    }
+
+    if (!this._annoPageRenderer) {
+      this._annoPageRenderer = new _annotationPageRenderer2.default({
+        annotationWindow: this._annoWin,
+        annotationExplorer: this._annoExplorer
       });
     }
-    if (!this.options.annotationPageRenderer) {
-      this.options.annotationPageRenderer = new _annotationPageRenderer2.default({
-        annotationRenderer: this.options.annotationRenderer,
-        annotationExplorer: this.options.annotationExplorer
-      });
-    }
+
+    this._tocSpec = this._state.getTransient('tocSpec');
   }
 
   _createClass(AnnotationListWidget, [{
     key: 'getRootElement',
     value: function getRootElement() {
-      return this.options.rootElem;
+      return this._rootElem;
     }
   }, {
     key: 'reload',
     value: function reload(layerId) {
+      this._layerId = layerId;
       this._nav = this._setupNavigation();
       this._loading = false;
-
-      if (layerId) {
-        this.options.layerId = layerId;
-      }
-      this.options.rootElem.empty();
+      this._rootElem.empty();
       this._createPageElements();
+      this._scrollHelper = new _scrollHelper2.default({
+        listWidget: this,
+        listNavigator: this._nav,
+        groupHeaderHeight: 19
+      });
       this._unbindEvents();
       this._bindEvents();
     }
@@ -13936,7 +13976,7 @@ var AnnotationListWidget = function () {
     key: '_setupNavigation',
     value: function _setupNavigation() {
       var nav = new _annotationNav2.default({
-        canvases: this.options.canvases
+        canvases: this._canvases
       });
       return nav;
     }
@@ -13946,45 +13986,27 @@ var AnnotationListWidget = function () {
       return this._nav;
     }
   }, {
-    key: '_onSetPage',
+    key: 'goToPage',
     value: function () {
-      var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(pageNum, canvas) {
-        var rootElem, oldCanvasId, newCanvasId;
+      var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(pageNum) {
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                logger.debug('AnnotationListWidget#_onSetPage pageNum:', pageNum, 'canvas:', canvas);
-                rootElem = this.options.rootElem;
-                oldCanvasId = this._annoWin.getCurrentCanvasId();
-                newCanvasId = canvas['@id'];
+                logger.debug('AnnotationListWidgetr#goToPage', pageNum, 'from', this._nav.getPage());
 
-                if (this._nav.isLoaded(pageNum)) {
-                  _context.next = 8;
+                if (!(pageNum !== this._nav.getPage())) {
+                  _context.next = 5;
                   break;
                 }
 
-                this._unloadAllPages();
-                _context.next = 8;
-                return this._loadPage(pageNum);
+                this._nav.setPage(pageNum);
+                _context.next = 5;
+                return this._onNavSetPage(pageNum).catch(function (reason) {
+                  throw 'AnnotationListWidget#goToPage _onNavSetPage(' + pageNum + ') failed: ' + reason;
+                });
 
-              case 8:
-
-                if (rootElem[0].scrollHeight <= rootElem.height()) {
-                  //await this._activateMorePagesForwardFirst(pageNum);
-                }
-                _context.next = 11;
-                return this.scrollToPage(pageNum, true);
-
-              case 11:
-
-                if (oldCanvasId !== newCanvasId) {
-                  this._annoWin.getImageWindowProxy().setCurrentCanvasId(newCanvasId, {
-                    eventOriginatorType: 'AnnotationWindow'
-                  });
-                }
-
-              case 12:
+              case 5:
               case 'end':
                 return _context.stop();
             }
@@ -13992,41 +14014,8 @@ var AnnotationListWidget = function () {
         }, _callee, this);
       }));
 
-      function _onSetPage(_x, _x2) {
+      function goToPage(_x) {
         return _ref.apply(this, arguments);
-      }
-
-      return _onSetPage;
-    }()
-  }, {
-    key: 'goToPage',
-    value: function () {
-      var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(pageNum) {
-        return regeneratorRuntime.wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                logger.debug('AnnotationListWidgetr#goToPage', pageNum, 'from', this._nav.getPage());
-
-                if (!(pageNum !== this._nav.getPage())) {
-                  _context2.next = 5;
-                  break;
-                }
-
-                this._nav.setPage(pageNum);
-                _context2.next = 5;
-                return this._onSetPage(pageNum, this._nav.getCanvas(pageNum));
-
-              case 5:
-              case 'end':
-                return _context2.stop();
-            }
-          }
-        }, _callee2, this);
-      }));
-
-      function goToPage(_x3) {
-        return _ref2.apply(this, arguments);
       }
 
       return goToPage;
@@ -14034,27 +14023,29 @@ var AnnotationListWidget = function () {
   }, {
     key: 'goToPageByCanvas',
     value: function () {
-      var _ref3 = _asyncToGenerator(regeneratorRuntime.mark(function _callee3(canvasId) {
+      var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(canvasId) {
         var pageNum;
-        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
-            switch (_context3.prev = _context3.next) {
+            switch (_context2.prev = _context2.next) {
               case 0:
-                logger.debug('AnnotationListWidgetr#goToPageByCanvas', canvasId);
+                logger.debug('AnnotationListWidgetr#goToPageByCanvas canvasId:', canvasId);
                 pageNum = this._nav.getPageNumForCanvas(canvasId);
-                _context3.next = 4;
-                return this.goToPage(pageNum);
+                _context2.next = 4;
+                return this.goToPage(pageNum).catch(function (reason) {
+                  throw 'AnnotationListWidget#goToPageByCanvas: goToPage(' + pageNum + ') failed: ' + reason;
+                });
 
               case 4:
               case 'end':
-                return _context3.stop();
+                return _context2.stop();
             }
           }
-        }, _callee3, this);
+        }, _callee2, this);
       }));
 
-      function goToPageByCanvas(_x4) {
-        return _ref3.apply(this, arguments);
+      function goToPageByCanvas(_x2) {
+        return _ref2.apply(this, arguments);
       }
 
       return goToPageByCanvas;
@@ -14062,210 +14053,48 @@ var AnnotationListWidget = function () {
   }, {
     key: 'goToPageByTags',
     value: function () {
-      var _ref4 = _asyncToGenerator(regeneratorRuntime.mark(function _callee4(tags) {
+      var _ref3 = _asyncToGenerator(regeneratorRuntime.mark(function _callee3(tags) {
         var canvasIds;
-        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
-            switch (_context4.prev = _context4.next) {
+            switch (_context3.prev = _context3.next) {
               case 0:
                 logger.debug('AnnotationListWidgetr#goToPageByTags', tags);
                 canvasIds = this._tocSpec.canvasMap[tags[0]];
 
-                console.log('TOTORO canvasIds:', canvasIds);
-                console.log('TOTORO test', canvasIds instanceof Array && canvasIds.length > 0);
-
                 if (!(canvasIds instanceof Array && canvasIds.length > 0)) {
-                  _context4.next = 9;
+                  _context3.next = 6;
                   break;
                 }
 
-                console.log('TOTORO on');
-                _context4.next = 8;
+                _context3.next = 5;
                 return this.goToPageByCanvas(canvasIds[0]);
 
-              case 8:
-                this.scrollToTags(tags);
+              case 5:
+                this._scrollHelper.scrollToTags(tags);
 
-              case 9:
+              case 6:
               case 'end':
-                return _context4.stop();
+                return _context3.stop();
             }
           }
-        }, _callee4, this);
+        }, _callee3, this);
       }));
 
-      function goToPageByTags(_x5) {
-        return _ref4.apply(this, arguments);
+      function goToPageByTags(_x3) {
+        return _ref3.apply(this, arguments);
       }
 
       return goToPageByTags;
     }()
   }, {
-    key: 'loadNextPages',
-    value: function () {
-      var _ref5 = _asyncToGenerator(regeneratorRuntime.mark(function _callee5() {
-        var nav, pageNum, nextPage;
-        return regeneratorRuntime.wrap(function _callee5$(_context5) {
-          while (1) {
-            switch (_context5.prev = _context5.next) {
-              case 0:
-                logger.debug('AnnotationListWidget#loadNextPages', this._loading);
-
-                if (!this._loading) {
-                  _context5.next = 3;
-                  break;
-                }
-
-                return _context5.abrupt('return');
-
-              case 3:
-                this._loading = true;
-                nav = this._nav;
-                _context5.prev = 5;
-                pageNum = nav.getActiveRange().endPage + 1;
-
-                if (!(pageNum < nav.getNumPages())) {
-                  _context5.next = 17;
-                  break;
-                }
-
-                _context5.next = 10;
-                return this._activatePageForward(pageNum);
-
-              case 10:
-                nextPage = _context5.sent;
-
-                if (!(nextPage < nav.getNumPages())) {
-                  _context5.next = 15;
-                  break;
-                }
-
-                _context5.next = 14;
-                return this._activateMorePagesForwardFirst(nextPage);
-
-              case 14:
-                nextPage = _context5.sent;
-
-              case 15:
-                this._unloadPreviousPages();
-                this._windBack();
-
-              case 17:
-                _context5.next = 22;
-                break;
-
-              case 19:
-                _context5.prev = 19;
-                _context5.t0 = _context5['catch'](5);
-
-                logger.error('AnnotationListWidget#loadNextPages failed', _context5.t0);
-
-              case 22:
-                _context5.prev = 22;
-
-                this._loading = false;
-                return _context5.finish(22);
-
-              case 25:
-              case 'end':
-                return _context5.stop();
-            }
-          }
-        }, _callee5, this, [[5, 19, 22, 25]]);
-      }));
-
-      function loadNextPages() {
-        return _ref5.apply(this, arguments);
-      }
-
-      return loadNextPages;
-    }()
-  }, {
-    key: 'loadPreviousPages',
-    value: function () {
-      var _ref6 = _asyncToGenerator(regeneratorRuntime.mark(function _callee6() {
-        var nav, pageNum, nextPage;
-        return regeneratorRuntime.wrap(function _callee6$(_context6) {
-          while (1) {
-            switch (_context6.prev = _context6.next) {
-              case 0:
-                logger.debug('AnnotationListWidget#loadPreviousPages', this._loading);
-
-                if (!this._loading) {
-                  _context6.next = 3;
-                  break;
-                }
-
-                return _context6.abrupt('return');
-
-              case 3:
-                this._loading = true;
-                nav = this._nav;
-                _context6.prev = 5;
-                pageNum = nav.getActiveRange().startPage - 1;
-
-                if (!(pageNum >= 0)) {
-                  _context6.next = 16;
-                  break;
-                }
-
-                _context6.next = 10;
-                return this._activatePageBackward(pageNum);
-
-              case 10:
-                nextPage = _context6.sent;
-
-                if (!(nextPage !== -1)) {
-                  _context6.next = 14;
-                  break;
-                }
-
-                _context6.next = 14;
-                return this._activateMorePagesBackwardFirst(nextPage);
-
-              case 14:
-                this._unloadNextPages();
-                this._windForward();
-
-              case 16:
-                this._loading = false;
-                _context6.next = 22;
-                break;
-
-              case 19:
-                _context6.prev = 19;
-                _context6.t0 = _context6['catch'](5);
-
-                logger.error('AnnotationListWidget#loadPreviousPages failed', _context6.t0);
-
-              case 22:
-                _context6.prev = 22;
-
-                this._loading = false;
-                return _context6.finish(22);
-
-              case 25:
-              case 'end':
-                return _context6.stop();
-            }
-          }
-        }, _callee6, this, [[5, 19, 22, 25]]);
-      }));
-
-      function loadPreviousPages() {
-        return _ref6.apply(this, arguments);
-      }
-
-      return loadPreviousPages;
-    }()
-  }, {
     key: 'goToAnnotation',
     value: function () {
-      var _ref7 = _asyncToGenerator(regeneratorRuntime.mark(function _callee7(annoId, canvasId) {
+      var _ref4 = _asyncToGenerator(regeneratorRuntime.mark(function _callee4(annoId, canvasId) {
         var nav, targetPage;
-        return regeneratorRuntime.wrap(function _callee7$(_context7) {
+        return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
-            switch (_context7.prev = _context7.next) {
+            switch (_context4.prev = _context4.next) {
               case 0:
                 logger.debug('AnnotationListWidget#goToAnnotation annoId', annoId, 'canvasId:', canvasId);
 
@@ -14273,145 +14102,393 @@ var AnnotationListWidget = function () {
                 targetPage = nav.getPageNumForCanvas(canvasId);
 
                 if (!(targetPage >= 0)) {
-                  _context7.next = 11;
+                  _context4.next = 11;
                   break;
                 }
 
-                _context7.next = 6;
+                _context4.next = 6;
                 return this.goToPage(targetPage);
 
               case 6:
 
-                this.scrollToAnnotation(annoId);
+                this._scrollHelper.scrollToAnnotation(annoId);
                 this.clearAnnotationHighlights();
                 this.highlightAnnotation(annoId, 'SELECTED');
-                _context7.next = 12;
+                _context4.next = 12;
                 break;
 
               case 11:
-                logger.debug('AnnotationListWidget#scrollToAnnotation page not found for canvasId', canvasId);
+                logger.debug('AnnotationListWidget#goToAnnotation page not found for canvasId', canvasId);
 
               case 12:
               case 'end':
-                return _context7.stop();
+                return _context4.stop();
             }
           }
-        }, _callee7, this);
+        }, _callee4, this);
       }));
 
-      function goToAnnotation(_x6, _x7) {
-        return _ref7.apply(this, arguments);
+      function goToAnnotation(_x4, _x5) {
+        return _ref4.apply(this, arguments);
       }
 
       return goToAnnotation;
     }()
-
-    /**
-     * The page element must have already been loaded for this function to work.
-     *
-     * @param {number} pageNum
-     */
-
   }, {
-    key: 'scrollToPage',
-    value: function scrollToPage(pageNum, alignToTop) {
-      var _this2 = this;
+    key: '_onNavSetPage',
+    value: function () {
+      var _ref5 = _asyncToGenerator(regeneratorRuntime.mark(function _callee5(pageNum) {
+        var canvas, oldCanvasId, newCanvasId;
+        return regeneratorRuntime.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                logger.debug('AnnotationListWidget#_onNavSetPage pageNum:', pageNum);
+                canvas = this._nav.getCanvas(pageNum);
+                oldCanvasId = this._annoWin.getCurrentCanvasId();
+                newCanvasId = canvas['@id'];
 
-      var pageHeaderElem = this._nav.getPageElement(pageNum).find('.page-header');
+                if (this._nav.isLoaded(pageNum)) {
+                  _context5.next = 8;
+                  break;
+                }
 
-      this._unbindScrollEvent();
+                this._unloadAllPages();
+                _context5.next = 8;
+                return this._loadPage(pageNum).catch(function (reason) {
+                  throw 'AnnotationListWidget#_onNavSetPage _loadPage(' + pageNum + ') failed: ' + reason;
+                });
 
-      return new Promise(function (resolve, reject) {
-        _this2.options.rootElem.scrollTo(pageHeaderElem, {
-          onAfter: function onAfter() {
-            _this2._bindScrollEvent();
-            resolve();
+              case 8:
+                _context5.next = 10;
+                return this.loadPreviousPage();
+
+              case 10:
+                _context5.next = 12;
+                return this.loadNextPage();
+
+              case 12:
+                _context5.next = 14;
+                return this._scrollHelper.scrollToPage(pageNum);
+
+              case 14:
+
+                if (oldCanvasId !== newCanvasId) {
+                  // if the focused annotation belongs to a different canvas
+                  // Load new canvas in the image window
+                  this._annoWin.getImageWindowProxy().setCurrentCanvasId(newCanvasId, {
+                    eventOriginatorType: 'AnnotationWindow'
+                  });
+                }
+
+              case 15:
+              case 'end':
+                return _context5.stop();
+            }
           }
-        });
-      });
-    }
-  }, {
-    key: 'scrollToTags',
-    value: function scrollToTags(targetTags) {
-      logger.debug('AnnotationListWidget#scrollToTags targetTags:', targetTags);
-      var targetElem = null;
+        }, _callee5, this);
+      }));
 
-      this.options.rootElem.find('.annowin_group_header').each(function (index, value) {
-        var headerElem = jQuery(value);
-        var tags = headerElem.data('tags');
-
-        if (targetTags.length === 1) {
-          if (tags[0] === targetTags[0]) {
-            targetElem = headerElem;
-            return false;
-          }
-        } else if (tags[0] === targetTags[0] && tags[1] === targetTags[1]) {
-          targetElem = headerElem;
-          return false;
-        }
-      });
-      console.log('targetElem:', targetElem[0].outerHTML);
-      if (targetElem) {
-        this.options.rootElem.scrollTo(targetElem.next(), {
-          offset: { top: -this._groupHeaderHeight }
-        });
-      } else {
-        logger.warning('AnnotationListWidget#scrollToTags Header element not found for', targetTags);
+      function _onNavSetPage(_x6) {
+        return _ref5.apply(this, arguments);
       }
-    }
+
+      return _onNavSetPage;
+    }()
+
+    // Load next page if there is one
+
   }, {
-    key: 'scrollToElem',
-    value: function scrollToElem(annoElem, yOffsetIn) {
-      var _this3 = this;
+    key: 'loadNextPage',
+    value: function () {
+      var _ref6 = _asyncToGenerator(regeneratorRuntime.mark(function _callee6() {
+        var nextPage;
+        return regeneratorRuntime.wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                logger.debug('AnnotationListWidget#loadNextPage loading:', this._loading);
+                _context6.prev = 1;
 
-      console.log('yOffsetIn:', yOffsetIn);
-      var yOffset = this._calcOffset(annoElem, yOffsetIn);
+                if (!this._loading) {
+                  _context6.next = 4;
+                  break;
+                }
 
-      this._unbindScrollEvent();
+                return _context6.abrupt('return');
 
-      return new Promise(function (resolve, reject) {
-        _this3.options.rootElem.scrollTo(annoElem, {
-          offset: {
-            top: yOffset
-          },
-          onAfter: function onAfter() {
-            _this3._bindScrollEvent();
-            resolve();
+              case 4:
+                this._loading = true;
+                nextPage = this._nav.getActiveRange().endPage + 1;
+
+                if (!(nextPage < this._nav.getNumPages())) {
+                  _context6.next = 10;
+                  break;
+                }
+
+                _context6.next = 9;
+                return this._loadPage(nextPage);
+
+              case 9:
+                this._scrollHelper.scrollDown(30);
+
+              case 10:
+                _context6.next = 15;
+                break;
+
+              case 12:
+                _context6.prev = 12;
+                _context6.t0 = _context6['catch'](1);
+
+                logger.error('AnnotationListWidget#loadNextPages failed', _context6.t0);
+
+              case 15:
+                _context6.prev = 15;
+
+                this._loading = false;
+                return _context6.finish(15);
+
+              case 18:
+              case 'end':
+                return _context6.stop();
+            }
           }
-        });
-      });
-    }
+        }, _callee6, this, [[1, 12, 15, 18]]);
+      }));
 
-    // Note to avoid confusion: yOffsetIn will typically have a negative value if defined
-
-  }, {
-    key: '_calcOffset',
-    value: function _calcOffset(annoElem, yOffsetIn) {
-      if (yOffsetIn === undefined) {
-        return -this._groupHeaderHeight;
+      function loadNextPage() {
+        return _ref6.apply(this, arguments);
       }
-      var minOffset = annoElem.height() - this.options.rootElem.height();
-      console.log('minOffset:', minOffset);
-      var yOffset = yOffsetIn < minOffset ? minOffset : yOffsetIn;
-      console.log('yOffset:', yOffset);
-      return yOffset;
-    }
+
+      return loadNextPage;
+    }()
+
+    // Load previous page if there is one
+
   }, {
-    key: 'scrollToAnnotation',
-    value: function scrollToAnnotation(annotationId, yOffset) {
-      logger.debug('AnnotationListWidget#scrollToAnnotation annotationId:', annotationId, 'yOffset:', yOffset);
+    key: 'loadPreviousPage',
+    value: function () {
+      var _ref7 = _asyncToGenerator(regeneratorRuntime.mark(function _callee7() {
+        var nextPage;
+        return regeneratorRuntime.wrap(function _callee7$(_context7) {
+          while (1) {
+            switch (_context7.prev = _context7.next) {
+              case 0:
+                logger.debug('AnnotationListWidget#loadPreviousPage loading:', this._loading);
+                _context7.prev = 1;
+
+                if (!this._loading) {
+                  _context7.next = 4;
+                  break;
+                }
+
+                return _context7.abrupt('return');
+
+              case 4:
+                this._loading = true;
+                nextPage = this._nav.getActiveRange().startPage - 1;
+
+                if (!(nextPage >= 0)) {
+                  _context7.next = 10;
+                  break;
+                }
+
+                _context7.next = 9;
+                return this._loadPage(nextPage);
+
+              case 9:
+                this._scrollHelper.scrollUp(30);
+
+              case 10:
+                _context7.next = 15;
+                break;
+
+              case 12:
+                _context7.prev = 12;
+                _context7.t0 = _context7['catch'](1);
+
+                logger.error('AnnotationListWidget#loadNextPages failed', _context7.t0);
+
+              case 15:
+                _context7.prev = 15;
+
+                this._loading = false;
+                return _context7.finish(15);
+
+              case 18:
+              case 'end':
+                return _context7.stop();
+            }
+          }
+        }, _callee7, this, [[1, 12, 15, 18]]);
+      }));
+
+      function loadPreviousPage() {
+        return _ref7.apply(this, arguments);
+      }
+
+      return loadPreviousPage;
+    }()
+
+    // Load next pages until minimum content height is reached
+
+  }, {
+    key: 'LoadNextPages',
+    value: function () {
+      var _ref8 = _asyncToGenerator(regeneratorRuntime.mark(function _callee8() {
+        var minHeight, numPages, scrollHeight, nextPage;
+        return regeneratorRuntime.wrap(function _callee8$(_context8) {
+          while (1) {
+            switch (_context8.prev = _context8.next) {
+              case 0:
+                logger.debug('AnnotationListWidget#loadNextPages loading:', this._loading);
+                _context8.prev = 1;
+
+                if (!this._loading) {
+                  _context8.next = 4;
+                  break;
+                }
+
+                return _context8.abrupt('return');
+
+              case 4:
+                this._loading = true;
+                minHeight = this._rootElem.height() * this._minContentRelativeHeight;
+                numPages = this._nav.getNumPages();
+                scrollHeight = this._rootElem[0].scrollHeight;
+                nextPage = this._nav.getActiveRange().endPage + 1;
+
+              case 9:
+                if (!(nextPage < numPages && scrollHeight < minHeight)) {
+                  _context8.next = 16;
+                  break;
+                }
+
+                logger.debug('AnnotationListWidget#loadNextPages nextPage:', nextPage, 'numPages:', numPages, 'scrollHeight:', scrollHeight, 'minHeight:', minHeight);
+                _context8.next = 13;
+                return this._loadPage(nextPage);
+
+              case 13:
+                scrollHeight = this._rootElem[0].scrollHeight, ++nextPage;
+                _context8.next = 9;
+                break;
+
+              case 16:
+                _context8.next = 21;
+                break;
+
+              case 18:
+                _context8.prev = 18;
+                _context8.t0 = _context8['catch'](1);
+
+                logger.error('AnnotationListWidget#loadNextPages failed', _context8.t0);
+
+              case 21:
+                _context8.prev = 21;
+
+                this._loading = false;
+                return _context8.finish(21);
+
+              case 24:
+              case 'end':
+                return _context8.stop();
+            }
+          }
+        }, _callee8, this, [[1, 18, 21, 24]]);
+      }));
+
+      function LoadNextPages() {
+        return _ref8.apply(this, arguments);
+      }
+
+      return LoadNextPages;
+    }()
+
+    // Load next pages until minimum content height is reached
+
+  }, {
+    key: 'loadPreviousPages',
+    value: function () {
+      var _ref9 = _asyncToGenerator(regeneratorRuntime.mark(function _callee9() {
+        var minHeight, numPages, scrollHeight, nextPage;
+        return regeneratorRuntime.wrap(function _callee9$(_context9) {
+          while (1) {
+            switch (_context9.prev = _context9.next) {
+              case 0:
+                logger.debug('AnnotationListWidget#loadPreviousPages', this._loading);
+                _context9.prev = 1;
+
+                if (!this._loading) {
+                  _context9.next = 4;
+                  break;
+                }
+
+                return _context9.abrupt('return');
+
+              case 4:
+                this._loading = true;
+                minHeight = this._rootElem.height() * this._minContentRelativeHeight;
+                numPages = this._nav.getNumPages();
+                scrollHeight = this._rootElem[0].scrollHeight;
+                nextPage = this._nav.getActiveRange().startPage - 1;
+
+              case 9:
+                if (!(nextPage >= 0 && scrollHeight < minHeight)) {
+                  _context9.next = 16;
+                  break;
+                }
+
+                logger.debug('AnnotationListWidget#_loadPreviousPages nextPage:', nextPage, 'scrollHeight:', scrollHeight, 'minHeight:', minHeight);
+                _context9.next = 13;
+                return this._loadPage(nextPage);
+
+              case 13:
+                scrollHeight = this._rootElem[0].scrollHeight, --nextPage;
+                _context9.next = 9;
+                break;
+
+              case 16:
+                _context9.next = 21;
+                break;
+
+              case 18:
+                _context9.prev = 18;
+                _context9.t0 = _context9['catch'](1);
+
+                logger.error('AnnotationListWidget#loadPreviousPages failed', _context9.t0);
+
+              case 21:
+                _context9.prev = 21;
+
+                this._loading = false;
+                return _context9.finish(21);
+
+              case 24:
+              case 'end':
+                return _context9.stop();
+            }
+          }
+        }, _callee9, this, [[1, 18, 21, 24]]);
+      }));
+
+      function loadPreviousPages() {
+        return _ref9.apply(this, arguments);
+      }
+
+      return loadPreviousPages;
+    }()
+  }, {
+    key: 'clearAnnotationHighlights',
+    value: function clearAnnotationHighlights() {
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
       var _iteratorError = undefined;
 
       try {
         for (var _iterator = this.getAnnotationElems()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var annoElem = _step.value;
+          var elem = _step.value;
 
-          var $annoElem = jQuery(annoElem);
-          if ($annoElem.data('annotationId') === annotationId) {
-            return this.scrollToElem($annoElem, yOffset);
-          }
+          jQuery(elem).removeClass('ym_anno_selected');
         }
       } catch (err) {
         _didIteratorError = true;
@@ -14429,17 +14506,49 @@ var AnnotationListWidget = function () {
       }
     }
   }, {
-    key: 'clearAnnotationHighlights',
-    value: function clearAnnotationHighlights() {
+    key: 'highlightAnnotations',
+    value: function highlightAnnotations(annotations, flag) {
+      logger.debug('AnnotationListWidget#highlightAnnotations annotations:', annotations, 'flag:', flag);
+
+      this.clearAnnotationHighlights();
+
       var _iteratorNormalCompletion2 = true;
       var _didIteratorError2 = false;
       var _iteratorError2 = undefined;
 
       try {
         for (var _iterator2 = this.getAnnotationElems()[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var elem = _step2.value;
+          var annoElem = _step2.value;
 
-          jQuery(elem).removeClass('ym_anno_selected');
+          var $annoElem = jQuery(annoElem);
+          var annoId = $annoElem.data('annotationId');
+
+          var _iteratorNormalCompletion3 = true;
+          var _didIteratorError3 = false;
+          var _iteratorError3 = undefined;
+
+          try {
+            for (var _iterator3 = annotations[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+              var anno = _step3.value;
+
+              if (anno['@id'] === annoId) {
+                this.highlightAnnotationElem($annoElem, flag);
+              }
+            }
+          } catch (err) {
+            _didIteratorError3 = true;
+            _iteratorError3 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion3 && _iterator3.return) {
+                _iterator3.return();
+              }
+            } finally {
+              if (_didIteratorError3) {
+                throw _iteratorError3;
+              }
+            }
+          }
         }
       } catch (err) {
         _didIteratorError2 = true;
@@ -14457,75 +14566,15 @@ var AnnotationListWidget = function () {
       }
     }
   }, {
-    key: 'highlightAnnotations',
-    value: function highlightAnnotations(annotations, flag) {
-      logger.debug('AnnotationListWidget#highlightAnnotations annotations:', annotations, 'flag:', flag);
-
-      this.clearAnnotationHighlights();
-
-      var _iteratorNormalCompletion3 = true;
-      var _didIteratorError3 = false;
-      var _iteratorError3 = undefined;
-
-      try {
-        for (var _iterator3 = this.getAnnotationElems()[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-          var annoElem = _step3.value;
-
-          var $annoElem = jQuery(annoElem);
-          var annoId = $annoElem.data('annotationId');
-
-          var _iteratorNormalCompletion4 = true;
-          var _didIteratorError4 = false;
-          var _iteratorError4 = undefined;
-
-          try {
-            for (var _iterator4 = annotations[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-              var anno = _step4.value;
-
-              if (anno['@id'] === annoId) {
-                this.highlightAnnotationElem($annoElem, flag);
-              }
-            }
-          } catch (err) {
-            _didIteratorError4 = true;
-            _iteratorError4 = err;
-          } finally {
-            try {
-              if (!_iteratorNormalCompletion4 && _iterator4.return) {
-                _iterator4.return();
-              }
-            } finally {
-              if (_didIteratorError4) {
-                throw _iteratorError4;
-              }
-            }
-          }
-        }
-      } catch (err) {
-        _didIteratorError3 = true;
-        _iteratorError3 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion3 && _iterator3.return) {
-            _iterator3.return();
-          }
-        } finally {
-          if (_didIteratorError3) {
-            throw _iteratorError3;
-          }
-        }
-      }
-    }
-  }, {
     key: 'highlightAnnotation',
     value: function highlightAnnotation(annoId, flag) {
-      var _iteratorNormalCompletion5 = true;
-      var _didIteratorError5 = false;
-      var _iteratorError5 = undefined;
+      var _iteratorNormalCompletion4 = true;
+      var _didIteratorError4 = false;
+      var _iteratorError4 = undefined;
 
       try {
-        for (var _iterator5 = this.getAnnotationElems()[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-          var annoElem = _step5.value;
+        for (var _iterator4 = this.getAnnotationElems()[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+          var annoElem = _step4.value;
 
           var $annoElem = jQuery(annoElem);
 
@@ -14534,16 +14583,16 @@ var AnnotationListWidget = function () {
           }
         }
       } catch (err) {
-        _didIteratorError5 = true;
-        _iteratorError5 = err;
+        _didIteratorError4 = true;
+        _iteratorError4 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion5 && _iterator5.return) {
-            _iterator5.return();
+          if (!_iteratorNormalCompletion4 && _iterator4.return) {
+            _iterator4.return();
           }
         } finally {
-          if (_didIteratorError5) {
-            throw _iteratorError5;
+          if (_didIteratorError4) {
+            throw _iteratorError4;
           }
         }
       }
@@ -14566,127 +14615,64 @@ var AnnotationListWidget = function () {
     value: function _createPageElements() {
       logger.debug('AnnotationListWidget#_createPageElements');
       var nav = this._nav;
-      var pageRenderer = this.options.annotationPageRenderer;
+      var pageRenderer = this._annoPageRenderer;
 
-      for (var pageNum = 0; pageNum < this.options.canvases.length; ++pageNum) {
+      for (var pageNum = 0; pageNum < this._canvases.length; ++pageNum) {
         var canvas = nav.getCanvas(pageNum);
         var pageElem = pageRenderer.createPageElement({
           pageNum: pageNum,
           canvasId: canvas['@id'],
           canvasLabel: canvas.label,
-          layerId: this.options.layerId
+          layerId: this._layerId
         });
 
-        this.options.rootElem.append(pageElem);
+        this._rootElem.append(pageElem);
         pageElem.hide();
         nav.setPageElement(pageNum, pageElem);
       }
     }
   }, {
-    key: '_activatePageForward',
+    key: '_activateMorePagesForward',
     value: function () {
-      var _ref8 = _asyncToGenerator(regeneratorRuntime.mark(function _callee8(pageNum) {
-        var nextPage;
-        return regeneratorRuntime.wrap(function _callee8$(_context8) {
-          while (1) {
-            switch (_context8.prev = _context8.next) {
-              case 0:
-                _context8.next = 2;
-                return this._loadPage(pageNum);
-
-              case 2:
-                nextPage = pageNum;
-
-                if (!(pageNum < this._nav.getNumPages() - 1)) {
-                  _context8.next = 7;
-                  break;
-                }
-
-                ++nextPage;
-                _context8.next = 7;
-                return this._loadPage(nextPage);
-
-              case 7:
-                return _context8.abrupt('return', nextPage);
-
-              case 8:
-              case 'end':
-                return _context8.stop();
-            }
-          }
-        }, _callee8, this);
-      }));
-
-      function _activatePageForward(_x8) {
-        return _ref8.apply(this, arguments);
-      }
-
-      return _activatePageForward;
-    }()
-  }, {
-    key: '_activatePageBackward',
-    value: function () {
-      var _ref9 = _asyncToGenerator(regeneratorRuntime.mark(function _callee9(pageNum) {
-        var nextPage;
-        return regeneratorRuntime.wrap(function _callee9$(_context9) {
-          while (1) {
-            switch (_context9.prev = _context9.next) {
-              case 0:
-                _context9.next = 2;
-                return this._loadPage(pageNum);
-
-              case 2:
-                nextPage = pageNum;
-
-                if (!(pageNum > 0)) {
-                  _context9.next = 7;
-                  break;
-                }
-
-                --nextPage;
-                _context9.next = 7;
-                return this._loadPage(nextPage);
-
-              case 7:
-                return _context9.abrupt('return', nextPage);
-
-              case 8:
-              case 'end':
-                return _context9.stop();
-            }
-          }
-        }, _callee9, this);
-      }));
-
-      function _activatePageBackward(_x9) {
-        return _ref9.apply(this, arguments);
-      }
-
-      return _activatePageBackward;
-    }()
-  }, {
-    key: '_activateMorePagesForwardFirst',
-    value: function () {
-      var _ref10 = _asyncToGenerator(regeneratorRuntime.mark(function _callee10(pageNum) {
-        var numCanvases, nextPage;
+      var _ref10 = _asyncToGenerator(regeneratorRuntime.mark(function _callee10(pageNum, numPages) {
+        var rootElem, nextPage, currentPage;
         return regeneratorRuntime.wrap(function _callee10$(_context10) {
           while (1) {
             switch (_context10.prev = _context10.next) {
               case 0:
-                logger.debug('AnnotationListWidget#_activateMorePagesForwardFirst', pageNum);
-                numCanvases = this.options.canvases.length;
-                _context10.next = 4;
-                return this._activateMorePagesForward(pageNum, numCanvases);
+                logger.debug('AnnotationListWidget#_activateMorePagesForward', pageNum, numPages);
+                rootElem = this._rootElem;
+                nextPage = pageNum;
 
-              case 4:
-                nextPage = _context10.sent;
-                _context10.next = 7;
-                return this._activateMorePagesBackward(pageNum, numCanvases);
+              case 3:
+                if (!(nextPage < numPages)) {
+                  _context10.next = 13;
+                  break;
+                }
 
-              case 7:
-                return _context10.abrupt('return', nextPage);
+                logger.debug('AnnotationListWidget#_activateMorePagesForward nextPage:', nextPage, 'numPages:', numPages, 'scroll height:', rootElem[0].scrollHeight, 'element height:', rootElem.height());
+                currentPage = nextPage;
+                _context10.next = 8;
+                return this._activatePageForward(currentPage);
 
               case 8:
+                nextPage = _context10.sent;
+
+                if (!(nextPage === currentPage || rootElem[0].scrollHeight > rootElem.height())) {
+                  _context10.next = 11;
+                  break;
+                }
+
+                return _context10.abrupt('break', 13);
+
+              case 11:
+                _context10.next = 3;
+                break;
+
+              case 13:
+                return _context10.abrupt('return', nextPage);
+
+              case 14:
               case 'end':
                 return _context10.stop();
             }
@@ -14694,127 +14680,8 @@ var AnnotationListWidget = function () {
         }, _callee10, this);
       }));
 
-      function _activateMorePagesForwardFirst(_x10) {
+      function _activateMorePagesForward(_x7, _x8) {
         return _ref10.apply(this, arguments);
-      }
-
-      return _activateMorePagesForwardFirst;
-    }()
-  }, {
-    key: '_activateMorePagesBackwardFirst',
-    value: function () {
-      var _ref11 = _asyncToGenerator(regeneratorRuntime.mark(function _callee11(pageNum, numPages) {
-        var numCanvases, nextPage;
-        return regeneratorRuntime.wrap(function _callee11$(_context11) {
-          while (1) {
-            switch (_context11.prev = _context11.next) {
-              case 0:
-                logger.debug('AnnotationListWidget#_activateMorePagesBackwardFirst', pageNum, numPages);
-                numCanvases = this.options.canvases.length;
-                _context11.next = 4;
-                return this._activateMorePagesBackward(pageNum, numCanvases);
-
-              case 4:
-                nextPage = _context11.sent;
-                _context11.next = 7;
-                return this._activateMorePagesForward(pageNum, numCanvases);
-
-              case 7:
-                return _context11.abrupt('return', nextPage);
-
-              case 8:
-              case 'end':
-                return _context11.stop();
-            }
-          }
-        }, _callee11, this);
-      }));
-
-      function _activateMorePagesBackwardFirst(_x11, _x12) {
-        return _ref11.apply(this, arguments);
-      }
-
-      return _activateMorePagesBackwardFirst;
-    }()
-  }, {
-    key: '_windBack',
-    value: function _windBack() {
-      var rootElem = this.options.rootElem;
-      var scrollTop = rootElem.scrollTop();
-      var diff = rootElem[0].scrollHeight - rootElem.scrollTop() - rootElem.height();
-
-      if (diff === 0) {
-        logger.debug('Winding back');
-        this._unbindScrollEvent();
-        this.options.rootElem.scrollTop(scrollTop - 5);
-        this._bindScrollEvent();
-      }
-    }
-  }, {
-    key: '_windForward',
-    value: function _windForward() {
-      logger.debug('_windForward');
-      var rootElem = this.options.rootElem;
-      var scrollTop = rootElem.scrollTop();
-
-      if (scrollTop === 0) {
-        logger.debug('Winding forward');
-        this._unbindScrollEvent();
-        this.options.rootElem.scrollTop(scrollTop + 5);
-        this._bindScrollEvent();
-      }
-    }
-  }, {
-    key: '_activateMorePagesForward',
-    value: function () {
-      var _ref12 = _asyncToGenerator(regeneratorRuntime.mark(function _callee12(pageNum, numPages) {
-        var rootElem, nextPage, currentPage;
-        return regeneratorRuntime.wrap(function _callee12$(_context12) {
-          while (1) {
-            switch (_context12.prev = _context12.next) {
-              case 0:
-                logger.debug('AnnotationListWidget#_activateMorePagesForward', pageNum, numPages);
-                rootElem = this.options.rootElem;
-                nextPage = pageNum;
-
-              case 3:
-                if (!(nextPage < numPages)) {
-                  _context12.next = 13;
-                  break;
-                }
-
-                logger.debug('AnnotationListWidget#_activateMorePagesForward nextPage:', nextPage, 'numPages:', numPages, 'scroll height:', rootElem[0].scrollHeight, 'element height:', rootElem.height());
-                currentPage = nextPage;
-                _context12.next = 8;
-                return this._activatePageForward(currentPage);
-
-              case 8:
-                nextPage = _context12.sent;
-
-                if (!(nextPage === currentPage || rootElem[0].scrollHeight > rootElem.height())) {
-                  _context12.next = 11;
-                  break;
-                }
-
-                return _context12.abrupt('break', 13);
-
-              case 11:
-                _context12.next = 3;
-                break;
-
-              case 13:
-                return _context12.abrupt('return', nextPage);
-
-              case 14:
-              case 'end':
-                return _context12.stop();
-            }
-          }
-        }, _callee12, this);
-      }));
-
-      function _activateMorePagesForward(_x13, _x14) {
-        return _ref12.apply(this, arguments);
       }
 
       return _activateMorePagesForward;
@@ -14822,54 +14689,54 @@ var AnnotationListWidget = function () {
   }, {
     key: '_activateMorePagesBackward',
     value: function () {
-      var _ref13 = _asyncToGenerator(regeneratorRuntime.mark(function _callee13(pageNum) {
+      var _ref11 = _asyncToGenerator(regeneratorRuntime.mark(function _callee11(pageNum) {
         var rootElem, nextPage, currentPage;
-        return regeneratorRuntime.wrap(function _callee13$(_context13) {
+        return regeneratorRuntime.wrap(function _callee11$(_context11) {
           while (1) {
-            switch (_context13.prev = _context13.next) {
+            switch (_context11.prev = _context11.next) {
               case 0:
                 logger.debug('AnnotationListWidget#_activateMorePagesBackward', pageNum);
-                rootElem = this.options.rootElem;
+                rootElem = this._rootElem;
                 nextPage = pageNum;
 
               case 3:
                 if (!(nextPage >= 0)) {
-                  _context13.next = 13;
+                  _context11.next = 13;
                   break;
                 }
 
                 logger.debug('AnnotationListWidget#_activateMorePagesBackward nextPage:', nextPage, 'scroll height:', rootElem[0].scrollHeight, 'element height:', rootElem.height());
                 currentPage = nextPage;
-                _context13.next = 8;
+                _context11.next = 8;
                 return this._activatePageBackward(currentPage);
 
               case 8:
-                nextPage = _context13.sent;
+                nextPage = _context11.sent;
 
                 if (!(nextPage === currentPage || rootElem[0].scrollHeight > rootElem.height())) {
-                  _context13.next = 11;
+                  _context11.next = 11;
                   break;
                 }
 
-                return _context13.abrupt('break', 13);
+                return _context11.abrupt('break', 13);
 
               case 11:
-                _context13.next = 3;
+                _context11.next = 3;
                 break;
 
               case 13:
-                return _context13.abrupt('return', nextPage);
+                return _context11.abrupt('return', nextPage);
 
               case 14:
               case 'end':
-                return _context13.stop();
+                return _context11.stop();
             }
           }
-        }, _callee13, this);
+        }, _callee11, this);
       }));
 
-      function _activateMorePagesBackward(_x15) {
-        return _ref13.apply(this, arguments);
+      function _activateMorePagesBackward(_x9) {
+        return _ref11.apply(this, arguments);
       }
 
       return _activateMorePagesBackward;
@@ -14882,13 +14749,104 @@ var AnnotationListWidget = function () {
       this._nav.unload(pageNum);
     }
   }, {
+    key: '_loadPage',
+    value: function () {
+      var _ref12 = _asyncToGenerator(regeneratorRuntime.mark(function _callee12(pageNum) {
+        var annotations, toc, element;
+        return regeneratorRuntime.wrap(function _callee12$(_context12) {
+          while (1) {
+            switch (_context12.prev = _context12.next) {
+              case 0:
+                logger.debug('AnnotationListWidget#_loadPage pageNum:', pageNum);
+
+                if (!this._nav.isLoaded(pageNum)) {
+                  _context12.next = 4;
+                  break;
+                }
+
+                logger.debug('AnnotationListWidget#_loadPage alread loaded; page:', pageNum);
+                return _context12.abrupt('return');
+
+              case 4:
+                (0, _modalAlert2.default)().show('Loading');
+
+                _context12.next = 7;
+                return this._getAnnotationsForPage(pageNum);
+
+              case 7:
+                annotations = _context12.sent;
+                _context12.next = 10;
+                return this._getTocForPage(pageNum);
+
+              case 10:
+                toc = _context12.sent;
+                element = this._nav.getPageElement(pageNum);
+
+
+                this._nav.load(pageNum, annotations, toc);
+
+                this._annoPageRenderer.render(element, {
+                  annotations: annotations,
+                  annotationToc: toc,
+                  isEditor: this._isEditor,
+                  pageNum: pageNum
+                });
+
+                element.show();
+                (0, _modalAlert2.default)().hide();
+
+              case 16:
+              case 'end':
+                return _context12.stop();
+            }
+          }
+        }, _callee12, this);
+      }));
+
+      function _loadPage(_x10) {
+        return _ref12.apply(this, arguments);
+      }
+
+      return _loadPage;
+    }()
+  }, {
+    key: '_unloadAllPages',
+    value: function _unloadAllPages() {
+      var _iteratorNormalCompletion5 = true;
+      var _didIteratorError5 = false;
+      var _iteratorError5 = undefined;
+
+      try {
+        for (var _iterator5 = this._nav.getPageElements()[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+          var elem = _step5.value;
+
+          elem.hide();
+        }
+      } catch (err) {
+        _didIteratorError5 = true;
+        _iteratorError5 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion5 && _iterator5.return) {
+            _iterator5.return();
+          }
+        } finally {
+          if (_didIteratorError5) {
+            throw _iteratorError5;
+          }
+        }
+      }
+
+      this._nav.unloadAll();
+    }
+  }, {
     key: '_unloadNextPages',
     value: function _unloadNextPages() {
       logger.debug('AnnotationListWidget#_unloadNextPages');
       var nav = this._nav;
-      var rootElem = this.options.rootElem;
+      var rootElem = this._rootElem;
       var rootElemHeight = rootElem.height();
-      var maxHeight = this.options.maxContentRelativeHeight * rootElemHeight;
+      var maxHeight = this._maxContentRelativeHeight * rootElemHeight;
 
       for (var nextPage = nav.getActiveRange().endPage; nextPage > nav.getPage() + 1 && rootElem[0].scrollHeight - rootElemHeight > maxHeight; --nextPage) {
         logger.debug('AnnotationListWidget#_deactivatePagesBackward nextPage:', nextPage, 'scroll height:', rootElem[0].scrollHeight, 'maxHeight:', maxHeight);
@@ -14899,9 +14857,9 @@ var AnnotationListWidget = function () {
     key: '_unloadPreviousPages',
     value: function _unloadPreviousPages() {
       logger.debug('AnnotationListWidget#_unloadPreviousPages');
-      var rootElem = this.options.rootElem;
+      var rootElem = this._rootElem;
       var rootElemHeight = rootElem.height();
-      var maxHeight = this.options.maxContentRelativeHeight * rootElemHeight;
+      var maxHeight = this._maxContentRelativeHeight * rootElemHeight;
 
       for (var nextPage = 0; nextPage < this._currentPageNum - 1 && rootElem[0].scrollHeight - rootElemHeight > maxHeight; ++nextPage) {
         logger.debug('AnnotationListWidget#_unloadPreviousPages nextPage:', nextPage, 'scroll height:', rootElem[0].scrollHeight, 'maxHeight:', maxHeight);
@@ -14909,17 +14867,157 @@ var AnnotationListWidget = function () {
       }
     }
   }, {
-    key: '_unloadAllPages',
-    value: function _unloadAllPages() {
+    key: '_getTocForPage',
+    value: function () {
+      var _ref13 = _asyncToGenerator(regeneratorRuntime.mark(function _callee13(pageNum) {
+        var canvas, tocCache;
+        return regeneratorRuntime.wrap(function _callee13$(_context13) {
+          while (1) {
+            switch (_context13.prev = _context13.next) {
+              case 0:
+                canvas = this._nav.getCanvas(pageNum);
+                tocCache = (0, _app2.default)().getAnnotationTocCache();
+
+                if (!tocCache) {
+                  _context13.next = 8;
+                  break;
+                }
+
+                _context13.next = 5;
+                return tocCache.getToc(canvas['@id']);
+
+              case 5:
+                _context13.t0 = _context13.sent;
+                _context13.next = 9;
+                break;
+
+              case 8:
+                _context13.t0 = null;
+
+              case 9:
+                return _context13.abrupt('return', _context13.t0);
+
+              case 10:
+              case 'end':
+                return _context13.stop();
+            }
+          }
+        }, _callee13, this);
+      }));
+
+      function _getTocForPage(_x11) {
+        return _ref13.apply(this, arguments);
+      }
+
+      return _getTocForPage;
+    }()
+  }, {
+    key: '_getAnnotationsForPage',
+    value: function () {
+      var _ref14 = _asyncToGenerator(regeneratorRuntime.mark(function _callee14(pageNum) {
+        var _this2 = this;
+
+        var canvasId, annotations;
+        return regeneratorRuntime.wrap(function _callee14$(_context14) {
+          while (1) {
+            switch (_context14.prev = _context14.next) {
+              case 0:
+                canvasId = this._nav.getCanvas(pageNum)['@id'];
+                _context14.next = 3;
+                return this._annoExplorer.getAnnotations({
+                  canvasId: canvasId
+                });
+
+              case 3:
+                annotations = _context14.sent;
+                return _context14.abrupt('return', annotations.filter(function (anno) {
+                  return anno.layerId === _this2._layerId;
+                }));
+
+              case 5:
+              case 'end':
+                return _context14.stop();
+            }
+          }
+        }, _callee14, this);
+      }));
+
+      function _getAnnotationsForPage(_x12) {
+        return _ref14.apply(this, arguments);
+      }
+
+      return _getAnnotationsForPage;
+    }()
+  }, {
+    key: 'clearHighlights',
+    value: function clearHighlights() {
+      this._rootElem.find('.annowin_anno').each(function (index, value) {
+        jQuery(value).removeClass('annowin_targeted').removeClass('ym_anno_selected ym_anno_targeting ym_anno_targeted');
+      });
+    }
+  }, {
+    key: 'getAnnotationElems',
+    value: function getAnnotationElems() {
+      return this._rootElem.find('.annowin_anno').toArray();
+    }
+
+    /**
+     * Find annotation's siblings from annotations
+     * A sibling is an annotation that points to the same TOC node.
+     * For example, annotation A and B are siblings if they both belong to
+     * ["chapter1", "scene2", "p1"].
+     */
+
+  }, {
+    key: 'getTocSiblingElems',
+    value: function getTocSiblingElems(annotation, annotations, layerId, toc) {
+      var _this3 = this;
+
+      logger.debug('AnnotationListWidget#getTocSiblingElems annotation:', annotation, 'annotations:', annotations, 'layerId:', layerId, 'toc:', toc);
+      var result = [];
+      var siblings = _import.annoUtil.findTocSiblings(annotation, annotations, layerId, toc);
+      siblings = siblings.filter(function (anno) {
+        return _this3._getParagraphTag(anno) === _this3._getParagraphTag(annotation);
+      });
+      console.log('siblings:', siblings);
+
       var _iteratorNormalCompletion6 = true;
       var _didIteratorError6 = false;
       var _iteratorError6 = undefined;
 
       try {
-        for (var _iterator6 = this._nav.getPageElements()[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-          var elem = _step6.value;
+        for (var _iterator6 = this.getAnnotationElems()[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+          var annoElem = _step6.value;
 
-          elem.hide();
+          var $annoElem = jQuery(annoElem);
+          var annoId = $annoElem.data('annotationId');
+
+          var _iteratorNormalCompletion7 = true;
+          var _didIteratorError7 = false;
+          var _iteratorError7 = undefined;
+
+          try {
+            for (var _iterator7 = siblings[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+              var sibling = _step7.value;
+
+              if (sibling['@id'] === annoId) {
+                result.push($annoElem);
+              }
+            }
+          } catch (err) {
+            _didIteratorError7 = true;
+            _iteratorError7 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion7 && _iterator7.return) {
+                _iterator7.return();
+              }
+            } finally {
+              if (_didIteratorError7) {
+                throw _iteratorError7;
+              }
+            }
+          }
         }
       } catch (err) {
         _didIteratorError6 = true;
@@ -14936,211 +15034,35 @@ var AnnotationListWidget = function () {
         }
       }
 
-      this._nav.unloadAll();
-    }
-  }, {
-    key: '_loadPage',
-    value: function () {
-      var _ref14 = _asyncToGenerator(regeneratorRuntime.mark(function _callee14(pageNum) {
-        var _this4 = this;
-
-        var nav, canvasId, annotations, tocCache, toc, element;
-        return regeneratorRuntime.wrap(function _callee14$(_context14) {
-          while (1) {
-            switch (_context14.prev = _context14.next) {
-              case 0:
-                logger.debug('AnnotationListWidget#_loadPage pageNum:', pageNum);
-                nav = this._nav;
-
-                if (!nav.isLoaded(pageNum)) {
-                  _context14.next = 4;
-                  break;
-                }
-
-                return _context14.abrupt('return');
-
-              case 4:
-
-                (0, _modalAlert2.default)().show('Loading');
-
-                canvasId = nav.getCanvas(pageNum)['@id'];
-                _context14.next = 8;
-                return this.options.annotationExplorer.getAnnotations({
-                  canvasId: canvasId
-                });
-
-              case 8:
-                annotations = _context14.sent;
-
-                annotations = annotations.filter(function (anno) {
-                  return anno.layerId === _this4.options.layerId;
-                });
-                tocCache = (0, _app2.default)().getAnnotationTocCache();
-
-                if (!tocCache) {
-                  _context14.next = 17;
-                  break;
-                }
-
-                _context14.next = 14;
-                return tocCache.getToc(canvasId);
-
-              case 14:
-                _context14.t0 = _context14.sent;
-                _context14.next = 18;
-                break;
-
-              case 17:
-                _context14.t0 = null;
-
-              case 18:
-                toc = _context14.t0;
-                element = nav.getPageElement(pageNum);
-
-
-                nav.load(pageNum, annotations, toc);
-
-                this.options.annotationPageRenderer.render(element, {
-                  annotations: annotations,
-                  annotationToc: toc,
-                  isEditor: this.options.isEditor,
-                  pageNum: pageNum
-                });
-                element.show();
-                (0, _modalAlert2.default)().hide();
-
-              case 24:
-              case 'end':
-                return _context14.stop();
-            }
-          }
-        }, _callee14, this);
-      }));
-
-      function _loadPage(_x16) {
-        return _ref14.apply(this, arguments);
-      }
-
-      return _loadPage;
-    }()
-  }, {
-    key: '_lessPagesFrom',
-    value: function _lessPagesFrom(pageNum) {
-      var numCanvases = this.options.canvases.length;
-    }
-  }, {
-    key: 'clearHighlights',
-    value: function clearHighlights() {
-      this.options.rootElem.find('.annowin_anno').each(function (index, value) {
-        jQuery(value).removeClass('annowin_targeted').removeClass('ym_anno_selected ym_anno_targeting ym_anno_targeted');
-      });
-    }
-  }, {
-    key: 'getAnnotationElems',
-    value: function getAnnotationElems() {
-      return this.options.rootElem.find('.annowin_anno').toArray();
-    }
-
-    /**
-     * Find annotation's siblings from annotations
-     * A sibling is an annotation that points to the same TOC node.
-     * For example, annotation A and B are siblings if they both belong to
-     * ["chapter1", "scene2", "p1"].
-     */
-
-  }, {
-    key: 'getTocSiblingElems',
-    value: function getTocSiblingElems(annotation, annotations, layerId, toc) {
-      var _this5 = this;
-
-      var result = [];
-      var siblings = _import.annoUtil.findTocSiblings(annotation, annotations, layerId, toc);
-      siblings = siblings.filter(function (anno) {
-        return _this5._getParagraphTag(anno) === _this5._getParagraphTag(annotation);
-      });
-
-      var _iteratorNormalCompletion7 = true;
-      var _didIteratorError7 = false;
-      var _iteratorError7 = undefined;
-
-      try {
-        for (var _iterator7 = this.getAnnotationElems()[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
-          var annoElem = _step7.value;
-
-          var $annoElem = jQuery(annoElem);
-          var annoId = $annoElem.data('annotationId');
-
-          var _iteratorNormalCompletion8 = true;
-          var _didIteratorError8 = false;
-          var _iteratorError8 = undefined;
-
-          try {
-            for (var _iterator8 = siblings[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
-              var sibling = _step8.value;
-
-              if (sibling['@id'] === annoId) {
-                result.push($annoElem);
-              }
-            }
-          } catch (err) {
-            _didIteratorError8 = true;
-            _iteratorError8 = err;
-          } finally {
-            try {
-              if (!_iteratorNormalCompletion8 && _iterator8.return) {
-                _iterator8.return();
-              }
-            } finally {
-              if (_didIteratorError8) {
-                throw _iteratorError8;
-              }
-            }
-          }
-        }
-      } catch (err) {
-        _didIteratorError7 = true;
-        _iteratorError7 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion7 && _iterator7.return) {
-            _iterator7.return();
-          }
-        } finally {
-          if (_didIteratorError7) {
-            throw _iteratorError7;
-          }
-        }
-      }
-
       return result;
     }
   }, {
     key: '_getParagraphTag',
     value: function _getParagraphTag(annotation) {
       var tags = (0, _import.Anno)(annotation).tags;
-      var _iteratorNormalCompletion9 = true;
-      var _didIteratorError9 = false;
-      var _iteratorError9 = undefined;
+      var _iteratorNormalCompletion8 = true;
+      var _didIteratorError8 = false;
+      var _iteratorError8 = undefined;
 
       try {
-        for (var _iterator9 = tags[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
-          var tag = _step9.value;
+        for (var _iterator8 = tags[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
+          var tag = _step8.value;
 
           if (tag.match(/^p\d+$/)) {
             return tag;
           }
         }
       } catch (err) {
-        _didIteratorError9 = true;
-        _iteratorError9 = err;
+        _didIteratorError8 = true;
+        _iteratorError8 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion9 && _iterator9.return) {
-            _iterator9.return();
+          if (!_iteratorNormalCompletion8 && _iterator8.return) {
+            _iterator8.return();
           }
         } finally {
-          if (_didIteratorError9) {
-            throw _iteratorError9;
+          if (_didIteratorError8) {
+            throw _iteratorError8;
           }
         }
       }
@@ -15157,7 +15079,7 @@ var AnnotationListWidget = function () {
             switch (_context15.prev = _context15.next) {
               case 0:
                 nav = this._nav;
-                current = jQuery(this.options.rootElem.find('.annowin_anno:focus'));
+                current = jQuery(this._rootElem.find('.annowin_anno:focus'));
                 next = current.next();
 
                 while (next.size() > 0 && !next.hasClass('annowin_anno')) {
@@ -15187,7 +15109,7 @@ var AnnotationListWidget = function () {
                 }
 
                 _context15.next = 13;
-                return this.loadNextPages();
+                return this.loadNextPage();
 
               case 13:
                 nextPageElem = nav.getPageElement(nextPage);
@@ -15222,7 +15144,7 @@ var AnnotationListWidget = function () {
             switch (_context16.prev = _context16.next) {
               case 0:
                 nav = this._nav;
-                current = jQuery(this.options.rootElem.find('.annowin_anno:focus'));
+                current = jQuery(this._rootElem.find('.annowin_anno:focus'));
                 prev = current.prev();
 
 
@@ -15253,7 +15175,7 @@ var AnnotationListWidget = function () {
                 }
 
                 _context16.next = 13;
-                return this.loadPreviousPages();
+                return this.loadPreviousPage();
 
               case 13:
                 prevPageElem = nav.getPageElement(prevPage);
@@ -15279,66 +15201,22 @@ var AnnotationListWidget = function () {
       return _focusPrevAnnotation;
     }()
   }, {
-    key: '_bindScrollEvent',
-    value: function _bindScrollEvent() {
-      var _this = this;
-
-      this.options.rootElem.scroll(function () {
-        var _ref17 = _asyncToGenerator(regeneratorRuntime.mark(function _callee17(event) {
-          var elem, scrollTop, currentPos, contentHeight;
-          return regeneratorRuntime.wrap(function _callee17$(_context17) {
-            while (1) {
-              switch (_context17.prev = _context17.next) {
-                case 0:
-                  elem = jQuery(this);
-                  scrollTop = elem.scrollTop();
-                  currentPos = scrollTop + elem.height();
-                  contentHeight = this.scrollHeight;
-
-                  //logger.debug('contentHeight:', contentHeight, 'scrollTop:', scrollTop, 'scroll bottom:', currentPos);
-
-                  if (!(scrollTop < 20)) {
-                    _context17.next = 7;
-                    break;
-                  }
-
-                  _context17.next = 7;
-                  return _this.loadPreviousPages();
-
-                case 7:
-                  if (!(contentHeight - currentPos < 20)) {
-                    _context17.next = 10;
-                    break;
-                  }
-
-                  _context17.next = 10;
-                  return _this.loadNextPages();
-
-                case 10:
-                case 'end':
-                  return _context17.stop();
-              }
-            }
-          }, _callee17, this);
-        }));
-
-        return function (_x17) {
-          return _ref17.apply(this, arguments);
-        };
-      }());
+    key: 'scrollToElem',
+    value: function scrollToElem(annoElem, yOffset) {
+      this._scrollHelper.scrollToElem(annoElem, yOffset);
     }
   }, {
-    key: '_unbindScrollEvent',
-    value: function _unbindScrollEvent() {
-      this.options.rootElem.off('scroll');
+    key: 'scrollToAnnotation',
+    value: function scrollToAnnotation(annoId, yOffset) {
+      this._scrollHelper.scrollToAnnotation(annoId, yOffset);
     }
   }, {
     key: '_bindEvents',
     value: function _bindEvents() {
       var _this = this;
-      this._bindScrollEvent();
+      this._scrollHelper.bindScrollEvent();
 
-      this.options.rootElem.keydown(function (event) {
+      this._rootElem.keydown(function (event) {
         event.preventDefault();
         switch (event.key) {
           case 'ArrowDown':
@@ -15353,8 +15231,8 @@ var AnnotationListWidget = function () {
   }, {
     key: '_unbindEvents',
     value: function _unbindEvents() {
-      this._unbindScrollEvent();
-      this.options.rootElem.off('keydown');
+      this._scrollHelper.unbindScrollEvent();
+      this._rootElem.off('keydown');
     }
   }]);
 
@@ -15647,15 +15525,15 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _miradorProxyManager = __webpack_require__(2);
+var _miradorProxyManager = __webpack_require__(3);
 
 var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
-var _stateStore = __webpack_require__(3);
+var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
-var _menuTagSelector = __webpack_require__(49);
+var _menuTagSelector = __webpack_require__(50);
 
 var _menuTagSelector2 = _interopRequireDefault(_menuTagSelector);
 
@@ -15870,15 +15748,13 @@ var AnnotationWindow = function () {
         this.options.annotationListWidget = new _annotationListWidget2.default({
           annotationWindow: this,
           rootElem: this.listElem,
-          imageWindowId: this.options.canvasWindowId,
           canvases: canvases,
-          layerId: this.options.initialLayerId,
           tocTags: this.options.initialTocTags,
           annotationExplorer: this.options.explorer,
           state: (0, _stateStore2.default)(),
           isEditor: _session2.default.isEditor()
         });
-        this.options.annotationListWidget.reload();
+        this.options.annotationListWidget.reload(this.options.initialLayerId);
       }
     }
   }, {
@@ -15961,13 +15837,13 @@ var AnnotationWindow = function () {
   }, {
     key: 'getCurrentLayerId',
     value: function getCurrentLayerId() {
-      return this.currentLayerId;
+      return this._currentLayerId;
     }
   }, {
     key: '_setCurrentLayerId',
     value: function _setCurrentLayerId(layerId) {
       logger.debug('AnnotationWindow#_setCurrentLayerId layerId:', layerId);
-      this.currentLayerId = layerId;
+      this._currentLayerId = layerId;
     }
   }, {
     key: 'reload',
@@ -16035,7 +15911,9 @@ var AnnotationWindow = function () {
             switch (_context3.prev = _context3.next) {
               case 0:
                 _context3.next = 2;
-                return _this6.updateList();
+                return _this6.updateList().catch(function (reason) {
+                  throw 'AnnotationWindow#updateList failed: ' + reason;
+                });
 
               case 2:
                 return _context3.abrupt('return', _this6);
@@ -16052,15 +15930,18 @@ var AnnotationWindow = function () {
     key: 'updateList',
     value: function () {
       var _ref4 = _asyncToGenerator(regeneratorRuntime.mark(function _callee4() {
+        var _this7 = this;
+
         var listWidget, state, canvasId, count;
         return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                logger.debug('AnnotationWindow#updateList');
                 listWidget = this.options.annotationListWidget;
                 state = (0, _stateStore2.default)();
                 canvasId = this.canvasWindow.getCurrentCanvasId();
+
+                logger.debug('AnnotationWindow#updateList canvasId:', canvasId);
                 /*
                 if (this.options.explorer.getAnnotationToc()) {
                   options.selectedTags = this.menuTagSelector.val().split('|');
@@ -16079,7 +15960,9 @@ var AnnotationWindow = function () {
                 }
 
                 _context4.next = 10;
-                return listWidget.goToPageByTags(this.options.initialTocTags);
+                return listWidget.goToPageByTags(this.options.initialTocTags).catch(function (reason) {
+                  throw 'listWidget#goToPageByTags failed: ' + reason + '(tags: ' + _this7.options.initialTocTags + ')';
+                });
 
               case 10:
                 count = _context4.sent;
@@ -16092,7 +15975,9 @@ var AnnotationWindow = function () {
 
               case 14:
                 _context4.next = 16;
-                return listWidget.goToPageByCanvas(canvasId);
+                return listWidget.goToPageByCanvas(canvasId).catch(function (reason) {
+                  throw 'listWidget#goToPageByCanvas failed: ' + reason;
+                });
 
               case 16:
                 count = _context4.sent;
@@ -16220,7 +16105,7 @@ var AnnotationWindow = function () {
   }, {
     key: 'bindEvents',
     value: function bindEvents() {
-      var _this7 = this;
+      var _this8 = this;
 
       logger.debug('AnnotationWindow#bindEvents');
 
@@ -16232,11 +16117,11 @@ var AnnotationWindow = function () {
             while (1) {
               switch (_context6.prev = _context6.next) {
                 case 0:
-                  logger.debug('Annotation window ' + _this7.options.id + ' received ANNOWIN_ANNOTATION_FOCUSED params:', params, 'layer:', _this7.currentLayerId);
+                  logger.debug('Annotation window ' + _this8.options.id + ' received ANNOWIN_ANNOTATION_FOCUSED params:', params, 'layer:', _this8.getCurrentLayerId());
                   $anno = (0, _import.Anno)(params.annotation);
-                  listWidget = _this7.options.annotationListWidget;
+                  listWidget = _this8.options.annotationListWidget;
 
-                  if (!(params.annotationWindowId === _this7.options.id)) {
+                  if (!(params.annotationWindowId === _this8.options.id)) {
                     _context6.next = 5;
                     break;
                   }
@@ -16246,8 +16131,8 @@ var AnnotationWindow = function () {
                 case 5:
                   listWidget.clearHighlights();
 
-                  annotations = _this7.canvasWindow.getAnnotationsList();
-                  layerId = _this7.currentLayerId;
+                  annotations = _this8.canvasWindow.getAnnotationsList();
+                  layerId = _this8.getCurrentLayerId();
                   tocSpec = (0, _stateStore2.default)().getTransient('tocSpec');
 
                   if (!tocSpec) {
@@ -16375,7 +16260,7 @@ var AnnotationWindow = function () {
                   targeting = _import.annoUtil.findTransitiveTargetingAnnotations(params.annotation, annoMap);
 
                   targeting = targeting.filter(function (anno) {
-                    return anno.layerId === _this7.getCurrentLayerId();
+                    return anno.layerId === _this8.getCurrentLayerId();
                   });
 
                   if (!(targeting.length > 0)) {
@@ -16388,7 +16273,7 @@ var AnnotationWindow = function () {
 
                 case 66:
                   targeted = _import.annoUtil.findTransitiveTargetAnnotations(params.annotation, annoMap).filter(function (anno) {
-                    return anno.layerId === _this7.getCurrentLayerId();
+                    return anno.layerId === _this8.getCurrentLayerId();
                   });
 
                   if (!(targeted.length > 0)) {
@@ -16404,7 +16289,7 @@ var AnnotationWindow = function () {
                   return _context6.stop();
               }
             }
-          }, _callee6, _this7, [[18, 22, 26, 34], [27,, 29, 33], [45, 49, 53, 61], [54,, 56, 60]]);
+          }, _callee6, _this8, [[18, 22, 26, 34], [27,, 29, 33], [45, 49, 53, 61], [54,, 56, 60]]);
         }));
 
         return function (_x5, _x6) {
@@ -16414,15 +16299,15 @@ var AnnotationWindow = function () {
 
       this._subscribe(jQuery, 'YM_ANNO_HEIGHT_FIXED', function (event, fixedHeight) {
         if (fixedHeight) {
-          _this7.element.addClass('fixed_height_cells');
+          _this8.element.addClass('fixed_height_cells');
         } else {
-          _this7.element.removeClass('fixed_height_cells');
+          _this8.element.removeClass('fixed_height_cells');
         }
       });
 
       this._subscribe(jQuery, 'YM_ANNOTATION_TOC_TAGS_SELECTED', function (evnet, windowId, canvasId, tags) {
         logger.debug('AnnotationWindow:SUB:YM_ANNOTATION_TOC_TAGS_SELECTED imageWindow:', windowId, 'canvasId:', canvasId, 'tags:', tags);
-        _this7.options.annotationListWidget.goToPageByTags(tags);
+        _this8.options.annotationListWidget.goToPageByTags(tags);
       });
 
       this._subscribe(this.miradorProxy, 'YM_IMAGE_WINDOW_TOOLTIP_ANNO_CLICKED', function () {
@@ -16432,11 +16317,11 @@ var AnnotationWindow = function () {
             while (1) {
               switch (_context7.prev = _context7.next) {
                 case 0:
-                  logger.debug('AnnotationWindow:SUB:YM_IMAGE_WINDOW_TOOLTIP_ANNO_CLICKED windowId:', windowId, 'annoId:', annoId, 'annoWin:', _this7.id);
-                  windowProxy = _this7.miradorProxy.getWindowProxyById(windowId);
+                  logger.debug('AnnotationWindow:SUB:YM_IMAGE_WINDOW_TOOLTIP_ANNO_CLICKED windowId:', windowId, 'annoId:', annoId, 'annoWin:', _this8.id);
+                  windowProxy = _this8.miradorProxy.getWindowProxyById(windowId);
                   canvasId = windowProxy.getCurrentCanvasId();
                   _context7.next = 5;
-                  return _this7._annotationTocCache.getToc(canvasId);
+                  return _this8._annotationTocCache.getToc(canvasId);
 
                 case 5:
                   toc = _context7.sent;
@@ -16446,7 +16331,7 @@ var AnnotationWindow = function () {
 
 
                   if (annotation) {
-                    _this7.options.annotationListWidget.goToPageByTags(annotation.tocTags);
+                    _this8.options.annotationListWidget.goToPageByTags(annotation.tocTags);
                   }
 
                 case 8:
@@ -16454,7 +16339,7 @@ var AnnotationWindow = function () {
                   return _context7.stop();
               }
             }
-          }, _callee7, _this7);
+          }, _callee7, _this8);
         }));
 
         return function (_x7, _x8, _x9) {
@@ -16565,6 +16450,10 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _annotationRenderer = __webpack_require__(46);
+
+var _annotationRenderer2 = _interopRequireDefault(_annotationRenderer);
+
 var _annotationTocRenderer = __webpack_require__(47);
 
 var _annotationTocRenderer2 = _interopRequireDefault(_annotationTocRenderer);
@@ -16572,6 +16461,10 @@ var _annotationTocRenderer2 = _interopRequireDefault(_annotationTocRenderer);
 var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
+
+var _stateStore = __webpack_require__(2);
+
+var _stateStore2 = _interopRequireDefault(_stateStore);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -16583,10 +16476,21 @@ var AnnotationPageRenderer = function () {
   function AnnotationPageRenderer(options) {
     _classCallCheck(this, AnnotationPageRenderer);
 
-    this.options = Object.assign({
-      annotationWindow: null,
-      annotationRenderer: null
-    }, options);
+    this._annoWin = options.annotationWindow;
+    this._annoRenderer = options.annotationRenderer;
+    this._annoExplorer = options.annotationExplorer;
+    this._state = options.state;
+
+    if (!this._state) {
+      this._state = (0, _stateStore2.default)();
+    }
+
+    if (!this._annoRenderer) {
+      this._annoRenderer = new _annotationRenderer2.default({
+        annotationWindow: this._annoWin,
+        state: this._state
+      });
+    }
   }
 
   /**
@@ -16684,7 +16588,7 @@ var AnnotationPageRenderer = function () {
           try {
             if (annotation.layerId === layerId) {
               ++count;
-              var annoElem = this.options.annotationRenderer.createAnnoElem(annotation, {
+              var annoElem = this._annoRenderer.createAnnoElem(annotation, {
                 pageElem: pageElem,
                 canvasId: canvasId,
                 isEditor: options.isEditor
@@ -16722,7 +16626,7 @@ var AnnotationPageRenderer = function () {
         canvasId: pageElem.data('canvasId'),
         layerId: pageElem.data('layerId'),
         toc: options.annotationToc,
-        annotationRenderer: this.options.annotationRenderer
+        annotationRenderer: this._annoRenderer
       });
       return renderer.render();
     }
@@ -16741,7 +16645,7 @@ var AnnotationPageRenderer = function () {
 
       logger.debug('AnnotationPageRenderer#_saveAnnotationsOrder canvasId:', canvasId, 'layerId:', layerId, 'annoIds:', annoIds);
 
-      this.options.annotationExplorer.updateAnnotationListOrder(canvasId, layerId, annoIds).catch(function (reason) {
+      this._annoExplorer.updateAnnotationListOrder(canvasId, layerId, annoIds).catch(function (reason) {
         _this.tempMenuRow.hide();
         var msg = 'AnnotationPageRenderer#_saveAnnotationsOrder updateAnnotationListOrder failed: ' + reason;
         throw msg;
@@ -17070,6 +16974,7 @@ var AnnotationTocRenderer = function () {
   }, {
     key: 'appendHeader',
     value: function appendHeader(node) {
+      //logger.debug('AnnotationTocRenderer#appendHeader node:', node);
       var layerId = this.options.layerId;
 
       // We are distinguishing between leaf and non-leaf nodes to ensure
@@ -17122,7 +17027,7 @@ var AnnotationTocRenderer = function () {
   }, {
     key: 'appendUnattachedAnnotations',
     value: function appendUnattachedAnnotations() {
-      logger.debug('AnnotationTocRenderer#appendUnattachedAnnotations');
+      //logger.debug('AnnotationTocRenderer#appendUnattachedAnnotations');
       var renderer = this.options.annotationRenderer;
 
       if (this.options.toc.numUnassigned() > 0) {
@@ -17176,6 +17081,9 @@ var AnnotationTocRenderer = function () {
       var headerHtml = headerTemplate({ text: node.label });
       var headerElem = jQuery(headerHtml).addClass('header-level-' + node.tags.length);
 
+      if (!(node.tags instanceof Array && node.tags.length > 0)) {
+        logger.error('AnnotationTocRenderer#createHeaderElem invalid tags for node:', node);
+      }
       headerElem.data('tags', node.tags);
       return headerElem;
     }
@@ -17222,6 +17130,270 @@ function nodeHasAnnotationsToShow(node, layerId) {
 
 /***/ }),
 /* 48 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _logger = __webpack_require__(0);
+
+var _logger2 = _interopRequireDefault(_logger);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var logger = (0, _logger2.default)();
+
+var ScrollHelper = function () {
+  function ScrollHelper(options) {
+    _classCallCheck(this, ScrollHelper);
+
+    this._listWidget = options.listWidget;
+    this._groupHeaderHeight = options.groupHeaderHeight;
+
+    this._rootElem = this._listWidget.getRootElement();
+    this._nav = this._listWidget.getNav();
+  }
+
+  /**
+   * The page element must have already been loaded for this function to work.
+   *
+   * @param {number} pageNum
+   */
+
+
+  _createClass(ScrollHelper, [{
+    key: 'scrollToPage',
+    value: function scrollToPage(pageNum) {
+      var _this2 = this;
+
+      var pageHeaderElem = this._nav.getPageElement(pageNum).find('.page-header');
+
+      this.unbindScrollEvent();
+
+      return new Promise(function (resolve, reject) {
+        _this2._rootElem.scrollTo(pageHeaderElem, {
+          onAfter: function onAfter() {
+            _this2.bindScrollEvent();
+            resolve();
+          }
+        });
+      });
+    }
+  }, {
+    key: 'scrollToTags',
+    value: function scrollToTags(targetTags) {
+      logger.debug('AnnotationListWidget#scrollToTags targetTags:', targetTags);
+      var targetElem = null;
+
+      this._rootElem.find('.annowin_group_header').each(function (index, value) {
+        var headerElem = jQuery(value);
+        var tags = headerElem.data('tags');
+
+        if (!(tags instanceof Array && tags.length > 0)) {
+          logger.error('ScrollHelper#scrollToTags invalid tags', tags, 'for header elem', headerElem[0].outerHTML);
+          tags = [];
+        }
+
+        if (targetTags.length === 1) {
+          if (tags[0] === targetTags[0]) {
+            targetElem = headerElem;
+            return false;
+          }
+        } else if (tags[0] === targetTags[0] && tags[1] === targetTags[1]) {
+          targetElem = headerElem;
+          return false;
+        }
+      });
+
+      if (targetElem) {
+        this._rootElem.scrollTo(targetElem.next(), {
+          offset: { top: -this._groupHeaderHeight }
+        });
+      } else {
+        logger.warning('AnnotationListWidget#scrollToTags Header element not found for', targetTags);
+      }
+    }
+  }, {
+    key: 'scrollToElem',
+    value: function scrollToElem(annoElem, yOffsetIn) {
+      var _this3 = this;
+
+      console.log('yOffsetIn:', yOffsetIn);
+      var yOffset = this._calcOffset(annoElem, yOffsetIn);
+
+      this.unbindScrollEvent();
+
+      return new Promise(function (resolve, reject) {
+        _this3._rootElem.scrollTo(annoElem, {
+          offset: {
+            top: yOffset
+          },
+          onAfter: function onAfter() {
+            _this3.bindScrollEvent();
+            resolve();
+          }
+        });
+      });
+    }
+
+    // Note to avoid confusion: yOffsetIn will typically have a negative value if defined
+
+  }, {
+    key: '_calcOffset',
+    value: function _calcOffset(annoElem, yOffsetIn) {
+      if (yOffsetIn === undefined) {
+        return -this._groupHeaderHeight;
+      }
+      var minOffset = annoElem.height() - this._rootElem.height();
+      console.log('minOffset:', minOffset);
+      var yOffset = yOffsetIn < minOffset ? minOffset : yOffsetIn;
+      console.log('yOffset:', yOffset);
+      return yOffset;
+    }
+  }, {
+    key: 'scrollToAnnotation',
+    value: function scrollToAnnotation(annotationId, yOffset) {
+      logger.debug('AnnotationListWidget#scrollToAnnotation annotationId:', annotationId, 'yOffset:', yOffset);
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = this._listWidget.getAnnotationElems()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var annoElem = _step.value;
+
+          var $annoElem = jQuery(annoElem);
+          if ($annoElem.data('annotationId') === annotationId) {
+            return this.scrollToElem($annoElem, yOffset);
+          }
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+    }
+  }, {
+    key: 'scrollDown',
+    value: function scrollDown(delta) {
+      this._rootElem.scrollTo('+=' + delta);
+    }
+  }, {
+    key: 'scrollUp',
+    value: function scrollUp(delta) {
+      this._rootElem.scrollTo('-=' + delta);
+    }
+  }, {
+    key: '_windBack',
+    value: function _windBack() {
+      var rootElem = this._rootElem;
+      var scrollTop = rootElem.scrollTop();
+      var diff = rootElem[0].scrollHeight - rootElem.scrollTop() - rootElem.height();
+
+      if (diff === 0) {
+        logger.debug('Winding back');
+        this.unbindScrollEvent();
+        rootElem.scrollTop(scrollTop - 5);
+        this.bindScrollEvent();
+      }
+    }
+  }, {
+    key: '_windForward',
+    value: function _windForward() {
+      logger.debug('_windForward');
+      var rootElem = this._rootElem;
+      var scrollTop = rootElem.scrollTop();
+
+      if (scrollTop === 0) {
+        logger.debug('Winding forward');
+        this.unbindScrollEvent();
+        rootElem.scrollTop(scrollTop + 5);
+        this.bindScrollEvent();
+      }
+    }
+  }, {
+    key: 'bindScrollEvent',
+    value: function bindScrollEvent() {
+      var _this = this;
+
+      this._rootElem.scroll(function () {
+        var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(event) {
+          var listWidget, elem, scrollTop, currentPos, contentHeight;
+          return regeneratorRuntime.wrap(function _callee$(_context) {
+            while (1) {
+              switch (_context.prev = _context.next) {
+                case 0:
+                  listWidget = _this._listWidget;
+                  elem = jQuery(this);
+                  scrollTop = elem.scrollTop();
+                  currentPos = scrollTop + elem.height();
+                  contentHeight = this.scrollHeight;
+
+                  //logger.debug('contentHeight:', contentHeight, 'scrollTop:', scrollTop, 'scroll bottom:', currentPos);
+
+                  if (!(scrollTop < 20)) {
+                    _context.next = 8;
+                    break;
+                  }
+
+                  _context.next = 8;
+                  return listWidget.loadPreviousPage();
+
+                case 8:
+                  if (!(contentHeight - currentPos < 20)) {
+                    _context.next = 11;
+                    break;
+                  }
+
+                  _context.next = 11;
+                  return listWidget.loadNextPage();
+
+                case 11:
+                case 'end':
+                  return _context.stop();
+              }
+            }
+          }, _callee, this);
+        }));
+
+        return function (_x) {
+          return _ref.apply(this, arguments);
+        };
+      }());
+    }
+  }, {
+    key: 'unbindScrollEvent',
+    value: function unbindScrollEvent() {
+      this._rootElem.off('scroll');
+    }
+  }]);
+
+  return ScrollHelper;
+}();
+
+exports.default = ScrollHelper;
+
+/***/ }),
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17292,7 +17464,7 @@ var template = Handlebars.compile(['<div class="header">Error</div>', '<div clas
 var MSG_TRY_LATER = '<p>Please try again by reloading the page, or if problem persists, contact the site administrator.</p>';
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17468,7 +17640,7 @@ var MenuTagSelector = function () {
 exports.default = MenuTagSelector;
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports) {
 
 // joosugi v0.3.0-3-g925da54 built Sun Aug 06 2017 16:55:06 GMT-0400 (EDT)
@@ -18790,7 +18962,7 @@ exports.default = AnnotationExplorer;
 module.exports = joosugi;
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports) {
 
 // joosugi-semantic-ui v0.1.1-3-gbf770d5 built Thu Jul 20 2017 17:48:05 GMT-0400 (EDT)
@@ -22150,13 +22322,13 @@ module.exports = __webpack_require__(0);
 module.exports = joosugiUI;
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -22346,7 +22518,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports) {
 
 var g;
@@ -22373,7 +22545,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(18);
