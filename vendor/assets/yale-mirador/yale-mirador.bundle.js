@@ -1,5 +1,5 @@
-// Yale-Mirador v0.7.2-5-g3cbb427 built Tue Aug 22 2017 16:04:59 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.7.2-5-g3cbb427 built Tue Aug 22 2017 16:04:59 GMT-0400 (EDT)";
+// Yale-Mirador v0.7.2-6-g98bce60 built Wed Aug 23 2017 10:43:52 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.7.2-6-g98bce60 built Wed Aug 23 2017 10:43:52 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -212,7 +212,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var logger = (0, _logger2.default)();
 
-var registeredKeys = new Set(['annotationBackendUrl', 'annotationLayers', 'annotationsOverlay', 'copyrighted', 'copyrightedImageServiceUrl', 'disableAuthz', 'fixAnnoCellHeight', 'hideTagsInAnnotation', 'lastSelectedLayer', 'layerIndexMap', 'projectId', 'tagHierarchy', 'textDirection', 'tocSpec', 'tooltipStyles']);
+var registeredKeys = new Set(['annotationBackendUrl', 'annotationLayers', 'annotationsOverlay', 'copyrighted', 'copyrightedImageServiceUrl', 'disableAuthz', 'fixAnnoCellHeight', 'hideTagsInAnnotation', 'hiddenLayers', 'lastSelectedLayer', 'layerIndexMap', 'projectId', 'tagHierarchy', 'textDirection', 'tocSpec', 'tooltipStyles']);
 
 /**
  * Holds states for the app, which will optionally persist if local storgae is
@@ -568,7 +568,7 @@ __webpack_require__(35);
 
 var _import = __webpack_require__(1);
 
-var _annotationSource = __webpack_require__(8);
+var _annotationSource = __webpack_require__(9);
 
 var _annotationSource2 = _interopRequireDefault(_annotationSource);
 
@@ -754,6 +754,8 @@ var App = function () {
                 state.setTransient('copyrighted', settings.copyrighted);
                 state.setTransient('copyrightedImageServiceUrl', settings.copyrightedImageServiceUrl);
 
+                state.setTransient('hiddenLayers', settings.hiddenLayers);
+
                 if (settings.ui) {
                   state.setBoolean('fixAnnoCellHeight', settings.ui.fixAnnoCellHeight);
                   state.setString('textDirection', settings.ui.textDirection);
@@ -762,7 +764,7 @@ var App = function () {
                   state.setTransient('hideTagsInAnnotation', settings.ui.hideTagsInAnnotation);
                 }
 
-              case 15:
+              case 16:
               case 'end':
                 return _context2.stop();
             }
@@ -997,7 +999,7 @@ var _miradorWrapper = __webpack_require__(40);
 
 var _miradorWrapper2 = _interopRequireDefault(_miradorWrapper);
 
-var _session = __webpack_require__(9);
+var _session = __webpack_require__(7);
 
 var _session2 = _interopRequireDefault(_session);
 
@@ -1383,6 +1385,31 @@ var PageController = function () {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.default = {
+  serverSettings: null,
+
+  /**
+   * Returns true if the user is logged in via CAS.
+   */
+  loggedIn: function loggedIn() {
+    return Cookies.get('loggedIn') == 'true';
+  },
+
+  isEditor: function isEditor() {
+    return Cookies.get('isEditor') == 'true';
+  }
+};
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _logger = __webpack_require__(0);
 
@@ -1473,7 +1500,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2256,31 +2283,6 @@ var AnnotationSource = function () {
 exports.default = AnnotationSource;
 
 /***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = {
-  serverSettings: null,
-
-  /**
-   * Returns true if the user is logged in via CAS.
-   */
-  loggedIn: function loggedIn() {
-    return Cookies.get('loggedIn') == 'true';
-  },
-
-  isEditor: function isEditor() {
-    return Cookies.get('isEditor') == 'true';
-  }
-};
-
-/***/ }),
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2547,7 +2549,7 @@ exports.getEndpoint = exports.YaleEndpoint = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _annotationSource = __webpack_require__(8);
+var _annotationSource = __webpack_require__(9);
 
 var _annotationSource2 = _interopRequireDefault(_annotationSource);
 
@@ -2575,11 +2577,11 @@ var _modalAlert = __webpack_require__(15);
 
 var _modalAlert2 = _interopRequireDefault(_modalAlert);
 
-var _session = __webpack_require__(9);
+var _session = __webpack_require__(7);
 
 var _session2 = _interopRequireDefault(_session);
 
-var _util = __webpack_require__(7);
+var _util = __webpack_require__(8);
 
 var _util2 = _interopRequireDefault(_util);
 
@@ -2893,7 +2895,7 @@ var _layerSelector = __webpack_require__(14);
 
 var _layerSelector2 = _interopRequireDefault(_layerSelector);
 
-var _util = __webpack_require__(7);
+var _util = __webpack_require__(8);
 
 var _util2 = _interopRequireDefault(_util);
 
@@ -3391,6 +3393,10 @@ var _selector = __webpack_require__(16);
 
 var _selector2 = _interopRequireDefault(_selector);
 
+var _session = __webpack_require__(7);
+
+var _session2 = _interopRequireDefault(_session);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3422,6 +3428,20 @@ var _class = function () {
     key: 'init',
     value: function init(layers) {
       this.logger.debug('LayerSelector#init layers:', layers, 'initialLayerId:', this.initialLayerId);
+      var isEditor = _session2.default.isEditor();
+      var hiddenLayers = this.appState.getTransient('hiddenLayers') || [];
+
+      console.log('YYY hiddenLayers:', this.appState.getTransient('hiddenLayers'));
+      console.log('YYY hiddenLayers:', hiddenLayers);
+      console.log('YYY isEditor:', isEditor);
+
+      if (!isEditor && hiddenLayers.length > 0) {
+        console.log('LAYERS', layers);
+        layers = layers.filter(function (layer) {
+          return !hiddenLayers.includes(layer['@id']);
+        });
+      }
+
       this._isLoaded = false;
       this.selector = new _selector2.default({
         appendTo: this.parent
@@ -11647,7 +11667,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _annotationSource = __webpack_require__(8);
+var _annotationSource = __webpack_require__(9);
 
 var _annotationSource2 = _interopRequireDefault(_annotationSource);
 
@@ -12007,7 +12027,7 @@ var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
-var _util = __webpack_require__(7);
+var _util = __webpack_require__(8);
 
 var _util2 = _interopRequireDefault(_util);
 
@@ -13843,7 +13863,7 @@ var openAnnotationSelector = function () {
 
 var _import = __webpack_require__(1);
 
-var _annotationSource = __webpack_require__(8);
+var _annotationSource = __webpack_require__(9);
 
 var _annotationSource2 = _interopRequireDefault(_annotationSource);
 
@@ -15542,7 +15562,7 @@ var _layerSelector = __webpack_require__(14);
 
 var _layerSelector2 = _interopRequireDefault(_layerSelector);
 
-var _session = __webpack_require__(9);
+var _session = __webpack_require__(7);
 
 var _session2 = _interopRequireDefault(_session);
 
@@ -16689,7 +16709,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _util = __webpack_require__(7);
+var _util = __webpack_require__(8);
 
 var _util2 = _interopRequireDefault(_util);
 
@@ -16928,7 +16948,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _session = __webpack_require__(9);
+var _session = __webpack_require__(7);
 
 var _session2 = _interopRequireDefault(_session);
 
@@ -17488,7 +17508,7 @@ var _selector = __webpack_require__(16);
 
 var _selector2 = _interopRequireDefault(_selector);
 
-var _util = __webpack_require__(7);
+var _util = __webpack_require__(8);
 
 var _util2 = _interopRequireDefault(_util);
 
