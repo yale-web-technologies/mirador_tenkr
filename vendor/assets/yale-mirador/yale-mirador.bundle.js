@@ -1,5 +1,5 @@
-// Yale-Mirador v0.7.2-7-gc64c2c4 built Wed Aug 23 2017 15:45:01 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.7.2-7-gc64c2c4 built Wed Aug 23 2017 15:45:01 GMT-0400 (EDT)";
+// Yale-Mirador v0.7.2-9-gea59269 built Wed Aug 23 2017 16:56:18 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.7.2-9-gea59269 built Wed Aug 23 2017 16:56:18 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -212,7 +212,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var logger = (0, _logger2.default)();
 
-var registeredKeys = new Set(['annotationBackendUrl', 'annotationLayers', 'annotationsOverlay', 'copyrighted', 'copyrightedImageServiceUrl', 'disableAuthz', 'fixAnnoCellHeight', 'hideTagsInAnnotation', 'hiddenLayers', 'lastSelectedLayer', 'layerIndexMap', 'projectId', 'tagHierarchy', 'textDirection', 'tocSpec', 'tooltipStyles']);
+var registeredKeys = new Set(['annotationBackendUrl', 'annotationLayers', 'annotationsOverlay', 'copyrighted', 'copyrightedImageServiceUrl', 'disableAuthz', 'displayModeOnStart', 'fixAnnoCellHeight', 'hideTagsInAnnotation', 'hiddenLayers', 'lastSelectedLayer', 'layerIndexMap', 'projectId', 'tagHierarchy', 'textDirection', 'tocSpec', 'tooltipStyles']);
 
 /**
  * Holds states for the app, which will optionally persist if local storgae is
@@ -399,16 +399,9 @@ var MiradorProxyManager = function () {
       logger.debug('MiradorProxyManager#getMiradorProxy miradorId:', miradorId, 'proxies:', this._miradorProxiesMap);
       return this._miradorProxiesMap[miradorId] || null;
     }
-
-    /**
-     * @returns {WindowProxy[]} a list of window proxies for all windows in all Mirador instances
-     */
-
   }, {
-    key: 'getAllWindowProxies',
-    value: function getAllWindowProxies() {
-      var windowProxies = [];
-
+    key: 'getMiradorProxyByWindowId',
+    value: function getMiradorProxyByWindowId(windowId) {
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
       var _iteratorError = undefined;
@@ -417,7 +410,10 @@ var MiradorProxyManager = function () {
         for (var _iterator = Object.values(this._miradorProxiesMap)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
           var miradorProxy = _step.value;
 
-          windowProxies = windowProxies.concat(miradorProxy.getWindowProxies());
+          var window = miradorProxy.getWindowById(windowId);
+          if (window) {
+            return miradorProxy;
+          }
         }
       } catch (err) {
         _didIteratorError = true;
@@ -430,6 +426,43 @@ var MiradorProxyManager = function () {
         } finally {
           if (_didIteratorError) {
             throw _iteratorError;
+          }
+        }
+      }
+
+      return null;
+    }
+
+    /**
+     * @returns {WindowProxy[]} a list of window proxies for all windows in all Mirador instances
+     */
+
+  }, {
+    key: 'getAllWindowProxies',
+    value: function getAllWindowProxies() {
+      var windowProxies = [];
+
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+
+      try {
+        for (var _iterator2 = Object.values(this._miradorProxiesMap)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var miradorProxy = _step2.value;
+
+          windowProxies = windowProxies.concat(miradorProxy.getWindowProxies());
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+            _iterator2.return();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
           }
         }
       }
@@ -449,13 +482,13 @@ var MiradorProxyManager = function () {
       logger.debug('MiradorProxyManager#getWindowById windowId:', windowId);
       var window = null;
 
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
+      var _iteratorNormalCompletion3 = true;
+      var _didIteratorError3 = false;
+      var _iteratorError3 = undefined;
 
       try {
-        for (var _iterator2 = Object.values(this._miradorProxiesMap)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var miradorProxy = _step2.value;
+        for (var _iterator3 = Object.values(this._miradorProxiesMap)[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+          var miradorProxy = _step3.value;
 
           window = miradorProxy.getWindowById(windowId);
           if (window) {
@@ -463,16 +496,16 @@ var MiradorProxyManager = function () {
           }
         }
       } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
+        _didIteratorError3 = true;
+        _iteratorError3 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion2 && _iterator2.return) {
-            _iterator2.return();
+          if (!_iteratorNormalCompletion3 && _iterator3.return) {
+            _iterator3.return();
           }
         } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
+          if (_didIteratorError3) {
+            throw _iteratorError3;
           }
         }
       }
@@ -505,27 +538,27 @@ var MiradorProxyManager = function () {
     key: 'subscribe',
     value: function subscribe(eventName, callback) {
       logger.debug('MiradorProxyManager#subscribe ', eventName, callback);
-      var _iteratorNormalCompletion3 = true;
-      var _didIteratorError3 = false;
-      var _iteratorError3 = undefined;
+      var _iteratorNormalCompletion4 = true;
+      var _didIteratorError4 = false;
+      var _iteratorError4 = undefined;
 
       try {
-        for (var _iterator3 = Object.values(this._miradorProxiesMap)[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-          var miradorProxy = _step3.value;
+        for (var _iterator4 = Object.values(this._miradorProxiesMap)[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+          var miradorProxy = _step4.value;
 
           miradorProxy.subscribe(eventName, callback);
         }
       } catch (err) {
-        _didIteratorError3 = true;
-        _iteratorError3 = err;
+        _didIteratorError4 = true;
+        _iteratorError4 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion3 && _iterator3.return) {
-            _iterator3.return();
+          if (!_iteratorNormalCompletion4 && _iterator4.return) {
+            _iterator4.return();
           }
         } finally {
-          if (_didIteratorError3) {
-            throw _iteratorError3;
+          if (_didIteratorError4) {
+            throw _iteratorError4;
           }
         }
       }
@@ -757,6 +790,7 @@ var App = function () {
                 state.setTransient('hiddenLayers', settings.hiddenLayers);
 
                 if (settings.ui) {
+                  state.setTransient('displayModeOnStart', settings.ui.displayModeOnStart);
                   state.setBoolean('fixAnnoCellHeight', settings.ui.fixAnnoCellHeight);
                   state.setString('textDirection', settings.ui.textDirection);
                   state.setTransient('annotationsOverlay', settings.ui.annotationsOverlay);
@@ -1240,6 +1274,7 @@ var PageController = function () {
       });
       var windowsConfig = parser.getWindowsConfig();
       if (windowsConfig) {
+        this._miradorProxy.publish('YM_DISPLAY_ON');
         jQuery.publish('YM_ADD_WINDOWS', windowsConfig);
       }
     }
@@ -1251,7 +1286,6 @@ var PageController = function () {
         return;
       } else {
         this._urlOptionsProcessed = true;
-        this._miradorProxy.publish('YM_DISPLAY_ON');
         this._createAnnotationWindows(imageWindowId, options);
       }
     }
@@ -3478,10 +3512,6 @@ var _class = function () {
       this.logger.debug('LayerSelector#init layers:', layers, 'initialLayerId:', this.initialLayerId);
       var isEditor = _session2.default.isEditor();
       var hiddenLayers = this.appState.getTransient('hiddenLayers') || [];
-
-      console.log('YYY hiddenLayers:', this.appState.getTransient('hiddenLayers'));
-      console.log('YYY hiddenLayers:', hiddenLayers);
-      console.log('YYY isEditor:', isEditor);
 
       if (!isEditor && hiddenLayers.length > 0) {
         console.log('LAYERS', layers);
@@ -11758,14 +11788,16 @@ var MiradorConfigBuilder = function () {
       tagHierarchy: null
     }, options);
     logger.debug('MiradorConfigBuilder#constructor options:', options);
+
+    this._state = (0, _stateStore2.default)();
   }
 
   _createClass(MiradorConfigBuilder, [{
     key: 'buildConfig',
     value: function buildConfig() {
       var config = jQuery.extend(true, {}, this.options.defaultSettings);
-      var annotationsOverlay = (0, _stateStore2.default)().getTransient('annotationsOverlay');
-      var tocSpec = (0, _stateStore2.default)().getTransient('tocSpec');
+      var annotationsOverlay = this._state.getTransient('annotationsOverlay');
+      var tocSpec = this._state.getTransient('tocSpec');
 
       jQuery.extend(config, {
         id: this.options.miradorId,
@@ -11806,7 +11838,10 @@ var MiradorConfigBuilder = function () {
       if (!this.options.isEditor) {
         windowSettings.canvasControls.annotations.annotationCreation = false;
       }
-      windowSettings.canvasControls.annotations.annotationState = 'on';
+
+      if (this._state.getTransient('displayModeOnStart')) {
+        windowSettings.canvasControls.annotations.annotationState = 'on';
+      }
 
       if (annotationsOverlay) {
         if (annotationsOverlay.hoverColor) {
@@ -11876,6 +11911,10 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
+var _miradorProxyManager = __webpack_require__(3);
+
+var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
+
 var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
@@ -11929,7 +11968,6 @@ var AnnotationTableOfContents = function () {
       }
 
       this._selectedElem = null;
-
       this.element.data('AnnotationTableOfContent', this);
 
       this.element.mousemove(function (event) {
@@ -11981,6 +12019,9 @@ var AnnotationTableOfContents = function () {
 
       item.click(function (event) {
         var imageWindowId = _this.options.windowId;
+        var miradorProxy = (0, _miradorProxyManager2.default)().getMiradorProxyByWindowId(_this.options.windowId);
+
+        miradorProxy.publish('YM_DISPLAY_ON');
         _this._savedScrollTop = _this.element.scrollTop();
         event.preventDefault();
         jQuery(this).focus();
@@ -12350,18 +12391,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
   var _listenForActions = $.ImageView.prototype.listenForActions;
 
   $.ImageView.prototype.listenForActions = function () {
-    var _this2 = this;
+    var _this = this;
 
     _listenForActions.call(this);
 
     this.eventEmitter.subscribe('ANNOTATIONS_LIST_UPDATED', function (event) {
-      logger.debug('ImageView in window ' + _this2.windowId + ' received annotationRendered; annotationToBeFocused:', _this2._annotationToBeFocused);
-      if (_this2._annotationToBeFocused) {
+      logger.debug('ImageView in window ' + _this.windowId + ' received annotationRendered; annotationToBeFocused:', _this._annotationToBeFocused);
+      if (_this._annotationToBeFocused) {
         // setTimeout in order to give the OsdRegionDrawTool time to create
         // annotation shapes in the overlay after window.getAnnotations() is done
         setTimeout(function () {
-          var imageWindowProxy = (0, _miradorProxyManager2.default)().getWindowProxyById(_this2.windowId);
-          var anno = _this2._annotationToBeFocused;
+          var imageWindowProxy = (0, _miradorProxyManager2.default)().getWindowProxyById(_this.windowId);
+          var anno = _this._annotationToBeFocused;
 
           if (!_import.annoUtil.hasTargetOnCanvas(anno)) {
             var annoMap = {};
@@ -12421,11 +12462,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
               return false;
             })[0];
           }
-          _this2._annotationToBeFocused = null;
+          _this._annotationToBeFocused = null;
           if (anno) {
-            _this2.zoomToAnnotation(anno);
-            _this2.panToAnnotation(anno);
-            _this2.annotationsLayer.drawTool.updateHighlights(anno);
+            _this.zoomToAnnotation(anno);
+            _this.panToAnnotation(anno);
+            _this.annotationsLayer.drawTool.updateHighlights(anno);
           } else {
             logger.error('ImageWindow(ext):SUB:ANNOTATIONS_LIST_UPDATED annotation not found');
           }
@@ -12434,7 +12475,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
     });
 
     this.eventEmitter.subscribe('YM_DISPLAY_ON', function (event) {
-      if (_this2.hud.annoState.current === 'off') {
+      logger.debug('ExtImageView:SUB:YM_DISPLAY_ON');
+      if (_this.hud.annoState.current === 'off') {
         _this.hud.annoState.displayOn(_this.element.find('.mirador-osd-annotations-layer'));
       }
     });
