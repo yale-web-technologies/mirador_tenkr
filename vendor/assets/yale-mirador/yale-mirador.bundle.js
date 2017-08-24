@@ -1,5 +1,5 @@
-// Yale-Mirador v0.7.2-9-gea59269 built Wed Aug 23 2017 16:56:18 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.7.2-9-gea59269 built Wed Aug 23 2017 16:56:18 GMT-0400 (EDT)";
+// Yale-Mirador v0.7.2-9-gea59269 built Thu Aug 24 2017 11:13:59 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.7.2-9-gea59269 built Thu Aug 24 2017 11:13:59 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -1417,16 +1417,26 @@ var PageController = function () {
                   grid = _this2.options.grid;
                   layerId = _this2._tocSpec.defaultLayer;
                   annoWindow = grid.getAnnotationWindowByLayer(layerId);
-                  _context4.next = 6;
-                  return _this2._miradorWrapper.zoomToTags(windowId, canvasId, tags);
 
-                case 6:
+
+                  try {
+                    _this2._miradorProxy.getWindowProxyById(windowId).getImageView().enableAnnotationLayer();
+                  } catch (e) {
+                    logger.error('PageController#SUB:YM_ANNOTATION_TOC_TAGS_SELECTED failed to enable annotation layer');
+                  }
+
+                  _context4.next = 7;
+                  return _this2._miradorWrapper.zoomToTags(windowId, canvasId, tags).catch(function (reason) {
+                    logger.error('PageController:SUB:YM_ANNOTATION_TOC_TAGS_SELECTED zoomToTags failed:', reason);
+                  });
+
+                case 7:
                   if (annoWindow) {
-                    _context4.next = 10;
+                    _context4.next = 11;
                     break;
                   }
 
-                  _context4.next = 9;
+                  _context4.next = 10;
                   return grid.addAnnotationWindow({
                     miradorId: _this2._miradorId,
                     imageWindowId: windowId,
@@ -1436,10 +1446,10 @@ var PageController = function () {
                     logger.error('PageController#_showAnnotation addAnnotationWindow failed <- ' + reason);
                   });
 
-                case 9:
+                case 10:
                   annoWindow = _context4.sent;
 
-                case 10:
+                case 11:
                 case 'end':
                   return _context4.stop();
               }
@@ -11911,10 +11921,6 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _miradorProxyManager = __webpack_require__(3);
-
-var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
-
 var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
@@ -12019,9 +12025,6 @@ var AnnotationTableOfContents = function () {
 
       item.click(function (event) {
         var imageWindowId = _this.options.windowId;
-        var miradorProxy = (0, _miradorProxyManager2.default)().getMiradorProxyByWindowId(_this.options.windowId);
-
-        miradorProxy.publish('YM_DISPLAY_ON');
         _this._savedScrollTop = _this.element.scrollTop();
         event.preventDefault();
         jQuery(this).focus();
@@ -12285,6 +12288,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
   $.yaleExt = $.yaleExt || {};
 
   var logger = (0, _logger2.default)();
+
+  $.ImageView.prototype.enableAnnotationLayer = function () {
+    this.annotationState = 'on';
+  };
 
   $.ImageView.prototype.zoomToAnnotation = function (annotation) {
     logger.debug('ImageView(ext)#zoomToAnnotation annotation:', annotation);
@@ -13564,13 +13571,13 @@ var MiradorProxy = function () {
   }, {
     key: 'subscribe',
     value: function subscribe(eventName, handler) {
-      logger.debug('MiradorProxy#subscribe', eventName, handler);
+      //logger.debug('MiradorProxy#subscribe', eventName, handler);
       this._mirador.eventEmitter.subscribe(eventName, handler);
     }
   }, {
     key: 'unsubscribe',
     value: function unsubscribe(eventName, handler) {
-      logger.debug('MiradorProxy#unsubscribe', eventName, handler);
+      //logger.debug('MiradorProxy#unsubscribe', eventName, handler);
       this._mirador.eventEmitter.unsubscribe(eventName, handler);
     }
   }, {
@@ -13802,6 +13809,7 @@ var MiradorWrapper = function () {
                   };
 
                   if (canvasId === windowProxy.getCurrentCanvasId()) {
+                    _this._miradorProxy.publish('YM_DISPLAY_ON');
                     zoomToAnnotation();
                     resolve();
                   } else {
