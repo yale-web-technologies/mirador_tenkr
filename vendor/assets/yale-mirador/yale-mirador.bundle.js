@@ -1,5 +1,5 @@
-// Yale-Mirador v0.7.3-0-gca5d812 built Thu Aug 24 2017 17:36:06 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.7.3-0-gca5d812 built Thu Aug 24 2017 17:36:06 GMT-0400 (EDT)";
+// Yale-Mirador v0.7.3-2-g0a41224 built Thu Aug 24 2017 17:44:32 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.7.3-2-g0a41224 built Thu Aug 24 2017 17:44:32 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -212,7 +212,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var logger = (0, _logger2.default)();
 
-var registeredKeys = new Set(['annotationBackendUrl', 'annotationLayers', 'annotationsOverlay', 'copyrighted', 'copyrightedImageServiceUrl', 'disableAuthz', 'displayModeOnStart', 'fixAnnoCellHeight', 'hideTagsInAnnotation', 'hiddenLayers', 'lastSelectedLayer', 'layerIndexMap', 'lastFocusElem', 'projectId', 'tagHierarchy', 'textDirection', 'tocSpec', 'tooltipStyles']);
+var registeredKeys = new Set(['annotationBackendUrl', 'annotationLayers', 'annotationsOverlay', 'copyrighted', 'copyrightedImageServiceUrl', 'disableAuthz', 'displayModeOnStart', 'fixAnnoCellHeight', 'hideTagsInAnnotation', 'hiddenLayers', 'lastSelectedLayer', 'layerIndexMap', 'projectId', 'tagHierarchy', 'textDirection', 'tocSpec', 'tooltipStyles']);
 
 /**
  * Holds states for the app, which will optionally persist if local storgae is
@@ -16994,25 +16994,6 @@ var AnnotationRenderer = function () {
 
       annoElem.data('annotation', annotation);
 
-      annoElem.focus(function () {
-        console.log('*** FOCUSED ***');
-      });
-
-      /*
-      annoElem.focus(function(event) {
-        alert(annotation['@id']);
-        annoWin.clearAnnotationHighlights();
-        nav.setPageByCanvasId(annoElem.data('canvasId'));
-         _this._miradorProxy.markEventToBeIgnored('ANNOTATIONS_LIST_UPDATED', 100);
-         jQuery.publish('ANNOWIN_ANNOTATION_FOCUSED', [{
-          annotationWindowId: annoWin.getId(),
-          annotation: annotation,
-          canvasId: jQuery(this).data('canvasId'),
-          imageWindowId: annoWin.getImageWindowId(),
-          offset: annoElem.position().top
-        }]);
-      });
-      */
       annoElem.click(function (event) {
         annoWin.select(jQuery(this));
       });
