@@ -1,5 +1,5 @@
-// Yale-Mirador v0.7.3-3-g581de73 built Thu Aug 24 2017 17:47:02 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.7.3-3-g581de73 built Thu Aug 24 2017 17:47:02 GMT-0400 (EDT)";
+// Yale-Mirador v0.7.3-4-g5aa941d built Wed Aug 30 2017 14:51:32 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.7.3-4-g5aa941d built Wed Aug 30 2017 14:51:32 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -17748,7 +17748,7 @@ exports.default = MenuTagSelector;
 /* 51 */
 /***/ (function(module, exports) {
 
-// joosugi v0.3.0-3-g925da54 built Thu Aug 24 2017 16:00:26 GMT-0400 (EDT)
+// joosugi v0.3.0-2-gb1047ad built Tue Aug 01 2017 11:08:11 GMT-0400 (EDT)
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -18076,7 +18076,7 @@ exports.default = {
   // For an annotation that targets other annotation(s), follow the
   // "on" relations recursively until no more targets are found.
   findTransitiveTargetAnnotations: function findTransitiveTargetAnnotations(annotation, annotationMap) {
-    this.logger.debug('annoUtil.findTransitiveTargetAnnotations annotation:', annotation, 'annotationMap:', annotationMap);
+    //this.logger.debug('annoUtil.findTransitiveTargetAnnotations annotation:', annotation, 'annotationMap:', annotationMap);
     var $anno = (0, _annotationWrapper2.default)(annotation);
     var targetAnnos = $anno.targets.map(function (target) {
       var annoId = target.full;
@@ -18169,7 +18169,6 @@ exports.default = {
   findTargetAnnotationsOnCanvas: function findTargetAnnotationsOnCanvas(annotation, annotationMap) {
     var _this = this;
 
-    this.logger.debug('AnnotationUtil.findTargetAnnotationsOnCanvas anno:', annotation, 'annoMap:', annotationMap);
     var allTargetAnnos = this.findTransitiveTargetAnnotations(annotation, annotationMap);
     return allTargetAnnos.filter(function (anno) {
       var _iteratorNormalCompletion4 = true;
@@ -18924,7 +18923,7 @@ var AnnotationExplorer = function () {
     value: function getAnnotations(options) {
       var _this = this;
 
-      //logger.debug('AnnotationExplorer#getAnnotations options:', options);
+      logger.debug('AnnotationExplorer#getAnnotations options:', options);
 
       if (!options.canvasId) {
         logger.error('AnnotationExplorer#getAnnotations missing options.canvasId');
