@@ -1,5 +1,5 @@
-// Yale-Mirador v0.7.3-4-g5aa941d built Wed Aug 30 2017 14:59:07 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.7.3-4-g5aa941d built Wed Aug 30 2017 14:59:07 GMT-0400 (EDT)";
+// Yale-Mirador v0.7.3-5-ga7de262 built Tue Sep 05 2017 10:28:53 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.7.3-5-ga7de262 built Tue Sep 05 2017 10:28:53 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -609,11 +609,11 @@ var _annotationTocCache = __webpack_require__(22);
 
 var _annotationTocCache2 = _interopRequireDefault(_annotationTocCache);
 
-var _fatalError = __webpack_require__(10);
+var _fatalError = __webpack_require__(11);
 
 var _fatalError2 = _interopRequireDefault(_fatalError);
 
-var _annotationCache = __webpack_require__(11);
+var _annotationCache = __webpack_require__(12);
 
 var _annotationCache2 = _interopRequireDefault(_annotationCache);
 
@@ -1605,7 +1605,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _import = __webpack_require__(1);
 
-var _annotationCache = __webpack_require__(11);
+var _annotationCache = __webpack_require__(12);
 
 var _annotationCache2 = _interopRequireDefault(_annotationCache);
 
@@ -1613,7 +1613,7 @@ var _app = __webpack_require__(4);
 
 var _app2 = _interopRequireDefault(_app);
 
-var _yaleEndpoint = __webpack_require__(12);
+var _yaleEndpoint = __webpack_require__(13);
 
 var _logger = __webpack_require__(0);
 
@@ -2383,6 +2383,75 @@ exports.default = AnnotationSource;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+exports.default = getModalAlert;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function getModalAlert() {
+  if (!instance) {
+    instance = new ModalAlert();
+  }
+  return instance;
+};
+
+var ModalAlert = function () {
+  function ModalAlert() {
+    _classCallCheck(this, ModalAlert);
+
+    this.dimmer = this.addDimmer();
+    this.panel = this.addPanel();
+  }
+
+  _createClass(ModalAlert, [{
+    key: 'addDimmer',
+    value: function addDimmer() {
+      return jQuery('<div/>').addClass('ym-dimmer').appendTo(jQuery('body'));
+    }
+  }, {
+    key: 'addPanel',
+    value: function addPanel() {
+      return jQuery('<div/>').attr('id', 'ym-modal-alert').addClass('ym-message-panel').appendTo(jQuery('body'));
+    }
+  }, {
+    key: 'show',
+    value: function show(text) {
+      this.dimmer.show();
+      this.panel.text(text);
+      this.panel.show();
+      return new Promise(function (resolve, reject) {
+        // Somehow the panel fails to show itself most of the times if we don't add some wait here
+        // TODO: identify the cause
+        setTimeout(function () {
+          resolve();
+        }, 50);
+      });
+    }
+  }, {
+    key: 'hide',
+    value: function hide() {
+      this.panel.hide();
+      this.dimmer.hide();
+    }
+  }]);
+
+  return ModalAlert;
+}();
+
+var instance = null;
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.default = fatalError;
 // Show messages for an irrecoverable error after wiping out everything
 function fatalError(error) {
@@ -2429,7 +2498,7 @@ function fatalError(error) {
 var template = Handlebars.compile(['<div class="fatal_error">', '  <div class="header">Error</div>', '</div>'].join(''));
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2627,7 +2696,7 @@ var AnnotationCache = function () {
 }();
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2664,7 +2733,7 @@ var _pageController = __webpack_require__(6);
 
 var _pageController2 = _interopRequireDefault(_pageController);
 
-var _modalAlert = __webpack_require__(15);
+var _modalAlert = __webpack_require__(10);
 
 var _modalAlert2 = _interopRequireDefault(_modalAlert);
 
@@ -2948,7 +3017,7 @@ exports.YaleEndpoint = YaleEndpoint;
 exports.getEndpoint = getEndpoint;
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2978,7 +3047,7 @@ var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
-var _layerSelector = __webpack_require__(14);
+var _layerSelector = __webpack_require__(15);
 
 var _layerSelector2 = _interopRequireDefault(_layerSelector);
 
@@ -3456,7 +3525,7 @@ exports.default = AnnotationEditor;
 var template = Handlebars.compile(['<div class="ym_anno_editor">', '  <div class="header">', '    <span class="layer_select"></span>', '  </div>', '  <textarea></textarea>', '  <input class="tags_editor" placeholder="{{t "addTagsHere"}}…" {{#if tags}}value="{{tags}}"{{/if}}/>', '  {{#unless miradorDriven}}', '    <div class="bottom_row">', '        <button class="ym_save">Save</button>', '        <button class="ym_cancel">Cancel</button>', '      <div class="ym_float_right">', '        <i class="large caret up icon ym_vertical_dec"></i>', '        <i class="large caret down icon ym_vertical_inc"></i>', '      </div>', '    </div>', '  {{/unless}}', '</div>'].join(''));
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3632,69 +3701,6 @@ var _class = function () {
 exports.default = _class;
 
 /***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-exports.default = getModalAlert;
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function getModalAlert() {
-  if (!instance) {
-    var id = 'ym_modal_alert';
-    var elem = jQuery('#' + id);
-    if (elem.length === 0) {
-      elem = jQuery('<div/>').attr('id', id).addClass('ui modal ym_modal').appendTo(jQuery('body'));
-    }
-    instance = new ModalAlert(elem);
-  }
-  return instance;
-};
-
-var ModalAlert = function () {
-  function ModalAlert(elem) {
-    _classCallCheck(this, ModalAlert);
-
-    this.elem = elem;
-    elem.modal({
-      autofocus: false,
-      closable: false,
-      allowMultiple: true,
-      duration: 0,
-      dimmerSettings: {
-        opacity: 0.5
-      }
-    });
-  }
-
-  _createClass(ModalAlert, [{
-    key: 'show',
-    value: function show(text) {
-      this.elem.text(text);
-      this.elem.modal('show');
-    }
-  }, {
-    key: 'hide',
-    value: function hide() {
-      this.elem.modal('hide');
-    }
-  }]);
-
-  return ModalAlert;
-}();
-
-var instance = null;
-
-/***/ }),
 /* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3867,7 +3873,7 @@ var itemTemplate = Handlebars.compile(['<div class="item">', '  {{#if colorClass
 "use strict";
 
 
-var _fatalError = __webpack_require__(10);
+var _fatalError = __webpack_require__(11);
 
 var _fatalError2 = _interopRequireDefault(_fatalError);
 
@@ -12888,7 +12894,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 "use strict";
 
 
-var _annotationEditor = __webpack_require__(13);
+var _annotationEditor = __webpack_require__(14);
 
 var _annotationEditor2 = _interopRequireDefault(_annotationEditor);
 
@@ -12896,7 +12902,7 @@ var _annotationTableOfContents = __webpack_require__(28);
 
 var _annotationTableOfContents2 = _interopRequireDefault(_annotationTableOfContents);
 
-var _yaleEndpoint = __webpack_require__(12);
+var _yaleEndpoint = __webpack_require__(13);
 
 __webpack_require__(29);
 
@@ -12946,6 +12952,10 @@ var _logger2 = _interopRequireDefault(_logger);
 var _miradorProxyManager = __webpack_require__(3);
 
 var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
+
+var _modalAlert = __webpack_require__(10);
+
+var _modalAlert2 = _interopRequireDefault(_modalAlert);
 
 var _stateStore = __webpack_require__(2);
 
@@ -13128,6 +13138,10 @@ var _class = function () {
             switch (_context.prev = _context.next) {
               case 0:
                 logger.debug('Grid#addAnnotationWindow options:', options);
+                _context.next = 3;
+                return (0, _modalAlert2.default)().show('Opening an annotation window...');
+
+              case 3:
                 windowId = Mirador.genUUID(); // annotation window ID
 
                 imageWindowId = options.imageWindowId || null;
@@ -13137,6 +13151,7 @@ var _class = function () {
                   componentName: 'Annotations',
                   componentState: { windowId: windowId }
                 };
+
 
                 this._layout.root.contentItems[0].addChild(itemConfig);
 
@@ -13154,18 +13169,20 @@ var _class = function () {
                   initialTocTags: options.tocTags || [],
                   annotationId: options.annotationId || null
                 });
-                _context.next = 9;
+                _context.next = 11;
                 return annoWin.init().catch(function (reason) {
                   logger.error('Grid#addAnnotationWindow annoWin.init failed:', reason);
                 });
 
-              case 9:
+              case 11:
 
                 this._annotationWindows[windowId] = annoWin;
                 this._resizeWindows();
+
+                (0, _modalAlert2.default)().hide();
                 return _context.abrupt('return', annoWin);
 
-              case 12:
+              case 15:
               case 'end':
                 return _context.stop();
             }
@@ -13686,6 +13703,10 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
+var _modalAlert = __webpack_require__(10);
+
+var _modalAlert2 = _interopRequireDefault(_modalAlert);
+
 var _miradorProxyManager = __webpack_require__(3);
 
 var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
@@ -13837,14 +13858,43 @@ var MiradorWrapper = function () {
       logger.debug('MiradorWrapper#_bindEvents options:', options);
       var miradorProxy = proxyMgr.getMiradorProxy(this._miradorId);
 
-      miradorProxy.subscribe('YM_CLICKED_OPEN_ANNO_WINDOW', function (event, imageWindowId) {
-        logger.debug('MiradorWrappe:SUB:YM_CLICKED_OPEN_ANNO_WINDOW imageWindowId:', imageWindowId);
-        miradorProxy.publish('YM_DISPLAY_ON');
-        _this2.options.grid.addAnnotationWindow({
-          miradorId: _this2._miradorId,
-          imageWindowId: imageWindowId
-        });
-      });
+      miradorProxy.subscribe('YM_CLICKED_OPEN_ANNO_WINDOW', function () {
+        var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(event, imageWindowId) {
+          var annoWin;
+          return regeneratorRuntime.wrap(function _callee2$(_context2) {
+            while (1) {
+              switch (_context2.prev = _context2.next) {
+                case 0:
+                  logger.debug('MiradorWrappe:SUB:YM_CLICKED_OPEN_ANNO_WINDOW imageWindowId:', imageWindowId);
+
+                  _context2.next = 3;
+                  return (0, _modalAlert2.default)().show('Opening an annotation window...');
+
+                case 3:
+                  miradorProxy.publish('YM_DISPLAY_ON');
+                  _context2.next = 6;
+                  return _this2.options.grid.addAnnotationWindow({
+                    miradorId: _this2._miradorId,
+                    imageWindowId: imageWindowId
+                  });
+
+                case 6:
+                  annoWin = _context2.sent;
+
+                  (0, _modalAlert2.default)().hide();
+
+                case 8:
+                case 'end':
+                  return _context2.stop();
+              }
+            }
+          }, _callee2, _this2);
+        }));
+
+        return function (_x4, _x5) {
+          return _ref2.apply(this, arguments);
+        };
+      }());
 
       jQuery.subscribe('ANNOWIN_ANNOTATION_FOCUSED', function (event, params) {
         logger.debug('MiradorWrapper:SUB:ANNOWIN_ANNOTATION_FOCUSED, params:', params);
@@ -13993,7 +14043,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _modalAlert = __webpack_require__(15);
+var _modalAlert = __webpack_require__(10);
 
 var _modalAlert2 = _interopRequireDefault(_modalAlert);
 
@@ -14877,7 +14927,7 @@ var AnnotationListWidget = function () {
                 return _context12.abrupt('return');
 
               case 4:
-                (0, _modalAlert2.default)().show('Loading');
+                (0, _modalAlert2.default)().show('Loading annotations...');
 
                 _context12.next = 7;
                 return this._getAnnotationsForPage(pageNum);
@@ -15622,7 +15672,7 @@ var _annotationListWidget = __webpack_require__(42);
 
 var _annotationListWidget2 = _interopRequireDefault(_annotationListWidget);
 
-var _fatalError = __webpack_require__(10);
+var _fatalError = __webpack_require__(11);
 
 var _fatalError2 = _interopRequireDefault(_fatalError);
 
@@ -15646,7 +15696,7 @@ var _menuTagSelector = __webpack_require__(50);
 
 var _menuTagSelector2 = _interopRequireDefault(_menuTagSelector);
 
-var _layerSelector = __webpack_require__(14);
+var _layerSelector = __webpack_require__(15);
 
 var _layerSelector2 = _interopRequireDefault(_layerSelector);
 
@@ -16790,7 +16840,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _import = __webpack_require__(1);
 
-var _annotationEditor = __webpack_require__(13);
+var _annotationEditor = __webpack_require__(14);
 
 var _annotationEditor2 = _interopRequireDefault(_annotationEditor);
 
