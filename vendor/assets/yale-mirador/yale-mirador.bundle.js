@@ -1,5 +1,5 @@
-// Yale-Mirador v0.7.3-5-ga7de262 built Tue Sep 05 2017 10:28:53 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.7.3-5-ga7de262 built Tue Sep 05 2017 10:28:53 GMT-0400 (EDT)";
+// Yale-Mirador v0.7.3-5-ga7de262 built Wed Sep 06 2017 13:50:22 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.7.3-5-ga7de262 built Wed Sep 06 2017 13:50:22 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -15130,15 +15130,9 @@ var AnnotationListWidget = function () {
   }, {
     key: 'getTocSiblingElems',
     value: function getTocSiblingElems(annotation, annotations, layerId, toc) {
-      var _this3 = this;
-
       logger.debug('AnnotationListWidget#getTocSiblingElems annotation:', annotation, 'annotations:', annotations, 'layerId:', layerId, 'toc:', toc);
       var result = [];
       var siblings = _import.annoUtil.findTocSiblings(annotation, annotations, layerId, toc);
-      siblings = siblings.filter(function (anno) {
-        return _this3._getParagraphTag(anno) === _this3._getParagraphTag(annotation);
-      });
-      console.log('siblings:', siblings);
 
       var _iteratorNormalCompletion6 = true;
       var _didIteratorError6 = false;
@@ -15194,39 +15188,6 @@ var AnnotationListWidget = function () {
       }
 
       return result;
-    }
-  }, {
-    key: '_getParagraphTag',
-    value: function _getParagraphTag(annotation) {
-      var tags = (0, _import.Anno)(annotation).tags;
-      var _iteratorNormalCompletion8 = true;
-      var _didIteratorError8 = false;
-      var _iteratorError8 = undefined;
-
-      try {
-        for (var _iterator8 = tags[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
-          var tag = _step8.value;
-
-          if (tag.match(/^p\d+$/)) {
-            return tag;
-          }
-        }
-      } catch (err) {
-        _didIteratorError8 = true;
-        _iteratorError8 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion8 && _iterator8.return) {
-            _iterator8.return();
-          }
-        } finally {
-          if (_didIteratorError8) {
-            throw _iteratorError8;
-          }
-        }
-      }
-
-      return null;
     }
   }, {
     key: '_focusNextAnnotation',
@@ -17120,11 +17081,13 @@ var AnnotationTocRenderer = function () {
 
       logger.debug('AnnotationTocRenderer#render');
 
-      this.options.toc.walk(function (node) {
+      this.options.toc.walk(function (node, level) {
         if (node.isRoot) {
           return; // do nothing with root node
         }
-        _this.appendHeader(node);
+        if (level < 2 && !node.isDummy) {
+          _this.appendHeader(node);
+        }
         _this.appendAnnotations(node);
       });
       this.appendUnattachedAnnotations();
@@ -17279,6 +17242,33 @@ function nodeHasAnnotationsToShow(node, layerId) {
     } finally {
       if (_didIteratorError3) {
         throw _iteratorError3;
+      }
+    }
+  }
+
+  var _iteratorNormalCompletion4 = true;
+  var _didIteratorError4 = false;
+  var _iteratorError4 = undefined;
+
+  try {
+    for (var _iterator4 = Object.values(node.childNodes)[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+      var childNode = _step4.value;
+
+      if (nodeHasAnnotationsToShow(childNode, layerId)) {
+        return true;
+      }
+    }
+  } catch (err) {
+    _didIteratorError4 = true;
+    _iteratorError4 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion4 && _iterator4.return) {
+        _iterator4.return();
+      }
+    } finally {
+      if (_didIteratorError4) {
+        throw _iteratorError4;
       }
     }
   }
@@ -17798,7 +17788,7 @@ exports.default = MenuTagSelector;
 /* 51 */
 /***/ (function(module, exports) {
 
-// joosugi v0.3.0-5-gfa405f4 built Wed Aug 30 2017 14:59:01 GMT-0400 (EDT)
+// joosugi v0.3.1-3-ge580d31 built Wed Sep 06 2017 13:50:16 GMT-0400 (EDT)
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -18350,6 +18340,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _annotationWrapper = __webpack_require__(0);
@@ -18418,7 +18410,8 @@ var AnnotationToc = function () {
        *   canvasAnnotations: [], // annotations that targets a canvas directly
        *   tags: [], // tags for this node
        *   childNodes: AN_OBJECT, // child TOC nodes as a hashmap on tags
-       *   isRoot: A_BOOL // true if the node is the root
+       *   isRoot: A_BOOL, // true if the node is the root
+       *   isDummy: A_BOOL  // true if the node is just a placeholder for reaching the next level of depth
        * }
        */
     } catch (err) {
@@ -18628,11 +18621,11 @@ var AnnotationToc = function () {
   }, {
     key: 'walk',
     value: function walk(visitCallback) {
-      this._visit(this._root, visitCallback);
+      this._visit(this._root, visitCallback, 0);
     }
   }, {
     key: '_visit',
-    value: function _visit(node, callback) {
+    value: function _visit(node, callback, level) {
       var sortedNodes = Object.values(node.childNodes).sort(function (n0, n1) {
         return n0.weight - n1.weight;
       });
@@ -18645,9 +18638,9 @@ var AnnotationToc = function () {
         for (var _iterator5 = sortedNodes[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
           var childNode = _step5.value;
 
-          var stop = callback(childNode);
+          var stop = callback(childNode, level);
           if (!stop) {
-            this._visit(childNode, callback);
+            this._visit(childNode, callback, level + 1);
           }
         }
       } catch (err) {
@@ -18771,12 +18764,15 @@ var AnnotationToc = function () {
         }
       }
 
-      var tag = this._getTagForLevel(tags, rowIndex);
+      var _getTagForLevel2 = this._getTagForLevel(tags, rowIndex),
+          _getTagForLevel3 = _slicedToArray(_getTagForLevel2, 2),
+          tag = _getTagForLevel3[0],
+          isDummy = _getTagForLevel3[1];
 
       if (tag) {
         // one of the tags belongs to the corresponding level of tag hierarchy
         if (!parent.childNodes[tag]) {
-          parent.childNodes[tag] = this._newNode(tag, parent);
+          parent.childNodes[tag] = this._newNode(tag, parent, isDummy);
         }
         currentNode = parent.childNodes[tag];
 
@@ -18815,8 +18811,10 @@ var AnnotationToc = function () {
         for (var _iterator7 = tags[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
           var tag = _step7.value;
 
-          if (tag.match('^' + prefix + '\\d+$')) {
-            return tag;
+          var match = tag.match('^' + prefix + '(\\d+)$');
+          if (match) {
+            var isDummy = match[1] === '0';
+            return [tag, isDummy];
           }
         }
       } catch (err) {
@@ -18834,7 +18832,7 @@ var AnnotationToc = function () {
         }
       }
 
-      return null;
+      return [null, null];
     }
   }, {
     key: '_extractTagNumber',
@@ -18844,13 +18842,14 @@ var AnnotationToc = function () {
 
     /**
      *
-     * @param {*} tag
-     * @param {*} parent parent node
+     * @param {string} tag
+     * @param {object} parent parent node
+     * @param {boolean} isDummy true if a placeholder node
      */
 
   }, {
     key: '_newNode',
-    value: function _newNode(tag, parent) {
+    value: function _newNode(tag, parent, isDummy) {
       if (!parent) {
         // root node
         return {
@@ -18866,9 +18865,73 @@ var AnnotationToc = function () {
           tags: tags,
           label: '',
           childNodes: {},
-          weight: 0 // to define order among nodes at the same level
+          weight: 0, // to define order among nodes at the same level
+          isDummy: isDummy
         };
       }
+    }
+
+    // For debugging
+
+  }, {
+    key: 'print',
+    value: function print() {
+      var pad = function pad(level) {
+        var s = '';
+        for (var i = 0; i < level; ++i) {
+          s += '  ';
+        }
+        return s;
+      };
+
+      var trim = function trim(s, maxLen, trimFromRight) {
+        if (s.length > maxLen) {
+          if (trimFromRight) {
+            s = '... ' + s.substring(s.length - maxLen + 4);
+          } else {
+            s = s.substring(0, maxLen - 4) + ' ...';
+          }
+        }
+        return s;
+      };
+
+      var t = '';
+
+      this.walk(function (node, level) {
+        t += pad(level) + '- [n] ';
+        t += String(node.tags);
+        t += '\n';
+        var _iteratorNormalCompletion8 = true;
+        var _didIteratorError8 = false;
+        var _iteratorError8 = undefined;
+
+        try {
+          for (var _iterator8 = node.annotations[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
+            var anno = _step8.value;
+
+            t += pad(level + 1) + '- [a] ';
+            var bodyText = (0, _annotationWrapper2.default)(anno).bodyText || '';
+            t += trim(bodyText, 60) + '\n';
+            var layerId = anno.layerId || '';
+            t += pad(level + 1) + '      ' + trim(layerId, 60, true) + '\n';
+          }
+        } catch (err) {
+          _didIteratorError8 = true;
+          _iteratorError8 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion8 && _iterator8.return) {
+              _iterator8.return();
+            }
+          } finally {
+            if (_didIteratorError8) {
+              throw _iteratorError8;
+            }
+          }
+        }
+      });
+
+      console.log('TOC:\n' + t);
     }
   }]);
 
