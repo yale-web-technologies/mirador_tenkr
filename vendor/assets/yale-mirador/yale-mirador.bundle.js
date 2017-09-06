@@ -1,5 +1,5 @@
-// Yale-Mirador v0.7.3-7-g4ce353c built Wed Sep 06 2017 15:10:02 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.7.3-7-g4ce353c built Wed Sep 06 2017 15:10:02 GMT-0400 (EDT)";
+// Yale-Mirador v0.7.3-7-g4ce353c built Wed Sep 06 2017 15:22:59 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.7.3-7-g4ce353c built Wed Sep 06 2017 15:22:59 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -16959,7 +16959,7 @@ var AnnotationRenderer = function () {
           endpoint: annoWin.endpoint,
           annotation: annotation,
           saveCallback: function saveCallback(annotation, content) {
-            if (annoWin.currentLayerId === annotation.layerId) {
+            if (annoWin.getCurrentLayerId() === annotation.layerId) {
               var normalView = annoElem.find('.normal_view');
               var contentElem = normalView.find('.content');
               contentElem.html(content);
