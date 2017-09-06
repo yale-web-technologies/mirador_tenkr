@@ -1,5 +1,5 @@
-// Yale-Mirador v0.7.3-5-ga7de262 built Wed Sep 06 2017 13:50:22 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.7.3-5-ga7de262 built Wed Sep 06 2017 13:50:22 GMT-0400 (EDT)";
+// Yale-Mirador v0.7.3-7-g4ce353c built Wed Sep 06 2017 15:10:02 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.7.3-7-g4ce353c built Wed Sep 06 2017 15:10:02 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -16874,7 +16874,12 @@ var AnnotationRenderer = function () {
       annoElem.data('canvasId', options.canvasId);
       annoElem.data('annoOrderButtonsRow', annoOrderButtonsRow);
 
-      annoElem.find('.ui.dropdown').dropdown({ direction: 'downward' });
+      var ddElem = annoElem.find('.ui.dropdown');
+
+      ddElem.dropdown({ direction: 'downward' });
+      ddElem.click(function (event) {
+        event.stopPropagation(); // prevent _FOCUSED event from being published by clicking on the dropdown
+      });
 
       menuBar.addClass('layer_' + layerIndex % 10);
       if (annotation.on['@type'] == 'oa:Annotation') {
@@ -16914,8 +16919,6 @@ var AnnotationRenderer = function () {
       });
 
       annoElem.find('.annotate').click(function (event) {
-        event.stopPropagation();
-
         var imageWindow = annoWin.getImageWindowProxy();
         var dialogElement = jQuery('#ym_annotation_dialog');
         var editor = new _annotationEditor2.default({
@@ -16949,8 +16952,6 @@ var AnnotationRenderer = function () {
       });
 
       annoElem.find('.edit').click(function (event) {
-        event.stopPropagation();
-
         var editor = new _annotationEditor2.default({
           parent: annoElem,
           windowId: annoWin.getImageWindowId(),
@@ -16981,8 +16982,6 @@ var AnnotationRenderer = function () {
       });
 
       annoElem.find('.delete').click(function (event) {
-        event.stopPropagation();
-
         if (window.confirm('Do you really want to delete the annotation?')) {
           _this._miradorProxy.publish('annotationDeleted.' + annoWin.getImageWindowProxy().getWindowId(), [annotation['@id']]);
         }
