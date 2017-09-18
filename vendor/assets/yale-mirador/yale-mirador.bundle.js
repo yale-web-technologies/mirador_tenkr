@@ -1,5 +1,5 @@
-// Yale-Mirador v0.7.3-9-g7510879 built Mon Sep 18 2017 00:13:19 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.7.3-9-g7510879 built Mon Sep 18 2017 00:13:19 GMT-0400 (EDT)";
+// Yale-Mirador v0.7.3-9-g7510879 built Mon Sep 18 2017 10:44:29 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.7.3-9-g7510879 built Mon Sep 18 2017 10:44:29 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -67,7 +67,7 @@ window._YaleMiradorVersion="Yale-Mirador v0.7.3-9-g7510879 built Mon Sep 18 2017
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 56);
+/******/ 	return __webpack_require__(__webpack_require__.s = 57);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -172,8 +172,8 @@ var Logger = function () {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-__webpack_require__(51);
 __webpack_require__(52);
+__webpack_require__(53);
 
 var Anno = joosugi.AnnotationWrapper;
 var AnnotationExplorer = joosugi.AnnotationExplorer;
@@ -352,7 +352,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _miradorProxy = __webpack_require__(38);
+var _miradorProxy = __webpack_require__(39);
 
 var _miradorProxy2 = _interopRequireDefault(_miradorProxy);
 
@@ -597,7 +597,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 exports.default = getApp;
 
-__webpack_require__(35);
+__webpack_require__(36);
 
 var _import = __webpack_require__(1);
 
@@ -605,7 +605,7 @@ var _annotationSource = __webpack_require__(9);
 
 var _annotationSource2 = _interopRequireDefault(_annotationSource);
 
-var _annotationTocCache = __webpack_require__(22);
+var _annotationTocCache = __webpack_require__(23);
 
 var _annotationTocCache2 = _interopRequireDefault(_annotationTocCache);
 
@@ -617,7 +617,7 @@ var _annotationCache = __webpack_require__(12);
 
 var _annotationCache2 = _interopRequireDefault(_annotationCache);
 
-var _configFetcher = __webpack_require__(24);
+var _configFetcher = __webpack_require__(25);
 
 var _configFetcher2 = _interopRequireDefault(_configFetcher);
 
@@ -633,7 +633,7 @@ var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
-var _grid = __webpack_require__(36);
+var _grid = __webpack_require__(37);
 
 var _grid2 = _interopRequireDefault(_grid);
 
@@ -643,7 +643,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-__webpack_require__(53);
+__webpack_require__(54);
 
 //import MainMenu from './widgets/main-menu'; //deprecated
 //import './util/jquery-tiny-pubsub-trace'; // import this only for debugging!
@@ -1028,11 +1028,11 @@ var _miradorProxyManager = __webpack_require__(3);
 
 var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
-var _layoutConfigParser = __webpack_require__(37);
+var _layoutConfigParser = __webpack_require__(38);
 
 var _layoutConfigParser2 = _interopRequireDefault(_layoutConfigParser);
 
-var _miradorWrapper = __webpack_require__(40);
+var _miradorWrapper = __webpack_require__(41);
 
 var _miradorWrapper2 = _interopRequireDefault(_miradorWrapper);
 
@@ -2615,11 +2615,11 @@ exports.default = getAnnotationCache;
 
 var _import = __webpack_require__(1);
 
-var _annotationCacheIndexeddb = __webpack_require__(20);
+var _annotationCacheIndexeddb = __webpack_require__(21);
 
 var _annotationCacheIndexeddb2 = _interopRequireDefault(_annotationCacheIndexeddb);
 
-var _annotationCacheInMemory = __webpack_require__(19);
+var _annotationCacheInMemory = __webpack_require__(20);
 
 var _annotationCacheInMemory2 = _interopRequireDefault(_annotationCacheInMemory);
 
@@ -2818,7 +2818,7 @@ var _app = __webpack_require__(4);
 
 var _app2 = _interopRequireDefault(_app);
 
-var _errorDialog = __webpack_require__(49);
+var _errorDialog = __webpack_require__(50);
 
 var _errorDialog2 = _interopRequireDefault(_errorDialog);
 
@@ -3148,7 +3148,7 @@ var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
-var _layerSelector = __webpack_require__(15);
+var _layerSelector = __webpack_require__(16);
 
 var _layerSelector2 = _interopRequireDefault(_layerSelector);
 
@@ -3635,6 +3635,30 @@ var template = Handlebars.compile(['<div class="ym_anno_editor">', '  <div class
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.default = {
+
+  findAnnoListElem: function findAnnoListElem(rootElem) {
+    return rootElem.find('.annowin_list');
+  },
+
+  /**
+   * Return true if the element is an annotation cell, as opposed to a header
+   */
+  isAnnotationCell: function isAnnotationCell(elem) {
+    return elem.hasClass('annowin_anno');
+  }
+};
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -3646,7 +3670,7 @@ var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
-var _selector = __webpack_require__(16);
+var _selector = __webpack_require__(17);
 
 var _selector2 = _interopRequireDefault(_selector);
 
@@ -3802,7 +3826,7 @@ var _class = function () {
 exports.default = _class;
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3968,7 +3992,7 @@ var template = Handlebars.compile(['<div class="basic tiny ui button ym_button d
 var itemTemplate = Handlebars.compile(['<div class="item">', '  {{#if colorClass}}', '    <span class="icon_span"><i class="circle icon {{colorClass}}"></i></span>', '  {{/if}}', '  <span class="label">{{label}}</span>', '</div>'].join(''));
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4002,7 +4026,7 @@ jQuery(document).ready(function () {
 });
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {var require;var require;(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return require(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
@@ -10779,10 +10803,10 @@ module.exports = _dereq_(23);
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}]},{},[1]);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(55), __webpack_require__(54)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(56), __webpack_require__(55)))
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10879,7 +10903,7 @@ var AnnotationCache = function () {
 exports.default = AnnotationCache;
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11078,7 +11102,7 @@ var AnnotationCacheIndexeddb = function () {
 exports.default = AnnotationCacheIndexeddb;
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11092,7 +11116,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _import = __webpack_require__(1);
 
-var _firebaseProxy = __webpack_require__(23);
+var _firebaseProxy = __webpack_require__(24);
 
 var _firebaseProxy2 = _interopRequireDefault(_firebaseProxy);
 
@@ -11323,7 +11347,7 @@ var AnnotationSourceFb = function () {
 exports.default = AnnotationSourceFb;
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11449,7 +11473,7 @@ var AnnotationTocCache = function () {
 exports.default = AnnotationTocCache;
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11628,7 +11652,7 @@ var FirebaseProxy = function () {
 exports.default = FirebaseProxy;
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11721,7 +11745,7 @@ var ConfigFetcher = function () {
 }();
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11746,7 +11770,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11762,7 +11786,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _localesDefault = __webpack_require__(25);
+var _localesDefault = __webpack_require__(26);
 
 var _localesDefault2 = _interopRequireDefault(_localesDefault);
 
@@ -11846,7 +11870,7 @@ var Locales = function () {
 exports.default = Locales;
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11862,7 +11886,7 @@ var _annotationSource = __webpack_require__(9);
 
 var _annotationSource2 = _interopRequireDefault(_annotationSource);
 
-var _annotationSourceFb = __webpack_require__(21);
+var _annotationSourceFb = __webpack_require__(22);
 
 var _annotationSourceFb2 = _interopRequireDefault(_annotationSourceFb);
 
@@ -11874,7 +11898,7 @@ var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
-var _locales = __webpack_require__(26);
+var _locales = __webpack_require__(27);
 
 var _locales2 = _interopRequireDefault(_locales);
 
@@ -12008,7 +12032,7 @@ var MiradorConfigBuilder = function () {
 exports.default = MiradorConfigBuilder;
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12154,7 +12178,7 @@ var emptyTemplate = Handlebars.compile(['<div class="ym-annotation-toc">', 'Tabl
 var itemTemplate = Handlebars.compile(['<div class="ym-annotation-toc-item {{tag}}" tabindex="-1">', '<a href="#">{{{content}}}</a>', '</div>'].join(''));
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12220,7 +12244,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 })(Mirador);
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12288,7 +12312,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 })(Mirador);
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12368,7 +12392,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 })(Mirador);
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12595,7 +12619,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 })(Mirador);
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12793,7 +12817,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 })(Mirador);
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12989,7 +13013,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 })(Mirador);
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12999,13 +13023,11 @@ var _annotationEditor = __webpack_require__(14);
 
 var _annotationEditor2 = _interopRequireDefault(_annotationEditor);
 
-var _annotationTableOfContents = __webpack_require__(28);
+var _annotationTableOfContents = __webpack_require__(29);
 
 var _annotationTableOfContents2 = _interopRequireDefault(_annotationTableOfContents);
 
 var _yaleEndpoint = __webpack_require__(13);
-
-__webpack_require__(29);
 
 __webpack_require__(30);
 
@@ -13016,6 +13038,8 @@ __webpack_require__(32);
 __webpack_require__(33);
 
 __webpack_require__(34);
+
+__webpack_require__(35);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -13030,7 +13054,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 })(Mirador);
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13062,7 +13086,7 @@ var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
-var _annotationWindow = __webpack_require__(44);
+var _annotationWindow = __webpack_require__(45);
 
 var _annotationWindow2 = _interopRequireDefault(_annotationWindow);
 
@@ -13472,7 +13496,7 @@ var _class = function () {
 exports.default = _class;
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13601,7 +13625,7 @@ var LayoutConfigParser = function () {
 exports.default = LayoutConfigParser;
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13617,7 +13641,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _workspaceProxy = __webpack_require__(39);
+var _workspaceProxy = __webpack_require__(40);
 
 var _workspaceProxy2 = _interopRequireDefault(_workspaceProxy);
 
@@ -13718,7 +13742,7 @@ var MiradorProxy = function () {
 exports.default = MiradorProxy;
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13784,7 +13808,7 @@ var WorkspaceProxy = function () {
 exports.default = WorkspaceProxy;
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13812,11 +13836,11 @@ var _miradorProxyManager = __webpack_require__(3);
 
 var _miradorProxyManager2 = _interopRequireDefault(_miradorProxyManager);
 
-var _miradorConfigBuilder = __webpack_require__(27);
+var _miradorConfigBuilder = __webpack_require__(28);
 
 var _miradorConfigBuilder2 = _interopRequireDefault(_miradorConfigBuilder);
 
-var _annotationExplorer = __webpack_require__(41);
+var _annotationExplorer = __webpack_require__(42);
 
 var _windowProxy = __webpack_require__(5);
 
@@ -14017,7 +14041,7 @@ var MiradorWrapper = function () {
 exports.default = MiradorWrapper;
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14114,7 +14138,7 @@ exports.openAnnotationSelector = openAnnotationSelector;
 ;
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14126,11 +14150,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _annotationNav = __webpack_require__(43);
+var _annotationNav = __webpack_require__(44);
 
 var _annotationNav2 = _interopRequireDefault(_annotationNav);
 
-var _annotationPageRenderer = __webpack_require__(45);
+var _annotationPageRenderer = __webpack_require__(46);
 
 var _annotationPageRenderer2 = _interopRequireDefault(_annotationPageRenderer);
 
@@ -14152,7 +14176,7 @@ var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
-var _scrollHelper = __webpack_require__(48);
+var _scrollHelper = __webpack_require__(49);
 
 var _scrollHelper2 = _interopRequireDefault(_scrollHelper);
 
@@ -15463,7 +15487,7 @@ var AnnotationListWidget = function () {
 exports.default = AnnotationListWidget;
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15712,7 +15736,7 @@ var AnnotationNav = function () {
 exports.default = AnnotationNav;
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15724,15 +15748,17 @@ Object.defineProperty(exports, "__esModule", {
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _import = __webpack_require__(1);
 
-var _annotationListWidget = __webpack_require__(42);
+var _annotationListWidget = __webpack_require__(43);
 
 var _annotationListWidget2 = _interopRequireDefault(_annotationListWidget);
+
+var _domHelper = __webpack_require__(15);
+
+var _domHelper2 = _interopRequireDefault(_domHelper);
 
 var _fatalError = __webpack_require__(11);
 
@@ -15754,11 +15780,11 @@ var _stateStore = __webpack_require__(2);
 
 var _stateStore2 = _interopRequireDefault(_stateStore);
 
-var _menuTagSelector = __webpack_require__(50);
+var _menuTagSelector = __webpack_require__(51);
 
 var _menuTagSelector2 = _interopRequireDefault(_menuTagSelector);
 
-var _layerSelector = __webpack_require__(15);
+var _layerSelector = __webpack_require__(16);
 
 var _layerSelector2 = _interopRequireDefault(_layerSelector);
 
@@ -15815,7 +15841,7 @@ var AnnotationWindow = function () {
       var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
         var _this2 = this;
 
-        var proxyMgr, annosToShow, fullTagsTargets, targetAnno, canvasId, toc, matched;
+        var proxyMgr, annosToShow, fullTagsTargets, targetAnno, canvasId, toc;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -15823,8 +15849,7 @@ var AnnotationWindow = function () {
                 proxyMgr = (0, _miradorProxyManager2.default)();
                 annosToShow = [];
                 fullTagsTargets = null;
-                targetAnno = null;
-
+                targetAnno = null; // annotation cell to focus on
 
                 if (!this._id) {
                   this._id = Mirador.genUUID();
@@ -15856,20 +15881,12 @@ var AnnotationWindow = function () {
 
                 this._rootElem = jQuery(template({}));
                 this._appendTo.append(this._rootElem);
-                this._listElem = this._rootElem.find('.annowin_list');
+                this._listElem = _domHelper2.default.findAnnoListElem(this._rootElem);
 
                 if (this._annotationId) {
-                  // annotation ID was given in the URL
-                  matched = this._imageWindow.getAnnotationsList().filter(function (anno) {
-                    if (!anno || (typeof anno === 'undefined' ? 'undefined' : _typeof(anno)) !== 'object') {
-                      logger.error('AnnotationWindow#init Invalid annotation', anno);
-                      return false;
-                    }
-                    return anno['@id'] === _this2._annotationId;
-                  });
-
-                  targetAnno = matched[0];
-                  if (matched.length > 0) {
+                  // need to focus on a specific annotation
+                  targetAnno = _import.annoUtil.findAnnotationFromListById(this._annotationId, this._imageWindow.getAnnotationsList())[0];
+                  if (targetAnno) {
                     this._initialLayerId = targetAnno.layerId;
                     if (toc) {
                       this._initialTocTags = toc.getTagsFromAnnotationId(this._annotationId);
@@ -15924,7 +15941,7 @@ var AnnotationWindow = function () {
                   this._listWidget.highlightAnnotations([targetAnno], 'SELECTED');
                   this._listWidget.goToAnnotation(this._annotationId, canvasId);
                 } else if (this._initialTocTags.length > 0) {
-                  //listWidget.goToPageByTags(this._initialTocTags);
+                  this._listWidget.goToPageByTags(this._initialTocTags);
                 } else {
                   this._listWidget.goToPage(0);
                 }
@@ -16664,7 +16681,7 @@ exports.default = AnnotationWindow;
 var template = Handlebars.compile(['<div class="ym_annotation_window">', '  <div class="annowin_header">', '    <div class="annowin_layer_row">', '      <span class="layer_selector_container"></span>', '    </div>', '    <div class="annowin_menu_tag_row">', '      <span class="menu_tag_selector_container"></span>', '    </div>', '  </div>', '  <div class="placeholder"></div>', '  <div class="annowin_list" tabindex="-1">', '  </div>', '</div>'].join(''));
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16676,11 +16693,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _annotationRenderer = __webpack_require__(46);
+var _annotationRenderer = __webpack_require__(47);
 
 var _annotationRenderer2 = _interopRequireDefault(_annotationRenderer);
 
-var _annotationTocRenderer = __webpack_require__(47);
+var _annotationTocRenderer = __webpack_require__(48);
 
 var _annotationTocRenderer2 = _interopRequireDefault(_annotationTocRenderer);
 
@@ -16888,7 +16905,7 @@ exports.default = AnnotationPageRenderer;
 var pageTemplate = Handlebars.compile(['<div class="ym-annotation-page page-{{pageNum}}">', '  <div class="page-header">{{text}}', '  </div>', '  <div class="annowin_temp_row">', '    <span class="ui small orange button ym_button save">Save new order</span>', '    <span class="ui small orange button ym_button cancel">Cancel</span>', '  </div>', '</div>'].join(''));
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17127,7 +17144,7 @@ exports.default = AnnotationRenderer;
 var annotationTemplate = Handlebars.compile(['<div class="annowin_anno" tabindex="-1">', '  <div class="normal_view">', '    {{#if isEditor}}', '      <div class="menu_bar">', '        <div class="ui text menu">', '          <div class="ui dropdown item">', '            Action<i class="dropdown icon"></i>', '            <div class="menu">', '              <div class="annotate item"><i class="fa fa-hand-o-left fa-fw"></i> Annotate</div>', '              <div class="edit item"><i class="fa fa-edit fa-fw"></i> {{t "edit"}}</div>', '              <div class="delete item"><i class="fa fa-times fa-fw"></i> {{t "delete"}}</div>', '            </div>', '          </div>', '          {{#if orderable}}', '            <div class="right menu">', '              <i class="caret down icon"></i>', '              <i class="caret up icon"></i>', '            </div>', '          {{/if}}', '        </div>', '      </div>', '    {{/if}}', '    <div class="content">{{{content}}}</div>', '    <div class="tags">{{{tags}}}</div>', '  </div>', '</div>'].join(''));
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17377,7 +17394,7 @@ function nodeHasAnnotationsToShow(node, layerId) {
 }
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17388,6 +17405,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _domHelper = __webpack_require__(15);
+
+var _domHelper2 = _interopRequireDefault(_domHelper);
 
 var _logger = __webpack_require__(0);
 
@@ -17440,7 +17461,8 @@ var ScrollHelper = function () {
   }, {
     key: 'scrollToTags',
     value: function scrollToTags(targetTags) {
-      logger.debug('AnnotationListWidget#scrollToTags targetTags:', targetTags);
+      logger.debug('ScrollHelper#scrollToTags targetTags:', targetTags);
+      var targetHeaderElem = null;
       var targetElem = null;
 
       this._rootElem.find('.annowin_group_header').each(function (index, value) {
@@ -17454,22 +17476,36 @@ var ScrollHelper = function () {
 
         if (targetTags.length === 1) {
           if (tags[0] === targetTags[0]) {
-            targetElem = headerElem;
+            targetHeaderElem = headerElem;
             return false;
           }
         } else if (tags[0] === targetTags[0] && tags[1] === targetTags[1]) {
-          targetElem = headerElem;
+          targetHeaderElem = headerElem;
           return false;
         }
       });
 
-      if (targetElem) {
-        this._rootElem.scrollTo(targetElem.next(), {
-          offset: { top: -this._groupHeaderHeight }
-        });
+      logger.debug('ScrollHelper#scrollToTags targetHeaderElem:', targetHeaderElem);
+
+      if (targetHeaderElem) {
+        targetElem = this._getNextAnnoElem(targetHeaderElem);
+        if (targetElem) {
+          this._rootElem.scrollTo(targetElem, {
+            offset: { top: -this._groupHeaderHeight }
+          });
+        }
       } else {
-        logger.warning('AnnotationListWidget#scrollToTags Header element not found for', targetTags);
+        logger.warning('ScrollHelper#scrollToTags Header element not found for', targetTags);
       }
+    }
+  }, {
+    key: '_getNextAnnoElem',
+    value: function _getNextAnnoElem(elem) {
+      var currentElem = elem;
+      while (currentElem.size() > 0 && !_domHelper2.default.isAnnotationCell(currentElem)) {
+        currentElem = currentElem.next();
+      }
+      return currentElem.size() > 0 ? currentElem : null;
     }
   }, {
     key: 'scrollToElem',
@@ -17638,7 +17674,7 @@ var ScrollHelper = function () {
 exports.default = ScrollHelper;
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17709,7 +17745,7 @@ var template = Handlebars.compile(['<div class="header">Error</div>', '<div clas
 var MSG_TRY_LATER = '<p>Please try again by reloading the page, or if problem persists, contact the site administrator.</p>';
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17725,7 +17761,7 @@ var _logger = __webpack_require__(0);
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _selector = __webpack_require__(16);
+var _selector = __webpack_require__(17);
 
 var _selector2 = _interopRequireDefault(_selector);
 
@@ -17885,10 +17921,10 @@ var MenuTagSelector = function () {
 exports.default = MenuTagSelector;
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports) {
 
-// joosugi v0.3.1-0-g0e84bf6 built Wed Sep 06 2017 10:51:38 GMT-0400 (EDT)
+// joosugi v0.3.1-3-ge580d31 built Mon Sep 18 2017 10:44:23 GMT-0400 (EDT)
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -18160,6 +18196,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _annotationWrapper = __webpack_require__(0);
 
 var _annotationWrapper2 = _interopRequireDefault(_annotationWrapper);
@@ -18212,6 +18250,21 @@ exports.default = {
 
     return false;
   },
+
+  findAnnotationFromListById: function findAnnotationFromListById(annotationId, annotations) {
+    var matched = annotations.filter(function (anno) {
+      if (!anno || (typeof anno === 'undefined' ? 'undefined' : _typeof(anno)) !== 'object') {
+        logger.error('AnnotationUtil#findAnnotationFromListById invalid annotation', anno);
+        return false;
+      }
+      return anno['@id'] === annotationId;
+    });
+    if (matched.length > 1) {
+      logger.error('AnnotationUtil#findAnnotationFromListById duplicate IDs', matched);
+    }
+    return matched[0];
+  },
+
 
   // For an annotation that targets other annotation(s), follow the
   // "on" relations recursively until no more targets are found.
@@ -18970,6 +19023,69 @@ var AnnotationToc = function () {
         };
       }
     }
+
+    // For debugging
+
+  }, {
+    key: 'print',
+    value: function print() {
+      var pad = function pad(level) {
+        var s = '';
+        for (var i = 0; i < level; ++i) {
+          s += '  ';
+        }
+        return s;
+      };
+
+      var trim = function trim(s, maxLen, trimFromRight) {
+        if (s.length > maxLen) {
+          if (trimFromRight) {
+            s = '... ' + s.substring(s.length - maxLen + 4);
+          } else {
+            s = s.substring(0, maxLen - 4) + ' ...';
+          }
+        }
+        return s;
+      };
+
+      var t = '';
+
+      this.walk(function (node, level) {
+        t += pad(level) + '- [n] ';
+        t += String(node.tags);
+        t += '\n';
+        var _iteratorNormalCompletion8 = true;
+        var _didIteratorError8 = false;
+        var _iteratorError8 = undefined;
+
+        try {
+          for (var _iterator8 = node.annotations[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
+            var anno = _step8.value;
+
+            t += pad(level + 1) + '- [a] ';
+            var bodyText = (0, _annotationWrapper2.default)(anno).bodyText || '';
+            t += trim(bodyText, 60) + '\n';
+            var layerId = anno.layerId || '';
+            t += pad(level + 1) + '      ' + trim(layerId, 60, true) + '\n';
+          }
+        } catch (err) {
+          _didIteratorError8 = true;
+          _iteratorError8 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion8 && _iterator8.return) {
+              _iterator8.return();
+            }
+          } finally {
+            if (_didIteratorError8) {
+              throw _iteratorError8;
+            }
+          }
+        }
+      });
+
+      console.log('TOC:\n' + t);
+    }
   }]);
 
   return AnnotationToc;
@@ -19223,7 +19339,7 @@ exports.default = AnnotationExplorer;
 module.exports = joosugi;
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports) {
 
 // joosugi-semantic-ui v0.1.1-3-gbf770d5 built Thu Jul 20 2017 17:48:05 GMT-0400 (EDT)
@@ -22583,13 +22699,13 @@ module.exports = __webpack_require__(0);
 module.exports = joosugiUI;
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -22779,7 +22895,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports) {
 
 var g;
@@ -22806,12 +22922,12 @@ module.exports = g;
 
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(18);
+__webpack_require__(19);
 __webpack_require__(4);
-module.exports = __webpack_require__(17);
+module.exports = __webpack_require__(18);
 
 
 /***/ })
