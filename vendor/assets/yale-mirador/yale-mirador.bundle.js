@@ -1,5 +1,5 @@
-// Yale-Mirador v0.7.3-13-g16bc9d9 built Fri Sep 29 2017 15:33:13 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.7.3-13-g16bc9d9 built Fri Sep 29 2017 15:33:13 GMT-0400 (EDT)";
+// Yale-Mirador v0.7.3-14-gec77a00 built Mon Oct 02 2017 14:17:09 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.7.3-14-gec77a00 built Mon Oct 02 2017 14:17:09 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -15901,8 +15901,6 @@ var AnnotationWindow = function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                //let annosToShow = [];
-                //let fullTagsTargets = null;
                 targetAnno = null; // annotation cell to focus on
 
                 canvasId = this._imageWindow.getCurrentCanvasId();
@@ -15926,33 +15924,6 @@ var AnnotationWindow = function () {
 
               case 10:
                 toc = _context.t0;
-
-
-                /*
-                if (this._initialLayerId) {
-                  targetAnno = this._processLayerId(this._initialLayerId, annotationList);
-                }
-                */
-                /*
-                    if (this._initialLayerId) {
-                      annosToShow = this._imageWindow.getAnnotationsList();
-                      annosToShow = annosToShow.filter(anno => anno.layerId == this._initialLayerId);
-                
-                      if (this._initialTocTags.length > 0) {
-                        if (toc) {
-                          annosToShow = annosToShow.filter(anno => toc.matchHierarchy(anno, this._initialTocTags.slice(0,1)));
-                          fullTagsTargets = annosToShow.filter(anno => toc.matchHierarchy(anno, this._initialTocTags));
-                          if (fullTagsTargets.length > 0 && !targetAnno) {
-                            targetAnno = fullTagsTargets[0];
-                          }
-                        }
-                      }
-                    }
-                
-                    if (!targetAnno) {
-                      targetAnno = annosToShow[0];
-                    }
-                    */
                 _processDataParams2 = this._processDataParams({
                   annotationId: this._annotationId,
                   annotationList: annotationList,
@@ -15962,27 +15933,22 @@ var AnnotationWindow = function () {
                 targetAnno = _processDataParams2.targetAnno;
                 this._initialLayerId = _processDataParams2.layerId;
                 this._initialTocTags = _processDataParams2.tocTags;
+
+
                 logger.debug('AnnotationWindow#init targetAnno:', targetAnno);
 
-                console.log('HHH 1');
-
                 this.initLayerSelector();
-                console.log('HHH 2');
                 this.addCreateWindowButton();
                 this.placeholder = this._rootElem.find('.placeholder');
                 this.placeholder.text('Loading...').show();
-                console.log('HHH 3');
-
                 this._setupAnnotationListWidget();
-                console.log('HHH 4');
 
-                _context.next = 27;
+                _context.next = 23;
                 return this.reload().catch(function (reason) {
                   throw 'AnnotationWindow#init reload failed - ' + reason;
                 });
 
-              case 27:
-                console.log('HHH 5');
+              case 23:
 
                 if (this._annotationId) {
                   console.log('dada');
@@ -15993,11 +15959,10 @@ var AnnotationWindow = function () {
                 } else {
                   this._listWidget.goToPageByCanvas(canvasId);
                 }
-                console.log('HHH 6');
                 this.bindEvents();
                 return _context.abrupt('return', this);
 
-              case 32:
+              case 26:
               case 'end':
                 return _context.stop();
             }
@@ -16044,13 +16009,6 @@ var AnnotationWindow = function () {
         }
       }
 
-      /*
-      if (params.layerId && !targetAnno && params.toc && tocTags.length > 0) {
-        targetAnno = this._getTargetAnnoWithToc(filteredAnnos,
-          layerId, params.toc, tocTags);
-        }
-      }
-      */
       return { targetAnno: targetAnno, layerId: layerId, tocTags: tocTags };
     }
   }, {
@@ -18105,7 +18063,7 @@ exports.default = MenuTagSelector;
 /* 52 */
 /***/ (function(module, exports) {
 
-// joosugi v0.3.1-3-ge580d31 built Mon Sep 18 2017 10:44:23 GMT-0400 (EDT)
+// joosugi v0.3.1-0-g0e84bf6 built Wed Sep 06 2017 10:51:38 GMT-0400 (EDT)
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -18377,8 +18335,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 var _annotationWrapper = __webpack_require__(0);
 
 var _annotationWrapper2 = _interopRequireDefault(_annotationWrapper);
@@ -18431,21 +18387,6 @@ exports.default = {
 
     return false;
   },
-
-  findAnnotationFromListById: function findAnnotationFromListById(annotationId, annotations) {
-    var matched = annotations.filter(function (anno) {
-      if (!anno || (typeof anno === 'undefined' ? 'undefined' : _typeof(anno)) !== 'object') {
-        logger.error('AnnotationUtil#findAnnotationFromListById invalid annotation', anno);
-        return false;
-      }
-      return anno['@id'] === annotationId;
-    });
-    if (matched.length > 1) {
-      logger.error('AnnotationUtil#findAnnotationFromListById duplicate IDs', matched);
-    }
-    return matched[0];
-  },
-
 
   // For an annotation that targets other annotation(s), follow the
   // "on" relations recursively until no more targets are found.
@@ -19203,69 +19144,6 @@ var AnnotationToc = function () {
           isDummy: isDummy
         };
       }
-    }
-
-    // For debugging
-
-  }, {
-    key: 'print',
-    value: function print() {
-      var pad = function pad(level) {
-        var s = '';
-        for (var i = 0; i < level; ++i) {
-          s += '  ';
-        }
-        return s;
-      };
-
-      var trim = function trim(s, maxLen, trimFromRight) {
-        if (s.length > maxLen) {
-          if (trimFromRight) {
-            s = '... ' + s.substring(s.length - maxLen + 4);
-          } else {
-            s = s.substring(0, maxLen - 4) + ' ...';
-          }
-        }
-        return s;
-      };
-
-      var t = '';
-
-      this.walk(function (node, level) {
-        t += pad(level) + '- [n] ';
-        t += String(node.tags);
-        t += '\n';
-        var _iteratorNormalCompletion8 = true;
-        var _didIteratorError8 = false;
-        var _iteratorError8 = undefined;
-
-        try {
-          for (var _iterator8 = node.annotations[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
-            var anno = _step8.value;
-
-            t += pad(level + 1) + '- [a] ';
-            var bodyText = (0, _annotationWrapper2.default)(anno).bodyText || '';
-            t += trim(bodyText, 60) + '\n';
-            var layerId = anno.layerId || '';
-            t += pad(level + 1) + '      ' + trim(layerId, 60, true) + '\n';
-          }
-        } catch (err) {
-          _didIteratorError8 = true;
-          _iteratorError8 = err;
-        } finally {
-          try {
-            if (!_iteratorNormalCompletion8 && _iterator8.return) {
-              _iterator8.return();
-            }
-          } finally {
-            if (_didIteratorError8) {
-              throw _iteratorError8;
-            }
-          }
-        }
-      });
-
-      console.log('TOC:\n' + t);
     }
   }]);
 
