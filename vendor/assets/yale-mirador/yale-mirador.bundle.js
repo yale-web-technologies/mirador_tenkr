@@ -1,5 +1,5 @@
-// Yale-Mirador v0.7.3-10-gda474f8 built Mon Sep 18 2017 10:57:09 GMT-0400 (EDT)
-window._YaleMiradorVersion="Yale-Mirador v0.7.3-10-gda474f8 built Mon Sep 18 2017 10:57:09 GMT-0400 (EDT)";
+// Yale-Mirador v0.7.3-13-g16bc9d9 built Fri Sep 29 2017 15:33:13 GMT-0400 (EDT)
+window._YaleMiradorVersion="Yale-Mirador v0.7.3-13-g16bc9d9 built Fri Sep 29 2017 15:33:13 GMT-0400 (EDT)";
 
 
 /******/ (function(modules) { // webpackBootstrap
@@ -212,7 +212,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var logger = (0, _logger2.default)();
 
-var registeredKeys = new Set(['annotationBackendUrl', 'annotationLayers', 'annotationsOverlay', 'copyrighted', 'copyrightedImageServiceUrl', 'disableAuthz', 'displayModeOnStart', 'fixAnnoCellHeight', 'hideTagsInAnnotation', 'hiddenLayers', 'lastSelectedLayer', 'layerIndexMap', 'projectId', 'tagHierarchy', 'textDirection', 'tocSpec', 'tooltipStyles']);
+var registeredKeys = new Set(['annotationBackendUrl', 'annotationLayers', 'annotationsOverlay', 'continuousPages', 'copyrighted', 'copyrightedImageServiceUrl', 'disableAuthz', 'displayModeOnStart', 'fixAnnoCellHeight', 'hideTagsInAnnotation', 'hiddenLayers', 'lastSelectedLayer', 'layerIndexMap', 'projectId', 'showAnnotationsOverlayByDefault', 'tagHierarchy', 'textDirection', 'tocSpec', 'tooltipStyles']);
 
 /**
  * Holds states for the app, which will optionally persist if local storgae is
@@ -378,7 +378,7 @@ var MiradorProxyManager = function () {
   _createClass(MiradorProxyManager, [{
     key: 'addMirador',
     value: function addMirador(miradorId, mirador) {
-      logger.debug('MiradorProxyManager#addMirador', mirador);
+      //logger.debug('MiradorProxyManager#addMirador', mirador);
       var miradorProxy = this._miradorProxiesMap[miradorId];
       if (miradorProxy) {
         throw 'MiradorProxyManager#addMirador duplicate ID ' + miradorId;
@@ -472,14 +472,14 @@ var MiradorProxyManager = function () {
   }, {
     key: 'getWindowProxyById',
     value: function getWindowProxyById(windowId) {
-      logger.debug('MiradorProxyManager#getWindowProxyById windowId:', windowId);
+      //logger.debug('MiradorProxyManager#getWindowProxyById windowId:', windowId);
       var window = this.getWindowById(windowId);
       return window ? new _windowProxy2.default(window) : null;
     }
   }, {
     key: 'getWindowById',
     value: function getWindowById(windowId) {
-      logger.debug('MiradorProxyManager#getWindowById windowId:', windowId);
+      //logger.debug('MiradorProxyManager#getWindowById windowId:', windowId);
       var window = null;
 
       var _iteratorNormalCompletion3 = true;
@@ -537,7 +537,7 @@ var MiradorProxyManager = function () {
   }, {
     key: 'subscribe',
     value: function subscribe(eventName, callback) {
-      logger.debug('MiradorProxyManager#subscribe ', eventName, callback);
+      //logger.debug('MiradorProxyManager#subscribe ', eventName, callback);
       var _iteratorNormalCompletion4 = true;
       var _didIteratorError4 = false;
       var _iteratorError4 = undefined;
@@ -793,6 +793,12 @@ var App = function () {
                   state.setBoolean('fixAnnoCellHeight', settings.ui.fixAnnoCellHeight);
                   state.setString('textDirection', settings.ui.textDirection);
                   state.setTransient('annotationsOverlay', settings.ui.annotationsOverlay);
+                  if (settings.ui.annotationsOverlay) {
+                    state.setTransient('showAnnotationsOverlayByDefault', settings.ui.annotationsOverlay.showByDefault);
+                  }
+                  if (settings.ui.annotationWindow) {
+                    state.setTransient('continuousPages', settings.ui.annotationWindow.continuousPages);
+                  }
                   state.setTransient('tooltipStyles', settings.ui.tooltipStyles);
                   state.setTransient('hideTagsInAnnotation', settings.ui.hideTagsInAnnotation);
                 }
@@ -937,7 +943,7 @@ var WindowProxy = function () {
   }, {
     key: 'setCurrentCanvasId',
     value: function setCurrentCanvasId(canvasId, options) {
-      logger.debug('WindowProxy#setCurrentCanvasId canvasId:', canvasId, 'options', options);
+      //logger.debug('WindowProxy#setCurrentCanvasId canvasId:', canvasId, 'options', options);
       this.window.setCurrentCanvasID(canvasId, options);
     }
   }, {
@@ -1131,7 +1137,7 @@ var PageController = function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                logger.debug('PageController#showAnnotation windowId:', windowId, 'annoId:' + annoId, 'defaultLayer:', this._tocSpec.defaultLayer);
+                logger.debug('PageController#showAnnotation windowId:', windowId, 'annoId:' + annoId, 'defaultLayer:', this._tocSpec ? this._tocSpec.defaultLayer : null);
                 grid = this.options.grid;
                 windowProxy = this._miradorProxy.getWindowProxyById(windowId);
                 canvasId = windowProxy.getCurrentCanvasId();
@@ -1295,8 +1301,11 @@ var PageController = function () {
       } else {
         this._urlOptionsProcessed = true;
 
-        if (options.annotationId) {
+        if (this.options.state.getTransient('showAnnotationsOverlayByDefault') || options.annotationId) {
           this._miradorProxy.publish('YM_DISPLAY_ON');
+        }
+
+        if (options.annotationId) {
           var handler = function handler(event) {
             logger.debug('PageController#_processUrlOptions annotationsRendered');
             _this2._zoomToAnnotation(options.annotationId, imageWindowId);
@@ -1310,6 +1319,7 @@ var PageController = function () {
   }, {
     key: '_findCanvasAnnotationsFromTargets',
     value: function _findCanvasAnnotationsFromTargets(sourceAnnotation, allAnnotations, canvasId) {
+      logger.debug('PageController#_findCanvasAnnotationsFromTargets sourceAnnotation:', sourceAnnotation, 'allAnnotations:', allAnnotations, 'canvasId:', canvasId);
       var annoMap = {};
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
@@ -1380,7 +1390,6 @@ var PageController = function () {
         if (annos.length > 1) {
           logger.error('PageController#_zoomToAnnotation', annos.length, 'duplicate annos:', annos, 'imageWindowId:', imageWindowId);
         }
-        annos = this._findCanvasAnnotationsFromTargets(annos[0], allAnnotations, canvasId);
         logger.debug('PageController#_zoomToAnnotation canvas annos:', annos);
         imageView.zoomToAnnotation(annos[0]);
         imageView.panToAnnotation(annos[0]);
@@ -1426,21 +1435,27 @@ var PageController = function () {
 
 
                   _this3._showAnnotation(windowId, annoId);
-                  _context3.next = 8;
+
+                  if (!annoTocMenu) {
+                    _context3.next = 12;
+                    break;
+                  }
+
+                  _context3.next = 9;
                   return _this3._annotationTocCache.getToc(canvasId);
 
-                case 8:
+                case 9:
                   toc = _context3.sent;
                   annotation = toc.annotations.filter(function (anno) {
                     return anno['@id'] === annoId;
                   })[0];
 
 
-                  if (annotation && annoTocMenu) {
+                  if (annotation) {
                     annoTocMenu.scrollToTags(annotation.tocTags);
                   }
 
-                case 11:
+                case 12:
                 case 'end':
                   return _context3.stop();
               }
@@ -1456,7 +1471,9 @@ var PageController = function () {
       jQuery.subscribe('ANNOWIN_ANNOTATION_FOCUSED', function (event, params) {
         logger.debug('PageController has received event ANNOWIN_ANNOTATION_FOCUSED with options', params);
         var windowProxy = _this3._miradorProxy.getWindowProxyById(params.imageWindowId);
+        var canvasId = windowProxy.getCurrentCanvasId();
         var imageView = windowProxy.getImageView();
+        var annotations = windowProxy.getAnnotationsList();
         var annoMap = {};
 
         if (params.canvasId === windowProxy.getCurrentCanvasId()) {
@@ -1466,7 +1483,7 @@ var PageController = function () {
           var _iteratorError3 = undefined;
 
           try {
-            for (var _iterator3 = windowProxy.getAnnotationsList()[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+            for (var _iterator3 = annotations[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
               var _anno = _step3.value;
 
               annoMap[_anno['@id']] = _anno;
@@ -1489,7 +1506,7 @@ var PageController = function () {
           var anno = params.annotation;
 
           if (!_import.annoUtil.hasTargetOnCanvas(anno)) {
-            var annos = _import.annoUtil.findTargetAnnotationsOnCanvas(anno, annoMap);
+            var annos = _this3._findCanvasAnnotationsFromTargets(anno, annotations, canvasId);
             anno = annos[0];
           }
           if (anno) {
@@ -3646,6 +3663,17 @@ exports.default = {
    */
   isAnnotationCell: function isAnnotationCell(elem) {
     return elem.hasClass('annowin_anno');
+  },
+
+  findAnnoElemByAnnoId: function findAnnoElemByAnnoId(annoId, $rootElem) {
+    var $foundElem = null;
+    $rootElem.find('.annowin_anno').each(function (index, elem) {
+      if (jQuery(elem).data('annotationId') === annoId) {
+        $foundElem = jQuery(elem);
+        return false;
+      }
+    });
+    return $foundElem;
   }
 };
 
@@ -11969,7 +11997,7 @@ var MiradorConfigBuilder = function () {
 
       if (tocSpec) {
         windowSettings.sidePanelOptions.annotationTocTabAvailable = true;
-        windowSettings.sidePanelOptions.toc = false;
+        windowSettings.sidePanelOptions.tocTabAvailable = false;
       }
 
       if (!this.options.isEditor) {
@@ -12422,26 +12450,32 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
   $.ImageView.prototype.zoomToAnnotation = function (annotation) {
     logger.debug('ImageView(ext)#zoomToAnnotation annotation:', annotation);
-    var viewport = this.osd.viewport;
-    var currentZoom = viewport.getZoom();
-    //logger.debug('zoomToAnnotation zoom: ' + currentZoom);
-    var shapes = this.annotationsLayer.drawTool.getShapesForAnnotation(annotation);
-    var shapeBounds = $.yaleExt.getCombinedBounds(shapes); // in image coordinates
-    var shapeWH = viewport.imageToViewportCoordinates(shapeBounds.width, shapeBounds.height);
-    var viewportBounds = viewport.getBounds();
-    var widthRatio = shapeWH.x / viewportBounds.width;
-    //logger.debug('w ratio: ' + widthRatio);
-    var heightRatio = shapeWH.y / viewportBounds.height;
-    //logger.debug('h ratio: ' + heightRatio);
-    var zoomFactor = 1.0 / Math.max(widthRatio, heightRatio) * 0.75;
-    //logger.debug('zoomFactor: ' + zoomFactor);
+    var currentZoom = void 0,
+        shapes = void 0,
+        shapeBounds = void 0,
+        zoomFactor = void 0;
 
-    if (typeof zoomFactor === 'number' && !isNaN(zoomFactor)) {
-      viewport.zoomBy(zoomFactor);
-    } else {
-      var msg = 'ImageView(ext)#zoomToAnnotation invalid zoomFactor ' + zoomFactor;
-      logger.error(msg, annotation);
-      throw msg;
+    try {
+      var viewport = this.osd.viewport;
+      currentZoom = viewport.getZoom();
+      shapes = this.annotationsLayer.drawTool.getShapesForAnnotation(annotation);
+      shapeBounds = $.yaleExt.getCombinedBounds(shapes); // in image coordinates
+      var shapeWH = viewport.imageToViewportCoordinates(shapeBounds.width, shapeBounds.height);
+      var viewportBounds = viewport.getBounds();
+      var widthRatio = shapeWH.x / viewportBounds.width;
+      var heightRatio = shapeWH.y / viewportBounds.height;
+      zoomFactor = 1.0 / Math.max(widthRatio, heightRatio) * 0.75;
+
+      if (typeof zoomFactor === 'number' && !isNaN(zoomFactor)) {
+        viewport.zoomBy(zoomFactor);
+      } else {
+        var msg = 'ImageView(ext)#zoomToAnnotation invalid zoomFactor ' + zoomFactor;
+        logger.error(msg, annotation);
+        throw msg;
+      }
+    } catch (e) {
+      logger.error('ImageView(ext)#zoomToAnnotation failed for annotation', annotation, '-', e);
+      logger.error('oldZoom:', currentZoom, 'shapes:', shapes, 'shapeBounds:', shapeBounds, 'zoomFactor:', zoomFactor);
     }
   };
 
@@ -13292,7 +13326,8 @@ var _class = function () {
                   canvasWindowId: imageWindowId,
                   initialLayerId: options.layerId || this._pickLayer(),
                   initialTocTags: options.tocTags || [],
-                  annotationId: options.annotationId || null
+                  annotationId: options.annotationId || null,
+                  continuousPages: (0, _stateStore2.default)().getTransient('continuousPages')
                 });
                 _context.next = 11;
                 return annoWin.init().catch(function (reason) {
@@ -14203,6 +14238,7 @@ var AnnotationListWidget = function () {
     this._canvases = options.canvases;
     this._state = options.state;
     this._isEditor = options.isEditor;
+    this._continousPages = options.continuousPages;
 
     this._minContentRelativeHeight = 1.5;
     this._maxContentRelativeHeight = 5;
@@ -14237,7 +14273,8 @@ var AnnotationListWidget = function () {
       this._scrollHelper = new _scrollHelper2.default({
         listWidget: this,
         listNavigator: this._nav,
-        groupHeaderHeight: 19
+        groupHeaderHeight: 19,
+        continuousPages: this._continousPages
       });
       this._unbindEvents();
       this._bindEvents();
@@ -14430,18 +14467,23 @@ var AnnotationListWidget = function () {
                 });
 
               case 8:
-                _context5.next = 10;
+                if (!this._continousPages) {
+                  _context5.next = 15;
+                  break;
+                }
+
+                _context5.next = 11;
                 return this.loadPreviousPage();
 
-              case 10:
-                _context5.next = 12;
+              case 11:
+                _context5.next = 13;
                 return this.loadNextPage();
 
-              case 12:
-                _context5.next = 14;
+              case 13:
+                _context5.next = 15;
                 return this._scrollHelper.scrollToPage(pageNum);
 
-              case 14:
+              case 15:
 
                 if (oldCanvasId !== newCanvasId) {
                   // if the focused annotation belongs to a different canvas
@@ -14449,7 +14491,7 @@ var AnnotationListWidget = function () {
                   this._annoWin.getImageWindowProxy().setCurrentCanvasId(newCanvasId);
                 }
 
-              case 15:
+              case 16:
               case 'end':
                 return _context5.stop();
             }
@@ -15818,11 +15860,23 @@ var AnnotationWindow = function () {
     this._initialLayerId = options.initialLayerId;
     this._initialTocTags = options.initialTocTags || [];
     this._annotationId = options.annotationId;
+    this._continuousPages = options.continuousPages || false;
 
+    this._miradorProxy = (0, _miradorProxyManager2.default)().getMiradorProxy(this._miradorId);
     this._tocSpec = (0, _stateStore2.default)().getTransient('tocSpec');
+    this._annotationTocCache = (0, _app2.default)().getAnnotationTocCache();
+
+    if (!this._id) {
+      this._id = Mirador.genUUID();
+    }
+    this._imageWindow = this._miradorProxy.getWindowProxyById(this._imageWindowId);
+
+    this._rootElem = jQuery(template({}));
+    this._appendTo.append(this._rootElem);
+    this._listElem = _domHelper2.default.findAnnoListElem(this._rootElem);
+
     this._jQuerySubscribed = {};
     this._miradorSubscribed = {};
-    this._annotationTocCache = (0, _app2.default)().getAnnotationTocCache();
   }
 
   _createClass(AnnotationWindow, [{
@@ -15832,6 +15886,8 @@ var AnnotationWindow = function () {
     }
 
     /**
+     * Initializations that require async operations
+     *
      * @returns {Promise}
      */
 
@@ -15839,116 +15895,109 @@ var AnnotationWindow = function () {
     key: 'init',
     value: function () {
       var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
-        var _this2 = this;
+        var targetAnno, canvasId, annotationList, toc, _processDataParams2;
 
-        var proxyMgr, annosToShow, fullTagsTargets, targetAnno, canvasId, toc;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                proxyMgr = (0, _miradorProxyManager2.default)();
-                annosToShow = [];
-                fullTagsTargets = null;
+                //let annosToShow = [];
+                //let fullTagsTargets = null;
                 targetAnno = null; // annotation cell to focus on
 
-                if (!this._id) {
-                  this._id = Mirador.genUUID();
-                }
-                this._miradorProxy = proxyMgr.getMiradorProxy(this._miradorId);
-                this._imageWindow = this._miradorProxy.getWindowProxyById(this._imageWindowId);
-
                 canvasId = this._imageWindow.getCurrentCanvasId();
+                annotationList = this._imageWindow.getAnnotationsList();
 
                 if (!this._tocSpec) {
-                  _context.next = 14;
+                  _context.next = 9;
                   break;
                 }
 
-                _context.next = 11;
+                _context.next = 6;
                 return (0, _app2.default)().getAnnotationTocCache().getToc(canvasId);
 
-              case 11:
+              case 6:
                 _context.t0 = _context.sent;
-                _context.next = 15;
+                _context.next = 10;
                 break;
 
-              case 14:
+              case 9:
                 _context.t0 = null;
 
-              case 15:
+              case 10:
                 toc = _context.t0;
 
 
-                this._rootElem = jQuery(template({}));
-                this._appendTo.append(this._rootElem);
-                this._listElem = _domHelper2.default.findAnnoListElem(this._rootElem);
-
-                if (this._annotationId) {
-                  // need to focus on a specific annotation
-                  targetAnno = _import.annoUtil.findAnnotationFromListById(this._annotationId, this._imageWindow.getAnnotationsList())[0];
-                  if (targetAnno) {
-                    this._initialLayerId = targetAnno.layerId;
-                    if (toc) {
-                      this._initialTocTags = toc.getTagsFromAnnotationId(this._annotationId);
-                    }
-                  }
-                }
-
+                /*
                 if (this._initialLayerId) {
-                  // layerIDs were given in the URL
-                  annosToShow = this._imageWindow.getAnnotationsList();
-                  annosToShow = annosToShow.filter(function (anno) {
-                    return anno.layerId == _this2._initialLayerId;
-                  });
-
-                  if (this._initialTocTags.length > 0) {
-                    if (toc) {
-                      annosToShow = annosToShow.filter(function (anno) {
-                        return toc.matchHierarchy(anno, _this2._initialTocTags.slice(0, 1));
-                      });
-                      fullTagsTargets = annosToShow.filter(function (anno) {
-                        return toc.matchHierarchy(anno, _this2._initialTocTags);
-                      });
-                      if (fullTagsTargets.length > 0 && !targetAnno) {
-                        targetAnno = fullTagsTargets[0];
+                  targetAnno = this._processLayerId(this._initialLayerId, annotationList);
+                }
+                */
+                /*
+                    if (this._initialLayerId) {
+                      annosToShow = this._imageWindow.getAnnotationsList();
+                      annosToShow = annosToShow.filter(anno => anno.layerId == this._initialLayerId);
+                
+                      if (this._initialTocTags.length > 0) {
+                        if (toc) {
+                          annosToShow = annosToShow.filter(anno => toc.matchHierarchy(anno, this._initialTocTags.slice(0,1)));
+                          fullTagsTargets = annosToShow.filter(anno => toc.matchHierarchy(anno, this._initialTocTags));
+                          if (fullTagsTargets.length > 0 && !targetAnno) {
+                            targetAnno = fullTagsTargets[0];
+                          }
+                        }
                       }
                     }
-                  }
-                }
-
-                if (!targetAnno) {
-                  targetAnno = annosToShow[0];
-                }
+                
+                    if (!targetAnno) {
+                      targetAnno = annosToShow[0];
+                    }
+                    */
+                _processDataParams2 = this._processDataParams({
+                  annotationId: this._annotationId,
+                  annotationList: annotationList,
+                  layerId: this._initialLayerId,
+                  toc: toc
+                });
+                targetAnno = _processDataParams2.targetAnno;
+                this._initialLayerId = _processDataParams2.layerId;
+                this._initialTocTags = _processDataParams2.tocTags;
                 logger.debug('AnnotationWindow#init targetAnno:', targetAnno);
 
+                console.log('HHH 1');
+
                 this.initLayerSelector();
+                console.log('HHH 2');
                 this.addCreateWindowButton();
                 this.placeholder = this._rootElem.find('.placeholder');
                 this.placeholder.text('Loading...').show();
+                console.log('HHH 3');
 
                 this._setupAnnotationListWidget();
+                console.log('HHH 4');
 
-                _context.next = 30;
+                _context.next = 27;
                 return this.reload().catch(function (reason) {
                   throw 'AnnotationWindow#init reload failed - ' + reason;
                 });
 
-              case 30:
-
-                logger.debug('AnnotationWindow#init annosToShow:', annosToShow);
+              case 27:
+                console.log('HHH 5');
 
                 if (this._annotationId) {
+                  console.log('dada');
                   this._listWidget.highlightAnnotations([targetAnno], 'SELECTED');
                   this._listWidget.goToAnnotation(this._annotationId, canvasId);
                 } else if (this._initialTocTags.length > 0) {
                   this._listWidget.goToPageByTags(this._initialTocTags);
                 } else {
-                  this._listWidget.goToPage(0);
+                  this._listWidget.goToPageByCanvas(canvasId);
                 }
+                console.log('HHH 6');
                 this.bindEvents();
                 return _context.abrupt('return', this);
 
-              case 34:
+              case 32:
               case 'end':
                 return _context.stop();
             }
@@ -15962,6 +16011,107 @@ var AnnotationWindow = function () {
 
       return init;
     }()
+
+    /**
+     * Process initialization parameters concerning which data to display how.
+     * params: {
+     *   annotationId: string,
+     *   annotationList: Array.<object>,
+     *   layerId: string,
+     *   toc: jossugi.AnnotationToc
+     * }
+     * @param {object} params
+     * @return {{targetAnno: object, layerId: string, tocTags: string[]}}
+     */
+
+  }, {
+    key: '_processDataParams',
+    value: function _processDataParams(params) {
+      logger.debug('AnnotationWindow#_processDataParams params:', params);
+      var targetAnno = null; // annotation that should be visible and focused on
+      var layerId = params.layerId;
+      var tocTags = [];
+
+      if (params.annotationId) {
+        // annotationId is given the highest priority in determining targetAnno
+        targetAnno = _import.annoUtil.findAnnotationFromListById(params.annotationId, params.annotationList);
+
+        if (targetAnno) {
+          layerId = targetAnno.layerId;
+          if (params.toc) {
+            tocTags = toc.getTagsFromAnnotationId(params.annotationId);
+          }
+        }
+      }
+
+      /*
+      if (params.layerId && !targetAnno && params.toc && tocTags.length > 0) {
+        targetAnno = this._getTargetAnnoWithToc(filteredAnnos,
+          layerId, params.toc, tocTags);
+        }
+      }
+      */
+      return { targetAnno: targetAnno, layerId: layerId, tocTags: tocTags };
+    }
+  }, {
+    key: '_getTargetAnnoWithToc',
+    value: function _getTargetAnnoWithToc(annotationList, layerId, toc, tocTags) {
+      var annosToShow = annotationList.filter(function (anno) {
+        return anno.layerId == layerId;
+      }).filter(function (anno) {
+        return toc.matchHierarchy(anno, tocTags.slice(0, 1));
+      });
+      var fullTagsTargets = annosToShow.filter(function (anno) {
+        return toc.matchHierarchy(anno, tocTags);
+      });
+
+      if (fullTagsTargets.length > 0 && !targetAnno) {
+        targetAnno = fullTagsTargets[0];
+      }
+    }
+
+    /**
+     * Process init option "annotationId"
+     * @param {{annotationId: string, annotationList: Array.<object>, layerId: string, toc: object}} params
+     * @return {{targetAnno: object, layerId: string, tocTags: string[]}}
+     */
+
+  }, {
+    key: '_processAnnotationId',
+    value: function _processAnnotationId(params) {
+      var targetAnno = _import.annoUtil.findAnnotationFromListById(params.annotationId, params.annotationList)[0];
+      var layerId = params.layerId;
+      var tocTags = [];
+
+      if (targetAnno) {
+        layerId = targetAnno.layerId;
+        if (params.toc) {
+          tocTags = toc.getTagsFromAnnotationId(params.annotationId);
+        }
+      }
+      return { targetAnno: targetAnno, layerId: layerId, tocTags: tocTags };
+    }
+  }, {
+    key: '_processLayerId',
+    value: function _processLayerId(layerId, annotationList, toc, tocTags) {
+      var _this2 = this;
+
+      var annosToShow = annotationList.filter(function (anno) {
+        return anno.layerId == _this2._initialLayerId;
+      });
+
+      if (toc && tocTags.length > 0) {
+        annosToShow = annosToShow.filter(function (anno) {
+          return toc.matchHierarchy(anno, tocTags.slice(0, 1));
+        });
+        var fullTagsTargets = annosToShow.filter(function (anno) {
+          return toc.matchHierarchy(anno, tocTags);
+        });
+        if (fullTagsTargets.length > 0 && !targetAnno) {
+          targetAnno = fullTagsTargets[0];
+        }
+      }
+    }
   }, {
     key: 'getMiradorProxy',
     value: function getMiradorProxy() {
@@ -15992,7 +16142,8 @@ var AnnotationWindow = function () {
           tocTags: this._initialTocTags,
           annotationExplorer: this._explorer,
           state: (0, _stateStore2.default)(),
-          isEditor: _session2.default.isEditor()
+          isEditor: _session2.default.isEditor(),
+          constinousPages: this._continuousPages
         });
         this._listWidget.reload(this._initialLayerId);
       }
@@ -16359,9 +16510,17 @@ var AnnotationWindow = function () {
 
       logger.debug('AnnotationWindow#bindEvents');
 
+      this._subscribe(this._miradorProxy, 'ANNOTATIONS_LIST_UPDATED', function (event, params) {
+        logger.debug('AnnotationWindow:SUB:ANNOTATIONS_LIST_UPDATED, params:', params);
+        if (params.windowId === _this8.getImageWindowId()) {
+          var windowProxy = _this8._miradorProxy.getWindowProxyById(params.windowId);
+          _this8._listWidget.goToPageByCanvas(windowProxy.getCurrentCanvasId());
+        }
+      });
+
       this._subscribe(jQuery, 'ANNOWIN_ANNOTATION_FOCUSED', function () {
         var _ref6 = _asyncToGenerator(regeneratorRuntime.mark(function _callee6(event, params) {
-          var $anno, listWidget, annotations, layerId, tocSpec, toc, siblingElems, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, elem, annoMap, _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, anno, targeting, targeted;
+          var $anno, listWidget, targetElem, annotations, layerId, tocSpec, _toc, siblingElems, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, elem, annoMap, _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, anno, targeting, targeted;
 
           return regeneratorRuntime.wrap(function _callee6$(_context6) {
             while (1) {
@@ -16370,15 +16529,16 @@ var AnnotationWindow = function () {
                   logger.debug('AnnotationWindow:SUB:ANNOWIN_ANNOTATION_FOCUSED annotation window id:', _this8._id, 'params:', params, 'layer:', _this8.getCurrentLayerId());
                   $anno = (0, _import.Anno)(params.annotation);
                   listWidget = _this8._listWidget;
+                  targetElem = null;
 
                   if (!(params.annotationWindowId === _this8._id)) {
-                    _context6.next = 5;
+                    _context6.next = 6;
                     break;
                   }
 
                   return _context6.abrupt('return');
 
-                case 5:
+                case 6:
                   listWidget.clearHighlights();
 
                   annotations = _this8._imageWindow.getAnnotationsList();
@@ -16386,127 +16546,127 @@ var AnnotationWindow = function () {
                   tocSpec = (0, _stateStore2.default)().getTransient('tocSpec');
 
                   if (!tocSpec) {
-                    _context6.next = 39;
+                    _context6.next = 40;
                     break;
                   }
 
-                  _context6.next = 12;
+                  _context6.next = 13;
                   return (0, _app2.default)().getAnnotationTocCache().getToc(params.canvasId);
 
-                case 12:
-                  toc = _context6.sent;
-                  siblingElems = listWidget.getTocSiblingElems(params.annotation, annotations, layerId, toc);
+                case 13:
+                  _toc = _context6.sent;
+                  siblingElems = listWidget.getTocSiblingElems(params.annotation, annotations, layerId, _toc);
 
 
                   listWidget.clearHighlights();
                   _iteratorNormalCompletion = true;
                   _didIteratorError = false;
                   _iteratorError = undefined;
-                  _context6.prev = 18;
+                  _context6.prev = 19;
                   for (_iterator = siblingElems[Symbol.iterator](); !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
                     elem = _step.value;
 
                     listWidget.highlightAnnotationElem(elem);
                   }
 
-                  _context6.next = 26;
+                  _context6.next = 27;
                   break;
 
-                case 22:
-                  _context6.prev = 22;
-                  _context6.t0 = _context6['catch'](18);
+                case 23:
+                  _context6.prev = 23;
+                  _context6.t0 = _context6['catch'](19);
                   _didIteratorError = true;
                   _iteratorError = _context6.t0;
 
-                case 26:
-                  _context6.prev = 26;
+                case 27:
                   _context6.prev = 27;
+                  _context6.prev = 28;
 
                   if (!_iteratorNormalCompletion && _iterator.return) {
                     _iterator.return();
                   }
 
-                case 29:
-                  _context6.prev = 29;
+                case 30:
+                  _context6.prev = 30;
 
                   if (!_didIteratorError) {
-                    _context6.next = 32;
+                    _context6.next = 33;
                     break;
                   }
 
                   throw _iteratorError;
 
-                case 32:
-                  return _context6.finish(29);
-
                 case 33:
-                  return _context6.finish(26);
+                  return _context6.finish(30);
 
                 case 34:
+                  return _context6.finish(27);
+
+                case 35:
                   if (!(siblingElems.length > 0)) {
-                    _context6.next = 38;
+                    _context6.next = 39;
                     break;
                   }
 
-                  _context6.next = 37;
+                  _context6.next = 38;
                   return listWidget.goToPageByCanvas(params.canvasId);
-
-                case 37:
-                  listWidget.scrollToElem(siblingElems[0], -params.offset);
 
                 case 38:
-                  return _context6.abrupt('return');
+                  listWidget.scrollToElem(siblingElems[0], -params.offset);
 
                 case 39:
-                  _context6.next = 41;
+                  return _context6.abrupt('return');
+
+                case 40:
+                  _context6.next = 42;
                   return listWidget.goToPageByCanvas(params.canvasId);
 
-                case 41:
+                case 42:
                   annoMap = {};
                   _iteratorNormalCompletion2 = true;
                   _didIteratorError2 = false;
                   _iteratorError2 = undefined;
-                  _context6.prev = 45;
+                  _context6.prev = 46;
 
                   for (_iterator2 = annotations[Symbol.iterator](); !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
                     anno = _step2.value;
 
                     annoMap[anno['@id']] = anno;
                   }
-                  _context6.next = 53;
+                  _context6.next = 54;
                   break;
 
-                case 49:
-                  _context6.prev = 49;
-                  _context6.t1 = _context6['catch'](45);
+                case 50:
+                  _context6.prev = 50;
+                  _context6.t1 = _context6['catch'](46);
                   _didIteratorError2 = true;
                   _iteratorError2 = _context6.t1;
 
-                case 53:
-                  _context6.prev = 53;
+                case 54:
                   _context6.prev = 54;
+                  _context6.prev = 55;
 
                   if (!_iteratorNormalCompletion2 && _iterator2.return) {
                     _iterator2.return();
                   }
 
-                case 56:
-                  _context6.prev = 56;
+                case 57:
+                  _context6.prev = 57;
 
                   if (!_didIteratorError2) {
-                    _context6.next = 59;
+                    _context6.next = 60;
                     break;
                   }
 
                   throw _iteratorError2;
 
-                case 59:
-                  return _context6.finish(56);
-
                 case 60:
-                  return _context6.finish(53);
+                  return _context6.finish(57);
 
                 case 61:
+                  return _context6.finish(54);
+
+                case 62:
                   targeting = _import.annoUtil.findTransitiveTargetingAnnotations(params.annotation, annoMap);
 
                   targeting = targeting.filter(function (anno) {
@@ -16514,32 +16674,36 @@ var AnnotationWindow = function () {
                   });
 
                   if (!(targeting.length > 0)) {
-                    _context6.next = 66;
+                    _context6.next = 69;
                     break;
                   }
 
                   listWidget.highlightAnnotations(targeting, 'TARGETING');
+                  targetElem = _domHelper2.default.findAnnoElemByAnnoId(targeting[0]['@id'], _this8._listElem);
+                  listWidget.scrollToElem(targetElem, -params.offset);
                   return _context6.abrupt('return');
 
-                case 66:
+                case 69:
                   targeted = _import.annoUtil.findTransitiveTargetAnnotations(params.annotation, annoMap).filter(function (anno) {
                     return anno.layerId === _this8.getCurrentLayerId();
                   });
 
                   if (!(targeted.length > 0)) {
-                    _context6.next = 70;
+                    _context6.next = 75;
                     break;
                   }
 
                   listWidget.highlightAnnotations(targeted, 'TARGET');
+                  targetElem = _domHelper2.default.findAnnoElemByAnnoId(targeted[0]['@id'], _this8._listElem);
+                  listWidget.scrollToElem(targetElem, -params.offset);
                   return _context6.abrupt('return');
 
-                case 70:
+                case 75:
                 case 'end':
                   return _context6.stop();
               }
             }
-          }, _callee6, _this8, [[18, 22, 26, 34], [27,, 29, 33], [45, 49, 53, 61], [54,, 56, 60]]);
+          }, _callee6, _this8, [[19, 23, 27, 35], [28,, 30, 34], [46, 50, 54, 62], [55,, 57, 61]]);
         }));
 
         return function (_x5, _x6) {
@@ -16554,7 +16718,8 @@ var AnnotationWindow = function () {
 
       this._subscribe(this._miradorProxy, 'YM_IMAGE_WINDOW_TOOLTIP_ANNO_CLICKED', function () {
         var _ref7 = _asyncToGenerator(regeneratorRuntime.mark(function _callee7(event, windowId, annoId) {
-          var windowProxy, canvasId, toc, annotation;
+          var windowProxy, canvasId, _toc2, annotation;
+
           return regeneratorRuntime.wrap(function _callee7$(_context7) {
             while (1) {
               switch (_context7.prev = _context7.next) {
@@ -16562,12 +16727,18 @@ var AnnotationWindow = function () {
                   logger.debug('AnnotationWindow:SUB:YM_IMAGE_WINDOW_TOOLTIP_ANNO_CLICKED windowId:', windowId, 'annoId:', annoId, 'annoWin:', _this8.id);
                   windowProxy = _this8._miradorProxy.getWindowProxyById(windowId);
                   canvasId = windowProxy.getCurrentCanvasId();
-                  _context7.next = 5;
+
+                  if (!_this8._continuousPages) {
+                    _context7.next = 11;
+                    break;
+                  }
+
+                  _context7.next = 6;
                   return _this8._annotationTocCache.getToc(canvasId);
 
-                case 5:
-                  toc = _context7.sent;
-                  annotation = toc.annotations.filter(function (anno) {
+                case 6:
+                  _toc2 = _context7.sent;
+                  annotation = _toc2.annotations.filter(function (anno) {
                     return anno['@id'] === annoId;
                   })[0];
 
@@ -16575,8 +16746,13 @@ var AnnotationWindow = function () {
                   if (annotation) {
                     _this8._listWidget.goToPageByTags(annotation.tocTags);
                   }
+                  _context7.next = 12;
+                  break;
 
-                case 8:
+                case 11:
+                  _this8._listWidget.goToAnnotation(annoId, canvasId);
+
+                case 12:
                 case 'end':
                   return _context7.stop();
               }
@@ -16836,7 +17012,7 @@ var AnnotationPageRenderer = function () {
                 canvasId: canvasId,
                 isEditor: options.isEditor
               });
-              annoElem.append(annoElem);
+              pageElem.append(annoElem);
             }
           } catch (e) {
             logger.error('ERROR AnnotationPageRenderer#_renderDefault', e);
@@ -17428,6 +17604,7 @@ var ScrollHelper = function () {
 
     this._listWidget = options.listWidget;
     this._groupHeaderHeight = options.groupHeaderHeight;
+    this._continousPages = options.continuousPages;
 
     this._rootElem = this._listWidget.getRootElement();
     this._nav = this._listWidget.getNav();
@@ -17616,55 +17793,59 @@ var ScrollHelper = function () {
     value: function bindScrollEvent() {
       var _this = this;
 
-      this._rootElem.scroll(function () {
-        var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(event) {
-          var listWidget, elem, scrollTop, currentPos, contentHeight;
-          return regeneratorRuntime.wrap(function _callee$(_context) {
-            while (1) {
-              switch (_context.prev = _context.next) {
-                case 0:
-                  listWidget = _this._listWidget;
-                  elem = jQuery(this);
-                  scrollTop = elem.scrollTop();
-                  currentPos = scrollTop + elem.height();
-                  contentHeight = this.scrollHeight;
+      if (this._continousPages) {
+        this._rootElem.scroll(function () {
+          var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(event) {
+            var listWidget, elem, scrollTop, currentPos, contentHeight;
+            return regeneratorRuntime.wrap(function _callee$(_context) {
+              while (1) {
+                switch (_context.prev = _context.next) {
+                  case 0:
+                    listWidget = _this._listWidget;
+                    elem = jQuery(this);
+                    scrollTop = elem.scrollTop();
+                    currentPos = scrollTop + elem.height();
+                    contentHeight = this.scrollHeight;
 
-                  //logger.debug('contentHeight:', contentHeight, 'scrollTop:', scrollTop, 'scroll bottom:', currentPos);
+                    //logger.debug('contentHeight:', contentHeight, 'scrollTop:', scrollTop, 'scroll bottom:', currentPos);
 
-                  if (!(scrollTop < 20)) {
+                    if (!(scrollTop < 20)) {
+                      _context.next = 8;
+                      break;
+                    }
+
                     _context.next = 8;
-                    break;
-                  }
+                    return listWidget.loadPreviousPage();
 
-                  _context.next = 8;
-                  return listWidget.loadPreviousPage();
+                  case 8:
+                    if (!(contentHeight - currentPos < 20)) {
+                      _context.next = 11;
+                      break;
+                    }
 
-                case 8:
-                  if (!(contentHeight - currentPos < 20)) {
                     _context.next = 11;
-                    break;
-                  }
+                    return listWidget.loadNextPage();
 
-                  _context.next = 11;
-                  return listWidget.loadNextPage();
-
-                case 11:
-                case 'end':
-                  return _context.stop();
+                  case 11:
+                  case 'end':
+                    return _context.stop();
+                }
               }
-            }
-          }, _callee, this);
-        }));
+            }, _callee, this);
+          }));
 
-        return function (_x) {
-          return _ref.apply(this, arguments);
-        };
-      }());
+          return function (_x) {
+            return _ref.apply(this, arguments);
+          };
+        }());
+      }
     }
   }, {
     key: 'unbindScrollEvent',
     value: function unbindScrollEvent() {
-      this._rootElem.off('scroll');
+      if (this._continousPages) {
+        this._rootElem.off('scroll');
+      }
     }
   }]);
 
