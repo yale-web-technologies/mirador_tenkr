@@ -126,12 +126,6 @@ a.hud-control.hud-dropdown {
 .no_close .ui-dialog-titlebar-close {
   display: none;
 }
-/* deprecated
-#mirador_header {
-  top: 0px;
-  height: @mirador-header-height;
-}
-*/
 .mirador-container .sidePanel .ym-annotation-toc {
   position: absolute;
   top: 0;
