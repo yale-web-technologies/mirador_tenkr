@@ -10,5 +10,19 @@ class MiradorController < ApplicationController
     @toc_tags = params[:tocTags] || ''
     @layer_ids = params[:layers] || ''
     @annotation_id = params[:annotation] || ''
+
+    db_setting = Admin::Setting.first
+    @settings = parse_json(db_setting.site_mirador_settings)
+  end
+
+private
+
+  def parse_json(json)
+    begin
+      return JSON.parse(json)
+    rescue
+      logger.error("Failed to parse JSON: #{json}")
+      return nil
+    end
   end
 end

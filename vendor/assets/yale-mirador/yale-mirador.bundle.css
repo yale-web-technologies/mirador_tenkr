@@ -194,12 +194,10 @@ body {
 }
 .vertical-lr {
   direction: ltr;
-  white-space: nowrap;
   writing-mode: vertical-lr;
 }
 .vertical-rl {
   direction: ltr;
-  white-space: nowrap;
   writing-mode: vertical-rl;
 }
 .fatal_error {
@@ -353,7 +351,7 @@ body {
 .circle.icon.layer_9 {
   color: #df7375;
 }
-#ym_grid {
+.ym-grid {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -361,6 +359,7 @@ body {
   right: 0;
 }
 .ym_anno_editor {
+  writing-mode: horizontal-tb;
   color: #000;
   background-color: #fff;
   border: solid 3px #0072c4;
@@ -417,17 +416,21 @@ body {
   padding: 2px 2px;
 }
 .ym_annotation_window {
+  display: flex;
+  flex-flow: column nowrap;
   background-color: #000;
   border: #777 solid 1px;
   box-sizing: border-box;
   color: #fafafa;
-  display: flex;
-  flex-direction: column;
   height: 100%;
   margin: 0;
   padding: 0 0 5px;
   position: absolute;
   width: 100%;
+}
+.ym_annotation_window div,
+.ym_annotation_window p {
+  box-sizing: border-box;
 }
 .ym_annotation_window a:link,
 .ym_annotation_window a:visited {
@@ -445,56 +448,53 @@ body {
   opacity: 0.95;
   font-size: 1.5em;
 }
-.ym_annotation_window .ym_create_window_button {
-  display: inline-block;
-  float: right;
-  color: #bbb;
-}
-.ym_annotation_window .ym_create_window_button:hover {
-  color: #fff;
-  cursor: pointer;
-}
-.annowin_header {
-  flex: 0 1 auto;
+.ym_annotation_window .header {
+  flex: 0 0 auto;
   margin: 0;
   padding: 5px 0 5px 0;
 }
-.annowin_header .menu.transition.visible {
+.ym_annotation_window .header .menu.transition.visible {
   max-height: 250px;
   overflow-y: scroll;
 }
-.mirador-viewer .mirador-icon-window-menu.annowin_window_menu {
-  margin: 0 10px 0 0;
-  font-size: 0.8rem;
+.ym_annotation_window .header .annowin_layer_row {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
 }
-.annowin_window_menu .dropdown li {
-  font-size: 0.8rem;
+.ym_annotation_window .header .annowin_layer_row .layer-selector-container {
+  flex: 0 0 auto;
+}
+.ym_annotation_window .header .annowin_layer_row .right {
+  display: flex;
+  flex: 0 0 auto;
+}
+.ym_annotation_window .header .annowin_layer_row .right .ym_create_window_button,
+.ym_annotation_window .header .annowin_layer_row .right .ym_toggle_direction_button {
+  color: #bbb;
+}
+.ym_annotation_window .header .annowin_layer_row .right .ym_create_window_button:hover,
+.ym_annotation_window .header .annowin_layer_row .right .ym_toggle_direction_button:hover {
+  color: #fff;
+  cursor: pointer;
+}
+.ym_annotation_window .placeholder {
+  padding: 5px;
 }
 .annowin_menu_tag_row,
 .annowin_layer_row,
 .annowin_temp_row {
   padding: 2px 5px;
 }
-.annowin_temp_row {
-  display: none;
-}
-.annowin_list {
-  flex: 1 1 auto;
-  position: relative;
-  /* required to make the div "positioned" so the child elements' positions to be obtained and scroll levels adjusted accordingly. */
-  left: 0;
-  right: 0;
-  margin: 0;
+.list-container {
+  flex: 1 0 auto;
+  overflow-x: hidden;
   overflow-y: scroll;
+  width: 100%;
+  height: 100%;
 }
-.annowin_list:focus {
+.list-container:focus {
   outline: none;
-}
-.page-header {
-  font-size: 14px;
-  padding-left: 5px;
-  padding-bottom: 5px;
-  padding-top: 5px;
 }
 .annowin_group_header {
   position: sticky;
@@ -520,11 +520,14 @@ body {
 .anno_target_icon.anno_on_anno {
   color: #1f995a;
 }
-.placeholder {
-  padding: 5px;
-}
 .item_menu_dropdown {
   right: 0px;
+}
+.ym-annotation-page .page-header {
+  font-size: 14px;
+  padding-left: 5px;
+  padding-bottom: 5px;
+  padding-top: 5px;
 }
 .annowin_anno {
   background-color: #fafafa;
@@ -547,98 +550,114 @@ body {
   border-width: 2px;
   padding: 0;
 }
-.annowin_anno .menu_bar {
-  background-color: #76b4fc;
-}
-.annowin_anno .menu_bar.layer_0,
-.annowin_anno .menu_bar.layer_0:active,
-.annowin_anno .menu_bar.layer_0:hover,
-.annowin_anno .menu_bar.layer_0:focus,
-.annowin_anno .menu_bar.layer_0:visited {
-  background-color: #9dc673 !important;
-}
-.annowin_anno .menu_bar.layer_1,
-.annowin_anno .menu_bar.layer_1:active,
-.annowin_anno .menu_bar.layer_1:hover,
-.annowin_anno .menu_bar.layer_1:focus,
-.annowin_anno .menu_bar.layer_1:visited {
-  background-color: #dcc17f !important;
-}
-.annowin_anno .menu_bar.layer_2,
-.annowin_anno .menu_bar.layer_2:active,
-.annowin_anno .menu_bar.layer_2:hover,
-.annowin_anno .menu_bar.layer_2:focus,
-.annowin_anno .menu_bar.layer_2:visited {
-  background-color: #a7c2f3 !important;
-}
-.annowin_anno .menu_bar.layer_3,
-.annowin_anno .menu_bar.layer_3:active,
-.annowin_anno .menu_bar.layer_3:hover,
-.annowin_anno .menu_bar.layer_3:focus,
-.annowin_anno .menu_bar.layer_3:visited {
-  background-color: #f5ea72 !important;
-}
-.annowin_anno .menu_bar.layer_4,
-.annowin_anno .menu_bar.layer_4:active,
-.annowin_anno .menu_bar.layer_4:hover,
-.annowin_anno .menu_bar.layer_4:focus,
-.annowin_anno .menu_bar.layer_4:visited {
-  background-color: #bd99d9 !important;
-}
-.annowin_anno .menu_bar.layer_5,
-.annowin_anno .menu_bar.layer_5:active,
-.annowin_anno .menu_bar.layer_5:hover,
-.annowin_anno .menu_bar.layer_5:focus,
-.annowin_anno .menu_bar.layer_5:visited {
-  background-color: #f4a33c !important;
-}
-.annowin_anno .menu_bar.layer_6,
-.annowin_anno .menu_bar.layer_6:active,
-.annowin_anno .menu_bar.layer_6:hover,
-.annowin_anno .menu_bar.layer_6:focus,
-.annowin_anno .menu_bar.layer_6:visited {
-  background-color: #b28867 !important;
-}
-.annowin_anno .menu_bar.layer_7,
-.annowin_anno .menu_bar.layer_7:active,
-.annowin_anno .menu_bar.layer_7:hover,
-.annowin_anno .menu_bar.layer_7:focus,
-.annowin_anno .menu_bar.layer_7:visited {
-  background-color: #ff9395 !important;
-}
-.annowin_anno .menu_bar.layer_8,
-.annowin_anno .menu_bar.layer_8:active,
-.annowin_anno .menu_bar.layer_8:hover,
-.annowin_anno .menu_bar.layer_8:focus,
-.annowin_anno .menu_bar.layer_8:visited {
-  background-color: #a6d0b8 !important;
-}
-.annowin_anno .menu_bar.layer_9,
-.annowin_anno .menu_bar.layer_9:active,
-.annowin_anno .menu_bar.layer_9:hover,
-.annowin_anno .menu_bar.layer_9:focus,
-.annowin_anno .menu_bar.layer_9:visited {
-  background-color: #df7375 !important;
-}
-.annowin_anno .menu_bar.targeting_anno {
-  background-color: #3fb97a;
-}
 .annowin_anno .normal_view {
+  display: block;
   overflow-y: visible;
 }
-.annowin_anno .normal_view p {
-  margin: 10px;
+.annowin_anno .normal_view .menu_bar {
+  background-color: #76b4fc;
 }
-.annowin_anno .normal_view p:first-of-type {
-  margin-top: 0;
+.annowin_anno .normal_view .menu_bar.layer_0,
+.annowin_anno .normal_view .menu_bar.layer_0:active,
+.annowin_anno .normal_view .menu_bar.layer_0:hover,
+.annowin_anno .normal_view .menu_bar.layer_0:focus,
+.annowin_anno .normal_view .menu_bar.layer_0:visited {
+  background-color: #9dc673 !important;
 }
-.annowin_anno .normal_view p:last-of-type {
-  margin-bottom: 0;
+.annowin_anno .normal_view .menu_bar.layer_1,
+.annowin_anno .normal_view .menu_bar.layer_1:active,
+.annowin_anno .normal_view .menu_bar.layer_1:hover,
+.annowin_anno .normal_view .menu_bar.layer_1:focus,
+.annowin_anno .normal_view .menu_bar.layer_1:visited {
+  background-color: #dcc17f !important;
 }
-.annowin_anno .content {
+.annowin_anno .normal_view .menu_bar.layer_2,
+.annowin_anno .normal_view .menu_bar.layer_2:active,
+.annowin_anno .normal_view .menu_bar.layer_2:hover,
+.annowin_anno .normal_view .menu_bar.layer_2:focus,
+.annowin_anno .normal_view .menu_bar.layer_2:visited {
+  background-color: #a7c2f3 !important;
+}
+.annowin_anno .normal_view .menu_bar.layer_3,
+.annowin_anno .normal_view .menu_bar.layer_3:active,
+.annowin_anno .normal_view .menu_bar.layer_3:hover,
+.annowin_anno .normal_view .menu_bar.layer_3:focus,
+.annowin_anno .normal_view .menu_bar.layer_3:visited {
+  background-color: #f5ea72 !important;
+}
+.annowin_anno .normal_view .menu_bar.layer_4,
+.annowin_anno .normal_view .menu_bar.layer_4:active,
+.annowin_anno .normal_view .menu_bar.layer_4:hover,
+.annowin_anno .normal_view .menu_bar.layer_4:focus,
+.annowin_anno .normal_view .menu_bar.layer_4:visited {
+  background-color: #bd99d9 !important;
+}
+.annowin_anno .normal_view .menu_bar.layer_5,
+.annowin_anno .normal_view .menu_bar.layer_5:active,
+.annowin_anno .normal_view .menu_bar.layer_5:hover,
+.annowin_anno .normal_view .menu_bar.layer_5:focus,
+.annowin_anno .normal_view .menu_bar.layer_5:visited {
+  background-color: #f4a33c !important;
+}
+.annowin_anno .normal_view .menu_bar.layer_6,
+.annowin_anno .normal_view .menu_bar.layer_6:active,
+.annowin_anno .normal_view .menu_bar.layer_6:hover,
+.annowin_anno .normal_view .menu_bar.layer_6:focus,
+.annowin_anno .normal_view .menu_bar.layer_6:visited {
+  background-color: #b28867 !important;
+}
+.annowin_anno .normal_view .menu_bar.layer_7,
+.annowin_anno .normal_view .menu_bar.layer_7:active,
+.annowin_anno .normal_view .menu_bar.layer_7:hover,
+.annowin_anno .normal_view .menu_bar.layer_7:focus,
+.annowin_anno .normal_view .menu_bar.layer_7:visited {
+  background-color: #ff9395 !important;
+}
+.annowin_anno .normal_view .menu_bar.layer_8,
+.annowin_anno .normal_view .menu_bar.layer_8:active,
+.annowin_anno .normal_view .menu_bar.layer_8:hover,
+.annowin_anno .normal_view .menu_bar.layer_8:focus,
+.annowin_anno .normal_view .menu_bar.layer_8:visited {
+  background-color: #a6d0b8 !important;
+}
+.annowin_anno .normal_view .menu_bar.layer_9,
+.annowin_anno .normal_view .menu_bar.layer_9:active,
+.annowin_anno .normal_view .menu_bar.layer_9:hover,
+.annowin_anno .normal_view .menu_bar.layer_9:focus,
+.annowin_anno .normal_view .menu_bar.layer_9:visited {
+  background-color: #df7375 !important;
+}
+.annowin_anno .normal_view .menu_bar .ui.text.menu {
+  display: block;
+}
+.annowin_anno .normal_view .menu_bar .ui.text.menu .ui.dropdown.item {
+  float: left;
+}
+.annowin_anno .normal_view .menu_bar .ui.text.menu .right.menu {
+  float: right;
+}
+.annowin_anno .normal_view .menu_bar.targeting_anno {
+  background-color: #3fb97a;
+}
+.annowin_anno .normal_view .content {
   padding: 5px 10px 5px 15px;
   font-size: 14px;
   width: 100%;
+  height: auto;
+  white-space: normal;
+}
+.annowin_anno .normal_view .content.vertical-rl {
+  width: auto;
+  height: 100%;
+}
+.annowin_anno .normal_view .content p {
+  margin: 10px;
+}
+.annowin_anno .normal_view .content p:first-of-type {
+  margin-top: 0;
+}
+.annowin_anno .normal_view .content p:last-of-type {
+  margin-bottom: 0;
 }
 .annowin_anno .annowin_anno .tag {
   font-size: 0.7rem;
@@ -671,3 +690,35 @@ body {
   max-height: 80px;
   overflow-y: scroll;
 }
+.ym_annotation_window.row-reverse .list-container {
+  writing-mode: vertical-rl;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+.ym_annotation_window.row-reverse .list-container .ym-annotation-page .annowin_anno .menu_bar .ui.dropdown.item.active {
+  writing-mode: horizontal-tb;
+}
+.ym_annotation_window.row-reverse .list-container .ym-annotation-page .annowin_anno .menu_bar .right.menu {
+  margin-bottom: 10px;
+  margin-right: 2px;
+}
+.ym_annotation_window.row-reverse .list-container .ym-annotation-page .annowin_anno .menu_bar .right.menu .order-up {
+  margin-top: 5px;
+}
+.ym_annotation_window.row-reverse .list-container .ym-annotation-page .annowin_anno .normal_view .content {
+  width: auto;
+  height: 100%;
+  direction: ltr;
+  writing-mode: vertical-rl;
+}
+.ym_annotation_window.row-reverse .list-container .ym-annotation-page .annowin_anno .normal_view .content p {
+  margin: 10px;
+}
+.ym_annotation_window.row-reverse .list-container .ym-annotation-page .annowin_anno .normal_view .content p:first-of-type {
+  margin-right: 0;
+}
+.ym_annotation_window.row-reverse .list-container .ym-annotation-page .annowin_anno .normal_view .content p:last-of-type {
+  margin-left: 0;
+}
+
+/*# sourceMappingURL=yale-mirador.bundle.css.map*/

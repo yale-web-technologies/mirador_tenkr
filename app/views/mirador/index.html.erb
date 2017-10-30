@@ -1,14 +1,13 @@
-<div id="mirador_header"></div>
-<div id="ym_grid"></div>
-<div id="ym_annotation_dialog"></div>
-<div id="viewer_template">
-  <div id="{{id}}"
-    data-settings-url="/api/settings"
-    data-manifest-url="<%= @manifest_url %>"
-    data-room-id="<%= @room_id %>"
-    data-canvas-id="<%= @canvas_id %>"
-    data-toc-tags="<%= @toc_tags %>"
-    data-layer-ids="<%= @layer_ids %>"
-    data-annotation-id="<%= @annotation_id %>">
-  </div>
+<div id="yale-mirador" class="ym-grid">
+  <div id="ym_annotation_dialog"></div>
 </div>
+<script type="text/javascript">
+(function() {
+  console.log(window._YaleMiradorVersion);
+  var app = window.YaleMirador.getApp();
+  app.init(<%= @settings.to_json.html_safe %>).catch(function (reason) {
+    console.error('Failed to init Mirador', reason);
+    window.YaleMirador.fatalError(reason, 'Initializing the app');
+  });
+})();
+</script>
