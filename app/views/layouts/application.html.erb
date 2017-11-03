@@ -20,6 +20,8 @@
     <%= javascript_include_tag 'mirador.min' %>
     <%= javascript_include_tag 'goldenlayout.min' %>
     <%= javascript_include_tag 'yale-mirador.bundle' %>
+  <% else %>
+  <%= javascript_include_tag 'jquery' %>
   <% end %>
 
   <script>

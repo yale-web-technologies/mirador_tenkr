@@ -12,6 +12,7 @@ Rails.application.config.assets.version = '1.0'
 Rails.application.config.assets.precompile += %w( search.js )
 
 [
+  'jquery',
   'dexie.min.js',
   'goldenlayout/goldenlayout-base.css',
   'goldenlayout/goldenlayout-dark-theme.css',
