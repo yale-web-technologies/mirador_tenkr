@@ -12,17 +12,15 @@
     <%= stylesheet_link_tag 'css/mirador-combined.min' %>
   <% end %>
   <%= stylesheet_link_tag 'semantic.min' %>
-  <%= stylesheet_link_tag 'yale-mirador.bundle' %>
-
-  <% if defined? @use_firebase %>
-    <% if false %> <%# not including firebase because it does not work from China %>
-      <%= javascript_include_tag 'https://www.gstatic.com/firebasejs/live/3.0/firebase.js' %>
-    <% end %>
+  <% if defined? @is_mirador_window %>
+    <%= stylesheet_link_tag 'yale-mirador.bundle' %>
   <% end %>
 
-  <%= javascript_include_tag 'mirador.min' %>
-  <%= javascript_include_tag 'goldenlayout.min' %>
-  <%= javascript_include_tag 'yale-mirador.bundle' %>
+  <% if defined? @is_mirador_window %>
+    <%= javascript_include_tag 'mirador.min' %>
+    <%= javascript_include_tag 'goldenlayout.min' %>
+    <%= javascript_include_tag 'yale-mirador.bundle' %>
+  <% end %>
 
   <script>
     $.noConflict();
