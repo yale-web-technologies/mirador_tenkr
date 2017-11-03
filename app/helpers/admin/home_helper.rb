@@ -4,13 +4,12 @@ module Admin::HomeHelper
     yale_mirador_version = ''
 
     File.open("#{Rails.root}/vendor/assets/mirador/mirador.min.js") do |f|
-      mirador_version << f.readline
-      mirador_version << '; '
-      mirador_version << f.readline
+      mirador_version << f.read(80)
     end
 
     File.open("#{Rails.root}/vendor/assets/yale-mirador/yale-mirador.bundle.js") do |f|
-      ym_version = f.readline.sub(/^\/\/.s*/, '')
+      #ym_version = f.read(256).sub(/^\/\/.s*/, '')
+      ym_version = f.read(256).sub(/window._YaleMiradorVersion="([^";]+)".*/, '\1')
       yale_mirador_version << ym_version
     end
 
