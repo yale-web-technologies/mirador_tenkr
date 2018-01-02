@@ -14,5 +14,9 @@ module Miradorails
 
     config.tinymce.install = :compile
     config.assets.paths += [Rails.root.join('vendor', 'assets')]
+
+    if ENV['FORCE_SSL'] == 'Y'
+      config.force_ssl = true
+    end
   end
 end
